@@ -51,3 +51,21 @@
   font-weight: bold;
   font-style: normal;
 }
+
+@font-face {
+  font-family: "Whitney";
+  src: url("./Whitney-Light.woff2") format("woff2"),
+    url("./Whitney-Light.woff") format("woff"),
+    url("./Whitney-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Whitney";
+  src: url("./Whitney-LightItalic.woff2") format("woff2"),
+    url("./Whitney-LightItalic.woff") format("woff"),
+    url("./Whitney-LightItalic.ttf") format("truetype");
+  font-weight: 300;
+  font-style: italic;
+}

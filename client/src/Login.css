@@ -1,10 +1,219 @@
+.app {
+  background: url("./assets/loginbg.jpg") no-repeat center center;
+  margin: none;
+  padding: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #fff;
+  min-height: 100vh;
+}
+
+.banner {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .authbox {
   background: #36393f;
   border-radius: 5px;
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
   color: #72767d;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   font-size: 18px;
   padding: 40px;
   width: 480px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 15px;
+  color: hsla(0, 0%, 0%, 0.75);
+}
+
+@media screen and (max-width: 486px) {
+  .app {
+    background: none;
+  }
+  .authbox {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+  }
+  .footer {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .authbox {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.footer div {
+  margin-right: 10px;
+}
+
+.footer a {
+  color: hsla(0, 0%, 0%, 0.75);
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s cubic-bezier(0.25, 0.25, 0.315, 1.35),
+    border-bottom 0.2s cubic-bezier(0.25, 0.25, 0.315, 1.35);
+}
+
+.footer a:hover {
+  color: hsla(0, 0%, 0%, 1);
+  border-bottom: 1px solid hsla(0, 0%, 0%, 1);
+}
+
+.title {
+  text-align: center;
+  font-size: 26px;
+  line-height: 32px;
+  font-weight: 300;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.subTitle {
+  text-align: center;
+  color: #72767d;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 400;
+  outline: 0;
+}
+
+.block {
+  text-align: left;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.inputLabel {
+  color: #b9bbbe;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: default;
+  font-weight: 700;
+  line-height: 16px;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.inputField {
+  font-size: 16px;
+  border-radius: 3px;
+  border-style: solid;
+  border-width: 1px;
+  box-sizing: border-box;
+  transition: background-color 0.15s ease, border 0.15s ease;
+  width: 100%;
+  height: 40px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.3);
+  color: #f6f6f7;
+}
+
+.inputField:hover {
+  border-color: #040405;
+}
+
+.inputField:focus {
+  border-color: #7289da;
+}
+
+.marginBottom20 {
+  margin-bottom: 20px;
+}
+
+.marginTop4 {
+  margin-top: 4px;
+}
+
+.link {
+  position: relative;
+  line-height: 16px;
+  font-weight: 500;
+  font-size: 14px;
+  margin-top: 6px;
+  margin-bottom: 20px;
+  height: auto;
+  padding-left: 0;
+  padding-right: 0;
+  display: block;
+  color: #7289da;
+  cursor: pointer;
+  background: none;
+}
+
+.smallLink {
+  display: inline-block;
+  margin-left: 4px;
+  margin-bottom: 0px;
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  bottom: 1px;
+  height: 1px;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0s linear;
+  background: #7289da;
+  width: 100%;
+}
+
+.link:hover::after {
+  opacity: 1;
+}
+
+.login {
+  outline: 0;
+  position: relative;
+  padding: 2px 16px;
+  font-weight: 400;
+  justify-content: center;
+  cursor: pointer;
+  display: flex;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 3px;
+  align-items: center;
+  transition: background-color 0.17s ease, color 0.17s ease;
+  min-width: 130px;
+  min-height: 44px;
+  height: 44px;
+  width: 100%;
+  margin-bottom: 8px;
+  font-size: 16px;
+  line-height: 24px;
+  color: #fff;
+  background-color: #7289da;
+}
+
+.login:hover {
+  background-color: #677bc4;
+}
+
+.needAccount {
+  font-size: 14px;
+  line-height: 16px;
+  color: #72767d;
 }

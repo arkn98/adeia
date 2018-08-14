@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import styles from "./Home.css";
+import styles from "./Login.css";
 
 class Login extends Component {
   render() {
@@ -8,36 +8,35 @@ class Login extends Component {
       <div style={{ height: "100%" }} className={styles.app}>
         <div className={styles.banner}>
           <div className={styles.authbox}>
-            Welcome to LMS - Leave Management System
-          </div>
-          <div className={styles.text}>
-            An all-in-one application to apply for leaves, manage and keep track
-            of them
-            {/* , that works on both your desktop and phone. */}, for the
-            Department of Information Science & Technology.
-          </div>
-          <div className={styles.buttons}>
-            <Link to="/login">
-              <div
-                style={{ flex: "1 1 auto" }}
-                className={`${styles.buttonWhite} ${styles.button}`}
-              >
-                Login
+            <div className={styles.title}>Welcome back!</div>
+            <div className={styles.subTitle}>
+              We're so excited to see you again!
+            </div>
+            <div className={styles.block}>
+              <div className={styles.marginBottom20}>
+                <div className={styles.inputLabel}>Email</div>
+                <input className={styles.inputField} />
               </div>
-            </Link>
-            <Link to="/activate">
-              <div
-                style={{ flex: "1 1 auto" }}
-                className={`${styles.buttonPrimary} ${styles.button}`}
-              >
-                Activate Account
+              <div>
+                <div className={styles.inputLabel}>Password</div>
+                <input className={styles.inputField} />
               </div>
-            </Link>
+              <button className={styles.link}>Forgot your password?</button>
+              <button className={styles.login}>Login</button>
+              <div className={styles.marginTop4}>
+                <span className={styles.needAccount}>
+                  Account not activated?&nbsp;
+                </span>
+                <div className={`${styles.smallLink} ${styles.link}`}>
+                  Activate here
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div className={styles.footer}>
           <div>
-            Currently maintained by&nbsp;
+            Currently maintained by
             <a
               href="https://github.com/arkn98"
               target="_blank"
