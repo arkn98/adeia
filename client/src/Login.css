@@ -1,15 +1,17 @@
 .app {
   background: url("./assets/loginbg.jpg") no-repeat center center;
+  background-size: cover;
   margin: none;
   padding: none;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   color: #fff;
-  min-height: 100vh;
+  height: 100%;
 }
 
 .banner {
+  height: 100%;
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
@@ -24,6 +26,7 @@
   box-sizing: border-box;
   color: #72767d;
   display: flex;
+  z-index: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -39,7 +42,7 @@
   align-items: center;
   font-size: 12px;
   font-weight: 400;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   color: hsla(0, 0%, 0%, 0.75);
 }
 
@@ -48,9 +51,12 @@
     background: none;
   }
   .authbox {
-    position: fixed;
     height: 100%;
+    min-height: 100% !important;
+    border-radius: 0px;
     width: 100%;
+    margin: 0;
+    overflow-x: hidden;
   }
   .footer {
     display: none;
@@ -164,7 +170,7 @@
 
 .smallLink {
   display: inline-block;
-  margin-left: 4px;
+  margin-left: 2px;
   margin-bottom: 0px;
 }
 
@@ -180,15 +186,23 @@
   width: 100%;
 }
 
-.link:hover::after {
-  opacity: 1;
+@media screen and (max-width: 486px) {
+  .link::after {
+    opacity: 1;
+  }
+}
+
+@media screen and (min-width: 487px) {
+  .link:hover::after {
+    opacity: 1;
+  }
 }
 
 .login {
   outline: 0;
   position: relative;
   padding: 2px 16px;
-  font-weight: 400;
+  font-weight: 500;
   justify-content: center;
   cursor: pointer;
   display: flex;
@@ -216,4 +230,40 @@
   font-size: 14px;
   line-height: 16px;
   color: #72767d;
+}
+
+.logo {
+  z-index: 2;
+  font-family: "UniSans";
+  font-weight: 900;
+  user-select: none;
+  font-size: 36px;
+  color: #36393f;
+  margin-bottom: 20px;
+}
+
+@media screen and (max-width: 486px) {
+  .authbox > .logo {
+    position: relative;
+    display: block;
+    color: #fff;
+  }
+  .banner > .logo {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 487px) {
+  .authbox > .logo {
+    display: none;
+  }
+  .banner > .logo {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 1080px) {
+  .logo {
+    margin-right: 80%;
+  }
 }

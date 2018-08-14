@@ -1,5 +1,10 @@
 @import url("./assets/fonts/stylesheet.css");
 
+html {
+  height: 100%;
+  position: relative;
+}
+
 a,
 abbr,
 acronym,
@@ -74,6 +79,8 @@ body {
   font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
   line-height: 1.15;
   text-rendering: optimizeLegibility;
+  height: 100%;
+  min-height: 100% !important;
 }
 
 a {

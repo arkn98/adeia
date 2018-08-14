@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Login.css";
 
-class Login extends Component {
+class Activate extends Component {
   render() {
     return (
       <div style={{ height: "100%" }} className={styles.app}>
@@ -14,10 +14,7 @@ class Login extends Component {
             <div className={styles.logo}>
               <Link to="/">LMS</Link>
             </div>
-            <div className={styles.title}>Welcome back!</div>
-            <div className={styles.subTitle}>
-              We're so excited to see you again!
-            </div>
+            <div className={styles.title}>Activate your account</div>
             <div className={styles.block}>
               <div className={styles.marginBottom20}>
                 <div className={styles.inputLabel}>Email</div>
@@ -28,13 +25,10 @@ class Login extends Component {
                 <input className={styles.inputField} />
               </div>
               <button className={styles.link}>Forgot your password?</button>
-              <button className={styles.login}>Login</button>
+              <button className={styles.login}>Continue</button>
               <div className={styles.marginTop4}>
-                <span className={styles.needAccount}>
-                  Account not activated?
-                </span>
                 <div className={`${styles.smallLink} ${styles.link}`}>
-                  <Link to="/activate">Activate here</Link>
+                  <Link to="/login">Already have an account?</Link>
                 </div>
               </div>
             </div>
@@ -75,4 +69,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default Activate;

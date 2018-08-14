@@ -69,3 +69,12 @@
   font-weight: 300;
   font-style: italic;
 }
+
+@font-face {
+  font-family: "UniSans";
+  src: url("./Uni-Sans-Heavy.woff2") format("woff2"),
+    url("./Uni-Sans-Heavy.woff") format("woff"),
+    url("./Uni-Sans-Heavy.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+}
