@@ -5,6 +5,10 @@ html {
   position: relative;
 }
 
+ul {
+  list-style: none;
+}
+
 a,
 abbr,
 acronym,
