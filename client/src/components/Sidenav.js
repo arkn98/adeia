@@ -27,13 +27,14 @@ class Sidenav extends Component {
         <div className={styles.sideNav}>
           <div className={styles.menu}>
             <div className={styles.logo}>
-              <Link href="/" to="/dashboard">
+              <Link title="Leave Management System" href="/" to="/dashboard">
                 LMS
               </Link>
               <div className={styles.menuText}>v2.0.1</div>
               <div className={styles.customHeaderIcons}>
                 <div className={styles.iconWrapper}>
                   <a
+                    title="GitHub Repo"
                     href="https://github.com/arkn98/lms"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -48,6 +49,7 @@ class Sidenav extends Component {
                 <div className={styles.iconWrapper}>
                   <Link to="/">
                     <i
+                      title="Info"
                       className={`icon ion-md-information-circle ${
                         styles.customHeaderIcon
                       }`}
@@ -138,11 +140,26 @@ class Sidenav extends Component {
             </div>
           </div>
         </div>
-        <div className={settingsMenuStyles.join(" ")}>
-          <ul>
-            <li>Change Password</li>
-            <li>Logout</li>
-          </ul>
+        <div
+          className={`${styles.popouts} ${
+            styles.popout
+          } ${settingsMenuStyles.join(" ")}`}
+        >
+          <div className={styles.item}>
+            <i
+              className={`icon ion-md-lock ${styles.menuIcon}`}
+              title="Change Password"
+            />
+            Change Password
+          </div>
+          {/* <div className={styles.seperator2} /> */}
+          <div className={`${styles.item} ${styles.danger}`}>
+            <i
+              className={`icon ion-md-close ${styles.menuIcon}`}
+              title="Logout"
+            />
+            Logout
+          </div>
         </div>
       </div>
     );

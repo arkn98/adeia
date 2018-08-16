@@ -246,7 +246,7 @@
   border-radius: 3px;
 }
 
-.settingsMenu {
+/* .settingsMenu {
   border-radius: 5px;
   background: #282b30;
   overflow: hidden;
@@ -262,7 +262,7 @@
 
 .settingsMenuVisible {
   display: block;
-}
+} */
 
 .iconSelectorHovered,
 .userSettings:hover .iconSelector {
@@ -273,7 +273,7 @@
   opacity: 1;
 }
 
-.settingsMenu li {
+/* .settingsMenu li {
   color: #fff;
   cursor: pointer;
   padding: 12px 16px;
@@ -287,4 +287,85 @@
 
 .settingsMenu li:hover {
   background-color: #25282d;
+} */
+
+.popouts {
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: auto;
+  position: absolute;
+}
+
+.popout {
+  border-radius: 5px;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.82), 0 1px 4px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  filter: blur(0px);
+  z-index: 1000;
+}
+
+.popout {
+  z-index: 1001;
+  overflow: hidden;
+  visibility: visible;
+  left: 120px;
+  top: 450px;
+  height: 76px;
+  width: 216px;
+  transform: translateY(0%) translateX(-50%) translateZ(0px);
+}
+
+.item {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  font-size: 15px;
+  line-height: 18px;
+  margin: 0;
+  padding: 10px 14px;
+  box-sizing: border-box;
+  color: hsla(0, 0%, 100%, 0.6);
+}
+
+.settingsMenu {
+  border-radius: 5px;
+  overflow: hidden;
+  width: 216px;
+  display: none;
+  background: #282b30;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.82), 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.settingsMenuVisible {
+  display: block;
+}
+
+.item:hover {
+  background-color: #25282d;
+  color: #fff;
+}
+
+.menuIcon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-right: 14px;
+  opacity: 0.8;
+}
+
+.danger {
+  color: rgb(240, 71, 71);
+  font-weight: 500;
+}
+
+.item.danger:hover {
+  background-color: rgba(240, 71, 71, 0.1);
+  color: rgb(240, 71, 71);
+}
+
+.seperator2 {
+  box-sizing: border-box;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: hsla(0, 0%, 96.1%, 0.08);
 }
