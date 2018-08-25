@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import styles from "./Login.css";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import styles from './Login.css';
 
 class Login extends Component {
   render() {
     return (
-      <div style={{ height: "100%" }} className={styles.app}>
+      <div /* style={{ height: "100%" }} */ className={styles.app}>
         <div className={styles.banner}>
           <div className={styles.logo}>
             <Link to="/">LMS</Link>

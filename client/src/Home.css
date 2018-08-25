@@ -45,7 +45,7 @@
 
 .buttons {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
 }
@@ -75,7 +75,6 @@
 @media screen and (max-width: 768px) {
   .buttons {
     max-width: calc(90% - 50px);
-    flex-wrap: wrap;
   }
   .buttons .button {
     margin-top: 16px;
@@ -113,10 +112,11 @@
   align-items: center;
   font-size: 12px;
   font-weight: 400;
-  margin-bottom: 12px;
   width: 100%;
   margin-right: auto;
   margin-left: auto;
+  box-sizing: border-box;
+  padding-bottom: 24px;
   max-width: calc(100% - 100px);
   color: hsla(0, 0%, 100%, 0.25);
 }

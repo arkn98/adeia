@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import styles from "./Login.css";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import styles from './Login.css';
 
 class Activate extends Component {
   render() {
     return (
-      <div style={{ height: "100%" }} className={styles.app}>
+      <div style={{ height: '100%' }} className={styles.app}>
         <div className={styles.banner}>
           <div className={styles.logo}>
             <Link to="/">LMS</Link>
@@ -17,14 +17,21 @@ class Activate extends Component {
             <div className={styles.title}>Activate your account</div>
             <div className={styles.block}>
               <div className={styles.marginBottom20}>
+                <div className={styles.inputLabel}>Staff ID</div>
+                <input className={styles.inputField} />
+              </div>
+              <div className={styles.marginBottom20}>
                 <div className={styles.inputLabel}>Email</div>
                 <input className={styles.inputField} />
               </div>
-              <div>
+              <div className={styles.marginBottom20}>
                 <div className={styles.inputLabel}>Password</div>
                 <input className={styles.inputField} />
               </div>
-              <button className={styles.link}>Forgot your password?</button>
+              <div className={styles.marginBottom20}>
+                <div className={styles.inputLabel}>Confirm Password</div>
+                <input className={styles.inputField} />
+              </div>
               <button className={styles.login}>Continue</button>
               <div className={styles.marginTop4}>
                 <div className={`${styles.smallLink} ${styles.link}`}>

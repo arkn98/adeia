@@ -1,12 +1,10 @@
-import React, { Component } from "react";
-import styles from "./Sidenav.css";
-import { Link, NavLink } from "react-router-dom";
+import React, { Component } from 'react';
+import styles from './Sidenav.css';
+import { Link, NavLink } from 'react-router-dom';
 
 class Sidenav extends Component {
   state = {
-    isSettingsMenuVisible: false,
-    mouseX: 0,
-    mouseY: 0
+    isSettingsMenuVisible: false
   };
 
   settingsMenuClickHandler = event => {
@@ -23,7 +21,7 @@ class Sidenav extends Component {
       settingsMenuStyles.push(styles.settingsMenuVisible);
     }
     return (
-      <div style={{ height: "100%" }}>
+      <div style={{ height: '100%' }}>
         <div className={styles.sideNav}>
           <div className={styles.menu}>
             <div className={styles.logo}>
@@ -61,62 +59,105 @@ class Sidenav extends Component {
             <div className={styles.scrollMenuWrapper}>
               <div className={styles.scroller}>
                 <span>
-                  <div className={styles.menuItem}>
-                    <Link to="/">
-                      <i className={`icon ion-md-easel ${styles.customIcon}`} />
-                      &nbsp;
-                      <div
-                        style={{ display: "inline" }}
-                        className={styles.menuText}
-                      >
-                        Dashboard
-                      </div>
-                    </Link>
-                  </div>
-                  <div className={styles.menuItem}>
-                    <Link to="/">
-                      <i
-                        className={`icon ion-md-list-box ${styles.customIcon}`}
-                      />
-                      &nbsp;
-                      <div
-                        style={{ display: "inline" }}
-                        className={styles.menuText}
-                      >
-                        Apply for Leave
-                      </div>
-                    </Link>
-                  </div>
-                  <div className={styles.menuItem}>
-                    <Link to="/">
-                      <i className={`icon ion-md-eye ${styles.customIcon}`} />
-                      &nbsp;
-                      <div
-                        style={{ display: "inline" }}
-                        className={styles.menuText}
-                      >
-                        View Holidays
-                      </div>
-                    </Link>
-                  </div>
-                  <div className={styles.menuItem}>
-                    <Link to="/">
-                      <i className={`icon ion-md-stats ${styles.customIcon}`} />
-                      &nbsp;
-                      <div
-                        style={{ display: "inline" }}
-                        className={styles.menuText}
-                      >
-                        View Reports
-                      </div>
-                    </Link>
-                  </div>
+                  <NavLink
+                    to="/dashboard"
+                    exact
+                    className={styles.menuItem}
+                    activeClassName={styles.menuItemActive}
+                  >
+                    <i className={`icon ion-md-easel ${styles.customIcon}`} />
+                    &nbsp;
+                    <div
+                      style={{ display: 'inline' }}
+                      className={styles.menuText}
+                    >
+                      Dashboard
+                    </div>
+                  </NavLink>
+
+                  <NavLink
+                    to="/"
+                    exact
+                    className={styles.menuItem}
+                    activeClassName={styles.menuItemActive}
+                  >
+                    <i
+                      className={`icon ion-md-list-box ${styles.customIcon}`}
+                    />
+                    &nbsp;
+                    <div
+                      style={{ display: 'inline' }}
+                      className={styles.menuText}
+                    >
+                      Apply for Leave
+                    </div>
+                  </NavLink>
+
+                  <NavLink
+                    to="/"
+                    exact
+                    className={styles.menuItem}
+                    activeClassName={styles.menuItemActive}
+                  >
+                    <i className={`icon ion-md-eye ${styles.customIcon}`} />
+                    &nbsp;
+                    <div
+                      style={{ display: 'inline' }}
+                      className={styles.menuText}
+                    >
+                      View Holidays
+                    </div>
+                  </NavLink>
+
+                  <NavLink
+                    exact
+                    to="/"
+                    className={styles.menuItem}
+                    activeClassName={styles.menuItemActive}
+                  >
+                    <i className={`icon ion-md-stats ${styles.customIcon}`} />
+                    &nbsp;
+                    <div
+                      style={{ display: 'inline' }}
+                      className={styles.menuText}
+                    >
+                      View Reports
+                    </div>
+                  </NavLink>
                   {/* <div className={styles.seperator} /> */}
-                  <header className={styles.menuHeader}>
-                    Notifications - ({this.props.notifCount})
-                  </header>
+                  {/* <header className={styles.menuHeader}>
+                    Notifications - ({0})
+                  </header> */}
                 </span>
               </div>
+            </div>
+          </div>
+          <div
+            className={`${styles.popouts} ${
+              styles.popout
+            } ${settingsMenuStyles.join(' ')}`}
+          >
+            <div className={styles.item}>
+              <i
+                className={`icon ion-md-build ${styles.menuIcon}`}
+                title="Update Profile"
+              />
+              Update Profile
+            </div>
+            <div className={styles.item}>
+              <i
+                className={`icon ion-md-lock ${styles.menuIcon}`}
+                title="Change Password"
+              />
+              Change Password
+            </div>
+            {/* <div className={styles.seperator2} /> */}
+            <div className={`${styles.item} ${styles.danger}`}>
+              <i
+                className={`icon ion-md-close ${styles.menuIcon}`}
+                title="Logout"
+              />
+              Logout
             </div>
           </div>
           <div className={styles.userContainer}>
@@ -129,7 +170,7 @@ class Sidenav extends Component {
             </div>
             <div className={styles.userSettings}>
               <div
-                className={settingsIconSelector.join(" ")}
+                className={settingsIconSelector.join(' ')}
                 onClick={this.settingsMenuClickHandler}
               >
                 <i
@@ -138,27 +179,6 @@ class Sidenav extends Component {
                 />
               </div>
             </div>
-          </div>
-        </div>
-        <div
-          className={`${styles.popouts} ${
-            styles.popout
-          } ${settingsMenuStyles.join(" ")}`}
-        >
-          <div className={styles.item}>
-            <i
-              className={`icon ion-md-lock ${styles.menuIcon}`}
-              title="Change Password"
-            />
-            Change Password
-          </div>
-          {/* <div className={styles.seperator2} /> */}
-          <div className={`${styles.item} ${styles.danger}`}>
-            <i
-              className={`icon ion-md-close ${styles.menuIcon}`}
-              title="Logout"
-            />
-            Logout
           </div>
         </div>
       </div>
