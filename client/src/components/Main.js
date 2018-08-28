@@ -48,71 +48,95 @@ class Main extends Component {
         <div className={styles.scrollWrapper}>
           <div className={styles.contentWrapper}>
             <div className={styles.body}>
-              <div className={styles.bodyItemWrapper}>
-                <div className={styles.welcomeMessage}>
-                  Welcome, {`\{username\}`}
+              <div className={`${styles.welcomeMessage} ${styles.marginTop20}`}>
+                Welcome, {`\{username\}`}
+              </div>
+              <div className={`${styles.boxContainer} ${styles.marginTop20}`}>
+                <div className={`${styles.box} ${styles.boxHover}`}>
+                  <div className={styles.boxIcon}>
+                    <i
+                      className={`icon ion-md-chatbubbles ${
+                        styles.customHeaderIcon
+                      }`}
+                    />
+                  </div>
+                  <div className={styles.boxText}>
+                    <div className={styles.title}>CPL Credits</div>
+                    <div className={styles.subtitle}>
+                      Check available CPL credits
+                    </div>
+                  </div>
                 </div>
-                <div className={styles.boxContainer}>
-                  <div className={styles.box}>
-                    <div className={styles.boxIcon}>
-                      <i
-                        className={`icon ion-md-chatbubbles ${
-                          styles.customHeaderIcon
-                        }`}
-                      />
-                    </div>
-                    <div className={styles.boxText}>
-                      <div className={styles.title}>CPL Credits</div>
-                      <div className={styles.subtitle}>
-                        Check available CPL credits
-                      </div>
+                <div className={`${styles.box} ${styles.boxHover}`}>
+                  <div className={styles.boxIcon}>
+                    <i
+                      className={`icon ion-md-today ${styles.customHeaderIcon}`}
+                    />
+                  </div>
+                  <div className={styles.boxText}>
+                    <div className={styles.title}>Leave Status</div>
+                    <div className={styles.subtitle}>
+                      Check status of applied leaves
                     </div>
                   </div>
-                  <div className={styles.box}>
-                    <div className={styles.boxIcon}>
-                      <i
-                        className={`icon ion-md-today ${
-                          styles.customHeaderIcon
-                        }`}
-                      />
-                    </div>
-                    <div className={styles.boxText}>
-                      <div className={styles.title}>Leave Status</div>
-                      <div className={styles.subtitle}>
-                        Check status of applied leaves
-                      </div>
-                    </div>
-                  </div>{' '}
-                  <div className={styles.box}>
-                    <div className={styles.boxIcon}>
-                      <i
-                        className={`icon ion-md-stopwatch ${
-                          styles.customHeaderIcon
-                        }`}
-                      />
-                    </div>
-                    <div className={styles.boxText}>
-                      <div className={styles.title}>Awaiting Alterations</div>
-                      <div className={styles.subtitle}>
-                        Check the alternations given to you
-                      </div>
-                    </div>
-                  </div>{' '}
-                  <div className={styles.box}>
-                    <div className={styles.boxIcon}>
-                      <i
-                        className={`icon ion-md-repeat ${
-                          styles.customHeaderIcon
-                        }`}
-                      />
-                    </div>
-                    <div className={styles.boxText}>
-                      <div className={styles.title}>Compensations</div>
-                      <div className={styles.subtitle}>
-                        Check the list of compensations
-                      </div>
+                </div>{' '}
+                <div className={`${styles.box} ${styles.boxHover}`}>
+                  <div className={styles.boxIcon}>
+                    <i
+                      className={`icon ion-md-stopwatch ${
+                        styles.customHeaderIcon
+                      }`}
+                    />
+                  </div>
+                  <div className={styles.boxText}>
+                    <div className={styles.title}>Awaiting Alterations</div>
+                    <div className={styles.subtitle}>
+                      Check the alternations given to you
                     </div>
                   </div>
+                </div>{' '}
+                <div className={`${styles.box} ${styles.boxHover}`}>
+                  <div className={styles.boxIcon}>
+                    <i
+                      className={`icon ion-md-repeat ${
+                        styles.customHeaderIcon
+                      }`}
+                    />
+                  </div>
+                  <div className={styles.boxText}>
+                    <div className={styles.title}>Compensations</div>
+                    <div className={styles.subtitle}>
+                      Check the list of compensations
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className={`${styles.boxContainer} ${styles.mainFuncs}`}>
+                <div className={styles.box}>
+                  <div className={styles.boxText}>
+                    <div className={styles.title}>Leave Availability</div>
+                    <div className={styles.subtitle}>Leave Availability</div>
+                  </div>
+                  {/* <div className={styles.boxIcon}>
+                    <i
+                      className={`icon ion-md-repeat ${
+                        styles.customHeaderIcon
+                      }`}
+                    />
+                  </div> */}
+                </div>
+                <div className={styles.box}>
+                  <div className={styles.boxText}>
+                    <div className={styles.title}>Leave Availability</div>
+                    <div className={styles.subtitle}>Leave Availability</div>
+                  </div>
+                  {/* <div className={styles.boxIcon}>
+                    <i
+                      className={`icon ion-md-repeat ${
+                        styles.customHeaderIcon
+                      }`}
+                    />
+                  </div> */}
                 </div>
               </div>
             </div>

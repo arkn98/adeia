@@ -1,43 +1,116 @@
-.app {
+.root {
+  height: 100%;
+  width: 100%;
   background: url('./assets/loginbg.jpg') no-repeat center center;
   background-size: cover;
-  margin: none;
-  padding: none;
+  position: absolute;
+  overflow: hidden;
   overflow-y: auto;
-  width: 100%;
+}
+
+.app {
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: stretch;
-  color: #fff;
-  height: 100%;
 }
 
 .banner {
+  position: relative;
   flex: 1 1 auto;
   display: flex;
+  margin-left: auto;
+  margin-right: auto;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 100%;
+  width: 100%;
 }
 
 .authbox {
+  display: flex;
   background: #36393f;
   border-radius: 5px;
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
   color: #72767d;
-  display: flex;
   z-index: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
   font-size: 18px;
   padding: 40px;
   width: 480px;
 }
 
+/* .root {
+  background-color: #202225;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  position: absolute;
+  width: 100vw;
+}
+
+.app {
+  flex: 1 1 auto;
+  position: relative;
+  z-index: auto;
+  /* background: url('./assets/loginbg.jpg') no-repeat center center;
+  background-size: cover;
+  margin: none;
+  padding: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  color: #fff; 
+}
+
+.wrapper {
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 1;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+ /*
+.banner {
+  background: url('./assets/loginbg.jpg') no-repeat center center;
+  background-size: cover;
+  /* flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+} */
+/*
+.authbox {
+  display: flex;
+  background: #36393f;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  color: #72767d;
+  z-index: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  font-size: 18px;
+  padding: 40px;
+  width: 480px;
+} */
+
 .footer {
+  flex-shrink: 0;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -51,9 +124,14 @@
 }
 
 @media screen and (max-width: 486px) {
-  .app {
+  .root {
     background: none;
   }
+
+  .app {
+    height: 100%;
+  }
+
   .authbox {
     height: 100%;
     min-height: 100% !important;

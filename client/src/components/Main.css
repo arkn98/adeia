@@ -127,7 +127,7 @@
   align-items: stretch;
 }
 
-.bodyItemWrapper {
+.marginTop20 {
   margin-top: 20px;
 }
 
@@ -141,15 +141,14 @@
 .boxContainer {
   display: flex;
   flex-direction: row;
+  box-sizing: border-box;
   flex-wrap: wrap;
   justify-content: flex-start;
-  margin-top: 20px;
   margin-left: -10px;
   margin-right: -10px;
 }
 
 .box {
-  cursor: pointer;
   margin: 0 10px 20px 10px;
   border-radius: 5px;
   box-sizing: border-box;
@@ -161,11 +160,15 @@
   justify-content: space-between;
   background-color: rgba(32, 34, 37, 0.35);
   border: 1px solid rgba(32, 34, 37, 0.75);
-  transition: box-shadow linear 0.1s, transform linear 0.05s, border 0.125s;
   transform: translateY(0);
 }
 
-.box:hover {
+.boxHover {
+  transition: box-shadow linear 0.1s, transform linear 0.05s, border 0.125s;
+  cursor: pointer;
+}
+
+.boxHover:hover {
   border-color: rgba(4, 4, 5, 0.6);
   box-shadow: 0 1px 4px 0 rgba(24, 25, 28, 0.8),
     0 3px 10px 0 rgba(24, 25, 28, 0.3);
@@ -174,13 +177,43 @@
 .boxText {
   background-color: rgba(32, 34, 37, 0.6);
   flex: 1 1 15%;
+  min-height: 50px;
   display: flex;
+  box-sizing: border-box;
   flex-direction: column;
   justify-content: center;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   align-items: center;
   padding: 10px;
+}
+
+.mainFuncs .box .boxText {
+  background-color: transparent;
+  padding: 16px 10px 16px 10px;
+  align-items: flex-start;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.mainFuncs .box {
+  background-color: rgba(79, 84, 92, 0.3);
+  border-color: #2f3136;
+  border: 1px solid;
+  border-radius: 5px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.mainFuncs .box .boxText .title {
+  color: #dcddde;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.mainFuncs .box .boxText .subtitle {
+  color: #72767d;
+  font-size: 14px;
 }
 
 .box .title {
@@ -211,11 +244,15 @@
   font-size: 60px;
   padding-top: 12px;
   color: #7289da;
-  color: #fff;
-  opacity: 0.5;
+  opacity: 0.6;
   transition: opacity 0.2s linear;
 }
 
-.box:hover .customHeaderIcon {
+.boxHover:hover .customHeaderIcon {
   opacity: 1;
+}
+
+.formWrapper {
+  display: flex;
+  flex-direction: column;
 }

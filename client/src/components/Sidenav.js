@@ -76,7 +76,7 @@ class Sidenav extends Component {
                   </NavLink>
 
                   <NavLink
-                    to="/"
+                    to="/dashboard/apply"
                     exact
                     className={styles.menuItem}
                     activeClassName={styles.menuItemActive}
@@ -94,7 +94,7 @@ class Sidenav extends Component {
                   </NavLink>
 
                   <NavLink
-                    to="/"
+                    to="/dashboard/view-holidays"
                     exact
                     className={styles.menuItem}
                     activeClassName={styles.menuItemActive}
