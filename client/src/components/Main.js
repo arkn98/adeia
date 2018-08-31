@@ -127,7 +127,7 @@ class Main extends Component {
                 </div>
                 <div className={styles.box}>
                   <div className={styles.boxText}>
-                    <div className={styles.title}>Leave Availability</div>
+                    <div className={styles.title}>Recent Logins</div>
                     <div className={styles.subtitle}>Leave Availability</div>
                   </div>
                   {/* <div className={styles.boxIcon}>
