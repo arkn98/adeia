@@ -20,7 +20,7 @@ class Login extends Component {
                 <div className={styles.subTitle}>
                   We're so excited to see you again!
                 </div>
-                <div className={styles.block}>
+                <form className={styles.block}>
                   <div className={styles.marginBottom20}>
                     <div className={styles.inputLabel}>Email</div>
                     <input className={styles.inputField} />
@@ -39,7 +39,7 @@ class Login extends Component {
                       <Link to="/activate">Activate here</Link>
                     </div>
                   </div>
-                </div>
+                </form>
               </div>
             </div>
             <div className={styles.footer}>
