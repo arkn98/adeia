@@ -5,6 +5,8 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Main from './components/Main';
 import LeaveApplication from './components/LeaveApplication';
 import ViewHolidays from './components/ViewHolidays';
+import AddStaff from './components/AddStaff';
+import AddAdmin from './components/AddAdmin';
 
 class Dashboard extends Component {
   state = {
@@ -31,6 +33,18 @@ class Dashboard extends Component {
               path="/dashboard/view-holidays"
               exact
               component={LeaveApplication}
+              notifCount={this.state.notifCount}
+            />
+            <Route
+              path="/dashboard/add-staff"
+              exact
+              component={AddStaff}
+              notifCount={this.state.notifCount}
+            />
+            <Route
+              path="/dashboard/add-admin"
+              exact
+              component={AddAdmin}
               notifCount={this.state.notifCount}
             />
             <Route

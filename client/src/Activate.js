@@ -1,9 +1,38 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Login.css';
+import axios from 'axios';
 
 class Activate extends Component {
-  render() {
+  state = {
+    email: '',
+    staffId: '',
+    password: '',
+    password2: '',
+    errors: {}
+  };
+
+  inputOnChangeHandler = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  formSubmitHandler = event => {
+    event.preventDefault();
+
+    const newUser = {
+      email: this.state.email,
+      staffId: this.state.staffId,
+      password: this.state.password,
+      password2: this.state.password2
+    };
+
+    axios
+      .post('/api/users/activate', newUser)
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err.response.data));
+  };
+
+  render = () => {
     return (
       <div className={styles.root}>
         <div className={styles.app}>
@@ -16,30 +45,54 @@ class Activate extends Component {
                 <Link to="/">LMS</Link>
               </div>
               <div className={styles.title}>Activate your account</div>
-              <div className={styles.block}>
+              <form onSubmit={this.formSubmitHandler} className={styles.block}>
                 <div className={styles.marginBottom20}>
                   <div className={styles.inputLabel}>Staff ID</div>
-                  <input className={styles.inputField} />
+                  <input
+                    name="staffId"
+                    onChange={this.inputOnChangeHandler}
+                    value={this.state.staffId}
+                    className={styles.inputField}
+                  />
                 </div>
                 <div className={styles.marginBottom20}>
                   <div className={styles.inputLabel}>Email</div>
-                  <input className={styles.inputField} />
+                  <input
+                    name="email"
+                    onChange={this.inputOnChangeHandler}
+                    value={this.state.email}
+                    className={styles.inputField}
+                  />
                 </div>
                 <div className={styles.marginBottom20}>
                   <div className={styles.inputLabel}>Password</div>
-                  <input className={styles.inputField} />
+                  <input
+                    name="password"
+                    onChange={this.inputOnChangeHandler}
+                    type="password"
+                    value={this.state.password}
+                    className={styles.inputField}
+                  />
                 </div>
                 <div className={styles.marginBottom20}>
                   <div className={styles.inputLabel}>Confirm Password</div>
-                  <input className={styles.inputField} />
+                  <input
+                    name="password2"
+                    onChange={this.inputOnChangeHandler}
+                    type="password"
+                    value={this.state.password2}
+                    className={styles.inputField}
+                  />
                 </div>
-                <button className={styles.login}>Continue</button>
+                <button type="submit" className={styles.login}>
+                  Continue
+                </button>
                 <div className={styles.marginTop4}>
                   <div className={`${styles.smallLink} ${styles.link}`}>
                     <Link to="/login">Already have an account?</Link>
                   </div>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
           <div className={styles.footer}>
@@ -75,7 +128,7 @@ class Activate extends Component {
         </div>
       </div>
     );
-  }
+  };
 }
 
 export default Activate;

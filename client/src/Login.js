@@ -1,8 +1,27 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Login.css';
+import axios from 'axios';
 
 class Login extends Component {
+  state = {
+    email: '',
+    password: '',
+    errors: {}
+  };
+
+  inputOnChangeHandler = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  formSubmitHandler = event => {
+    event.preventDefault();
+    const user = {
+      email: this.state.email,
+      password: this.state.password
+    };
+  };
+
   render() {
     return (
       <div className={styles.root}>
@@ -20,14 +39,28 @@ class Login extends Component {
                 <div className={styles.subTitle}>
                   We're so excited to see you again!
                 </div>
-                <form className={styles.block}>
+                <form
+                  onSubmit={this.formSubmitHandler}
+                  className={styles.block}
+                >
                   <div className={styles.marginBottom20}>
                     <div className={styles.inputLabel}>Email</div>
-                    <input className={styles.inputField} />
+                    <input
+                      name="email"
+                      onChange={this.inputOnChangeHandler}
+                      value={this.state.email}
+                      className={styles.inputField}
+                    />
                   </div>
                   <div>
                     <div className={styles.inputLabel}>Password</div>
-                    <input className={styles.inputField} />
+                    <input
+                      name="password"
+                      type="password"
+                      onChange={this.inputOnChangeHandler}
+                      value={this.state.password}
+                      className={styles.inputField}
+                    />
                   </div>
                   <button className={styles.link}>Forgot your password?</button>
                   <button className={styles.login}>Login</button>

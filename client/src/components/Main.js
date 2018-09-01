@@ -55,9 +55,7 @@ class Main extends Component {
                 <div className={`${styles.box} ${styles.boxHover}`}>
                   <div className={styles.boxIcon}>
                     <i
-                      className={`icon ion-md-chatbubbles ${
-                        styles.customHeaderIcon
-                      }`}
+                      className={`icon ion-md-cash ${styles.customHeaderIcon}`}
                     />
                   </div>
                   <div className={styles.boxText}>
@@ -70,7 +68,9 @@ class Main extends Component {
                 <div className={`${styles.box} ${styles.boxHover}`}>
                   <div className={styles.boxIcon}>
                     <i
-                      className={`icon ion-md-today ${styles.customHeaderIcon}`}
+                      className={`icon ion-md-checkbox-outline ${
+                        styles.customHeaderIcon
+                      }`}
                     />
                   </div>
                   <div className={styles.boxText}>
@@ -83,7 +83,7 @@ class Main extends Component {
                 <div className={`${styles.box} ${styles.boxHover}`}>
                   <div className={styles.boxIcon}>
                     <i
-                      className={`icon ion-md-stopwatch ${
+                      className={`icon ion-md-construct ${
                         styles.customHeaderIcon
                       }`}
                     />
@@ -115,7 +115,7 @@ class Main extends Component {
                 <div className={styles.box}>
                   <div className={styles.boxText}>
                     <div className={styles.title}>Leave Availability</div>
-                    <div className={styles.subtitle}>Leave Availability</div>
+                    {/* <div className={styles.subtitle}>Leave Availability</div> */}
                   </div>
                   {/* <div className={styles.boxIcon}>
                     <i
@@ -127,8 +127,10 @@ class Main extends Component {
                 </div>
                 <div className={styles.box}>
                   <div className={styles.boxText}>
-                    <div className={styles.title}>Recent Logins</div>
-                    <div className={styles.subtitle}>Leave Availability</div>
+                    <div>
+                      <span className={styles.title}>Recent Logins </span>
+                      <span className={styles.subtitle}>(approximate)</span>
+                    </div>
                   </div>
                   {/* <div className={styles.boxIcon}>
                     <i

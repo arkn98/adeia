@@ -131,6 +131,18 @@
   margin-top: 20px;
 }
 
+.marginTop8 {
+  margin-top: 8px;
+}
+
+.marginBottom8 {
+  margin-bottom: 8px;
+}
+
+.marginBottom20 {
+  margin-bottom: 20px;
+}
+
 .welcomeMessage {
   font-size: 18px;
   font-weight: 500;
@@ -250,9 +262,4 @@
 
 .boxHover:hover .customHeaderIcon {
   opacity: 1;
-}
-
-.formWrapper {
-  display: flex;
-  flex-direction: column;
 }

@@ -21,7 +21,7 @@ class Sidenav extends Component {
       settingsMenuStyles.push(styles.settingsMenuVisible);
     }
     return (
-      <div style={{ height: '100%' }}>
+      <div style={{ height: '100%', overflowY: 'hidden' }}>
         <div className={styles.sideNav}>
           <div className={styles.menu}>
             <div className={styles.logo}>
@@ -74,7 +74,8 @@ class Sidenav extends Component {
                       Dashboard
                     </div>
                   </NavLink>
-
+                  {/* <div className={styles.seperator} /> */}
+                  <header className={styles.menuHeader}>Leaves</header>
                   <NavLink
                     to="/dashboard/apply"
                     exact
@@ -92,7 +93,91 @@ class Sidenav extends Component {
                       Apply for Leave
                     </div>
                   </NavLink>
-
+                  <NavLink
+                    to="/dashboard/leave-status"
+                    exact
+                    className={styles.menuItem}
+                    activeClassName={styles.menuItemActive}
+                  >
+                    <i
+                      className={`icon ion-md-checkbox-outline ${
+                        styles.customIcon
+                      }`}
+                    />
+                    &nbsp;
+                    <div
+                      style={{ display: 'inline' }}
+                      className={styles.menuText}
+                    >
+                      Leave Status
+                    </div>
+                  </NavLink>
+                  <NavLink
+                    to="/dashboard/cpl-credits"
+                    exact
+                    className={styles.menuItem}
+                    activeClassName={styles.menuItemActive}
+                  >
+                    <i className={`icon ion-md-cash ${styles.customIcon}`} />
+                    &nbsp;
+                    <div
+                      style={{ display: 'inline' }}
+                      className={styles.menuText}
+                    >
+                      CPL Credits
+                    </div>
+                  </NavLink>
+                  <NavLink
+                    to="/dashboard/alterations"
+                    exact
+                    className={styles.menuItem}
+                    activeClassName={styles.menuItemActive}
+                  >
+                    <i
+                      className={`icon ion-md-construct ${styles.customIcon}`}
+                    />
+                    &nbsp;
+                    <div
+                      style={{ display: 'inline' }}
+                      className={styles.menuText}
+                    >
+                      Alterations
+                    </div>
+                  </NavLink>
+                  <NavLink
+                    to="/dashboard/compensations"
+                    exact
+                    className={styles.menuItem}
+                    activeClassName={styles.menuItemActive}
+                  >
+                    <i className={`icon ion-md-repeat ${styles.customIcon}`} />
+                    &nbsp;
+                    <div
+                      style={{ display: 'inline' }}
+                      className={styles.menuText}
+                    >
+                      Compensations
+                    </div>
+                  </NavLink>
+                  <header className={styles.menuHeader}>Admin Options</header>
+                  <NavLink
+                    to="/dashboard/add-staff"
+                    exact
+                    className={styles.menuItem}
+                    activeClassName={styles.menuItemActive}
+                  >
+                    <i
+                      className={`icon ion-md-person-add ${styles.customIcon}`}
+                    />
+                    &nbsp;
+                    <div
+                      style={{ display: 'inline' }}
+                      className={styles.menuText}
+                    >
+                      Add Staff
+                    </div>
+                  </NavLink>
+                  <header className={styles.menuHeader}>Holidays</header>
                   <NavLink
                     to="/dashboard/view-holidays"
                     exact
@@ -105,10 +190,25 @@ class Sidenav extends Component {
                       style={{ display: 'inline' }}
                       className={styles.menuText}
                     >
-                      View Holidays
+                      Public Holidays
                     </div>
                   </NavLink>
-
+                  <NavLink
+                    to="/dashboard/view-holidays"
+                    exact
+                    className={styles.menuItem}
+                    activeClassName={styles.menuItemActive}
+                  >
+                    <i className={`icon ion-md-eye-off ${styles.customIcon}`} />
+                    &nbsp;
+                    <div
+                      style={{ display: 'inline' }}
+                      className={styles.menuText}
+                    >
+                      Restricted Holidays
+                    </div>
+                  </NavLink>
+                  <header className={styles.menuHeader}>Reports</header>
                   <NavLink
                     exact
                     to="/"
@@ -132,34 +232,6 @@ class Sidenav extends Component {
               </div>
             </div>
           </div>
-          <div
-            className={`${styles.popouts} ${
-              styles.popout
-            } ${settingsMenuStyles.join(' ')}`}
-          >
-            <div className={styles.item}>
-              <i
-                className={`icon ion-md-build ${styles.menuIcon}`}
-                title="Update Profile"
-              />
-              Update Profile
-            </div>
-            <div className={styles.item}>
-              <i
-                className={`icon ion-md-lock ${styles.menuIcon}`}
-                title="Change Password"
-              />
-              Change Password
-            </div>
-            {/* <div className={styles.seperator2} /> */}
-            <div className={`${styles.item} ${styles.danger}`}>
-              <i
-                className={`icon ion-md-close ${styles.menuIcon}`}
-                title="Logout"
-              />
-              Logout
-            </div>
-          </div>
           <div className={styles.userContainer}>
             <div className={styles.userAvatar}>
               <i className={`icon ion-md-contact ${styles.customIcon}`} />
@@ -179,6 +251,34 @@ class Sidenav extends Component {
                 />
               </div>
             </div>
+          </div>
+        </div>
+        <div
+          className={`${styles.popouts} ${
+            styles.popout
+          } ${settingsMenuStyles.join(' ')}`}
+        >
+          <div className={styles.item}>
+            <i
+              className={`icon ion-md-build ${styles.menuIcon}`}
+              title="Update Profile"
+            />
+            Update Profile
+          </div>
+          <div className={styles.item}>
+            <i
+              className={`icon ion-md-lock ${styles.menuIcon}`}
+              title="Change Password"
+            />
+            Change Password
+          </div>
+          {/* <div className={styles.seperator2} /> */}
+          <div className={`${styles.item} ${styles.danger}`}>
+            <i
+              className={`icon ion-md-close ${styles.menuIcon}`}
+              title="Logout"
+            />
+            Logout
           </div>
         </div>
       </div>

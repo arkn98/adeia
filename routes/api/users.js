@@ -18,8 +18,46 @@ const User = require('../../models/User');
 // @access  Public
 router.get('/test', (req, res) => res.json({ msg: 'Users works' }));
 
+// @route   POST  api/users/add-admin
+// @desc    Add admin
+// @access  Public
+router.post('/add-admin', (req, res) => {
+  const { errors, isValid } = validateRegisterInput(req.body);
+  // Check Validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  User.findOne({ email: req.body.email }).then(user => {
+    if (user) {
+      errors.email = 'Email already exists';
+      return res.status(400).json(errors);
+    } else {
+      const newUser = new User({
+        staffId: req.body.staffId,
+        name: req.body.name,
+        designation: req.body.designation,
+        category: req.body.category,
+        accountType: 0,
+        activated: 1
+      });
+
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newUser.password, salt, (err, hash) => {
+          if (err) throw err;
+          newUser.password = hash;
+          newUser
+            .save()
+            .then(user => res.json(user))
+            .catch(err => console.log(err));
+        });
+      });
+    }
+  });
+});
+
 // @route   POST   api/users/register
-// @desc    Register user
+// @desc    Register staff
 // @access  Private
 router.post(
   '/register',
@@ -66,23 +104,28 @@ router.post('/activate', (req, res) => {
   if (!isValid) {
     return res.status(400).json(errors);
   }
-  User.findOne({ staffId: req.body.staffId }).then(user => {
-    if (user.activated == 1) {
-      errors.staffId = 'Staff account already activated';
-      return res.status(400).json(errors);
-    } else {
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(req.body.password, salt, (err, hash) => {
-          if (err) throw err;
-          user.set({ activated: 1, email: req.body.email, password: hash });
-          user
-            .save()
-            .then(user => res.json(user))
-            .catch(err => console.log(err));
+  User.findOne({ staffId: req.body.staffId })
+    .then(user => {
+      if (user.activated == 1) {
+        errors.staffId = 'Staff account already activated';
+        return res.status(400).json(errors);
+      } else {
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(req.body.password, salt, (err, hash) => {
+            if (err) throw err;
+            user.set({ activated: 1, email: req.body.email, password: hash });
+            user
+              .save()
+              .then(user => res.json(user))
+              .catch(err => console.log(err));
+          });
         });
-      });
-    }
-  });
+      }
+    })
+    .catch(err => {
+      errors.staffId = 'No Staff account found';
+      return res.status(400).json(errors);
+    });
 });
 
 // @route   POST   api/users/login

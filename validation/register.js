@@ -8,6 +8,10 @@ module.exports = function validateRegisterInput(data) {
   data.designation = !isEmpty(data.designation) ? data.designation : '';
   data.category = !isEmpty(data.category) ? data.category : '';
 
+  if (!validator.isNumeric(data.staffId)) {
+    errors.staffId = 'Staff Id can only contain numbers';
+  }
+
   if (!validator.isLength(data.staffId, { min: 1 })) {
     errors.staffId = 'Staff Id cannot be empty';
   }

@@ -4,6 +4,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
 }
 
 .menu {
@@ -202,7 +203,7 @@
   margin-top: 0px;
   opacity: 0.3;
   overflow: hidden;
-  padding: 9px 20px;
+  padding: 9px 20px 9px 14px;
   text-overflow: ellipsis;
   text-transform: uppercase;
   white-space: nowrap;
@@ -328,7 +329,7 @@
   position: relative;
   overflow: hidden;
   left: 10px;
-  top: -8px;
+  top: -28%;
   height: 114px;
   width: 216px;
   transform: translateY(-5%) translateX(calc(5% - 0.5px)) translateZ(0);
@@ -341,6 +342,7 @@
   align-items: center;
   cursor: pointer;
   display: flex;
+  user-select: none;
   font-size: 15px;
   line-height: 18px;
   margin: 0;
@@ -382,6 +384,11 @@
 .item.danger:hover {
   background-color: rgba(240, 71, 71, 0.1);
   color: rgb(240, 71, 71);
+}
+
+.item.danger:active {
+  background-color: rgba(240, 71, 71, 1);
+  color: #fff;
 }
 
 .seperator2 {
