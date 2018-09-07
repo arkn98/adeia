@@ -36,7 +36,7 @@
 }
 
 .formItemWrapper {
-  width: 50%;
+  width: 100%;
   /* min-width: 543px; */
 }
 
@@ -70,6 +70,7 @@
 
 .formInput {
   background-color: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.3);
   border-color: rgba(0, 0, 0, 0.3);
   color: #fff;
   height: 40px;
@@ -97,7 +98,7 @@ select.formInput {
   -moz-appearance: none;
   appearance: none;
   /* background: #282b30; */
-  background: url(../assets/arrow-down.svg) 98% / 4% no-repeat #282b30;
+  background: url(../assets/arrow-down.svg) 99% / 24px no-repeat #282b30;
 }
 
 .formSelect option:hover {
@@ -107,6 +108,10 @@ select.formInput {
 
 .formInputError {
   border-color: #f04747;
+}
+
+.formInputError:focus {
+  border-color: #f04747 !important;
 }
 
 .formInputError:hover {
@@ -125,10 +130,10 @@ select.formInput {
   border-color: #7289da;
 }
 
-.formInput:disabled {
+/* .formInput:disabled {
   background-color: rgba(61, 61, 61, 0.3);
   cursor: not-allowed;
-}
+} */
 
 .formInput:disabled:hover {
   border-color: rgba(0, 0, 0, 0.3);
@@ -137,20 +142,18 @@ select.formInput {
 .radioGroup {
   color: #fff;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: flex-start;
-  flex-wrap: wrap;
 }
 
 .radioItem {
   margin-left: 10px;
   margin-right: 10px;
-  flex: 0 0 40%;
-  flex-basis: 50%;
+  flex: 1 1 100%;
   margin-bottom: 8px;
   padding: 10px;
-  min-width: 200px;
   background: rgba(32, 34, 37, 0.3);
+  box-sizing: border-box;
   border-color: #202225;
   border-radius: 3px;
   cursor: pointer;
@@ -219,4 +222,22 @@ select.formInput {
 
 .checkBoxCheckmarkOutline.checked .checkboxCheckmark {
   display: block;
+}
+
+.radioContent {
+  margin: 0 8px;
+  color: #f6f6f7;
+}
+
+.radioContent .title {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.disabled {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: #202225;
+  cursor: not-allowed;
+  opacity: 0.6;
 }

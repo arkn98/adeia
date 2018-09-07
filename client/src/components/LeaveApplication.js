@@ -2,10 +2,29 @@ import React, { Component } from 'react';
 import mainStyles from './Main.css';
 import styles from './LeaveApplication.css';
 import { Link, NavLink } from 'react-router-dom';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind({ ...styles, ...mainStyles });
 
 class LeaveApplication extends Component {
   state = {
     selectedRadio: 0
+  };
+
+  leaveString = [
+    'Casual Leave',
+    'Restricted Holiday',
+    'Special Casual Leave',
+    'On Duty',
+    'Medical Leave',
+    'Earn Leave',
+    'Compensation Leave'
+  ];
+
+  options = {
+    rt: {
+      type: [0, 1, 2, 3, 4, 5, 6]
+    }
   };
 
   /*
@@ -20,12 +39,65 @@ class LeaveApplication extends Component {
 
   radioClickHandler = event => {
     let opt = event.target.getAttribute('radio-key');
-    console.log(opt);
-    this.setState({ ...this.state, selectedRadio: opt });
+    if (this.state.selectedRadio !== opt && opt != null) {
+      console.log(opt);
+      this.setState({ ...this.state, selectedRadio: opt });
+    }
   };
 
   render() {
-    const radioList = null;
+    const radioList = this.options.rt.type.map(leaveType => {
+      return (
+        <div
+          key={leaveType}
+          className={cx({
+            radioItem: true,
+            radioItemSelected: this.state.selectedRadio == leaveType
+          })}
+          onClick={this.radioClickHandler}
+          radio-key={leaveType}
+        >
+          <label className={styles.checkBoxWrapper} radio-key={leaveType}>
+            <input
+              radio-key={leaveType}
+              className={styles.formInput}
+              type="checkbox"
+            />
+            <div
+              radio-key={leaveType}
+              className={cx({
+                checkBoxCheckmarkOutline: true,
+                checked: this.state.selectedRadio == leaveType
+              })}
+            >
+              <svg
+                className={styles.checkboxCheckmark}
+                name="Checkmark"
+                radio-key={leaveType}
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g fill="none" radio-key={leaveType} fillRule="evenodd">
+                  <polyline
+                    radio-key={leaveType}
+                    stroke="#7289da"
+                    strokeWidth="2"
+                    points="3.5 9.5 7 13 15 5"
+                  />
+                </g>
+              </svg>
+            </div>
+          </label>
+          <div radio-key={leaveType} className={styles.radioContent}>
+            <div radio-key={leaveType} className={styles.title}>
+              {this.leaveString[leaveType]}
+            </div>
+          </div>
+        </div>
+      );
+    });
 
     return (
       <div className={mainStyles.main}>
@@ -73,9 +145,6 @@ class LeaveApplication extends Component {
         <div className={mainStyles.scrollWrapper}>
           <div className={mainStyles.contentWrapper}>
             <div className={mainStyles.body}>
-              {/* <div className={`${mainStyles.welcomeMessage} ${mainStyles.marginTop20}`}>
-                Apply for leaves
-              </div> */}
               <div className={`${styles.formWrapper}`}>
                 <div className={`${styles.formText} ${styles.formItemWrapper}`}>
                   <div
@@ -108,7 +177,7 @@ class LeaveApplication extends Component {
                     </h5>
                     <div className={styles.inputWrapper}>
                       <input
-                        className={styles.formInput}
+                        className={`${styles.formInput} ${styles.disabled}`}
                         disabled
                         type="text"
                         placeholder="hello"
@@ -129,7 +198,7 @@ class LeaveApplication extends Component {
                     </h5>
                     <div className={styles.inputWrapper}>
                       <input
-                        className={styles.formInput}
+                        className={`${styles.formInput} ${styles.disabled}`}
                         disabled
                         type="text"
                         placeholder="hello"
@@ -150,7 +219,7 @@ class LeaveApplication extends Component {
                     </h5>
                     <div className={styles.inputWrapper}>
                       <input
-                        className={styles.formInput}
+                        className={`${styles.formInput} ${styles.disabled}`}
                         disabled
                         type="text"
                         placeholder="hello"
@@ -170,187 +239,7 @@ class LeaveApplication extends Component {
                       Leave Type
                     </h5>
                     <div className={styles.inputWrapper}>
-                      <div className={styles.radioGroup}>
-                        <div
-                          className={`${styles.radioItem} ${
-                            styles.radioItemSelected
-                          }`}
-                          onClick={this.radioClickHandler}
-                          radio-key="0"
-                        >
-                          <label className={styles.checkBoxWrapper}>
-                            <input
-                              className={styles.formInput}
-                              type="checkbox"
-                            />
-                            <div
-                              className={`${styles.checkBoxCheckmarkOutline} ${
-                                styles.checked
-                              }`}
-                            >
-                              <svg
-                                className={styles.checkboxCheckmark}
-                                name="Checkmark"
-                                width="18"
-                                height="18"
-                                viewBox="0 0 18 18"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <g fill="none" fillRule="evenodd">
-                                  <polyline
-                                    stroke="#7289da"
-                                    strokeWidth="2"
-                                    points="3.5 9.5 7 13 15 5"
-                                  />
-                                </g>
-                              </svg>
-                            </div>
-                          </label>
-                          <div className={styles.radioContent} />
-                        </div>
-                        <div
-                          className={`${styles.radioItem} ${
-                            styles.radioItemSelected
-                          }`}
-                          onClick={this.radioClickHandler}
-                        >
-                          <label className={styles.checkBoxWrapper}>
-                            <input
-                              className={styles.formInput}
-                              type="checkbox"
-                            />
-                            <div
-                              className={`${styles.checkBoxCheckmarkOutline} ${
-                                styles.checked
-                              }`}
-                            >
-                              <svg
-                                className={styles.checkboxCheckmark}
-                                name="Checkmark"
-                                width="18"
-                                height="18"
-                                viewBox="0 0 18 18"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <g fill="none" fillRule="evenodd">
-                                  <polyline
-                                    stroke="#7289da"
-                                    strokeWidth="2"
-                                    points="3.5 9.5 7 13 15 5"
-                                  />
-                                </g>
-                              </svg>
-                            </div>
-                          </label>
-                          <div className={styles.radioContent} />
-                        </div>
-                        <div
-                          className={`${styles.radioItem}`}
-                          onClick={this.radioClickHandler}
-                        >
-                          <label className={styles.checkBoxWrapper}>
-                            <input
-                              className={styles.formInput}
-                              type="checkbox"
-                            />
-                            <div
-                              className={`${styles.checkBoxCheckmarkOutline} ${
-                                styles.checked
-                              }`}
-                            >
-                              <svg
-                                className={styles.checkboxCheckmark}
-                                name="Checkmark"
-                                width="18"
-                                height="18"
-                                viewBox="0 0 18 18"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <g fill="none" fillRule="evenodd">
-                                  <polyline
-                                    stroke="#7289da"
-                                    strokeWidth="2"
-                                    points="3.5 9.5 7 13 15 5"
-                                  />
-                                </g>
-                              </svg>
-                            </div>
-                          </label>
-                          <div className={styles.radioContent} />
-                        </div>
-                        <div
-                          className={`${styles.radioItem} ${
-                            styles.radioItemSelected
-                          }`}
-                          onClick={this.radioClickHandler}
-                        >
-                          <label className={styles.checkBoxWrapper}>
-                            <input
-                              className={styles.formInput}
-                              type="checkbox"
-                            />
-                            <div
-                              className={`${styles.checkBoxCheckmarkOutline} ${
-                                styles.checked
-                              }`}
-                            >
-                              <svg
-                                className={styles.checkboxCheckmark}
-                                name="Checkmark"
-                                width="18"
-                                height="18"
-                                viewBox="0 0 18 18"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <g fill="none" fillRule="evenodd">
-                                  <polyline
-                                    stroke="#7289da"
-                                    strokeWidth="2"
-                                    points="3.5 9.5 7 13 15 5"
-                                  />
-                                </g>
-                              </svg>
-                            </div>
-                          </label>
-                          <div className={styles.radioContent} />
-                        </div>
-                        <div
-                          className={`${styles.radioItem} ${
-                            styles.radioItemSelected
-                          }`}
-                          onClick={this.radioClickHandler}
-                        >
-                          <label className={styles.checkBoxWrapper}>
-                            <input
-                              className={styles.formInput}
-                              type="checkbox"
-                            />
-                            <div
-                              className={`${styles.checkBoxCheckmarkOutline} ${
-                                styles.checked
-                              }`}
-                            >
-                              <svg
-                                className={styles.checkboxCheckmark}
-                                name="Checkmark"
-                                width="18"
-                                height="18"
-                                viewBox="0 0 18 18"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <g fill="none" fillRule="evenodd">
-                                  <polyline
-                                    stroke="#7289da"
-                                    strokeWidth="2"
-                                    points="3.5 9.5 7 13 15 5"
-                                  />
-                                </g>
-                              </svg>
-                            </div>
-                          </label>
-                          <div className={styles.radioContent} />
-                        </div>
-                      </div>
+                      <div className={styles.radioGroup}>{radioList}</div>
                     </div>
                   </div>
                 </form>

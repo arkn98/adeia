@@ -9,6 +9,7 @@ const passport = require('passport');
 const validateRegisterInput = require('../../validation/register');
 const validateLoginInput = require('../../validation/login');
 const validateActivateInput = require('../../validation/activate');
+const validateAddAccountInput = require('../../validation/addaccount');
 
 //load user model
 const User = require('../../models/User');
@@ -19,41 +20,42 @@ const User = require('../../models/User');
 router.get('/test', (req, res) => res.json({ msg: 'Users works' }));
 
 // @route   POST  api/users/add-admin
-// @desc    Add admin
+// @desc    Add admin/office
 // @access  Public
-router.post('/add-admin', (req, res) => {
-  const { errors, isValid } = validateRegisterInput(req.body);
-  // Check Validation
+router.post('/add-account', (req, res) => {
+  const { errors, isValid } = validateAddAccountInput(req.body);
+  //check validation
   if (!isValid) {
     return res.status(400).json(errors);
   }
-
-  User.findOne({ email: req.body.email }).then(user => {
-    if (user) {
-      errors.email = 'Email already exists';
-      return res.status(400).json(errors);
-    } else {
-      const newUser = new User({
-        staffId: req.body.staffId,
-        name: req.body.name,
-        designation: req.body.designation,
-        category: req.body.category,
-        accountType: 0,
-        activated: 1
-      });
-
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
+  User.findOne({ staffId: req.body.staffId })
+    .then(user => {
+      if (user != null && user.staffId === req.body.staffId) {
+        errors.staffId = 'Staff ID already exists';
+        return res.status(400).json(errors);
+      } else {
+        bcrypt.genSalt(10, (err, salt) => {
           if (err) throw err;
-          newUser.password = hash;
-          newUser
-            .save()
-            .then(user => res.json(user))
-            .catch(err => console.log(err));
+          bcrypt.hash(req.body.password, salt, (err, hash) => {
+            const newUser = new User({
+              accountType: req.body.accountType,
+              email: req.body.email,
+              staffId: req.body.staffId,
+              name: req.body.name,
+              designation: req.body.designation,
+              category: req.body.category,
+              activated: 1,
+              password: hash
+            });
+            newUser
+              .save()
+              .then(user => res.json(user))
+              .catch(err => console.log(err));
+          });
         });
-      });
-    }
-  });
+      }
+    })
+    .catch(err => console.log(err));
 });
 
 // @route   POST   api/users/register

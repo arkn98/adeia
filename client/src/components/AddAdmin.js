@@ -10,11 +10,24 @@ const cx = classNames.bind({ ...mainStyles, ...styles, ...loginStyles });
 
 class AddAdmin extends Component {
   state = {
+    selectedRadio: 0,
     staffId: '',
+    accountType: '',
     name: '',
+    email: '',
+    password: '',
+    password2: '',
     designation: '',
     category: '',
     errors: {}
+  };
+
+  radioClickHandler = event => {
+    let opt = event.target.getAttribute('radio-key');
+    if (this.state.selectedRadio !== opt && opt != null) {
+      console.log(opt);
+      this.setState({ ...this.state, selectedRadio: opt, accountType: opt });
+    }
   };
 
   inputOnChangeHandler = event => {
@@ -25,6 +38,10 @@ class AddAdmin extends Component {
     event.preventDefault();
 
     const newUser = {
+      accountType: this.state.selectedRadio,
+      email: this.state.email,
+      password: this.state.password,
+      password2: this.state.password2,
       staffId: this.state.staffId,
       name: this.state.name,
       designation: this.state.designation,
@@ -34,7 +51,7 @@ class AddAdmin extends Component {
     console.log(newUser);
 
     axios
-      .post('/api/users/add-admin', newUser)
+      .post('/api/users/add-account', newUser)
       .then(res => console.log(res.data))
       .catch(err => {
         console.log(err.response.data);
@@ -44,11 +61,13 @@ class AddAdmin extends Component {
 
   render() {
     const errors = this.state.errors;
+    if (this.state.category == 'Select a category')
+      errors.category = 'Category cannot be empty';
     return (
       <div className={mainStyles.main}>
         <div className={mainStyles.topBarWrapper}>
           <div className={mainStyles.topBar}>
-            <div className={mainStyles.pageTitle}>Add Admin</div>
+            <div className={mainStyles.pageTitle}>Add Privileged Account</div>
             <div className={mainStyles.headerIcons}>
               {/* <div className={mainStyles.searchBarWrapper}>
                 <div className={mainStyles.searchBar}>
@@ -90,9 +109,6 @@ class AddAdmin extends Component {
         <div className={mainStyles.scrollWrapper}>
           <div className={mainStyles.contentWrapper}>
             <div className={mainStyles.body}>
-              {/* <div className={`${mainStyles.welcomeMessage} ${mainStyles.marginTop20}`}>
-                Apply for leaves
-              </div> */}
               <div className={`${styles.formWrapper}`}>
                 <div className={`${styles.formText} ${styles.formItemWrapper}`}>
                   <div
@@ -103,17 +119,147 @@ class AddAdmin extends Component {
                       width: '100%'
                     }}
                   >
-                    <h4 className={styles.formTitle}>Add Admin</h4>
-                    {/* <div className={styles.formSubtitle}>
-                      Please note that your leave applications may not always be
-                      approved. Contact HOD/Office if you have any queries.
-                    </div> */}
+                    <h4 className={styles.formTitle}>Add Privileged Account</h4>
+                    <div className={styles.formSubtitle}>
+                      Add Office/Admin accounts from here.
+                    </div>
                   </div>
                 </div>
                 <form
                   onSubmit={this.formSubmitHandler}
                   className={styles.formBody}
                 >
+                  <div
+                    className={`${mainStyles.marginBottom20} ${
+                      styles.formItemWrapper
+                    }`}
+                  >
+                    <h5
+                      className={cx({
+                        formFieldLabel: true,
+                        marginBottom8: true,
+                        errorLabel: errors.accountType
+                      })}
+                      /* className={`${styles.formFieldLabel} ${
+                        mainStyles.marginBottom8
+                      }`} */
+                    >
+                      Account Type
+                      {errors.staffId ? (
+                        <span className={loginStyles.errorMessage}>
+                          {' '}
+                          - {errors.accountType}
+                        </span>
+                      ) : null}
+                    </h5>
+                    <div className={styles.inputWrapper}>
+                      <div className={styles.radioGroup}>
+                        <div
+                          key={0}
+                          className={cx({
+                            radioItem: true,
+                            radioItemSelected: this.state.selectedRadio == 0
+                          })}
+                          onClick={this.radioClickHandler}
+                          radio-key={0}
+                        >
+                          <label
+                            className={styles.checkBoxWrapper}
+                            radio-key={0}
+                          >
+                            <input
+                              radio-key={0}
+                              className={styles.formInput}
+                              type="checkbox"
+                            />
+                            <div
+                              radio-key={0}
+                              className={cx({
+                                checkBoxCheckmarkOutline: true,
+                                checked: this.state.selectedRadio == 0
+                              })}
+                            >
+                              <svg
+                                className={styles.checkboxCheckmark}
+                                name="Checkmark"
+                                radio-key={0}
+                                width="18"
+                                height="18"
+                                viewBox="0 0 18 18"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <g fill="none" radio-key={0} fillRule="evenodd">
+                                  <polyline
+                                    radio-key={0}
+                                    stroke="#7289da"
+                                    strokeWidth="2"
+                                    points="3.5 9.5 7 13 15 5"
+                                  />
+                                </g>
+                              </svg>
+                            </div>
+                          </label>
+                          <div radio-key={0} className={styles.radioContent}>
+                            <div radio-key={0} className={styles.title}>
+                              Admin
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          key={1}
+                          className={cx({
+                            radioItem: true,
+                            radioItemSelected: this.state.selectedRadio == 1
+                          })}
+                          onClick={this.radioClickHandler}
+                          radio-key={1}
+                        >
+                          <label
+                            className={styles.checkBoxWrapper}
+                            radio-key={1}
+                          >
+                            <input
+                              radio-key={1}
+                              className={styles.formInput}
+                              type="checkbox"
+                            />
+                            <div
+                              radio-key={1}
+                              className={cx({
+                                checkBoxCheckmarkOutline: true,
+                                checked: this.state.selectedRadio == 1
+                              })}
+                            >
+                              <svg
+                                className={styles.checkboxCheckmark}
+                                name="Checkmark"
+                                radio-key={1}
+                                width="18"
+                                height="18"
+                                viewBox="0 0 18 18"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <g fill="none" radio-key={1} fillRule="evenodd">
+                                  <polyline
+                                    radio-key={1}
+                                    stroke="#7289da"
+                                    strokeWidth="2"
+                                    points="3.5 9.5 7 13 15 5"
+                                  />
+                                </g>
+                              </svg>
+                            </div>
+                          </label>
+                          <div radio-key={1} className={styles.radioContent}>
+                            <div radio-key={1} className={styles.title}>
+                              Office
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <div
                     className={`${mainStyles.marginBottom20} ${
                       styles.formItemWrapper
@@ -156,18 +302,68 @@ class AddAdmin extends Component {
                     }`}
                   >
                     <h5
-                      className={`${styles.formFieldLabel} ${
+                      className={cx({
+                        formFieldLabel: true,
+                        marginBottom8: true,
+                        errorLabel: errors.email
+                      })}
+                      /* className={`${styles.formFieldLabel} ${
                         mainStyles.marginBottom8
-                      }`}
+                      }`} */
+                    >
+                      Email
+                      {errors.email ? (
+                        <span className={loginStyles.errorMessage}>
+                          {' '}
+                          - {errors.email}
+                        </span>
+                      ) : null}
+                    </h5>
+                    <div className={styles.inputWrapper}>
+                      <input
+                        onChange={this.inputOnChangeHandler}
+                        name="email"
+                        value={this.state.email}
+                        className={cx({
+                          formInput: true,
+                          formInputError: errors.email
+                        })}
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    className={`${mainStyles.marginBottom20} ${
+                      styles.formItemWrapper
+                    }`}
+                  >
+                    <h5
+                      className={cx({
+                        formFieldLabel: true,
+                        marginBottom8: true,
+                        errorLabel: errors.name
+                      })}
+                      /* className={`${styles.formFieldLabel} ${
+                        mainStyles.marginBottom8
+                      }`} */
                     >
                       Name
+                      {errors.name ? (
+                        <span className={loginStyles.errorMessage}>
+                          {' '}
+                          - {errors.name}
+                        </span>
+                      ) : null}
                     </h5>
                     <div className={styles.inputWrapper}>
                       <input
                         onChange={this.inputOnChangeHandler}
                         name="name"
                         value={this.state.name}
-                        className={styles.formInput}
+                        className={cx({
+                          formInput: true,
+                          formInputError: errors.name
+                        })}
                         type="text"
                       />
                     </div>
@@ -178,18 +374,29 @@ class AddAdmin extends Component {
                     }`}
                   >
                     <h5
-                      className={`${styles.formFieldLabel} ${
-                        mainStyles.marginBottom8
-                      }`}
+                      className={cx({
+                        formFieldLabel: true,
+                        marginBottom8: true,
+                        errorLabel: errors.designation
+                      })}
                     >
                       Designation
+                      {errors.designation ? (
+                        <span className={loginStyles.errorMessage}>
+                          {' '}
+                          - {errors.designation}
+                        </span>
+                      ) : null}
                     </h5>
                     <div className={styles.inputWrapper}>
                       <input
                         onChange={this.inputOnChangeHandler}
                         name="designation"
                         value={this.state.designation}
-                        className={styles.formInput}
+                        className={cx({
+                          formInput: true,
+                          formInputError: errors.designation
+                        })}
                         type="text"
                       />
                     </div>
@@ -200,20 +407,99 @@ class AddAdmin extends Component {
                     }`}
                   >
                     <h5
-                      className={`${styles.formFieldLabel} ${
-                        mainStyles.marginBottom8
-                      }`}
+                      className={cx({
+                        formFieldLabel: true,
+                        marginBottom8: true,
+                        errorLabel: errors.password
+                      })}
+                    >
+                      Password
+                      {errors.password ? (
+                        <span className={loginStyles.errorMessage}>
+                          {' '}
+                          - {errors.password}
+                        </span>
+                      ) : null}
+                    </h5>
+                    <div className={styles.inputWrapper}>
+                      <input
+                        name="password"
+                        onChange={this.inputOnChangeHandler}
+                        type="password"
+                        value={this.state.password}
+                        className={cx({
+                          formInput: true,
+                          formInputError: errors.password
+                        })}
+                      />
+                    </div>
+                  </div>
+                  <div
+                    className={`${mainStyles.marginBottom20} ${
+                      styles.formItemWrapper
+                    }`}
+                  >
+                    <h5
+                      className={cx({
+                        formFieldLabel: true,
+                        marginBottom8: true,
+                        errorLabel: errors.password2
+                      })}
+                    >
+                      Re-enter Password
+                      {errors.password2 ? (
+                        <span className={loginStyles.errorMessage}>
+                          {' '}
+                          - {errors.password2}
+                        </span>
+                      ) : null}
+                    </h5>
+                    <div className={styles.inputWrapper}>
+                      <input
+                        name="password2"
+                        onChange={this.inputOnChangeHandler}
+                        type="password"
+                        value={this.state.password2}
+                        className={cx({
+                          formInput: true,
+                          formInputError: errors.password2
+                        })}
+                      />
+                    </div>
+                  </div>
+                  <div
+                    className={`${mainStyles.marginBottom20} ${
+                      styles.formItemWrapper
+                    }`}
+                  >
+                    <h5
+                      className={cx({
+                        formFieldLabel: true,
+                        marginBottom8: true,
+                        errorLabel: errors.category
+                      })}
                     >
                       Category
+                      {errors.category ? (
+                        <span className={loginStyles.errorMessage}>
+                          {' '}
+                          - {errors.category}
+                        </span>
+                      ) : null}
                     </h5>
                     <div className={styles.inputWrapper}>
                       <select
                         onChange={this.inputOnChangeHandler}
                         name="category"
                         value={this.state.category}
-                        className={`${styles.formInput} ${styles.formSelect}`}
+                        className={cx({
+                          formInput: true,
+                          formSelect: true,
+                          formInputError: errors.designation
+                        })}
                         type="text"
                       >
+                        <option>Select a category</option>
                         <option>Regular Teaching Staff</option>
                         <option>Regular Non-Teaching Staff</option>
                         <option>Teaching Fellows</option>
