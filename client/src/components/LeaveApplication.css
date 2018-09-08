@@ -118,10 +118,6 @@ select.formInput {
   border-color: #f04747 !important;
 }
 
-.formInputError:focus {
-  border-color: #f04747;
-}
-
 .formInput:hover {
   border-color: #040405;
 }

@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink, withRouter } from 'react-router-dom';
 import styles from './Login.css';
-import axios from 'axios';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { loginUser } from './actions/authActions';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind({ ...styles });
 
 class Login extends Component {
   state = {
@@ -20,9 +25,18 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password
     };
+
+    this.props.loginUser(user);
+  };
+
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.errors) {
+      this.setState({ ...this.state, errors: nextProps.errors });
+    }
   };
 
   render() {
+    const { errors } = this.state;
     return (
       <div className={styles.root}>
         <div className={styles.app}>
@@ -44,22 +58,54 @@ class Login extends Component {
                   className={styles.block}
                 >
                   <div className={styles.marginBottom20}>
-                    <div className={styles.inputLabel}>Email</div>
+                    <div
+                      className={cx({
+                        inputLabel: true,
+                        errorLabel: errors.email
+                      })}
+                    >
+                      Email
+                      {errors.email ? (
+                        <span className={styles.errorMessage}>
+                          {' '}
+                          - {errors.email}
+                        </span>
+                      ) : null}
+                    </div>
                     <input
                       name="email"
                       onChange={this.inputOnChangeHandler}
                       value={this.state.email}
-                      className={styles.inputField}
+                      className={cx({
+                        inputField: true,
+                        formInputError: errors.email
+                      })}
                     />
                   </div>
                   <div>
-                    <div className={styles.inputLabel}>Password</div>
+                    <div
+                      className={cx({
+                        inputLabel: true,
+                        errorLabel: errors.password
+                      })}
+                    >
+                      Password
+                      {errors.password ? (
+                        <span className={styles.errorMessage}>
+                          {' '}
+                          - {errors.password}
+                        </span>
+                      ) : null}
+                    </div>
                     <input
                       name="password"
                       type="password"
                       onChange={this.inputOnChangeHandler}
                       value={this.state.password}
-                      className={styles.inputField}
+                      className={cx({
+                        inputField: true,
+                        formInputError: errors.password
+                      })}
                     />
                   </div>
                   <button className={styles.link}>Forgot your password?</button>
@@ -112,4 +158,18 @@ class Login extends Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { loginUser }
+)(Login);

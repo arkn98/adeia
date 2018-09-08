@@ -52,7 +52,7 @@ class LeaveApplication extends Component {
           key={leaveType}
           className={cx({
             radioItem: true,
-            radioItemSelected: this.state.selectedRadio == leaveType
+            radioItemSelected: this.state.selectedRadio === leaveType
           })}
           onClick={this.radioClickHandler}
           radio-key={leaveType}
@@ -67,7 +67,7 @@ class LeaveApplication extends Component {
               radio-key={leaveType}
               className={cx({
                 checkBoxCheckmarkOutline: true,
-                checked: this.state.selectedRadio == leaveType
+                checked: this.state.selectedRadio === leaveType
               })}
             >
               <svg

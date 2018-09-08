@@ -207,6 +207,18 @@
   margin-bottom: 8px;
 }
 
+.formInputError {
+  border-color: #f04747 !important;
+}
+
+.formInputError:focus {
+  border-color: #f04747 !important;
+}
+
+.formInputError:hover {
+  border-color: #f04747 !important;
+}
+
 .errorLabel {
   color: #f04747 !important;
 }

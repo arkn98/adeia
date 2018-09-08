@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import mainStyles from './Main.css';
 import styles from './LeaveApplication.css';
 import loginStyles from '../Login.css';
-import { Link, NavLink } from 'react-router-dom';
-import axios from 'axios';
+import { Link, NavLink, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { registerUser } from '../actions/authActions';
 import classNames from 'classnames/bind';
 
 const cx = classNames.bind({ ...mainStyles, ...styles, ...loginStyles });
@@ -20,6 +22,12 @@ class AddAdmin extends Component {
     designation: '',
     category: '',
     errors: {}
+  };
+
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.errors) {
+      this.setState({ ...this.state, errors: nextProps.errors });
+    }
   };
 
   radioClickHandler = event => {
@@ -48,20 +56,12 @@ class AddAdmin extends Component {
       category: this.state.category
     };
 
-    console.log(newUser);
-
-    axios
-      .post('/api/users/add-account', newUser)
-      .then(res => console.log(res.data))
-      .catch(err => {
-        console.log(err.response.data);
-        this.setState({ ...this.state, errors: err.response.data });
-      });
+    this.props.registerUser(newUser, this.props.history);
   };
 
   render() {
     const errors = this.state.errors;
-    if (this.state.category == 'Select a category')
+    if (this.state.category === 'Select a category')
       errors.category = 'Category cannot be empty';
     return (
       <div className={mainStyles.main}>
@@ -72,8 +72,8 @@ class AddAdmin extends Component {
               {/* <div className={mainStyles.searchBarWrapper}>
                 <div className={mainStyles.searchBar}>
                   <div className={mainStyles.search} />
-                </div>
-              </div>
+                  </div>
+                  </div>
               <div className={mainStyles.seperator} /> */}
               <div className={mainStyles.iconWrapper}>
                 <a
@@ -145,7 +145,7 @@ class AddAdmin extends Component {
                       }`} */
                     >
                       Account Type
-                      {errors.staffId ? (
+                      {errors.accountType ? (
                         <span className={loginStyles.errorMessage}>
                           {' '}
                           - {errors.accountType}
@@ -541,4 +541,18 @@ class AddAdmin extends Component {
   }
 }
 
-export default AddAdmin;
+AddAdmin.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(withRouter(AddAdmin));
