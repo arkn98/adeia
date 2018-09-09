@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import mainStyles from './Main.css';
 import styles from './LeaveApplication.css';
 import loginStyles from '../Login.css';
-import { Link, NavLink } from 'react-router-dom';
+import {} from 'react-router-dom';
 import axios from 'axios';
 
 class AddStaff extends Component {

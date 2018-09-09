@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, NavLink, withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import styles from './Login.css';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -29,7 +29,16 @@ class Login extends Component {
     this.props.loginUser(user);
   };
 
+  componentDidMount = () => {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
+  };
+
   componentWillReceiveProps = nextProps => {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
     if (nextProps.errors) {
       this.setState({ ...this.state, errors: nextProps.errors });
     }
@@ -172,4 +181,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { loginUser }
-)(Login);
+)(withRouter(Login));

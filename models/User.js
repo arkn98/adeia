@@ -48,7 +48,9 @@ const UserSchema = new Schema({
     type: Number,
     default: 0,
     required: true
-  }
+  },
+  prevLogins: { type: Array, default: [] },
+  notifications: { type: Array, default: [] }
 });
 
 module.exports = User = mongoose.model('users', UserSchema);

@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import styles from './Login.css';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { activateUser } from './actions/authActions';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind({ ...styles });
 
 class Activate extends Component {
   state = {
@@ -10,6 +15,21 @@ class Activate extends Component {
     password: '',
     password2: '',
     errors: {}
+  };
+
+  componentDidMount = () => {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
+  };
+
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
+    if (nextProps.errors) {
+      this.setState({ ...this.state, errors: nextProps.errors });
+    }
   };
 
   inputOnChangeHandler = event => {
@@ -26,13 +46,11 @@ class Activate extends Component {
       password2: this.state.password2
     };
 
-    axios
-      .post('/api/users/activate', newUser)
-      .then(res => console.log(res.data))
-      .catch(err => console.log(err.response.data));
+    this.props.activateUser(newUser, this.props.history);
   };
 
   render = () => {
+    const { errors } = this.state;
     return (
       <div className={styles.root}>
         <div className={styles.app}>
@@ -47,41 +65,105 @@ class Activate extends Component {
               <div className={styles.title}>Activate your account</div>
               <form onSubmit={this.formSubmitHandler} className={styles.block}>
                 <div className={styles.marginBottom20}>
-                  <div className={styles.inputLabel}>Staff ID</div>
+                  <div
+                    className={cx({
+                      inputLabel: true,
+                      errorLabel: errors.staffId
+                    })}
+                  >
+                    Staff ID
+                    {errors.staffId ? (
+                      <span className={styles.errorMessage}>
+                        {' '}
+                        - {errors.staffId}
+                      </span>
+                    ) : null}
+                  </div>
                   <input
                     name="staffId"
                     onChange={this.inputOnChangeHandler}
                     value={this.state.staffId}
-                    className={styles.inputField}
+                    className={cx({
+                      inputField: true,
+                      formInputError: errors.staffId
+                    })}
                   />
                 </div>
                 <div className={styles.marginBottom20}>
-                  <div className={styles.inputLabel}>Email</div>
+                  <div
+                    className={cx({
+                      inputLabel: true,
+                      errorLabel: errors.email
+                    })}
+                  >
+                    Email
+                    {errors.email ? (
+                      <span className={styles.errorMessage}>
+                        {' '}
+                        - {errors.email}
+                      </span>
+                    ) : null}
+                  </div>
                   <input
                     name="email"
                     onChange={this.inputOnChangeHandler}
                     value={this.state.email}
-                    className={styles.inputField}
+                    className={cx({
+                      inputField: true,
+                      formInputError: errors.email
+                    })}
                   />
                 </div>
                 <div className={styles.marginBottom20}>
-                  <div className={styles.inputLabel}>Password</div>
+                  <div
+                    className={cx({
+                      inputLabel: true,
+                      errorLabel: errors.password
+                    })}
+                  >
+                    Password
+                    {errors.password ? (
+                      <span className={styles.errorMessage}>
+                        {' '}
+                        - {errors.password}
+                      </span>
+                    ) : null}
+                  </div>
                   <input
                     name="password"
                     onChange={this.inputOnChangeHandler}
                     type="password"
                     value={this.state.password}
-                    className={styles.inputField}
+                    className={cx({
+                      inputField: true,
+                      formInputError: errors.password
+                    })}
                   />
                 </div>
                 <div className={styles.marginBottom20}>
-                  <div className={styles.inputLabel}>Confirm Password</div>
+                  <div
+                    className={cx({
+                      inputLabel: true,
+                      errorLabel: errors.password2
+                    })}
+                  >
+                    Confirm Password
+                    {errors.password2 ? (
+                      <span className={styles.errorMessage}>
+                        {' '}
+                        - {errors.password2}
+                      </span>
+                    ) : null}
+                  </div>
                   <input
                     name="password2"
                     onChange={this.inputOnChangeHandler}
                     type="password"
                     value={this.state.password2}
-                    className={styles.inputField}
+                    className={cx({
+                      inputField: true,
+                      formInputError: errors.password2
+                    })}
                   />
                 </div>
                 <button type="submit" className={styles.login}>
@@ -131,4 +213,18 @@ class Activate extends Component {
   };
 }
 
-export default Activate;
+Activate.propTypes = {
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
+  activateUser: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { activateUser }
+)(withRouter(Activate));

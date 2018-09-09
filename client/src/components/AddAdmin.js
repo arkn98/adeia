@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import mainStyles from './Main.css';
 import styles from './LeaveApplication.css';
 import loginStyles from '../Login.css';
-import { Link, NavLink, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { registerUser } from '../actions/authActions';
@@ -158,7 +158,7 @@ class AddAdmin extends Component {
                           key={0}
                           className={cx({
                             radioItem: true,
-                            radioItemSelected: this.state.selectedRadio == 0
+                            radioItemSelected: this.state.selectedRadio === 0
                           })}
                           onClick={this.radioClickHandler}
                           radio-key={0}
@@ -176,7 +176,7 @@ class AddAdmin extends Component {
                               radio-key={0}
                               className={cx({
                                 checkBoxCheckmarkOutline: true,
-                                checked: this.state.selectedRadio == 0
+                                checked: this.state.selectedRadio === 0
                               })}
                             >
                               <svg
@@ -209,7 +209,7 @@ class AddAdmin extends Component {
                           key={1}
                           className={cx({
                             radioItem: true,
-                            radioItemSelected: this.state.selectedRadio == 1
+                            radioItemSelected: this.state.selectedRadio === 1
                           })}
                           onClick={this.radioClickHandler}
                           radio-key={1}
@@ -227,7 +227,7 @@ class AddAdmin extends Component {
                               radio-key={1}
                               className={cx({
                                 checkBoxCheckmarkOutline: true,
-                                checked: this.state.selectedRadio == 1
+                                checked: this.state.selectedRadio === 1
                               })}
                             >
                               <svg

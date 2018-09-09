@@ -1,11 +1,19 @@
-import React, { Component } from "react";
-import styles from "./Home.css";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import styles from './Home.css';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Home extends Component {
+  componentDidMount = () => {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
+  };
+
   render() {
     return (
-      <div style={{ height: "100%" }} className={styles.app}>
+      <div style={{ height: '100%' }} className={styles.app}>
         <div className={styles.banner}>
           <div className={styles.title}>
             Welcome to LMS - Leave Management System
@@ -19,7 +27,7 @@ class Home extends Component {
           <div className={styles.buttons}>
             <Link to="/login">
               <div
-                style={{ flex: "1 1 auto" }}
+                style={{ flex: '1 1 auto' }}
                 className={`${styles.buttonWhite} ${styles.button}`}
               >
                 Login
@@ -27,7 +35,7 @@ class Home extends Component {
             </Link>
             <Link to="/activate">
               <div
-                style={{ flex: "1 1 auto" }}
+                style={{ flex: '1 1 auto' }}
                 className={`${styles.buttonPrimary} ${styles.button}`}
               >
                 Activate Account
@@ -70,4 +78,15 @@ class Home extends Component {
   }
 }
 
-export default Home;
+Home.propTypes = {
+  auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(withRouter(Home));

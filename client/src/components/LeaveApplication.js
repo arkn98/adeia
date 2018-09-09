@@ -1,17 +1,30 @@
 import React, { Component } from 'react';
 import mainStyles from './Main.css';
 import styles from './LeaveApplication.css';
-import { Link, NavLink } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import classNames from 'classnames/bind';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 const cx = classNames.bind({ ...styles, ...mainStyles });
 
 class LeaveApplication extends Component {
   state = {
-    selectedRadio: 0
+    selectedRadio: 0,
+    errors: {}
+  };
+
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
+    if (nextProps.errors) {
+      this.setState({ ...this.state, errors: nextProps.errors });
+    }
   };
 
   leaveString = [
+    'Select a leave category',
     'Casual Leave',
     'Restricted Holiday',
     'Special Casual Leave',
@@ -23,18 +36,19 @@ class LeaveApplication extends Component {
 
   options = {
     rt: {
-      type: [0, 1, 2, 3, 4, 5, 6]
+      type: [0, 1, 2, 3, 4, 5, 6, 7]
     }
   };
 
   /*
-  0 - casual leave
-  1 - restricted holiday
-  2 - special casual leave
-  3 - on duty
-  4 - medical leave
-  5 - earn leave
-  6 - compensation leave
+  0 - select a leave category
+  1 - casual leave
+  2 - restricted holiday
+  3 - special casual leave
+  4 - on duty
+  5 - medical leave
+  6 - earn leave
+  7 - compensation leave
   */
 
   radioClickHandler = event => {
@@ -46,7 +60,13 @@ class LeaveApplication extends Component {
   };
 
   render() {
-    const radioList = this.options.rt.type.map(leaveType => {
+    const { errors } = this.state;
+
+    const optList = this.options.rt.type.map(leaveType => {
+      return <option key={leaveType}>{this.leaveString[leaveType]}</option>;
+    });
+
+    /* const radioList = this.options.rt.type.map(leaveType => {
       return (
         <div
           key={leaveType}
@@ -97,7 +117,7 @@ class LeaveApplication extends Component {
           </div>
         </div>
       );
-    });
+    }); */
 
     return (
       <div className={mainStyles.main}>
@@ -173,6 +193,27 @@ class LeaveApplication extends Component {
                         mainStyles.marginBottom8
                       }`}
                     >
+                      Staff ID
+                    </h5>
+                    <div className={styles.inputWrapper}>
+                      <input
+                        className={`${styles.formInput} ${styles.disabled}`}
+                        disabled
+                        type="text"
+                        value={this.props.auth.user.staffId}
+                      />
+                    </div>
+                  </div>
+                  <div
+                    className={`${mainStyles.marginBottom20} ${
+                      styles.formItemWrapper
+                    }`}
+                  >
+                    <h5
+                      className={`${styles.formFieldLabel} ${
+                        mainStyles.marginBottom8
+                      }`}
+                    >
                       Name
                     </h5>
                     <div className={styles.inputWrapper}>
@@ -180,7 +221,7 @@ class LeaveApplication extends Component {
                         className={`${styles.formInput} ${styles.disabled}`}
                         disabled
                         type="text"
-                        placeholder="hello"
+                        value={this.props.auth.user.name}
                       />
                     </div>
                   </div>
@@ -201,47 +242,57 @@ class LeaveApplication extends Component {
                         className={`${styles.formInput} ${styles.disabled}`}
                         disabled
                         type="text"
-                        placeholder="hello"
+                        value={this.props.auth.user.designation}
                       />
                     </div>
                   </div>
+
                   <div
                     className={`${mainStyles.marginBottom20} ${
                       styles.formItemWrapper
                     }`}
                   >
                     <h5
-                      className={`${styles.formFieldLabel} ${
-                        mainStyles.marginBottom8
-                      }`}
-                    >
-                      Staff ID
-                    </h5>
-                    <div className={styles.inputWrapper}>
-                      <input
-                        className={`${styles.formInput} ${styles.disabled}`}
-                        disabled
-                        type="text"
-                        placeholder="hello"
-                      />
-                    </div>
-                  </div>
-                  <div
-                    className={`${mainStyles.marginBottom20} ${
-                      styles.formItemWrapper
-                    }`}
-                  >
-                    <h5
-                      className={`${styles.formFieldLabel} ${
-                        mainStyles.marginBottom8
-                      }`}
+                      className={cx({
+                        formFieldLabel: true,
+                        marginBottom8: true,
+                        errorLabel: errors.category
+                      })}
                     >
                       Leave Type
+                      {errors.category ? (
+                        <span className={styles.errorMessage}>
+                          {' '}
+                          - {errors.category}
+                        </span>
+                      ) : null}
                     </h5>
                     <div className={styles.inputWrapper}>
-                      <div className={styles.radioGroup}>{radioList}</div>
+                      <select
+                        onChange={this.inputOnChangeHandler}
+                        name="category"
+                        value={this.state.category}
+                        className={cx({
+                          formInput: true,
+                          formSelect: true,
+                          formInputError: errors.designation
+                        })}
+                        type="text"
+                      >
+                        {optList}
+                        {/* <option>Select a category</option>
+                        <option>Regular Teaching Staff</option>
+                        <option>Regular Non-Teaching Staff</option>
+                        <option>Teaching Fellows</option>
+                        <option>Non-Teaching - No Leave</option>
+                        <option>Research Scholars - 30</option>
+                        <option>Research Scholars - 20</option>
+                        <option>Research Scholars - Others</option>
+                        <option>Others</option> */}
+                      </select>
                     </div>
                   </div>
+                  {/* <div className={styles.radioGroup}>{radioList}</div> */}
                 </form>
                 <div className={styles.formSubmit} />
               </div>
@@ -345,4 +396,17 @@ class LeaveApplication extends Component {
   }
 }
 
-export default LeaveApplication;
+LeaveApplication.propTypes = {
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(withRouter(LeaveApplication));

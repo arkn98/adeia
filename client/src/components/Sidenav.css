@@ -81,6 +81,8 @@
   cursor: pointer;
   box-sizing: border-box;
   color: #fff;
+  justify-content: center;
+  align-items: center;
   display: flex;
   flex-direction: row;
   font-weight: 400;
@@ -140,7 +142,8 @@
   color: #f6f6f7;
   position: relative;
   font-size: 18px;
-  padding-right: 20px;
+  padding-right: 12px;
+  padding-left: 4px;
   top: 1px;
   opacity: 0.3;
 }
@@ -218,7 +221,7 @@
 
 .userContainer .userDetails {
   margin-right: auto;
-  margin-left: -10px;
+  margin-left: 0px;
 }
 
 .userContainer .customIcon {

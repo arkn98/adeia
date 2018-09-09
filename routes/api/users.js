@@ -19,44 +19,54 @@ const User = require('../../models/User');
 // @access  Public
 router.get('/test', (req, res) => res.json({ msg: 'Users works' }));
 
-// @route   POST  api/users/add-admin
-// @desc    Add admin/office
-// @access  Public
-router.post('/add-account', (req, res) => {
-  const { errors, isValid } = validateAddAccountInput(req.body);
-  //check validation
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
-  User.findOne({ staffId: req.body.staffId })
-    .then(user => {
-      if (user != null && user.staffId === req.body.staffId) {
-        errors.staffId = 'Staff ID already exists';
+// @route   POST  api/users/add-account
+// @desc    Add admin/office accounts
+// @access  Private
+router.post(
+  '/add-account',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    if (req.user.accountType === 0) {
+      const { errors, isValid } = validateAddAccountInput(req.body);
+      //check validation
+      if (!isValid) {
         return res.status(400).json(errors);
-      } else {
-        bcrypt.genSalt(10, (err, salt) => {
-          if (err) throw err;
-          bcrypt.hash(req.body.password, salt, (err, hash) => {
-            const newUser = new User({
-              accountType: req.body.accountType,
-              email: req.body.email,
-              staffId: req.body.staffId,
-              name: req.body.name,
-              designation: req.body.designation,
-              category: req.body.category,
-              activated: 1,
-              password: hash
-            });
-            newUser
-              .save()
-              .then(user => res.json(user))
-              .catch(err => console.log(err));
-          });
-        });
       }
-    })
-    .catch(err => console.log(err));
-});
+      User.findOne({ staffId: req.body.staffId })
+        .then(user => {
+          if (user != null && user.staffId === req.body.staffId) {
+            errors.staffId = 'Staff ID already exists';
+            return res.status(400).json(errors);
+          } else {
+            bcrypt.genSalt(10, (err, salt) => {
+              if (err) throw err;
+              bcrypt.hash(req.body.password, salt, (err, hash) => {
+                const newUser = new User({
+                  accountType: req.body.accountType,
+                  email: req.body.email,
+                  staffId: req.body.staffId,
+                  name: req.body.name,
+                  designation: req.body.designation,
+                  category: req.body.category,
+                  activated: 1,
+                  password: hash
+                });
+                newUser
+                  .save()
+                  .then(user => res.json(user))
+                  .catch(err => console.log(err));
+              });
+            });
+          }
+        })
+        .catch(err => console.log(err));
+    } else {
+      return res
+        .status(400)
+        .json({ msg: 'You do not have sufficient permissions' });
+    }
+  }
+);
 
 // @route   POST   api/users/register
 // @desc    Register staff
@@ -130,6 +140,10 @@ router.post('/activate', (req, res) => {
     });
 });
 
+router.get('/getip', (req, res) => {
+  res.json({ ip: req.headers['x-forwarded-for'] });
+});
+
 // @route   POST   api/users/login
 // @desc    Login user / return JWT
 // @access  Public
@@ -156,6 +170,8 @@ router.post('/login', (req, res) => {
         //create jwt payload
         const payload = {
           id: user.id,
+          name: user.name,
+          designation: user.designation,
           staffId: user.staffId,
           accountType: user.accountType
         };

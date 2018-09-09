@@ -1,4 +1,4 @@
-import { SET_CURRENT_USER } from '../actions/types';
+import { SET_CURRENT_USER, SET_LOGIN_ATTEMPT_DETAILS } from '../actions/types';
 import isEmpty from '../validation/is-empty';
 
 const initialState = {
@@ -8,6 +8,14 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case SET_LOGIN_ATTEMPT_DETAILS:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          prevLogins: [...state.user.prevLogins, action.payload]
+        }
+      };
     case SET_CURRENT_USER:
       return {
         ...state,

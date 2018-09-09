@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from './Main.css';
-import { Link, NavLink } from 'react-router-dom';
+//import { Link, NavLink } from 'react-router-dom';
 
 class ViewHolidays extends Component {
   render() {
