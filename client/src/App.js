@@ -5,15 +5,18 @@ import Login from './Login';
 import Activate from './Activate';
 import Dashboard from './Dashboard';
 import { Switch, Route } from 'react-router-dom';
+import PrivateRoute from './components/common/PrivateRoute';
 
 class App extends Component {
   render() {
     return (
       <Switch>
+        <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/activate" component={Activate} />
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/" component={Home} />
+        <Switch>
+          <PrivateRoute path="/dashboard" component={Dashboard} />
+        </Switch>
       </Switch>
     );
   }

@@ -26,17 +26,51 @@ class LeaveApplication extends Component {
   leaveString = [
     'Select a leave category',
     'Casual Leave',
+    'Compensation Leave',
+    'Earn Leave',
+    'Medical Leave',
+    'On Duty',
     'Restricted Holiday',
     'Special Casual Leave',
-    'On Duty',
-    'Medical Leave',
-    'Earn Leave',
-    'Compensation Leave'
+    'Casual Leave - 30 Days',
+    'Casual Leave - 20 Days',
+    'Casual Leave - 6 Days'
   ];
+
+  //staff type
+  //0 -- regular teaching -- rt
+  //1 -- regular non teaching -- rnt
+  //2 -- teaching fellows -- tf
+  //3 -- non teaching (no leave) -- nt
+  //4 -- research scholars - 30 days -- rs30
+  //5 -- research scholars - 20 days -- rs20
+  //6 -- research scholars - others (6 days) -- rso
+  //7 -- others -- oth
 
   options = {
     rt: {
       type: [0, 1, 2, 3, 4, 5, 6, 7]
+    },
+    rnt: {
+      type: [0, 1, 2, 3, 4, 5, 6, 7]
+    },
+    tf: {
+      type: [0, 2, 5, 10]
+    },
+    nt: {
+      type: [0, 2]
+    },
+    rs30: {
+      type: [0, 5, 8]
+    },
+    rs20: {
+      type: [0, 5, 9]
+    },
+    rso: {
+      type: [0, 5, 8]
+    },
+    oth: {
+      type: [0]
     }
   };
 
@@ -62,9 +96,11 @@ class LeaveApplication extends Component {
   render() {
     const { errors } = this.state;
 
-    const optList = this.options.rt.type.map(leaveType => {
-      return <option key={leaveType}>{this.leaveString[leaveType]}</option>;
-    });
+    const optList = this.options[this.props.auth.user.staffType].type.map(
+      leaveType => {
+        return <option key={leaveType}>{this.leaveString[leaveType]}</option>;
+      }
+    );
 
     /* const radioList = this.options.rt.type.map(leaveType => {
       return (

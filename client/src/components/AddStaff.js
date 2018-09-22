@@ -2,8 +2,14 @@ import React, { Component } from 'react';
 import mainStyles from './Main.css';
 import styles from './LeaveApplication.css';
 import loginStyles from '../Login.css';
-import {} from 'react-router-dom';
-import axios from 'axios';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { registerStaff } from '../actions/authActions';
+import { createProfile } from '../actions/profileActions';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind({ ...mainStyles, ...styles, ...loginStyles });
 
 class AddStaff extends Component {
   state = {
@@ -21,20 +27,41 @@ class AddStaff extends Component {
   formSubmitHandler = event => {
     event.preventDefault();
 
+    let staffType = '';
+    if (this.state.category === 'Regular Teaching Staff') staffType = 'rt';
+    else if (this.state.category === 'Regular Non-Teaching Staff')
+      staffType = 'rnt';
+    else if (this.state.category === 'Teaching Fellows') staffType = 'tf';
+    else if (this.state.category === 'Non-Teaching - No Leave')
+      staffType = 'nt';
+    else if (this.state.category === 'Research Scholars - 30')
+      staffType = 'rs30';
+    else if (this.state.category === 'Research Scholars - 20')
+      staffType = 'rs20';
+    else if (this.state.category === 'Research Scholars - Others')
+      staffType = 'rso';
+    else if (this.state.category === 'Others') staffType = 'oth';
+    else staffType = null;
+
     const newUser = {
       staffId: this.state.staffId,
       name: this.state.name,
       designation: this.state.designation,
-      category: this.state.category
+      category: this.state.category,
+      staffType: staffType
     };
 
-    axios
-      .post('/api/users/register', newUser)
-      .then(res => console.log(res.data))
-      .catch(err => console.log(err.response.data));
+    this.props.registerStaff(newUser, this.props.history);
+  };
+
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.errors) {
+      this.setState({ ...this.state, errors: nextProps.errors });
+    }
   };
 
   render() {
+    const { errors } = this.state;
     return (
       <div className={mainStyles.main}>
         <div className={mainStyles.topBarWrapper}>
@@ -111,19 +138,30 @@ class AddStaff extends Component {
                     }`}
                   >
                     <h5
-                      className={`${styles.formFieldLabel} ${
-                        mainStyles.marginBottom8
-                      }`}
+                      className={cx({
+                        formFieldLabel: true,
+                        marginBottom8: true,
+                        errorLabel: errors.staffId
+                      })}
                     >
                       Staff ID
+                      {errors.staffId ? (
+                        <span className={loginStyles.errorMessage}>
+                          {' '}
+                          - {errors.staffId}
+                        </span>
+                      ) : null}
                     </h5>
                     <div className={styles.inputWrapper}>
                       <input
                         onChange={this.inputOnChangeHandler}
                         name="staffId"
                         value={this.state.staffId}
-                        className={styles.formInput}
                         type="text"
+                        className={cx({
+                          formInput: true,
+                          formInputError: errors.staffId
+                        })}
                       />
                     </div>
                   </div>
@@ -133,18 +171,29 @@ class AddStaff extends Component {
                     }`}
                   >
                     <h5
-                      className={`${styles.formFieldLabel} ${
-                        mainStyles.marginBottom8
-                      }`}
+                      className={cx({
+                        formFieldLabel: true,
+                        marginBottom8: true,
+                        errorLabel: errors.name
+                      })}
                     >
                       Name
+                      {errors.name ? (
+                        <span className={loginStyles.errorMessage}>
+                          {' '}
+                          - {errors.name}
+                        </span>
+                      ) : null}
                     </h5>
                     <div className={styles.inputWrapper}>
                       <input
                         onChange={this.inputOnChangeHandler}
                         name="name"
                         value={this.state.name}
-                        className={styles.formInput}
+                        className={cx({
+                          formInput: true,
+                          formInputError: errors.name
+                        })}
                         type="text"
                       />
                     </div>
@@ -155,18 +204,29 @@ class AddStaff extends Component {
                     }`}
                   >
                     <h5
-                      className={`${styles.formFieldLabel} ${
-                        mainStyles.marginBottom8
-                      }`}
+                      className={cx({
+                        formFieldLabel: true,
+                        marginBottom8: true,
+                        errorLabel: errors.designation
+                      })}
                     >
                       Designation
+                      {errors.designation ? (
+                        <span className={loginStyles.errorMessage}>
+                          {' '}
+                          - {errors.designation}
+                        </span>
+                      ) : null}
                     </h5>
                     <div className={styles.inputWrapper}>
                       <input
                         onChange={this.inputOnChangeHandler}
                         name="designation"
                         value={this.state.designation}
-                        className={styles.formInput}
+                        className={cx({
+                          formInput: true,
+                          formInputError: errors.designation
+                        })}
                         type="text"
                       />
                     </div>
@@ -177,20 +237,33 @@ class AddStaff extends Component {
                     }`}
                   >
                     <h5
-                      className={`${styles.formFieldLabel} ${
-                        mainStyles.marginBottom8
-                      }`}
+                      className={cx({
+                        formFieldLabel: true,
+                        marginBottom8: true,
+                        errorLabel: errors.category
+                      })}
                     >
                       Category
+                      {errors.category ? (
+                        <span className={loginStyles.errorMessage}>
+                          {' '}
+                          - {errors.category}
+                        </span>
+                      ) : null}
                     </h5>
                     <div className={styles.inputWrapper}>
                       <select
                         onChange={this.inputOnChangeHandler}
                         name="category"
                         value={this.state.category}
-                        className={`${styles.formInput} ${styles.formSelect}`}
+                        className={cx({
+                          formInput: true,
+                          formSelect: true,
+                          formInputError: errors.category
+                        })}
                         type="text"
                       >
+                        <option>Select staff category</option>
                         <option>Regular Teaching Staff</option>
                         <option>Regular Non-Teaching Staff</option>
                         <option>Teaching Fellows</option>
@@ -232,4 +305,18 @@ class AddStaff extends Component {
   }
 }
 
-export default AddStaff;
+AddStaff.propTypes = {
+  auth: PropTypes.object.isRequired,
+  registerStaff: PropTypes.func.isRequired,
+  createProfile: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { registerStaff, createProfile }
+)(withRouter(AddStaff));

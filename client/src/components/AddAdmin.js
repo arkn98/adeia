@@ -33,7 +33,6 @@ class AddAdmin extends Component {
   radioClickHandler = event => {
     let opt = event.target.getAttribute('radio-key');
     if (this.state.selectedRadio !== opt && opt != null) {
-      console.log(opt);
       this.setState({ ...this.state, selectedRadio: opt, accountType: opt });
     }
   };
@@ -158,7 +157,7 @@ class AddAdmin extends Component {
                           key={0}
                           className={cx({
                             radioItem: true,
-                            radioItemSelected: this.state.selectedRadio === 0
+                            radioItemSelected: !(this.state.selectedRadio ^ 0)
                           })}
                           onClick={this.radioClickHandler}
                           radio-key={0}
@@ -176,7 +175,7 @@ class AddAdmin extends Component {
                               radio-key={0}
                               className={cx({
                                 checkBoxCheckmarkOutline: true,
-                                checked: this.state.selectedRadio === 0
+                                checked: !(this.state.selectedRadio ^ 0)
                               })}
                             >
                               <svg
@@ -209,7 +208,7 @@ class AddAdmin extends Component {
                           key={1}
                           className={cx({
                             radioItem: true,
-                            radioItemSelected: this.state.selectedRadio === 1
+                            radioItemSelected: !(this.state.selectedRadio ^ 1)
                           })}
                           onClick={this.radioClickHandler}
                           radio-key={1}
@@ -227,7 +226,7 @@ class AddAdmin extends Component {
                               radio-key={1}
                               className={cx({
                                 checkBoxCheckmarkOutline: true,
-                                checked: this.state.selectedRadio === 1
+                                checked: !(this.state.selectedRadio ^ 1)
                               })}
                             >
                               <svg

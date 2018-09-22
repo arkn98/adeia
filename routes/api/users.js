@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const passport = require('passport');
+let parser = require('ua-parser-js');
 
 //load input validation
 const validateRegisterInput = require('../../validation/register');
@@ -32,7 +33,7 @@ router.post(
       if (!isValid) {
         return res.status(400).json(errors);
       }
-      User.findOne({ staffId: req.body.staffId })
+      User.findOne({ staffId: req.body.staffId, email: req.body.email })
         .then(user => {
           if (user != null && user.staffId === req.body.staffId) {
             errors.staffId = 'Staff ID already exists';
@@ -81,23 +82,45 @@ router.post(
       if (!isValid) {
         return res.status(400).json(errors);
       }
-      User.findOne({ staffId: req.body.staffId }).then(user => {
-        if (user) {
-          errors.staffId = 'Staff ID already exists';
-          return res.status(400).json(errors);
-        } else {
-          const newUser = new User({
-            staffId: req.body.staffId,
-            name: req.body.name,
-            designation: req.body.designation,
-            category: req.body.category
-          });
-          newUser
-            .save()
-            .then(user => res.json(user))
-            .catch(err => console.log(err));
+      User.findOne({ staffId: req.body.staffId, email: req.body.email }).then(
+        user => {
+          if (user) {
+            errors.staffId = 'Staff already exists';
+            return res.status(400).json(errors);
+          } else {
+            const newUser = new User({
+              staffId: req.body.staffId,
+              name: req.body.name,
+              designation: req.body.designation,
+              category: req.body.category,
+              staffType: req.body.staffType
+            });
+
+            //0 -- regular teaching -- rt
+            //1 -- regular non teaching -- rnt
+            //2 -- teaching fellows -- tf
+            //3 -- non teaching (no leave) -- nt
+            //4 -- research scholars - 30 days -- rs30
+            //5 -- research scholars - 20 days -- rs20
+            //6 -- research scholars - others (6 days) -- rso
+            //7 -- others -- oth
+
+            //<option>Regular Teaching Staff</option>
+            //<option>Regular Non-Teaching Staff</option>
+            //<option>Teaching Fellows</option>
+            //<option>Non-Teaching - No Leave</option>
+            //<option>Research Scholars - 30</option>
+            //<option>Research Scholars - 20</option>
+            //<option>Research Scholars - Others</option>
+            //<option>Others</option> */
+
+            newUser
+              .save()
+              .then(user => res.json(user))
+              .catch(err => console.log(err));
+          }
         }
-      });
+      );
     } else {
       return res
         .status(400)
@@ -140,8 +163,51 @@ router.post('/activate', (req, res) => {
     });
 });
 
-router.get('/getip', (req, res) => {
-  res.json({ ip: req.headers['x-forwarded-for'] });
+/* // @route   GET   api/users/getclientdetails
+// @desc    store login details in db
+// @access  Public
+router.post('/setlogindetails', (req, res) => {
+  User.findOne({ staffId: req.body.staffId })
+    .then(user => {
+      user.set({ prevLogins: [...user.prevLogins, req.body.sessionData] });
+      user
+        .save()
+        .then(user => res.json({ msg: 'Success' }))
+        .catch(err => console.log(err));
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}); */
+
+/* // @route   GET   api/users/getlogindetails
+// @desc    Return current user
+// @access  Private
+router.get(
+  '/getlogindetails',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    let sessionData = [];
+    User.findOne({ staffId: req.body.staffId }).then(user => {
+      sessionData = user.prevLogins;
+      res.json({
+        prevLogins: sessionData
+      });
+    });
+  }
+); */
+
+// @route   GET   api/users/getclientdetails
+// @desc    Login user / return JWT
+// @access  Public
+router.get('/getclientdetails', (req, res) => {
+  let ua = parser(req.headers['user-agent']);
+  res.json({
+    browser: ua.browser.name,
+    os: ua.os.name,
+    ip: req.headers['x-forwarded-for'],
+    ip2: req.connection.remoteAddress
+  });
 });
 
 // @route   POST   api/users/login
@@ -173,13 +239,14 @@ router.post('/login', (req, res) => {
           name: user.name,
           designation: user.designation,
           staffId: user.staffId,
-          accountType: user.accountType
+          accountType: user.accountType,
+          staffType: user.staffType
         };
         //sign the token
         jwt.sign(
           payload,
           keys.secretOrKey,
-          { expiresIn: '1h' },
+          { expiresIn: '24h' },
           (err, token) => {
             res.json({
               success: true,
@@ -195,7 +262,7 @@ router.post('/login', (req, res) => {
   });
 });
 
-// @route   GET   api/users/current
+/* // @route   GET   api/users/current
 // @desc    Return current user
 // @access  Private
 router.get(
@@ -211,5 +278,27 @@ router.get(
     });
   }
 );
+ */
+
+/* router.post(
+  '/current',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    let userObj = {};
+    User.findOne({ staffId: req.body.staffId })
+      .then(user => {
+        userObj.staffId = user.staffId;
+        userObj.email = user.email;
+        userObj.name = user.name;
+        userObj.notifications = user.notifications;
+        userObj.prevLogins = user.prevLogins;
+        userObj.category = user.category;
+        userObj.designation = user.designation;
+        userObj.accountType = user.accountType;
+        res.json(userObj);
+      })
+      .catch(err => res.status(400).json(err));
+  }
+); */
 
 module.exports = router;

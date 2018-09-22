@@ -1,0 +1,118 @@
+.settingsMenu {
+  border-radius: 5px;
+  overflow: hidden;
+  width: 216px;
+  display: none;
+  background: #282b30;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.82), 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.settingsMenuVisible {
+  display: block;
+}
+
+.iconSelector {
+  cursor: pointer;
+  position: relative;
+  top: 1px;
+  background: none;
+  padding: 8px 10px;
+  margin-right: 4px;
+  border-radius: 3px;
+}
+
+.iconSelectorHovered,
+.userSettings:hover .iconSelector {
+  background: hsla(0, 0%, 0%, 0.3);
+}
+
+.userSettings:hover .iconSelector .customIcon {
+  opacity: 1;
+}
+
+.popouts {
+  /* left: 0;
+  right: 0;
+  top: 0;
+  margin: 0;
+  position: absolute;
+  border: none;*/
+  z-index: 1000;
+}
+
+.popout {
+  border-radius: 5px;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.82), 0 1px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+  position: relative;
+  overflow: hidden;
+  left: 10px;
+  top: -28%;
+  height: 114px;
+  width: 216px;
+  transform: translateY(-5%) translateX(calc(5% - 0.5px)) translateZ(0);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  /* -webkit-font-smoothing: antialiased; */
+}
+
+.item {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  user-select: none;
+  font-size: 15px;
+  line-height: 18px;
+  margin: 0;
+  padding: 10px 14px;
+  box-sizing: border-box;
+  color: hsla(0, 0%, 100%, 0.6);
+}
+
+.item:hover {
+  background-color: #25282d;
+  color: #fff;
+}
+
+.danger {
+  color: rgb(240, 71, 71);
+  font-weight: 500;
+}
+
+.item.danger:hover {
+  background-color: rgba(240, 71, 71, 0.1);
+  color: rgb(240, 71, 71);
+}
+
+.item.danger:active {
+  background-color: rgba(240, 71, 71, 1);
+  color: #fff;
+}
+
+.menuIcon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-right: 14px;
+  opacity: 0.8;
+}
+
+.badge {
+  bottom: -2px;
+  pointer-events: none;
+  position: absolute;
+  right: -2px;
+}
+
+.badgeWrapper {
+  background-clip: padding-box;
+  background-color: #f04747;
+  border-radius: 2px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25), inset 0 1px 0 hsla(0, 0%, 100%, 0.15);
+  color: #fff;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 12px;
+  padding: 3px 3px;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+}

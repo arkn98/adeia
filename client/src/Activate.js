@@ -4,6 +4,7 @@ import styles from './Login.css';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { activateUser } from './actions/authActions';
+import { createProfile } from './actions/profileActions';
 import classNames from 'classnames/bind';
 
 const cx = classNames.bind({ ...styles });
@@ -46,6 +47,14 @@ class Activate extends Component {
       password2: this.state.password2
     };
 
+    const newProfile = {
+      staffId: this.state.staffId,
+      prevLogins: {},
+      cplCredits: 0,
+      leaveAllotted: {}
+    };
+
+    this.props.createProfile(newProfile);
     this.props.activateUser(newUser, this.props.history);
   };
 
@@ -216,7 +225,8 @@ class Activate extends Component {
 Activate.propTypes = {
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
-  activateUser: PropTypes.func.isRequired
+  activateUser: PropTypes.func.isRequired,
+  createProfile: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -226,5 +236,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { activateUser }
+  { activateUser, createProfile }
 )(withRouter(Activate));

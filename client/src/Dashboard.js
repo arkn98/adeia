@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import AddStaff from './components/AddStaff';
 import AddAdmin from './components/AddAdmin';
 import { connect } from 'react-redux';
+import { getCurrentProfile } from './actions/profileActions';
 
 class Dashboard extends Component {
   state = {
@@ -18,18 +19,13 @@ class Dashboard extends Component {
   };
 
   componentDidMount = () => {
-    if (!this.props.auth.isAuthenticated) {
-      this.props.history.push('/login');
-    }
-  };
-
-  componentDidUpdate = () => {
-    if (!this.props.auth.isAuthenticated) {
-      this.props.history.push('/login');
-    }
+    this.props.getCurrentProfile();
   };
 
   render() {
+    const { user } = this.props.auth;
+    const { profile } = this.props.profile;
+
     return (
       <div className={styles.dashMount}>
         <div className={styles.sideNavWrapper}>
@@ -75,14 +71,17 @@ class Dashboard extends Component {
 }
 
 Dashboard.propTypes = {
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  getCurrentProfile: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  profile: state.profile
 });
 
 export default connect(
   mapStateToProps,
-  {}
+  { getCurrentProfile }
 )(withRouter(Dashboard));

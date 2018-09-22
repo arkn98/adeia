@@ -9,6 +9,7 @@ import { setCurrentUser, logoutUser } from './actions/authActions';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
+import { clearCurrentProfile } from './actions/profileActions';
 
 //check for user token
 if (localStorage.jwtToken) {
@@ -23,7 +24,8 @@ if (localStorage.jwtToken) {
   if (decoded.exp < currentTime) {
     //logout user
     store.dispatch(logoutUser());
-    //TODO: clear current profile
+    //clear current profile
+    store.dispatch(clearCurrentProfile());
     //redirect to login
     window.location.href = '/login';
   }

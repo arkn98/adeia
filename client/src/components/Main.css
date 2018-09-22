@@ -65,9 +65,11 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding-top: 4px;
 }
 
 .headerIcons {
+  padding-top: 6px;
   display: flex;
   flex-direction: row;
   justify-content: center;

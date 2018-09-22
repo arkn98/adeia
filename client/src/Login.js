@@ -10,10 +10,16 @@ const cx = classNames.bind({ ...styles });
 
 class Login extends Component {
   state = {
+    isSubmitting: false,
     email: '',
     password: '',
     errors: {}
   };
+
+  abcd = (
+
+    <button type="submit" class="marginBottom8-AtZOdT button-3k0cO7 button-38aScr lookFilled-1Gx00P colorBrand-3pXr91 sizeLarge-1vSeWK fullWidth-1orjjo grow-q77ONN submitting-3qlO9O"><span class="spinner-2enMB9 spinner-3a9zLT"><span class="inner-1gJC7_ pulsingEllipsis-3YiXRF"><span class="pulsingEllipsisItem-32hhWL spinnerItem-3GlVyU"></span><span class="pulsingEllipsisItem-32hhWL spinnerItem-3GlVyU"></span><span class="pulsingEllipsisItem-32hhWL spinnerItem-3GlVyU"></span></span></span><div class="contents-18-Yxp">Login</div></button>
+    );
 
   inputOnChangeHandler = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -83,6 +89,7 @@ class Login extends Component {
                     </div>
                     <input
                       name="email"
+                      type="email"
                       onChange={this.inputOnChangeHandler}
                       value={this.state.email}
                       className={cx({

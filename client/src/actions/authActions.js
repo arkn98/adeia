@@ -1,19 +1,27 @@
 import axios from 'axios';
 import * as moment from 'moment';
-import {
-  GET_ERRORS,
-  SET_CURRENT_USER,
-  CLEAR_ERRORS,
-  SET_LOGIN_ATTEMPT_DETAILS
-} from './types';
+import { GET_ERRORS, SET_CURRENT_USER, CLEAR_ERRORS } from './types';
 import setAuthToken from '../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
 import isEmpty from '../validation/is-empty';
 
-// Register user
+export const getCurrentProfile = () => dispatch => {};
+
+// Register account (admin/office)
 export const registerUser = (userData, history) => dispatch => {
   axios
     .post('/api/users/add-account', userData)
+    .then(res => history.push('/dashboard'))
+    .catch(err => {
+      if (!isEmpty(err.response))
+        return dispatch({ type: GET_ERRORS, payload: err.response.data });
+    });
+};
+
+//register staff
+export const registerStaff = (userData, history) => dispatch => {
+  axios
+    .post('/api/users/register', userData)
     .then(res => history.push('/dashboard'))
     .catch(err => {
       if (!isEmpty(err.response))
@@ -33,40 +41,13 @@ export const loginUser = userData => dispatch => {
       setAuthToken(token);
       //decode token to get userdata
       const decoded = jwt_decode(token);
-      //get client details from IP
-      let sessionData = {};
-      moment.locale();
-      let now = moment().format('llll');
-      console.log(now);
-
-      sessionData.attemptStatus = 'Success';
-      sessionData.timestamp = now;
-
-      //let ipDetails;
-
-      axios.get('/api/users/getip').then(data => {
-        sessionData.ip = data.response.ip;
-        console.log(data);
-        console.log(sessionData);
-      });
-
-      //set current user
       dispatch(setCurrentUser(decoded));
-      dispatch(setLoginAttemptDetails(sessionData));
       dispatch({ type: CLEAR_ERRORS, payload: {} });
     })
     .catch(err => {
       if (!isEmpty(err.response))
         return dispatch({ type: GET_ERRORS, payload: err.response.data });
     });
-};
-
-//set failed/successful login attempts
-export const setLoginAttemptDetails = sessionData => {
-  return {
-    type: SET_LOGIN_ATTEMPT_DETAILS,
-    payload: sessionData
-  };
 };
 
 //set logged in user
