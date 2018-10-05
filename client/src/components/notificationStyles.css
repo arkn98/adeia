@@ -44,16 +44,210 @@
   border-radius: 5px;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.82), 0 1px 4px rgba(0, 0, 0, 0.1);
   z-index: 1001;
-  position: relative;
+  position: absolute;
   overflow: hidden;
-  left: 10px;
-  top: -28%;
-  height: 114px;
-  width: 216px;
-  transform: translateY(-5%) translateX(calc(5% - 0.5px)) translateZ(0);
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  /* -webkit-font-smoothing: antialiased; */
+  left: 1322px;
+  top: 37px;
+  transform: translateX(-100%) translateY(0%) translateZ(0px);
+  max-height: 578px;
+  width: 420px;
+  min-height: 384px;
+  -webkit-font-smoothing: antialiased;
+  margin-top: 10px;
+}
+
+.notifications {
+  background-color: #2f3136;
+  border: 1px solid rgba(28, 36, 43, 0.6);
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.notifHeader {
+  background-color: #35393e;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 5px 5px 0 0;
+  z-index: 1;
+  padding: 12px 20px;
+}
+
+.notifHeaderTabWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 18px;
+}
+
+.tabBar {
+  border-bottom: 1px solid #f0f0f0;
+  border-bottom-color: rgb(240, 240, 240);
+  display: flex;
+  flex-shrink: 0;
+  border-bottom-color: transparent;
+  margin-bottom: 0;
+}
+
+.tabBarItem {
+  color: hsla(0, 0%, 100%, 0.3);
+  font-size: 14px;
+  line-height: 16px;
+  border-bottom: 2px solid transparent;
+  font-weight: 500;
+  margin-bottom: -1px;
+  padding-bottom: 15px;
+  display: inline-block;
+  flex-shrink: 0;
+  cursor: pointer;
+  margin-left: 12px;
+}
+
+.tabBarItem:hover {
+  border-bottom: 2px solid #87909c;
+}
+
+.tabBarItem:first-child {
+  margin-left: 0;
+}
+
+.tabBarItemSelected {
+  border-bottom-color: #fff;
+  color: #fff;
+}
+
+.tabBarItemSelected:hover {
+  border-bottom-color: #fff;
+}
+
+.scrollWrap {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-height: 1px;
+}
+
+.scroller {
+  overflow-y: auto;
+  flex: 1;
+  padding: 13px 5px 7px 13px;
+  padding-right: 14px;
+  min-height: 1px;
+  box-sizing: border-box;
+  border-radius: 0 0 5px 5px;
+}
+
+/* .scrollBar {
+  background-color: #2f3136;
+  /* position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 14px;
+} */
+
+.channelSeperator {
+  margin-bottom: 10px;
+  margin-top: 26px;
+}
+
+.channelSeperator:first-of-type {
+  margin-top: 13px;
+}
+
+.channelName {
+  cursor: pointer;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.channelName:hover {
+  text-decoration: underline;
+}
+
+.guildName {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 14px;
+  margin-left: 4px;
+  color: hsla(0, 0%, 100%, 0.3);
+}
+
+.msgGroupWrapper {
+  background-color: #36393f;
+  border-color: rgba(28, 36, 43, 0.6);
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 2px;
+  margin: 0 0 6px;
+  overflow: hidden;
+  padding: 10px;
+  position: relative;
+  transition: border-color 0.1s ease-in-out;
+}
+
+.msgGroup {
+  margin-bottom: -20px;
+  margin-left: -20px;
+  margin-top: -20px;
+}
+
+.msgContainer {
+  word-wrap: break-word;
+  box-sizing: border-box;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  overflow: hidden;
+}
+
+.msg {
+  margin-bottom: 0;
+}
+
+.msgHeader {
+  align-content: normal;
+  display: flex;
+  height: 1.3em;
+  align-items: flex-start;
+}
+
+.msgContent {
+  margin-left: 88px;
+  padding-right: 10px;
+}
+
+.mentionFilter {
+  align-items: flex-start;
+  background-position: right 6px;
+  background-repeat: no-repeat;
+  background-size: 9px 5px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  font-size: 14px;
+  justify-content: flex-end;
+  line-height: 16px;
+  padding-right: 15px;
+  background-image: url(../assets/small-arrow-down.svg);
+  color: #fff;
+}
+
+.label {
+  display: inline-block;
+  color: hsla(0, 0%, 100%, 0.3);
+}
+
+.value {
+  display: inline-block;
+  margin-left: 4px;
+  color: #fff;
+  text-transform: lowercase;
+}
+
+.notifHeader .title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 19px;
 }
 
 .item {
@@ -106,7 +300,7 @@
 .badgeWrapper {
   background-clip: padding-box;
   background-color: #f04747;
-  border-radius: 2px;
+  border-radius: 3px;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25), inset 0 1px 0 hsla(0, 0%, 100%, 0.15);
   color: #fff;
   display: inline-block;

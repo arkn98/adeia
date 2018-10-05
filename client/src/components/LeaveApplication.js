@@ -5,13 +5,66 @@ import { withRouter } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
-const cx = classNames.bind({ ...styles, ...mainStyles });
+const cx = classNames.bind({ ...mainStyles, ...styles });
+
+moment().local();
 
 class LeaveApplication extends Component {
   state = {
-    selectedRadio: 0,
-    errors: {}
+    isInfoBoxVisible: false,
+    isVacationSelected: false,
+    staffId: '',
+    name: '',
+    designation: '',
+    noOfDays: 1,
+    from: moment(),
+    startDate: moment(),
+    to: moment(),
+    reason: ''
+  };
+
+  inputOnChangeHandler = event => {
+    //console.log(moment().toString());
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  addWeekdays = (date, days) => {
+    date = moment(date); // use a clone
+    while (days > 0) {
+      date = date.add(1, 'days');
+      // decrease "days" only if it's a weekday.
+      if (date.isoWeekday() !== 6 && date.isoWeekday() !== 7) {
+        days -= 1;
+      }
+    }
+    return date;
+  };
+
+  vacationSelectToggler = event => {
+    this.setState({
+      ...this.state,
+      isVacationSelected: !this.state.isVacationSelected
+    });
+  };
+
+  infoBoxToggleHandler = event => {
+    this.setState({
+      ...this.state,
+      isInfoBoxVisible: !this.state.isInfoBoxVisible
+    });
+  };
+
+  handleDateChange = date => {
+    if (moment().isAfter(date))
+      alert("Please note: You are selecting a date prior to today's date");
+    this.setState({
+      ...this.state,
+      from: date
+    });
   };
 
   componentWillReceiveProps = nextProps => {
@@ -94,8 +147,7 @@ class LeaveApplication extends Component {
   };
 
   render() {
-    const { errors } = this.state;
-
+    const { errors } = this.props;
     const optList = this.options[this.props.auth.user.staffType].type.map(
       leaveType => {
         return <option key={leaveType}>{this.leaveString[leaveType]}</option>;
@@ -236,6 +288,8 @@ class LeaveApplication extends Component {
                         className={`${styles.formInput} ${styles.disabled}`}
                         disabled
                         type="text"
+                        name="staffId"
+                        onChange={this.inputOnChangeHandler}
                         value={this.props.auth.user.staffId}
                       />
                     </div>
@@ -303,7 +357,11 @@ class LeaveApplication extends Component {
                         </span>
                       ) : null}
                     </h5>
-                    <div className={styles.inputWrapper}>
+                    <div
+                      className={`${mainStyles.marginBottom20} ${
+                        styles.formItemWrapper
+                      }`}
+                    >
                       <select
                         onChange={this.inputOnChangeHandler}
                         name="category"
@@ -326,6 +384,210 @@ class LeaveApplication extends Component {
                         <option>Research Scholars - Others</option>
                         <option>Others</option> */}
                       </select>
+                    </div>
+                    <div
+                      className={`${mainStyles.marginBottom20} ${
+                        styles.formItemWrapper
+                      }`}
+                    >
+                      <div className={styles.formItemRow}>
+                        <div className={styles.formItemRowChild}>
+                          <h5
+                            className={`${styles.formFieldLabel} ${
+                              mainStyles.marginBottom8
+                            }`}
+                          >
+                            No. of days
+                          </h5>
+                          <div className={styles.inputWrapper}>
+                            <input
+                              className={`${styles.formInput}`}
+                              type="text"
+                              onChange={this.inputOnChangeHandler}
+                              name="noOfDays"
+                              value={this.state.noOfDays}
+                            />
+                          </div>
+                        </div>
+                        <div className={styles.formItemRowChild}>
+                          <h5
+                            className={`${styles.formFieldLabel} ${
+                              mainStyles.marginBottom8
+                            }`}
+                          >
+                            From
+                          </h5>
+                          <div className={styles.inputWrapper}>
+                            <DatePicker
+                              style={{ width: '100%' }}
+                              className={styles.formInput}
+                              dateFormat="DD-MMM-YYYY"
+                              /* minDate={moment()} */
+                              maxDate={moment().add(1, 'years')}
+                              selected={this.state.from}
+                              onChange={this.handleDateChange}
+                            />
+                          </div>
+                        </div>
+                        <div className={styles.formItemRowChild}>
+                          <h5
+                            className={`${styles.formFieldLabel} ${
+                              mainStyles.marginBottom8
+                            }`}
+                          >
+                            To{' '}
+                            {/* <span
+                              onMouseEnter={this.infoBoxToggleHandler}
+                              onMouseLeave={this.infoBoxToggleHandler}
+                              className={`${styles.smallText} ${
+                                styles.infoTargetText
+                              }`}
+                            >
+                              (weekends are automatically excluded)
+                            </span> */}
+                          </h5>
+                          <div className={styles.inputWrapper}>
+                            <DatePicker
+                              style={{ width: '100%' }}
+                              className={`${styles.formInput} ${
+                                styles.disabled
+                              }`}
+                              dateFormat="DD-MMM-YYYY"
+                              disabled={true}
+                              minDate={moment()}
+                              maxDate={moment().add(1, 'years')}
+                              selected={
+                                this.state.noOfDays === '0.5'
+                                  ? moment(this.state.from).add(0, 'days')
+                                  : this.addWeekdays(
+                                      moment(this.state.from),
+                                      this.state.noOfDays - 1
+                                    )
+                              }
+                              onChange={this.handleDateChange}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={`${mainStyles.marginBottom20} ${
+                        styles.formItemWrapper
+                      }`}
+                    >
+                      <div className={styles.inputWrapper}>
+                        <div
+                          className={cx({
+                            radioItem: true,
+                            radioItemSelected: this.state.isVacationSelected
+                          })}
+                          onClick={this.vacationSelectToggler}
+                        >
+                          <label className={styles.checkBoxWrapper}>
+                            <input
+                              className={styles.formInput}
+                              type="checkbox"
+                            />
+                            <div
+                              className={cx({
+                                checkBoxCheckmarkOutline: true,
+                                checked: this.state.isVacationSelected
+                              })}
+                            >
+                              <svg
+                                className={styles.checkboxCheckmark}
+                                name="Checkmark"
+                                width="18"
+                                height="18"
+                                viewBox="0 0 18 18"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <g fill="none" fillRule="evenodd">
+                                  <polyline
+                                    stroke="#7289da"
+                                    strokeWidth="2"
+                                    points="3.5 9.5 7 13 15 5"
+                                  />
+                                </g>
+                              </svg>
+                            </div>
+                          </label>
+                          <div className={styles.radioContent}>
+                            <div className={styles.title}>
+                              Are you on vacation?
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={`${mainStyles.marginBottom20} ${
+                        styles.formItemWrapper
+                      }`}
+                    >
+                      <h5
+                        className={cx({
+                          formFieldLabel: true,
+                          marginBottom8: true,
+                          errorLabel: errors.reason
+                        })}
+                      >
+                        Reason
+                        {errors.reason ? (
+                          <span className={styles.errorMessage}>
+                            {' '}
+                            - {errors.reason}
+                          </span>
+                        ) : null}
+                      </h5>
+                      <div className={styles.inputWrapper}>
+                        <input
+                          name="reason"
+                          type="text"
+                          className={cx({
+                            formInput: true,
+                            formInputError: errors.reason
+                          })}
+                          onChange={this.inputOnChangeHandler}
+                          value={this.state.reason}
+                        />
+                      </div>
+                    </div>
+                    <div
+                      className={`${mainStyles.marginBottom20} ${
+                        styles.formItemWrapper
+                      }`}
+                    >
+                      <h5
+                        className={cx({
+                          formFieldLabel: true,
+                          marginBottom8: true,
+                          errorLabel: errors.reason
+                        })}
+                      >
+                        Address for communication{' '}
+                        <span className={`${styles.smallText}`}>
+                          (if permission is required to go out-of-station)
+                        </span>
+                        {errors.reason ? (
+                          <span className={styles.errorMessage}>
+                            {' '}
+                            - {errors.reason}
+                          </span>
+                        ) : null}
+                      </h5>
+                      <div className={styles.inputWrapper}>
+                        <textarea
+                          name="reason"
+                          className={cx({
+                            formInput: true,
+                            formInputError: errors.address
+                          })}
+                          style={{ resize: 'vertical', minHeight: '80px' }}
+                          onChange={this.inputOnChangeHandler}
+                          value={this.state.address}
+                        />
+                      </div>
                     </div>
                   </div>
                   {/* <div className={styles.radioGroup}>{radioList}</div> */}

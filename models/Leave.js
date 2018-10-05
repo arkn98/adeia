@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 //leave type
-//1 -- Casual Leave -- cl
+//1 -- Casual Leave -- cl -
 //2 -- Compensation Leave -- cpl
 //3 -- Earn Leave -- el
 //4 -- Medical Leave -- ml
@@ -40,6 +40,11 @@ const LeaveSchema = new Schema({
     type: Number,
     required: true
   },
+  alternatingStaff: [
+    {
+      staffId: { type: Number, required: true }
+    }
+  ],
   applyDate: {
     type: Date,
     required: true
