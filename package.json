@@ -4,10 +4,10 @@
   "description": "Leave Management System",
   "main": "server.js",
   "scripts": {
-    "client-install": "npm install --prefix client",
+    "client-install": "npm install --prefix client-new",
     "start": "node server.js",
     "server": "nodemon server.js",
-    "client": "npm start --prefix client",
+    "client": "npm start --prefix client-new",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Arun Kumar",
