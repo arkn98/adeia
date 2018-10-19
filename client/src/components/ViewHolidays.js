@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from './Main.css';
+import styles from './Main.module.css';
 //import { Link, NavLink } from 'react-router-dom';
 
 class ViewHolidays extends Component {

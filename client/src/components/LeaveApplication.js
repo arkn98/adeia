@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import mainStyles from './Main.css';
-import styles from './LeaveApplication.css';
+import mainStyles from './Main.module.css';
+import styles from './LeaveApplication.module.css';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { connect } from 'react-redux';
@@ -141,7 +141,7 @@ class LeaveApplication extends Component {
   radioClickHandler = event => {
     let opt = event.target.getAttribute('radio-key');
     if (this.state.selectedRadio !== opt && opt != null) {
-      console.log(opt);
+      //console.log(opt);
       this.setState({ ...this.state, selectedRadio: opt });
     }
   };
@@ -224,8 +224,7 @@ class LeaveApplication extends Component {
                   title="GitHub Repo"
                   href="https://github.com/arkn98/lms"
                   target="_blank"
-                  rel="noopener noreferrer"
-                >
+                  rel="noopener noreferrer">
                   <i
                     className={`icon ion-md-notifications ${
                       mainStyles.customHeaderIcon
@@ -238,8 +237,7 @@ class LeaveApplication extends Component {
                   title="GitHub Repo"
                   href="https://github.com/arkn98/lms"
                   target="_blank"
-                  rel="noopener noreferrer"
-                >
+                  rel="noopener noreferrer">
                   <i
                     className={`icon ion-md-help ${
                       mainStyles.customHeaderIcon
@@ -261,8 +259,7 @@ class LeaveApplication extends Component {
                       marginLeft: 0,
                       marginRight: 0,
                       width: '100%'
-                    }}
-                  >
+                    }}>
                     <h4 className={styles.formTitle}>Apply for leave</h4>
                     <div className={styles.formSubtitle}>
                       Please note that your leave applications may not always be
@@ -274,13 +271,11 @@ class LeaveApplication extends Component {
                   <div
                     className={`${mainStyles.marginBottom20} ${
                       styles.formItemWrapper
-                    }`}
-                  >
+                    }`}>
                     <h5
                       className={`${styles.formFieldLabel} ${
                         mainStyles.marginBottom8
-                      }`}
-                    >
+                      }`}>
                       Staff ID
                     </h5>
                     <div className={styles.inputWrapper}>
@@ -297,13 +292,11 @@ class LeaveApplication extends Component {
                   <div
                     className={`${mainStyles.marginBottom20} ${
                       styles.formItemWrapper
-                    }`}
-                  >
+                    }`}>
                     <h5
                       className={`${styles.formFieldLabel} ${
                         mainStyles.marginBottom8
-                      }`}
-                    >
+                      }`}>
                       Name
                     </h5>
                     <div className={styles.inputWrapper}>
@@ -318,13 +311,11 @@ class LeaveApplication extends Component {
                   <div
                     className={`${mainStyles.marginBottom20} ${
                       styles.formItemWrapper
-                    }`}
-                  >
+                    }`}>
                     <h5
                       className={`${styles.formFieldLabel} ${
                         mainStyles.marginBottom8
-                      }`}
-                    >
+                      }`}>
                       Designation
                     </h5>
                     <div className={styles.inputWrapper}>
@@ -340,15 +331,13 @@ class LeaveApplication extends Component {
                   <div
                     className={`${mainStyles.marginBottom20} ${
                       styles.formItemWrapper
-                    }`}
-                  >
+                    }`}>
                     <h5
                       className={cx({
                         formFieldLabel: true,
                         marginBottom8: true,
                         errorLabel: errors.category
-                      })}
-                    >
+                      })}>
                       Leave Type
                       {errors.category ? (
                         <span className={styles.errorMessage}>
@@ -360,8 +349,7 @@ class LeaveApplication extends Component {
                     <div
                       className={`${mainStyles.marginBottom20} ${
                         styles.formItemWrapper
-                      }`}
-                    >
+                      }`}>
                       <select
                         onChange={this.inputOnChangeHandler}
                         name="category"
@@ -371,8 +359,7 @@ class LeaveApplication extends Component {
                           formSelect: true,
                           formInputError: errors.designation
                         })}
-                        type="text"
-                      >
+                        type="text">
                         {optList}
                         {/* <option>Select a category</option>
                         <option>Regular Teaching Staff</option>
@@ -388,15 +375,13 @@ class LeaveApplication extends Component {
                     <div
                       className={`${mainStyles.marginBottom20} ${
                         styles.formItemWrapper
-                      }`}
-                    >
+                      }`}>
                       <div className={styles.formItemRow}>
                         <div className={styles.formItemRowChild}>
                           <h5
                             className={`${styles.formFieldLabel} ${
                               mainStyles.marginBottom8
-                            }`}
-                          >
+                            }`}>
                             No. of days
                           </h5>
                           <div className={styles.inputWrapper}>
@@ -413,8 +398,7 @@ class LeaveApplication extends Component {
                           <h5
                             className={`${styles.formFieldLabel} ${
                               mainStyles.marginBottom8
-                            }`}
-                          >
+                            }`}>
                             From
                           </h5>
                           <div className={styles.inputWrapper}>
@@ -433,8 +417,7 @@ class LeaveApplication extends Component {
                           <h5
                             className={`${styles.formFieldLabel} ${
                               mainStyles.marginBottom8
-                            }`}
-                          >
+                            }`}>
                             To{' '}
                             {/* <span
                               onMouseEnter={this.infoBoxToggleHandler}
@@ -473,16 +456,14 @@ class LeaveApplication extends Component {
                     <div
                       className={`${mainStyles.marginBottom20} ${
                         styles.formItemWrapper
-                      }`}
-                    >
+                      }`}>
                       <div className={styles.inputWrapper}>
                         <div
                           className={cx({
                             radioItem: true,
                             radioItemSelected: this.state.isVacationSelected
                           })}
-                          onClick={this.vacationSelectToggler}
-                        >
+                          onClick={this.vacationSelectToggler}>
                           <label className={styles.checkBoxWrapper}>
                             <input
                               className={styles.formInput}
@@ -492,16 +473,14 @@ class LeaveApplication extends Component {
                               className={cx({
                                 checkBoxCheckmarkOutline: true,
                                 checked: this.state.isVacationSelected
-                              })}
-                            >
+                              })}>
                               <svg
                                 className={styles.checkboxCheckmark}
                                 name="Checkmark"
                                 width="18"
                                 height="18"
                                 viewBox="0 0 18 18"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
+                                xmlns="http://www.w3.org/2000/svg">
                                 <g fill="none" fillRule="evenodd">
                                   <polyline
                                     stroke="#7289da"
@@ -523,15 +502,13 @@ class LeaveApplication extends Component {
                     <div
                       className={`${mainStyles.marginBottom20} ${
                         styles.formItemWrapper
-                      }`}
-                    >
+                      }`}>
                       <h5
                         className={cx({
                           formFieldLabel: true,
                           marginBottom8: true,
                           errorLabel: errors.reason
-                        })}
-                      >
+                        })}>
                         Reason
                         {errors.reason ? (
                           <span className={styles.errorMessage}>
@@ -556,15 +533,13 @@ class LeaveApplication extends Component {
                     <div
                       className={`${mainStyles.marginBottom20} ${
                         styles.formItemWrapper
-                      }`}
-                    >
+                      }`}>
                       <h5
                         className={cx({
                           formFieldLabel: true,
                           marginBottom8: true,
                           errorLabel: errors.reason
-                        })}
-                      >
+                        })}>
                         Address for communication{' '}
                         <span className={`${styles.smallText}`}>
                           (if permission is required to go out-of-station)

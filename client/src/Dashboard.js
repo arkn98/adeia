@@ -1,16 +1,26 @@
 import React, { Component } from 'react';
-import styles from './Dashboard.css';
+import styles from './Dashboard.module.css';
 import Sidenav from './components/Sidenav';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import Main from './components/Main';
 import LeaveApplication from './components/LeaveApplication';
-import notificationStyles from './components/notificationStyles.css';
+import notificationStyles from './components/notificationStyles.module.css';
 import ViewHolidays from './components/ViewHolidays';
 import PropTypes from 'prop-types';
 import AddStaff from './components/AddStaff';
 import AddAdmin from './components/AddAdmin';
 import { connect } from 'react-redux';
-import { getCurrentProfile } from './actions/profileActions';
+import {
+  hideLogoutPopup,
+  changeTheme,
+  showLogoutPopup
+} from './actions/utilActions';
+import { logoutUser } from './actions/authActions';
+import {
+  clearCurrentProfile,
+  getCurrentProfile
+} from './actions/profileActions';
+import Modal from './components/Modal';
 
 class Dashboard extends Component {
   state = {
@@ -19,10 +29,30 @@ class Dashboard extends Component {
     isNotificationsVisible: false
   };
 
+  logoutPopupHandler = () => {
+    this.props.showLogoutPopup();
+  };
+
+  modalDismissHandler = event => {
+    event.preventDefault();
+    this.props.hideLogoutPopup();
+  };
+
+  modalConfirmHandler = event => {
+    event.preventDefault();
+    this.props.clearCurrentProfile();
+    this.props.hideLogoutPopup();
+    this.props.logoutUser();
+  };
+
   notificationsClickHandler = event => {
     this.setState({
       isNotificationsVisible: !this.state.isNotificationsVisible
     });
+  };
+
+  themeChangeHandler = event => {
+    this.props.changeTheme();
   };
 
   componentDidMount = () => {
@@ -41,20 +71,49 @@ class Dashboard extends Component {
 
     const { user } = this.props.auth;
     const { profile, loading } = this.props.profile;
+    const { isLogoutModalVisible } = this.props.utils;
 
     let notifCount;
     if (!loading) {
       //notifCount = profile.notifications.length;
-      notifCount = null;
+      //notifCount = null;
+      notifCount = 10;
     } else {
       notifCount = null;
+    }
+
+    let modals = null;
+    if (isLogoutModalVisible) {
+      modals = (
+        <div className={notificationStyles.poputs}>
+          <div
+            className={styles.backdrop}
+            style={{
+              opacity: '0.85',
+              backgroundColor: '#000',
+              zIndex: '1000',
+              transform: 'translateZ(0px)'
+            }}
+          />
+          <Modal
+            modalConfirmHandler={this.modalConfirmHandler}
+            modalDismissHandler={this.modalDismissHandler}
+          />
+        </div>
+      );
+    } else {
+      modals = null;
     }
 
     return (
       <div style={{ height: '100%' }}>
         <div className={styles.dashMount}>
           <div className={styles.sideNavWrapper}>
-            <Sidenav />
+            <Sidenav
+              isDarkTheme={this.props.utils.isDarkTheme}
+              themeChangeHandler={this.themeChangeHandler}
+              logoutPopupHandler={this.logoutPopupHandler}
+            />
           </div>
           <div className={styles.mainWrapper}>
             <Switch>
@@ -98,12 +157,10 @@ class Dashboard extends Component {
           className={`${notificationStyles.popouts}
           ${notificationStyles.popout}
           ${notificationStyles.notifications}
-          ${settingsMenuStyles.join(' ')}`}
-        >
+          ${settingsMenuStyles.join(' ')}`}>
           <div
             className={notificationStyles.notifHeader}
-            style={{ paddingBottom: '0' }}
-          >
+            style={{ paddingBottom: '0' }}>
             <div className={notificationStyles.title}>
               Notifications - {this.props.notifCount}
             </div>
@@ -113,8 +170,7 @@ class Dashboard extends Component {
                   role="button"
                   className={`${notificationStyles.tabBarItem} ${
                     notificationStyles.tabBarItemSelected
-                  }`}
-                >
+                  }`}>
                   All Servers
                 </div>
                 <div role="button" className={notificationStyles.tabBarItem}>
@@ -174,6 +230,7 @@ class Dashboard extends Component {
             Logout
           </div> */}
         </div>
+        {modals}
       </div>
     );
   }
@@ -182,15 +239,29 @@ class Dashboard extends Component {
 Dashboard.propTypes = {
   auth: PropTypes.object.isRequired,
   getCurrentProfile: PropTypes.func.isRequired,
-  profile: PropTypes.object.isRequired
+  profile: PropTypes.object.isRequired,
+  utils: PropTypes.object.isRequired,
+  hideLogoutPopup: PropTypes.func.isRequired,
+  clearCurrentProfile: PropTypes.func.isRequired,
+  logoutUser: PropTypes.func.isRequired,
+  changeTheme: PropTypes.func.isRequired,
+  showLogoutPopup: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  profile: state.profile
+  profile: state.profile,
+  utils: state.utils
 });
 
 export default connect(
   mapStateToProps,
-  { getCurrentProfile }
+  {
+    getCurrentProfile,
+    hideLogoutPopup,
+    clearCurrentProfile,
+    logoutUser,
+    changeTheme,
+    showLogoutPopup
+  }
 )(withRouter(Dashboard));

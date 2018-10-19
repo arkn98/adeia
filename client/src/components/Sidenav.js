@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import styles from './Sidenav.css';
+import styles from './Sidenav.module.css';
 import { Link, NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../actions/authActions';
 import { clearCurrentProfile } from '../actions/profileActions';
+import { showLogoutPopup } from '../actions/utilActions';
 
 class Sidenav extends Component {
   state = {
@@ -17,8 +18,10 @@ class Sidenav extends Component {
 
   logoutHandler = event => {
     event.preventDefault();
-    this.props.clearCurrentProfile();
-    this.props.logoutUser();
+    this.setState({ isSettingsMenuVisible: false });
+    this.props.logoutPopupHandler();
+    //this.props.clearCurrentProfile();
+    //this.props.logoutUser();
   };
 
   render() {
@@ -39,8 +42,7 @@ class Sidenav extends Component {
           to="/dashboard"
           exact
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-easel ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -53,8 +55,7 @@ class Sidenav extends Component {
           to="/dashboard/add-staff"
           exact
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-person-add ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -65,8 +66,7 @@ class Sidenav extends Component {
           to="/dashboard/add-admin"
           exact
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-key ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -77,8 +77,7 @@ class Sidenav extends Component {
           to="/dashboard/add-course"
           exact
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-school ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -89,8 +88,7 @@ class Sidenav extends Component {
           to="/dashboard/add-class"
           exact
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-cube ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -102,8 +100,7 @@ class Sidenav extends Component {
           exact
           title="Leave Allocation"
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-today ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -115,8 +112,7 @@ class Sidenav extends Component {
           to="/dashboard/add-class"
           exact
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-add ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -127,8 +123,7 @@ class Sidenav extends Component {
           to="/dashboard/add-class"
           exact
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-eye ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -139,8 +134,7 @@ class Sidenav extends Component {
           to="/dashboard/add-class"
           exact
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-clipboard ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -152,8 +146,7 @@ class Sidenav extends Component {
           to="/dashboard/add-holidays"
           exact
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-calendar ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -164,8 +157,7 @@ class Sidenav extends Component {
           to="/dashboard/view-holidays"
           exact
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-list-box ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -177,8 +169,7 @@ class Sidenav extends Component {
           exact
           to="/dashboard/reports"
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-stats ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -193,8 +184,7 @@ class Sidenav extends Component {
           to="/dashboard"
           exact
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-easel ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -206,8 +196,7 @@ class Sidenav extends Component {
           to="/dashboard/apply"
           exact
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-list-box ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -218,8 +207,7 @@ class Sidenav extends Component {
           to="/dashboard/leave-status"
           exact
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-checkbox-outline ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -230,8 +218,7 @@ class Sidenav extends Component {
           to="/dashboard/cpl-credits"
           exact
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-cash ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -242,8 +229,7 @@ class Sidenav extends Component {
           to="/dashboard/alterations"
           exact
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-construct ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -254,8 +240,7 @@ class Sidenav extends Component {
           to="/dashboard/compensations"
           exact
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-repeat ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -267,8 +252,7 @@ class Sidenav extends Component {
           to="/dashboard/view-holidays"
           exact
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-eye ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -279,8 +263,7 @@ class Sidenav extends Component {
           to="/dashboard/view-holidays"
           exact
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-eye-off ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -292,8 +275,7 @@ class Sidenav extends Component {
           exact
           to="/"
           className={styles.menuItem}
-          activeClassName={styles.menuItemActive}
-        >
+          activeClassName={styles.menuItemActive}>
           <i className={`icon ion-md-stats ${styles.customIcon}`} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
@@ -324,8 +306,7 @@ class Sidenav extends Component {
                     title="GitHub Repo"
                     href="https://github.com/arkn98/lms"
                     target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                    rel="noopener noreferrer">
                     <i
                       className={`icon ion-logo-github ${
                         styles.customHeaderIcon
@@ -371,8 +352,7 @@ class Sidenav extends Component {
             <div className={styles.userSettings}>
               <div
                 className={settingsIconSelector.join(' ')}
-                onClick={this.settingsMenuClickHandler}
-              >
+                onClick={this.settingsMenuClickHandler}>
                 <i
                   className={`icon ion-md-settings ${styles.customIcon}`}
                   title="Settings"
@@ -384,8 +364,16 @@ class Sidenav extends Component {
         <div
           className={`${styles.popouts} ${
             styles.popout
-          } ${settingsMenuStyles.join(' ')}`}
-        >
+          } ${settingsMenuStyles.join(' ')}`}>
+          <div className={styles.item} onClick={this.props.themeChangeHandler}>
+            <i
+              className={`icon ion-md-build ${styles.menuIcon}`}
+              title="Update Profile"
+            />
+            {this.props.isDarkTheme
+              ? 'Switch to Light theme'
+              : 'Switch to Dark Theme'}
+          </div>
           <div className={styles.item}>
             <i
               className={`icon ion-md-build ${styles.menuIcon}`}
@@ -403,8 +391,7 @@ class Sidenav extends Component {
           {/* <div className={styles.seperator2} /> */}
           <div
             onClick={this.logoutHandler}
-            className={`${styles.item} ${styles.danger}`}
-          >
+            className={`${styles.item} ${styles.danger}`}>
             <i
               className={`icon ion-md-close ${styles.menuIcon}`}
               title="Logout"
@@ -420,7 +407,8 @@ class Sidenav extends Component {
 Sidenav.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  clearCurrentProfile: PropTypes.func.isRequired
+  clearCurrentProfile: PropTypes.func.isRequired,
+  showLogoutPopup: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -429,7 +417,7 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logoutUser, clearCurrentProfile },
+  { logoutUser, clearCurrentProfile, showLogoutPopup },
   null,
   {
     pure: false

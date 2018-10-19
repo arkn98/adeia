@@ -1,33 +1,32 @@
 import {
-  GET_PROFILE,
-  PROFILE_LOADING,
-  CLEAR_CURRENT_PROFILE
+  LOGOUT_SHOWMODAL,
+  LOGOUT_HIDEMODAL,
+  THEME_CHANGE
 } from '../actions/types';
 
 const initialState = {
-  profile: null,
-  loading: false
+  isLogoutModalVisible: false,
+  isDarkTheme: true
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case PROFILE_LOADING: {
+    case LOGOUT_SHOWMODAL: {
       return {
         ...state,
-        loading: true
+        isLogoutModalVisible: true
       };
     }
-    case GET_PROFILE: {
+    case LOGOUT_HIDEMODAL: {
       return {
         ...state,
-        profile: action.payload,
-        loading: false
+        isLogoutModalVisible: false
       };
     }
-    case CLEAR_CURRENT_PROFILE: {
+    case THEME_CHANGE: {
       return {
         ...state,
-        profile: null
+        isDarkTheme: !state.isDarkTheme
       };
     }
     default:

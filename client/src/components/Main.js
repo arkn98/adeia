@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import styles from './Main.css';
-import notificationStyles from './notificationStyles.css';
+import styles from './Main.module.css';
+import notificationStyles from './notificationStyles.module.css';
 //import { Link, NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -149,8 +149,7 @@ class Main extends Component {
                 <div
                   onClick={this.props.notificationsClickHandler}
                   className={styles.iconWrapper}
-                  style={{ position: 'relative' }}
-                >
+                  style={{ position: 'relative' }}>
                   <i
                     className={`icon ion-md-notifications ${
                       styles.customHeaderIcon
@@ -166,8 +165,7 @@ class Main extends Component {
                         this.props.notifCount > 9
                           ? { right: '-2px' }
                           : { right: '+2px' }
-                      }
-                    >
+                      }>
                       {this.props.notifCount}
                     </div>
                   ) : null}
@@ -177,8 +175,7 @@ class Main extends Component {
                     title="GitHub Repo"
                     href="https://github.com/arkn98/lms"
                     target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                    rel="noopener noreferrer">
                     <i
                       className={`icon ion-md-help ${styles.customHeaderIcon}`}
                     />
@@ -193,8 +190,7 @@ class Main extends Component {
                 <div
                   className={`${styles.welcomeMessage} ${styles.marginTop20} ${
                     styles.marginBottom20
-                  }`}
-                >
+                  }`}>
                   Welcome, {this.props.auth.user.name}
                 </div>
                 {boxes}

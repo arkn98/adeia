@@ -107,9 +107,14 @@
   text-decoration: none;
 }
 
-.menuItemActive,
 .menuItem:hover {
   background-color: #36393f;
+  color: #fff;
+}
+
+.menuItemActive,
+.menuItemActive:hover {
+  background-color: rgba(79, 84, 92, 0.6);
   color: #fff;
 }
 
@@ -332,8 +337,8 @@
   position: relative;
   overflow: hidden;
   left: 10px;
-  top: -28%;
-  height: 114px;
+  top: -34%;
+  height: 152px;
   width: 216px;
   transform: translateY(-5%) translateX(calc(5% - 0.5px)) translateZ(0);
   -webkit-transform: translateZ(0);

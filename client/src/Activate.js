@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import styles from './Login.css';
+import styles from './Login.module.css';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { activateUser } from './actions/authActions';

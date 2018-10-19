@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import mainStyles from './Main.css';
-import styles from './LeaveApplication.css';
-import loginStyles from '../Login.css';
+import mainStyles from './Main.module.css';
+import styles from './LeaveApplication.module.css';
+import loginStyles from '../Login.module.css';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
