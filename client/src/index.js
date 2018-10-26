@@ -5,6 +5,7 @@ import App from './App';
 import jwt_decode from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
 import { setCurrentUser, logoutUser } from './actions/authActions';
+import { setCurrentTheme } from './actions/utilActions';
 //import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -29,6 +30,13 @@ if (localStorage.jwtToken) {
     //redirect to login
     window.location.href = '/';
   }
+}
+
+if (localStorage.themePreferences) {
+  if (localStorage.themePreferences === 'dark')
+    store.dispatch(setCurrentTheme(true));
+  else if (localStorage.themePreferences === 'light')
+    store.dispatch(setCurrentTheme(false));
 }
 
 ReactDOM.render(

@@ -60,6 +60,14 @@
   background-color: #2f3136;
   border: 1px solid rgba(28, 36, 43, 0.6);
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+  transition: background-color 0.17s ease, border 0.17s ease,
+    box-shadow 0.17s ease;
+}
+
+.lightTheme.notifications {
+  background-color: #fff;
+  border: 1px solid hsla(0, 0%, 74.9%, 0.3);
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
 .notifHeader {
@@ -68,6 +76,12 @@
   border-radius: 5px 5px 0 0;
   z-index: 1;
   padding: 12px 20px;
+  transition: background-color 0.17s ease, box-shadow 0.17s ease;
+}
+
+.lightTheme .notifHeader {
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+  background-color: #fff;
 }
 
 .notifHeaderTabWrapper {
@@ -86,6 +100,9 @@
   margin-bottom: 0;
 }
 
+.lightTheme .tabBar {
+}
+
 .tabBarItem {
   color: hsla(0, 0%, 100%, 0.3);
   font-size: 14px;
@@ -100,8 +117,16 @@
   margin-left: 12px;
 }
 
+.lightTheme .tabBarItem {
+  color: rgba(115, 127, 141, 0.3);
+}
+
 .tabBarItem:hover {
   border-bottom: 2px solid #87909c;
+}
+
+.lightTheme .tabBarItem:hover {
+  border-bottom-color: #737f8d;
 }
 
 .tabBarItem:first-child {
@@ -111,6 +136,11 @@
 .tabBarItemSelected {
   border-bottom-color: #fff;
   color: #fff;
+}
+
+.lightTheme .tabBarItemSelected {
+  border-bottom-color: #737f8d;
+  color: #737f8d;
 }
 
 .tabBarItemSelected:hover {
@@ -160,6 +190,10 @@
   line-height: 18px;
 }
 
+.lightTheme .channelName {
+  color: #4f545c;
+}
+
 .channelName:hover {
   text-decoration: underline;
 }
@@ -170,6 +204,10 @@
   line-height: 14px;
   margin-left: 4px;
   color: hsla(0, 0%, 100%, 0.3);
+}
+
+.lightTheme .guildName {
+  color: rgba(79, 84, 92, 0.3);
 }
 
 .msgGroupWrapper {
@@ -183,6 +221,16 @@
   padding: 10px;
   position: relative;
   transition: border-color 0.1s ease-in-out;
+  cursor: pointer;
+}
+
+.lightTheme .msgGroupWrapper {
+  border-color: rgba(28, 36, 43, 0.06);
+  background-color: #fff;
+}
+
+.lightTheme .msgGroupWrapper:hover {
+  border-color: rgba(28, 36, 43, 0.12);
 }
 
 .msgGroup {
@@ -231,9 +279,17 @@
   color: #fff;
 }
 
+.lightTheme .mentionFilter {
+  background-image: url(../assets/small-arrow-down-dark.svg);
+}
+
 .label {
   display: inline-block;
   color: hsla(0, 0%, 100%, 0.3);
+}
+
+.lightTheme .label {
+  color: rgba(115, 127, 141, 0.3);
 }
 
 .value {
@@ -243,11 +299,20 @@
   text-transform: lowercase;
 }
 
+.lightTheme .value {
+  color: #737f8d;
+}
+
 .notifHeader .title {
+  padding-top: 2px;
   font-size: 16px;
   font-weight: 700;
   color: #fff;
   line-height: 19px;
+}
+
+.lightTheme .notifHeader .title {
+  color: #737f8d;
 }
 
 .item {

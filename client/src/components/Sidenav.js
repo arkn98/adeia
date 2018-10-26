@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from './Sidenav.module.css';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, browserHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../actions/authActions';
@@ -35,6 +35,7 @@ class Sidenav extends Component {
     }
 
     const { user } = this.props.auth;
+    const isDarkTheme = this.props.isDarkTheme;
 
     const adminLinks = (
       <span>
@@ -292,7 +293,9 @@ class Sidenav extends Component {
     }
 
     return (
-      <div style={{ height: '100%', overflowY: 'hidden' }}>
+      <div
+        className={isDarkTheme ? '' : styles.lightTheme}
+        style={{ height: '100%', overflowY: 'hidden' }}>
         <div className={styles.sideNav}>
           <div className={styles.menu}>
             <div className={styles.logo}>
@@ -327,14 +330,7 @@ class Sidenav extends Component {
               </div>
             </div>
             <div className={styles.scrollMenuWrapper}>
-              <div className={styles.scroller}>
-                {links}
-
-                {/* <div className={styles.seperator} /> */}
-                {/* <header className={styles.menuHeader}>
-                    Notifications - ({0})
-                  </header> */}
-              </div>
+              <div className={styles.scroller}>{links}</div>
             </div>
           </div>
           <div className={styles.userContainer}>
@@ -366,10 +362,17 @@ class Sidenav extends Component {
             styles.popout
           } ${settingsMenuStyles.join(' ')}`}>
           <div className={styles.item} onClick={this.props.themeChangeHandler}>
-            <i
-              className={`icon ion-md-build ${styles.menuIcon}`}
-              title="Update Profile"
-            />
+            {this.props.isDarkTheme ? (
+              <i
+                className={`icon ion-md-sunny ${styles.menuIcon}`}
+                title="Update Profile"
+              />
+            ) : (
+              <i
+                className={`icon ion-md-moon ${styles.menuIcon}`}
+                title="Update Profile"
+              />
+            )}
             {this.props.isDarkTheme
               ? 'Switch to Light theme'
               : 'Switch to Dark Theme'}
@@ -388,7 +391,7 @@ class Sidenav extends Component {
             />
             Change Password
           </div>
-          {/* <div className={styles.seperator2} /> */}
+          <div className={styles.seperator2} />
           <div
             onClick={this.logoutHandler}
             className={`${styles.item} ${styles.danger}`}>

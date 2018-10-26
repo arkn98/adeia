@@ -17,9 +17,19 @@ class Login extends Component {
   };
 
   abcd = (
-
-    <button type="submit" class="marginBottom8-AtZOdT button-3k0cO7 button-38aScr lookFilled-1Gx00P colorBrand-3pXr91 sizeLarge-1vSeWK fullWidth-1orjjo grow-q77ONN submitting-3qlO9O"><span class="spinner-2enMB9 spinner-3a9zLT"><span class="inner-1gJC7_ pulsingEllipsis-3YiXRF"><span class="pulsingEllipsisItem-32hhWL spinnerItem-3GlVyU"></span><span class="pulsingEllipsisItem-32hhWL spinnerItem-3GlVyU"></span><span class="pulsingEllipsisItem-32hhWL spinnerItem-3GlVyU"></span></span></span><div class="contents-18-Yxp">Login</div></button>
-    );
+    <button
+      type="submit"
+      class="marginBottom8-AtZOdT button-3k0cO7 button-38aScr lookFilled-1Gx00P colorBrand-3pXr91 sizeLarge-1vSeWK fullWidth-1orjjo grow-q77ONN submitting-3qlO9O">
+      <span class="spinner-2enMB9 spinner-3a9zLT">
+        <span class="inner-1gJC7_ pulsingEllipsis-3YiXRF">
+          <span class="pulsingEllipsisItem-32hhWL spinnerItem-3GlVyU" />
+          <span class="pulsingEllipsisItem-32hhWL spinnerItem-3GlVyU" />
+          <span class="pulsingEllipsisItem-32hhWL spinnerItem-3GlVyU" />
+        </span>
+      </span>
+      <div class="contents-18-Yxp">Login</div>
+    </button>
+  );
 
   inputOnChangeHandler = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -70,15 +80,13 @@ class Login extends Component {
                 </div>
                 <form
                   onSubmit={this.formSubmitHandler}
-                  className={styles.block}
-                >
+                  className={styles.block}>
                   <div className={styles.marginBottom20}>
                     <div
                       className={cx({
                         inputLabel: true,
                         errorLabel: errors.email
-                      })}
-                    >
+                      })}>
                       Email
                       {errors.email ? (
                         <span className={styles.errorMessage}>
@@ -103,8 +111,7 @@ class Login extends Component {
                       className={cx({
                         inputLabel: true,
                         errorLabel: errors.password
-                      })}
-                    >
+                      })}>
                       Password
                       {errors.password ? (
                         <span className={styles.errorMessage}>
@@ -124,7 +131,9 @@ class Login extends Component {
                       })}
                     />
                   </div>
-                  <button className={styles.link}>Forgot your password?</button>
+                  <button type="button" className={styles.link}>
+                    Forgot your password?
+                  </button>
                   <button className={styles.login}>Login</button>
                   <div className={styles.marginTop4}>
                     <span className={styles.needAccount}>
@@ -143,8 +152,7 @@ class Login extends Component {
                 <a
                   href="https://github.com/arkn98"
                   target="_blank"
-                  rel="noopener noreferrer"
-                >
+                  rel="noopener noreferrer">
                   Arun Kumar
                 </a>
               </div>
@@ -153,8 +161,7 @@ class Login extends Component {
                 <a
                   href="https://github.com/arkn98/lms"
                   target="_blank"
-                  rel="noopener noreferrer"
-                >
+                  rel="noopener noreferrer">
                   View Source Code
                 </a>
               </div>

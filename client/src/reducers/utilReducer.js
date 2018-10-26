@@ -1,7 +1,8 @@
 import {
   LOGOUT_SHOWMODAL,
   LOGOUT_HIDEMODAL,
-  THEME_CHANGE
+  THEME_CHANGE,
+  SET_CURRENT_THEME
 } from '../actions/types';
 
 const initialState = {
@@ -27,6 +28,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isDarkTheme: !state.isDarkTheme
+      };
+    }
+    case SET_CURRENT_THEME: {
+      return {
+        ...state,
+        isDarkTheme: action.payload
       };
     }
     default:

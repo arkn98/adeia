@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
+import './datePickerStyles.css';
 
 const cx = classNames.bind({ ...mainStyles, ...styles });
 
@@ -68,9 +69,9 @@ class LeaveApplication extends Component {
   };
 
   componentWillReceiveProps = nextProps => {
-    if (nextProps.auth.isAuthenticated) {
+    /*  if (nextProps.auth.isAuthenticated) {
       this.props.history.push('/dashboard');
-    }
+    } */
     if (nextProps.errors) {
       this.setState({ ...this.state, errors: nextProps.errors });
     }
@@ -154,6 +155,8 @@ class LeaveApplication extends Component {
       }
     );
 
+    const isDarkTheme = this.props.isDarkTheme;
+
     /* const radioList = this.options.rt.type.map(leaveType => {
       return (
         <div
@@ -208,160 +211,127 @@ class LeaveApplication extends Component {
     }); */
 
     return (
-      <div className={mainStyles.main}>
-        <div className={mainStyles.topBarWrapper}>
-          <div className={mainStyles.topBar}>
-            <div className={mainStyles.pageTitle}>Leave Application</div>
-            <div className={mainStyles.headerIcons}>
-              {/* <div className={mainStyles.searchBarWrapper}>
-                <div className={mainStyles.searchBar}>
-                  <div className={mainStyles.search} />
-                </div>
-              </div>
-              <div className={mainStyles.seperator} /> */}
-              <div className={mainStyles.iconWrapper}>
-                <a
-                  title="GitHub Repo"
-                  href="https://github.com/arkn98/lms"
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  <i
-                    className={`icon ion-md-notifications ${
-                      mainStyles.customHeaderIcon
-                    }`}
-                  />
-                </a>
-              </div>
-              <div className={mainStyles.iconWrapper}>
-                <a
-                  title="GitHub Repo"
-                  href="https://github.com/arkn98/lms"
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  <i
-                    className={`icon ion-md-help ${
-                      mainStyles.customHeaderIcon
-                    }`}
-                  />
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className={mainStyles.scrollWrapper}>
-          <div className={mainStyles.contentWrapper}>
-            <div className={mainStyles.body}>
-              <div className={`${styles.formWrapper}`}>
-                <div className={`${styles.formText} ${styles.formItemWrapper}`}>
-                  <div
-                    style={{
-                      flex: '1 1 auto',
-                      marginLeft: 0,
-                      marginRight: 0,
-                      width: '100%'
-                    }}>
-                    <h4 className={styles.formTitle}>Apply for leave</h4>
-                    <div className={styles.formSubtitle}>
-                      Please note that your leave applications may not always be
-                      approved. Contact HOD/Office if you have any queries.
-                    </div>
+      <div
+        className={
+          isDarkTheme
+            ? `${mainStyles.scrollWrapper}`
+            : `${mainStyles.scrollWrapper} ${mainStyles.lightTheme} ${
+                styles.lightTheme
+              }`
+        }>
+        <div className={mainStyles.contentWrapper}>
+          <div className={mainStyles.body}>
+            <div className={`${styles.formWrapper}`}>
+              <div className={`${styles.formText} ${styles.formItemWrapper}`}>
+                <div
+                  style={{
+                    flex: '1 1 auto',
+                    marginLeft: 0,
+                    marginRight: 0,
+                    width: '100%'
+                  }}>
+                  <h4 className={styles.formTitle}>Apply for leave</h4>
+                  <div className={styles.formSubtitle}>
+                    Please note that your leave applications may not always be
+                    approved. Contact HOD/Office if you have any queries.
                   </div>
                 </div>
-                <form className={styles.formBody}>
-                  <div
-                    className={`${mainStyles.marginBottom20} ${
-                      styles.formItemWrapper
+              </div>
+              <form className={styles.formBody}>
+                <div
+                  className={`${mainStyles.marginBottom20} ${
+                    styles.formItemWrapper
+                  }`}>
+                  <h5
+                    className={`${styles.formFieldLabel} ${
+                      mainStyles.marginBottom8
                     }`}>
-                    <h5
-                      className={`${styles.formFieldLabel} ${
-                        mainStyles.marginBottom8
-                      }`}>
-                      Staff ID
-                    </h5>
-                    <div className={styles.inputWrapper}>
-                      <input
-                        className={`${styles.formInput} ${styles.disabled}`}
-                        disabled
-                        type="text"
-                        name="staffId"
-                        onChange={this.inputOnChangeHandler}
-                        value={this.props.auth.user.staffId}
-                      />
-                    </div>
+                    Staff ID
+                  </h5>
+                  <div className={styles.inputWrapper}>
+                    <input
+                      className={`${styles.formInput} ${styles.disabled}`}
+                      disabled
+                      type="text"
+                      name="staffId"
+                      onChange={this.inputOnChangeHandler}
+                      value={this.props.auth.user.staffId}
+                    />
                   </div>
-                  <div
-                    className={`${mainStyles.marginBottom20} ${
-                      styles.formItemWrapper
+                </div>
+                <div
+                  className={`${mainStyles.marginBottom20} ${
+                    styles.formItemWrapper
+                  }`}>
+                  <h5
+                    className={`${styles.formFieldLabel} ${
+                      mainStyles.marginBottom8
                     }`}>
-                    <h5
-                      className={`${styles.formFieldLabel} ${
-                        mainStyles.marginBottom8
-                      }`}>
-                      Name
-                    </h5>
-                    <div className={styles.inputWrapper}>
-                      <input
-                        className={`${styles.formInput} ${styles.disabled}`}
-                        disabled
-                        type="text"
-                        value={this.props.auth.user.name}
-                      />
-                    </div>
+                    Name
+                  </h5>
+                  <div className={styles.inputWrapper}>
+                    <input
+                      className={`${styles.formInput} ${styles.disabled}`}
+                      disabled
+                      type="text"
+                      value={this.props.auth.user.name}
+                    />
                   </div>
-                  <div
-                    className={`${mainStyles.marginBottom20} ${
-                      styles.formItemWrapper
+                </div>
+                <div
+                  className={`${mainStyles.marginBottom20} ${
+                    styles.formItemWrapper
+                  }`}>
+                  <h5
+                    className={`${styles.formFieldLabel} ${
+                      mainStyles.marginBottom8
                     }`}>
-                    <h5
-                      className={`${styles.formFieldLabel} ${
-                        mainStyles.marginBottom8
-                      }`}>
-                      Designation
-                    </h5>
-                    <div className={styles.inputWrapper}>
-                      <input
-                        className={`${styles.formInput} ${styles.disabled}`}
-                        disabled
-                        type="text"
-                        value={this.props.auth.user.designation}
-                      />
-                    </div>
+                    Designation
+                  </h5>
+                  <div className={styles.inputWrapper}>
+                    <input
+                      className={`${styles.formInput} ${styles.disabled}`}
+                      disabled
+                      type="text"
+                      value={this.props.auth.user.designation}
+                    />
                   </div>
+                </div>
 
+                <div
+                  className={`${mainStyles.marginBottom20} ${
+                    styles.formItemWrapper
+                  }`}>
+                  <h5
+                    className={cx({
+                      formFieldLabel: true,
+                      marginBottom8: true,
+                      errorLabel: errors.category
+                    })}>
+                    Leave Type
+                    {errors.category ? (
+                      <span className={styles.errorMessage}>
+                        {' '}
+                        - {errors.category}
+                      </span>
+                    ) : null}
+                  </h5>
                   <div
                     className={`${mainStyles.marginBottom20} ${
                       styles.formItemWrapper
                     }`}>
-                    <h5
+                    <select
+                      onChange={this.inputOnChangeHandler}
+                      name="category"
+                      value={this.state.category}
                       className={cx({
-                        formFieldLabel: true,
-                        marginBottom8: true,
-                        errorLabel: errors.category
-                      })}>
-                      Leave Type
-                      {errors.category ? (
-                        <span className={styles.errorMessage}>
-                          {' '}
-                          - {errors.category}
-                        </span>
-                      ) : null}
-                    </h5>
-                    <div
-                      className={`${mainStyles.marginBottom20} ${
-                        styles.formItemWrapper
-                      }`}>
-                      <select
-                        onChange={this.inputOnChangeHandler}
-                        name="category"
-                        value={this.state.category}
-                        className={cx({
-                          formInput: true,
-                          formSelect: true,
-                          formInputError: errors.designation
-                        })}
-                        type="text">
-                        {optList}
-                        {/* <option>Select a category</option>
+                        formInput: true,
+                        formSelect: true,
+                        formInputError: errors.designation
+                      })}
+                      type="text">
+                      {optList}
+                      {/* <option>Select a category</option>
                         <option>Regular Teaching Staff</option>
                         <option>Regular Non-Teaching Staff</option>
                         <option>Teaching Fellows</option>
@@ -370,56 +340,56 @@ class LeaveApplication extends Component {
                         <option>Research Scholars - 20</option>
                         <option>Research Scholars - Others</option>
                         <option>Others</option> */}
-                      </select>
-                    </div>
-                    <div
-                      className={`${mainStyles.marginBottom20} ${
-                        styles.formItemWrapper
-                      }`}>
-                      <div className={styles.formItemRow}>
-                        <div className={styles.formItemRowChild}>
-                          <h5
-                            className={`${styles.formFieldLabel} ${
-                              mainStyles.marginBottom8
-                            }`}>
-                            No. of days
-                          </h5>
-                          <div className={styles.inputWrapper}>
-                            <input
-                              className={`${styles.formInput}`}
-                              type="text"
-                              onChange={this.inputOnChangeHandler}
-                              name="noOfDays"
-                              value={this.state.noOfDays}
-                            />
-                          </div>
+                    </select>
+                  </div>
+                  <div
+                    className={`${mainStyles.marginBottom20} ${
+                      styles.formItemWrapper
+                    }`}>
+                    <div className={styles.formItemRow}>
+                      <div className={styles.formItemRowChild}>
+                        <h5
+                          className={`${styles.formFieldLabel} ${
+                            mainStyles.marginBottom8
+                          }`}>
+                          No. of days
+                        </h5>
+                        <div className={styles.inputWrapper}>
+                          <input
+                            className={`${styles.formInput}`}
+                            type="text"
+                            onChange={this.inputOnChangeHandler}
+                            name="noOfDays"
+                            value={this.state.noOfDays}
+                          />
                         </div>
-                        <div className={styles.formItemRowChild}>
-                          <h5
-                            className={`${styles.formFieldLabel} ${
-                              mainStyles.marginBottom8
-                            }`}>
-                            From
-                          </h5>
-                          <div className={styles.inputWrapper}>
-                            <DatePicker
-                              style={{ width: '100%' }}
-                              className={styles.formInput}
-                              dateFormat="DD-MMM-YYYY"
-                              /* minDate={moment()} */
-                              maxDate={moment().add(1, 'years')}
-                              selected={this.state.from}
-                              onChange={this.handleDateChange}
-                            />
-                          </div>
+                      </div>
+                      <div className={styles.formItemRowChild}>
+                        <h5
+                          className={`${styles.formFieldLabel} ${
+                            mainStyles.marginBottom8
+                          }`}>
+                          From
+                        </h5>
+                        <div className={styles.inputWrapper}>
+                          <DatePicker
+                            style={{ width: '100%' }}
+                            className={styles.formInput}
+                            dateFormat="DD-MMM-YYYY"
+                            /* minDate={moment()} */
+                            maxDate={moment().add(1, 'years')}
+                            selected={this.state.from}
+                            onChange={this.handleDateChange}
+                          />
                         </div>
-                        <div className={styles.formItemRowChild}>
-                          <h5
-                            className={`${styles.formFieldLabel} ${
-                              mainStyles.marginBottom8
-                            }`}>
-                            To{' '}
-                            {/* <span
+                      </div>
+                      <div className={styles.formItemRowChild}>
+                        <h5
+                          className={`${styles.formFieldLabel} ${
+                            mainStyles.marginBottom8
+                          }`}>
+                          To{' '}
+                          {/* <span
                               onMouseEnter={this.infoBoxToggleHandler}
                               onMouseLeave={this.infoBoxToggleHandler}
                               className={`${styles.smallText} ${
@@ -428,148 +398,143 @@ class LeaveApplication extends Component {
                             >
                               (weekends are automatically excluded)
                             </span> */}
-                          </h5>
-                          <div className={styles.inputWrapper}>
-                            <DatePicker
-                              style={{ width: '100%' }}
-                              className={`${styles.formInput} ${
-                                styles.disabled
-                              }`}
-                              dateFormat="DD-MMM-YYYY"
-                              disabled={true}
-                              minDate={moment()}
-                              maxDate={moment().add(1, 'years')}
-                              selected={
-                                this.state.noOfDays === '0.5'
-                                  ? moment(this.state.from).add(0, 'days')
-                                  : this.addWeekdays(
-                                      moment(this.state.from),
-                                      this.state.noOfDays - 1
-                                    )
-                              }
-                              onChange={this.handleDateChange}
-                            />
-                          </div>
+                        </h5>
+                        <div className={styles.inputWrapper}>
+                          <DatePicker
+                            style={{ width: '100%' }}
+                            className={`${styles.formInput} ${styles.disabled}`}
+                            dateFormat="DD-MMM-YYYY"
+                            disabled={true}
+                            minDate={moment()}
+                            maxDate={moment().add(1, 'years')}
+                            selected={
+                              this.state.noOfDays === '0.5'
+                                ? moment(this.state.from).add(0, 'days')
+                                : this.addWeekdays(
+                                    moment(this.state.from),
+                                    this.state.noOfDays - 1
+                                  )
+                            }
+                            onChange={this.handleDateChange}
+                          />
                         </div>
-                      </div>
-                    </div>
-                    <div
-                      className={`${mainStyles.marginBottom20} ${
-                        styles.formItemWrapper
-                      }`}>
-                      <div className={styles.inputWrapper}>
-                        <div
-                          className={cx({
-                            radioItem: true,
-                            radioItemSelected: this.state.isVacationSelected
-                          })}
-                          onClick={this.vacationSelectToggler}>
-                          <label className={styles.checkBoxWrapper}>
-                            <input
-                              className={styles.formInput}
-                              type="checkbox"
-                            />
-                            <div
-                              className={cx({
-                                checkBoxCheckmarkOutline: true,
-                                checked: this.state.isVacationSelected
-                              })}>
-                              <svg
-                                className={styles.checkboxCheckmark}
-                                name="Checkmark"
-                                width="18"
-                                height="18"
-                                viewBox="0 0 18 18"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <g fill="none" fillRule="evenodd">
-                                  <polyline
-                                    stroke="#7289da"
-                                    strokeWidth="2"
-                                    points="3.5 9.5 7 13 15 5"
-                                  />
-                                </g>
-                              </svg>
-                            </div>
-                          </label>
-                          <div className={styles.radioContent}>
-                            <div className={styles.title}>
-                              Are you on vacation?
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      className={`${mainStyles.marginBottom20} ${
-                        styles.formItemWrapper
-                      }`}>
-                      <h5
-                        className={cx({
-                          formFieldLabel: true,
-                          marginBottom8: true,
-                          errorLabel: errors.reason
-                        })}>
-                        Reason
-                        {errors.reason ? (
-                          <span className={styles.errorMessage}>
-                            {' '}
-                            - {errors.reason}
-                          </span>
-                        ) : null}
-                      </h5>
-                      <div className={styles.inputWrapper}>
-                        <input
-                          name="reason"
-                          type="text"
-                          className={cx({
-                            formInput: true,
-                            formInputError: errors.reason
-                          })}
-                          onChange={this.inputOnChangeHandler}
-                          value={this.state.reason}
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className={`${mainStyles.marginBottom20} ${
-                        styles.formItemWrapper
-                      }`}>
-                      <h5
-                        className={cx({
-                          formFieldLabel: true,
-                          marginBottom8: true,
-                          errorLabel: errors.reason
-                        })}>
-                        Address for communication{' '}
-                        <span className={`${styles.smallText}`}>
-                          (if permission is required to go out-of-station)
-                        </span>
-                        {errors.reason ? (
-                          <span className={styles.errorMessage}>
-                            {' '}
-                            - {errors.reason}
-                          </span>
-                        ) : null}
-                      </h5>
-                      <div className={styles.inputWrapper}>
-                        <textarea
-                          name="reason"
-                          className={cx({
-                            formInput: true,
-                            formInputError: errors.address
-                          })}
-                          style={{ resize: 'vertical', minHeight: '80px' }}
-                          onChange={this.inputOnChangeHandler}
-                          value={this.state.address}
-                        />
                       </div>
                     </div>
                   </div>
-                  {/* <div className={styles.radioGroup}>{radioList}</div> */}
-                </form>
-                <div className={styles.formSubmit} />
-              </div>
-              {/* <div className={mainStyles.marginTop20}>
+                  <div
+                    className={`${mainStyles.marginBottom20} ${
+                      styles.formItemWrapper
+                    }`}>
+                    <div className={styles.inputWrapper}>
+                      <div
+                        className={cx({
+                          radioItem: true,
+                          radioItemSelected: this.state.isVacationSelected
+                        })}
+                        onClick={this.vacationSelectToggler}>
+                        <label className={styles.checkBoxWrapper}>
+                          <input className={styles.formInput} type="checkbox" />
+                          <div
+                            className={cx({
+                              checkBoxCheckmarkOutline: true,
+                              checked: this.state.isVacationSelected
+                            })}>
+                            <svg
+                              className={styles.checkboxCheckmark}
+                              name="Checkmark"
+                              width="18"
+                              height="18"
+                              viewBox="0 0 18 18"
+                              xmlns="http://www.w3.org/2000/svg">
+                              <g fill="none" fillRule="evenodd">
+                                <polyline
+                                  stroke="#7289da"
+                                  strokeWidth="2"
+                                  points="3.5 9.5 7 13 15 5"
+                                />
+                              </g>
+                            </svg>
+                          </div>
+                        </label>
+                        <div className={styles.radioContent}>
+                          <div className={styles.title}>
+                            Are you on vacation?
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className={`${mainStyles.marginBottom20} ${
+                      styles.formItemWrapper
+                    }`}>
+                    <h5
+                      className={cx({
+                        formFieldLabel: true,
+                        marginBottom8: true,
+                        errorLabel: errors.reason
+                      })}>
+                      Reason
+                      {errors.reason ? (
+                        <span className={styles.errorMessage}>
+                          {' '}
+                          - {errors.reason}
+                        </span>
+                      ) : null}
+                    </h5>
+                    <div className={styles.inputWrapper}>
+                      <input
+                        name="reason"
+                        type="text"
+                        className={cx({
+                          formInput: true,
+                          formInputError: errors.reason
+                        })}
+                        onChange={this.inputOnChangeHandler}
+                        value={this.state.reason}
+                      />
+                    </div>
+                  </div>
+                  <div
+                    className={`${mainStyles.marginBottom20} ${
+                      styles.formItemWrapper
+                    }`}>
+                    <h5
+                      className={cx({
+                        formFieldLabel: true,
+                        marginBottom8: true,
+                        errorLabel: errors.reason
+                      })}>
+                      Address for communication{' '}
+                      <span className={`${styles.smallText}`}>
+                        (if permission is required to go out-of-station)
+                      </span>
+                      {errors.reason ? (
+                        <span className={styles.errorMessage}>
+                          {' '}
+                          - {errors.reason}
+                        </span>
+                      ) : null}
+                    </h5>
+                    <div className={styles.inputWrapper}>
+                      <textarea
+                        name="reason"
+                        className={cx({
+                          formInput: true,
+                          formInputError: errors.address
+                        })}
+                        style={{ resize: 'vertical', minHeight: '80px' }}
+                        onChange={this.inputOnChangeHandler}
+                        value={this.state.address}
+                      />
+                    </div>
+                  </div>
+                </div>
+                {/* <div className={styles.radioGroup}>{radioList}</div> */}
+              </form>
+              <div className={styles.formSubmit} />
+            </div>
+            {/* <div className={mainStyles.marginTop20}>
                 <div className={mainStyles.welcomeMessage}>Apply for leaves</div>
                 <div className={mainStyles.boxContainer}>
                   <div className={mainStyles.box}>
@@ -661,7 +626,6 @@ class LeaveApplication extends Component {
                 </div>
               </div>
             */}
-            </div>
           </div>
         </div>
       </div>

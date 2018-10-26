@@ -6,24 +6,8 @@
   flex-direction: column;
 }
 
-.topBarWrapper {
-  flex: 0 0 auto;
-  position: relative;
-  z-index: 100;
-  width: 100%;
-}
-
-.topBar {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  align-items: center;
-  height: 48px;
-  padding: 0 16px 0 16px;
-  background: #36393f;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 2px 0 rgba(0, 0, 0, 0.06);
-  flex: 0 0 auto;
+.lightTheme .main {
+  color: #4f545c;
 }
 
 .scrollWrapper {
@@ -45,6 +29,12 @@
   height: 100%;
   width: 100%;
   box-sizing: border-box;
+  transition: background-color 0.17s ease;
+}
+
+.lightTheme .contentWrapper {
+  background-color: #fff;
+  background-color: #f6f6f7;
 }
 
 .body {
@@ -57,35 +47,6 @@
   max-width: 1280px;
 }
 
-.pageTitle {
-  color: #fff;
-  font-weight: 600;
-  line-height: 22px;
-  font-size: 18px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  padding-top: 4px;
-}
-
-.headerIcons {
-  padding-top: 6px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
-.iconWrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 26px;
-  height: 24px;
-  margin: 0 4px;
-}
-
 .topBar .customHeaderIcon {
   width: 24px;
   height: 24px;
@@ -93,7 +54,12 @@
   color: #f6f6f7;
   font-size: 20px;
   /* display: inline; */
-  opacity: 0.6;
+  opacity: 0.75;
+  transition: color 0.17s ease;
+}
+
+.lightTheme .topBar .customHeaderIcon {
+  color: #4f545c;
 }
 
 .topBar .customHeaderIcon:hover {
@@ -150,6 +116,11 @@
   font-weight: 500;
   line-height: 22px;
   color: #fff;
+  transition: color 0.17s ease;
+}
+
+.lightTheme .welcomeMessage {
+  color: #4f545c;
 }
 
 .boxContainer {
@@ -169,6 +140,12 @@
   border-radius: 5px;
   box-sizing: border-box;
   width: 100%;
+  transition: background-color 0.17s ease, border-color 0.17s ease;
+}
+
+.lightTheme .mainFuncs .box {
+  background-color: #fff;
+  border-color: #dcddde !important;
 }
 
 .box {
@@ -185,14 +162,24 @@
   box-shadow: 0 0 0 rgba(32, 34, 37, 0.15);
 }
 
+.lightTheme .box {
+  background-color: #fff;
+  box-shadow: 0 0 0 rgba(32, 34, 37, 0.15);
+}
+
 .boxHover {
-  transition: background-color 0.2s ease, box-shadow 0.1s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
 }
 
 .boxHover:hover {
   background-color: #18191c;
   box-shadow: 0 9px 20px 0 rgba(0, 0, 0, 0.32);
+}
+
+.lightTheme .boxHover:hover {
+  background-color: #fff;
+  box-shadow: 0 6px 18px rgba(32, 34, 37, 0.3);
 }
 
 .boxText {
@@ -222,9 +209,17 @@
   line-height: 20px;
 }
 
+.lightTheme .mainFuncs .box .boxText .title {
+  color: #4f545c;
+}
+
 .mainFuncs .box .boxText .subtitle {
   color: #72767d;
   font-size: 14px;
+}
+
+.lightTheme .mainFuncs .box .boxText .subtitle {
+  color: #4f545c;
 }
 
 .box .title {
@@ -232,6 +227,10 @@
   color: #fff;
   font-size: 16px;
   font-weight: 500;
+}
+
+.lightTheme .box .title {
+  color: #4f545c;
 }
 
 .box .subtitle {
@@ -257,6 +256,11 @@
   color: #fff;
   opacity: 0.6;
   transition: opacity 0.2s linear;
+}
+
+.lightTheme .boxIcon .customHeaderIcon {
+  color: #7289da;
+  opacity: 1;
 }
 
 .boxHover:hover .customHeaderIcon {

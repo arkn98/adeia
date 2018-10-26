@@ -26,11 +26,17 @@ class Dashboard extends Component {
   state = {
     mouseX: 0,
     mouseY: 0,
-    isNotificationsVisible: false
+    isNotificationsVisible: false,
+    pageTitle: 'Dashboard'
   };
 
   logoutPopupHandler = () => {
     this.props.showLogoutPopup();
+  };
+
+  routeChangeHandler = pageTitle => {
+    if (this.state.pageTitle !== pageTitle)
+      this.setState({ ...this.state, pageTitle });
   };
 
   modalDismissHandler = event => {
@@ -52,12 +58,14 @@ class Dashboard extends Component {
   };
 
   themeChangeHandler = event => {
-    this.props.changeTheme();
+    this.props.changeTheme(this.props.utils.isDarkTheme);
   };
 
   componentDidMount = () => {
     this.props.getCurrentProfile();
   };
+
+  modals = null;
 
   render() {
     let settingsMenuStyles = [];
@@ -71,7 +79,7 @@ class Dashboard extends Component {
 
     const { user } = this.props.auth;
     const { profile, loading } = this.props.profile;
-    const { isLogoutModalVisible } = this.props.utils;
+    const { isLogoutModalVisible, isDarkTheme } = this.props.utils;
 
     let notifCount;
     if (!loading) {
@@ -82,9 +90,8 @@ class Dashboard extends Component {
       notifCount = null;
     }
 
-    let modals = null;
     if (isLogoutModalVisible) {
-      modals = (
+      this.modals = (
         <div className={notificationStyles.poputs}>
           <div
             className={styles.backdrop}
@@ -96,61 +103,146 @@ class Dashboard extends Component {
             }}
           />
           <Modal
+            isDarkTheme={isDarkTheme}
             modalConfirmHandler={this.modalConfirmHandler}
             modalDismissHandler={this.modalDismissHandler}
           />
         </div>
       );
     } else {
-      modals = null;
+      this.modals = null;
     }
+
+    let rootStyles = [];
+    rootStyles.push(styles.dashMount);
+
+    //if (!isDarkTheme) rootStyles.push('lightTheme');
+    if (!isDarkTheme) settingsMenuStyles.push(notificationStyles.lightTheme);
 
     return (
       <div style={{ height: '100%' }}>
-        <div className={styles.dashMount}>
+        <div className={rootStyles.join(' ')}>
           <div className={styles.sideNavWrapper}>
             <Sidenav
-              isDarkTheme={this.props.utils.isDarkTheme}
+              isDarkTheme={isDarkTheme}
+              routeChangeHandler={this.routeChangeHandler}
               themeChangeHandler={this.themeChangeHandler}
               logoutPopupHandler={this.logoutPopupHandler}
             />
           </div>
           <div className={styles.mainWrapper}>
-            <Switch>
-              <Route
-                path="/dashboard/apply"
-                exact
-                render={() => <LeaveApplication notifCount={notifCount} />}
-              />
-              <Route
-                path="/dashboard/view-holidays"
-                exact
-                component={ViewHolidays}
-                notifCount={notifCount}
-              />
-              <Route
-                path="/dashboard/add-staff"
-                exact
-                component={AddStaff}
-                notifCount={notifCount}
-              />
-              <Route
-                path="/dashboard/add-admin"
-                exact
-                component={AddAdmin}
-                notifCount={notifCount}
-              />
-              <Route
-                path="/dashboard"
-                exact
-                render={() => (
-                  <Main
-                    notificationsClickHandler={this.notificationsClickHandler}
+            <div
+              className={isDarkTheme ? null : styles.lightTheme}
+              style={{ height: '100%' }}>
+              <div className={styles.main}>
+                <div className={styles.topBarWrapper}>
+                  <div className={styles.topBar}>
+                    <div className={styles.pageTitle}>
+                      {this.state.pageTitle}
+                    </div>
+                    <div className={styles.headerIcons}>
+                      {/*<div className={styles.searchBarWrapper}>
+                          <div className={styles.searchBar}>
+                            <div className={styles.search} />
+                          </div>
+                        </div>
+                      <div className={styles.seperator} /> */}
+                      <div
+                        onClick={this.notificationsClickHandler}
+                        className={styles.iconWrapper}
+                        style={{ position: 'relative' }}>
+                        <i
+                          className={`icon ion-md-notifications ${
+                            styles.customHeaderIcon
+                          }`}
+                        />
+                        {notifCount !== 0 && notifCount !== null ? (
+                          <div
+                            className={`${notificationStyles.badgeWrapper} ${
+                              notificationStyles.badge
+                            }`}
+                            style={
+                              notifCount > 9
+                                ? { right: '-2px' }
+                                : { right: '+2px' }
+                            }>
+                            {notifCount}
+                          </div>
+                        ) : null}
+                      </div>
+                      <div className={styles.iconWrapper}>
+                        <a
+                          title="GitHub Repo"
+                          href="https://github.com/arkn98/lms"
+                          target="_blank"
+                          rel="noopener noreferrer">
+                          <i
+                            className={`icon ion-md-help-circle ${
+                              styles.customHeaderIcon
+                            }`}
+                          />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <Switch>
+                  <Route
+                    path="/dashboard/apply"
+                    exact
+                    render={() => (
+                      <LeaveApplication
+                        notificationsClickHandler={
+                          this.notificationsClickHandler
+                        }
+                        notifCount={notifCount}
+                        isDarkTheme={isDarkTheme}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/dashboard/view-holidays"
+                    exact
+                    component={ViewHolidays}
+                    notifCount={notifCount}
+                    isDarkTheme={isDarkTheme}
+                  />
+                  <Route
+                    path="/dashboard/add-staff"
+                    exact
+                    render={() => (
+                      <AddStaff
+                        notificationsClickHandler={
+                          this.notificationsClickHandler
+                        }
+                        notifCount={notifCount}
+                        isDarkTheme={isDarkTheme}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/dashboard/add-admin"
+                    exact
+                    component={AddAdmin}
+                    isDarkTheme={isDarkTheme}
                     notifCount={notifCount}
                   />
-                )}
-              />
-            </Switch>
+                  <Route
+                    path="/dashboard"
+                    exact
+                    render={() => (
+                      <Main
+                        notificationsClickHandler={
+                          this.notificationsClickHandler
+                        }
+                        notifCount={notifCount}
+                        isDarkTheme={isDarkTheme}
+                      />
+                    )}
+                  />
+                </Switch>
+              </div>
+            </div>
           </div>
         </div>
         <div
@@ -162,7 +254,7 @@ class Dashboard extends Component {
             className={notificationStyles.notifHeader}
             style={{ paddingBottom: '0' }}>
             <div className={notificationStyles.title}>
-              Notifications - {this.props.notifCount}
+              Notifications - {notifCount}
             </div>
             <div className={notificationStyles.notifHeaderTabWrapper}>
               <div className={notificationStyles.tabBar}>
@@ -177,10 +269,10 @@ class Dashboard extends Component {
                   This Server
                 </div>
               </div>
-              {/* <div className={notificationStyles.mentionFilter}>
+              <div className={notificationStyles.mentionFilter}>
                 <div className={notificationStyles.label}>Display:</div>
                 <div className={notificationStyles.value}>Everything</div>
-              </div> */}
+              </div>
             </div>
           </div>
           <div className={notificationStyles.scrollWrap}>
@@ -200,37 +292,10 @@ class Dashboard extends Component {
                 </div>
               </div>
             </div>
-            {/* <div className={notificationStyles.scrollBar} /> */}
+            <div className={notificationStyles.scrollBar} />
           </div>
-          {/* <div className={notificationStyles.item}>
-            <i
-              className={`icon ion-md-build ${notificationStyles.menuIcon}`}
-              title="Update Profile"
-            />
-            Update Profile
-          </div>
-          <div className={notificationStyles.item}>
-            <i
-              className={`icon ion-md-lock ${notificationStyles.menuIcon}`}
-              title="Change Password"
-            />
-            Change Password
-          </div>
-          {/* <div className={notificationStyles.seperator2} />
-          <div
-            onClick={this.logoutHandler}
-            className={`${notificationStyles.item} ${
-              notificationStyles.danger
-            }`}
-          >
-            <i
-              className={`icon ion-md-close ${notificationStyles.menuIcon}`}
-              title="Logout"
-            />
-            Logout
-          </div> */}
         </div>
-        {modals}
+        {this.modals}
       </div>
     );
   }
