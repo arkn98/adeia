@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import styles from './Main.module.css';
-import notificationStyles from './notificationStyles.module.css';
-//import { Link, NavLink, withRouter } from 'react-router-dom';
+import { updateCurrentRouteTitle } from '../actions/utilActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class Main extends Component {
+  componentDidMount = () => {
+    this.props.updateCurrentRouteTitle('Dashboard');
+  };
+
   render() {
     let boxes = null;
 
@@ -192,7 +195,8 @@ class Main extends Component {
 
 Main.propTypes = {
   auth: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired
+  profile: PropTypes.object.isRequired,
+  updateCurrentRouteTitle: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -202,5 +206,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {}
+  { updateCurrentRouteTitle }
 )(Main);

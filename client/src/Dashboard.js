@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from './Dashboard.module.css';
-import Sidenav from './components/Sidenav';
+import Sidenav from './components/common/Sidenav';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import Main from './components/Main';
 import LeaveApplication from './components/LeaveApplication';
@@ -9,6 +9,9 @@ import ViewHolidays from './components/ViewHolidays';
 import PropTypes from 'prop-types';
 import AddStaff from './components/AddStaff';
 import AddAdmin from './components/AddAdmin';
+import AddClass from './components/AddClass';
+import AddCourse from './components/AddCourse';
+import Timetable from './components/Timetable';
 import { connect } from 'react-redux';
 import {
   hideLogoutPopup,
@@ -20,23 +23,18 @@ import {
   clearCurrentProfile,
   getCurrentProfile
 } from './actions/profileActions';
-import Modal from './components/Modal';
+import Modal from './components/common/Modal';
+import PageNotFound from './PageNotFound';
 
 class Dashboard extends Component {
   state = {
     mouseX: 0,
     mouseY: 0,
-    isNotificationsVisible: false,
-    pageTitle: 'Dashboard'
+    isNotificationsVisible: false
   };
 
   logoutPopupHandler = () => {
     this.props.showLogoutPopup();
-  };
-
-  routeChangeHandler = pageTitle => {
-    if (this.state.pageTitle !== pageTitle)
-      this.setState({ ...this.state, pageTitle });
   };
 
   modalDismissHandler = event => {
@@ -77,15 +75,16 @@ class Dashboard extends Component {
       settingsMenuStyles.push(notificationStyles.settingsMenuVisible);
     }
 
-    const { user } = this.props.auth;
-    const { profile, loading } = this.props.profile;
+    //const { user } = this.props.auth;
+    //const { profile, loading } = this.props.profile;
+    const { loading } = this.props.profile;
     const { isLogoutModalVisible, isDarkTheme } = this.props.utils;
 
     let notifCount;
     if (!loading) {
       //notifCount = profile.notifications.length;
       //notifCount = null;
-      notifCount = 10;
+      notifCount = '9+';
     } else {
       notifCount = null;
     }
@@ -119,6 +118,147 @@ class Dashboard extends Component {
     //if (!isDarkTheme) rootStyles.push('lightTheme');
     if (!isDarkTheme) settingsMenuStyles.push(notificationStyles.lightTheme);
 
+    let routes = null;
+    if (this.props.auth.user.accountType === 0) {
+      routes = (
+        <Switch>
+          <Route
+            path="/dashboard/view-holidays"
+            exact
+            component={ViewHolidays}
+            notifCount={notifCount}
+            isDarkTheme={isDarkTheme}
+          />
+          <Route
+            path="/dashboard/timetable"
+            exact
+            render={() => (
+              <Timetable
+                notificationsClickHandler={this.notificationsClickHandler}
+                notifCount={notifCount}
+                isDarkTheme={isDarkTheme}
+              />
+            )}
+          />
+          <Route
+            path="/dashboard/add-staff"
+            exact
+            render={() => (
+              <AddStaff
+                notificationsClickHandler={this.notificationsClickHandler}
+                notifCount={notifCount}
+                isDarkTheme={isDarkTheme}
+              />
+            )}
+          />
+          <Route
+            path="/dashboard/add-class"
+            exact
+            render={() => (
+              <AddClass
+                notificationsClickHandler={this.notificationsClickHandler}
+                notifCount={notifCount}
+                isDarkTheme={isDarkTheme}
+              />
+            )}
+          />
+          <Route
+            path="/dashboard/add-course"
+            exact
+            render={() => (
+              <AddCourse
+                notificationsClickHandler={this.notificationsClickHandler}
+                notifCount={notifCount}
+                isDarkTheme={isDarkTheme}
+              />
+            )}
+          />
+          <Route
+            path="/dashboard/add-admin"
+            exact
+            render={() => (
+              <AddAdmin
+                notificationsClickHandler={this.notificationsClickHandler}
+                notifCount={notifCount}
+                isDarkTheme={isDarkTheme}
+              />
+            )}
+          />
+          <Route
+            path="/dashboard"
+            exact
+            render={() => (
+              <Main
+                notificationsClickHandler={this.notificationsClickHandler}
+                notifCount={notifCount}
+                isDarkTheme={isDarkTheme}
+              />
+            )}
+          />
+          <Route component={PageNotFound} />
+        </Switch>
+      );
+    } else if (this.props.auth.user.accountType === 1) {
+      routes = (
+        <Switch>
+          <Route
+            path="/dashboard/view-holidays"
+            exact
+            component={ViewHolidays}
+            notifCount={notifCount}
+            isDarkTheme={isDarkTheme}
+          />
+          <Route
+            path="/dashboard"
+            exact
+            render={() => (
+              <Main
+                notificationsClickHandler={this.notificationsClickHandler}
+                notifCount={notifCount}
+                isDarkTheme={isDarkTheme}
+              />
+            )}
+          />
+          <Route component={PageNotFound} />
+        </Switch>
+      );
+    } else {
+      routes = (
+        <Switch>
+          <Route
+            path="/dashboard/apply"
+            exact
+            render={() => (
+              <LeaveApplication
+                notificationsClickHandler={this.notificationsClickHandler}
+                notifCount={notifCount}
+                isDarkTheme={isDarkTheme}
+              />
+            )}
+          />
+          <Route
+            path="/dashboard/view-holidays"
+            exact
+            component={ViewHolidays}
+            notifCount={notifCount}
+            isDarkTheme={isDarkTheme}
+          />
+          <Route
+            path="/dashboard"
+            exact
+            render={() => (
+              <Main
+                notificationsClickHandler={this.notificationsClickHandler}
+                notifCount={notifCount}
+                isDarkTheme={isDarkTheme}
+              />
+            )}
+          />
+          <Route component={PageNotFound} />
+        </Switch>
+      );
+    }
+
     return (
       <div style={{ height: '100%' }}>
         <div className={rootStyles.join(' ')}>
@@ -138,7 +278,7 @@ class Dashboard extends Component {
                 <div className={styles.topBarWrapper}>
                   <div className={styles.topBar}>
                     <div className={styles.pageTitle}>
-                      {this.state.pageTitle}
+                      {this.props.utils.currentPageTitle}
                     </div>
                     <div className={styles.headerIcons}>
                       {/*<div className={styles.searchBarWrapper}>
@@ -162,7 +302,7 @@ class Dashboard extends Component {
                               notificationStyles.badge
                             }`}
                             style={
-                              notifCount > 9
+                              notifCount.length > 1
                                 ? { right: '-2px' }
                                 : { right: '+2px' }
                             }>
@@ -186,61 +326,7 @@ class Dashboard extends Component {
                     </div>
                   </div>
                 </div>
-                <Switch>
-                  <Route
-                    path="/dashboard/apply"
-                    exact
-                    render={() => (
-                      <LeaveApplication
-                        notificationsClickHandler={
-                          this.notificationsClickHandler
-                        }
-                        notifCount={notifCount}
-                        isDarkTheme={isDarkTheme}
-                      />
-                    )}
-                  />
-                  <Route
-                    path="/dashboard/view-holidays"
-                    exact
-                    component={ViewHolidays}
-                    notifCount={notifCount}
-                    isDarkTheme={isDarkTheme}
-                  />
-                  <Route
-                    path="/dashboard/add-staff"
-                    exact
-                    render={() => (
-                      <AddStaff
-                        notificationsClickHandler={
-                          this.notificationsClickHandler
-                        }
-                        notifCount={notifCount}
-                        isDarkTheme={isDarkTheme}
-                      />
-                    )}
-                  />
-                  <Route
-                    path="/dashboard/add-admin"
-                    exact
-                    component={AddAdmin}
-                    isDarkTheme={isDarkTheme}
-                    notifCount={notifCount}
-                  />
-                  <Route
-                    path="/dashboard"
-                    exact
-                    render={() => (
-                      <Main
-                        notificationsClickHandler={
-                          this.notificationsClickHandler
-                        }
-                        notifCount={notifCount}
-                        isDarkTheme={isDarkTheme}
-                      />
-                    )}
-                  />
-                </Switch>
+                {routes}
               </div>
             </div>
           </div>

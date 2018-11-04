@@ -3,14 +3,15 @@ const Schema = mongoose.Schema;
 
 //create schema
 const ClassSchema = new Schema({
-  name: {
+  nameOfClass: {
     type: String,
     required: true,
     trim: true
   },
-  code: {
+  classCode: {
     type: String,
     required: true,
+    trim: true,
     unique: true
   }
 });

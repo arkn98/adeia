@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import styles from './Sidenav.module.css';
-import { Link, NavLink, browserHistory } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { logoutUser } from '../actions/authActions';
-import { clearCurrentProfile } from '../actions/profileActions';
-import { showLogoutPopup } from '../actions/utilActions';
+import { logoutUser } from '../../actions/authActions';
+import { clearCurrentProfile } from '../../actions/profileActions';
+import { showLogoutPopup } from '../../actions/utilActions';
 
 class Sidenav extends Component {
   state = {
@@ -176,6 +176,12 @@ class Sidenav extends Component {
           <div style={{ display: 'inline' }} className={styles.menuText}>
             View Reports
           </div>
+          <div
+            className={`${styles.menuNotification} ${
+              styles.menuNotificationOrange
+            }`}>
+            NEW
+          </div>
         </NavLink>
       </span>
     );
@@ -203,6 +209,12 @@ class Sidenav extends Component {
           <div style={{ display: 'inline' }} className={styles.menuText}>
             Apply for Leave
           </div>
+          <div
+            className={`${styles.menuNotification} ${
+              styles.menuNotificationOrange
+            }`}>
+            NEW
+          </div>
         </NavLink>
         <NavLink
           to="/dashboard/leave-status"
@@ -214,6 +226,7 @@ class Sidenav extends Component {
           <div style={{ display: 'inline' }} className={styles.menuText}>
             Leave Status
           </div>
+          <div className={`${styles.menuNotification}`}>1</div>
         </NavLink>
         <NavLink
           to="/dashboard/cpl-credits"

@@ -7,16 +7,18 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { registerStaff } from '../actions/authActions';
 import { createProfile } from '../actions/profileActions';
+import { updateCurrentRouteTitle } from '../actions/utilActions';
 import classNames from 'classnames/bind';
 
 const cx = classNames.bind({ ...mainStyles, ...styles, ...loginStyles });
 
 class AddStaff extends Component {
   state = {
+    isSubmitting: false,
     staffId: '',
     name: '',
     designation: '',
-    category: '',
+    category: 'Regular Teaching Staff',
     errors: {}
   };
 
@@ -25,6 +27,7 @@ class AddStaff extends Component {
   };
 
   formSubmitHandler = event => {
+    this.setState({ ...this.state, isSubmitting: true });
     event.preventDefault();
 
     let staffType = '';
@@ -56,8 +59,16 @@ class AddStaff extends Component {
 
   componentWillReceiveProps = nextProps => {
     if (nextProps.errors) {
-      this.setState({ ...this.state, errors: nextProps.errors });
+      this.setState({
+        ...this.state,
+        errors: nextProps.errors,
+        isSubmitting: false
+      });
     }
+  };
+
+  componentDidMount = () => {
+    this.props.updateCurrentRouteTitle('Add Staff');
   };
 
   render() {
@@ -89,10 +100,9 @@ class AddStaff extends Component {
                     width: '100%'
                   }}>
                   <h4 className={styles.formTitle}>Add Staff</h4>
-                  {/* <div className={styles.formSubtitle}>
-                      Please note that your leave applications may not always be
-                      approved. Contact HOD/Office if you have any queries.
-                    </div> */}
+                  <div className={styles.formSubtitle}>
+                    Add Staff accounts from here.
+                  </div>
                 </div>
               </div>
               <form
@@ -243,12 +253,33 @@ class AddStaff extends Component {
                       style={{ borderRadius: '5px' }}
                       type="submit"
                       className={loginStyles.login}>
-                      Add
+                      {this.state.isSubmitting ? (
+                        <span className={loginStyles.spinner}>
+                          <span className={loginStyles.spinnerInner}>
+                            <span
+                              className={`${loginStyles.pulsingEllipsisItem} ${
+                                loginStyles.spinnerItem
+                              }`}
+                            />
+                            <span
+                              className={`${loginStyles.pulsingEllipsisItem} ${
+                                loginStyles.spinnerItem
+                              }`}
+                            />
+                            <span
+                              className={`${loginStyles.pulsingEllipsisItem} ${
+                                loginStyles.spinnerItem
+                              }`}
+                            />
+                          </span>
+                        </span>
+                      ) : (
+                        <div className={loginStyles.contents}>Add Staff</div>
+                      )}
                     </button>
                   </div>
                 </div>
               </form>
-              <div className={styles.formSubmit} />
             </div>
           </div>
         </div>
@@ -260,7 +291,8 @@ class AddStaff extends Component {
 AddStaff.propTypes = {
   auth: PropTypes.object.isRequired,
   registerStaff: PropTypes.func.isRequired,
-  createProfile: PropTypes.func.isRequired
+  createProfile: PropTypes.func.isRequired,
+  updateCurrentRouteTitle: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -270,5 +302,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { registerStaff, createProfile }
+  { registerStaff, createProfile, updateCurrentRouteTitle }
 )(withRouter(AddStaff));

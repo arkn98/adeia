@@ -5,8 +5,6 @@ import setAuthToken from '../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
 import isEmpty from '../validation/is-empty';
 
-export const getCurrentProfile = () => dispatch => {};
-
 // Register account (admin/office)
 export const registerUser = (userData, history) => dispatch => {
   axios

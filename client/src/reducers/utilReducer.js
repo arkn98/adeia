@@ -2,7 +2,8 @@ import {
   LOGOUT_SHOWMODAL,
   LOGOUT_HIDEMODAL,
   THEME_CHANGE,
-  SET_CURRENT_THEME
+  SET_CURRENT_THEME,
+  SET_CURRENT_PAGE_TITLE
 } from '../actions/types';
 
 const initialState = {
@@ -34,6 +35,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isDarkTheme: action.payload
+      };
+    }
+    case SET_CURRENT_PAGE_TITLE: {
+      return {
+        ...state,
+        currentPageTitle: action.payload
       };
     }
     default:

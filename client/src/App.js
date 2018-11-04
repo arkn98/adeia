@@ -4,6 +4,7 @@ import Home from './Home';
 import Login from './Login';
 import Activate from './Activate';
 import Dashboard from './Dashboard';
+import PageNotFound from './PageNotFound';
 import { Switch, Route } from 'react-router-dom';
 import PrivateRoute from './components/common/PrivateRoute';
 
@@ -16,7 +17,9 @@ class App extends Component {
         <Route exact path="/activate" component={Activate} />
         <Switch>
           <PrivateRoute path="/dashboard" component={Dashboard} />
+          <Route component={PageNotFound} />
         </Switch>
+        <Route component={PageNotFound} />
       </Switch>
     );
   }

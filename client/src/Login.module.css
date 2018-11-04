@@ -308,10 +308,9 @@
 }
 
 .login {
-  outline: 0;
   position: relative;
   padding: 2px 16px;
-  font-weight: 500;
+  outline: 0;
   justify-content: center;
   cursor: pointer;
   display: flex;
@@ -324,15 +323,81 @@
   min-height: 44px;
   height: 44px;
   width: 100%;
+  background-color: #7289da;
   margin-bottom: 8px;
+}
+
+.login .contents {
   font-size: 16px;
   line-height: 24px;
+  font-weight: 500;
   color: #fff;
-  background-color: #7289da;
+}
+
+.spinner {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  align-items: center;
+}
+
+.spinnerInner {
+  display: flex;
+  height: auto;
+  justify-content: center;
+  position: relative;
+  width: 28px;
+}
+
+.pulsingEllipsisItem {
+  animation: spinner-pulsing-ellipsis 1.4s infinite ease-in-out;
+  background-color: #fff;
+  border-radius: 3px;
+  display: inline-block;
+  height: 6px;
+  margin-right: 2px;
+  opacity: 0.3;
+  width: 6px;
+}
+
+.pulsingEllipsisItem:nth-of-type(2) {
+  animation-delay: 0.2s;
+}
+
+.pulsingEllipsisItem:nth-of-type(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes spinner-pulsing-ellipsis {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.submitting {
+  pointer-events: none;
 }
 
 .login:hover {
   background-color: #677bc4;
+}
+
+.submitting .login:hover {
+  background-color: #7289da;
 }
 
 .needAccount {

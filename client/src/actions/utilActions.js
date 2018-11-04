@@ -2,7 +2,8 @@ import {
   LOGOUT_SHOWMODAL,
   LOGOUT_HIDEMODAL,
   THEME_CHANGE,
-  SET_CURRENT_THEME
+  SET_CURRENT_THEME,
+  SET_CURRENT_PAGE_TITLE
 } from './types';
 
 export const changeTheme = data => dispatch => {
@@ -29,5 +30,12 @@ export const showLogoutPopup = () => {
 export const hideLogoutPopup = () => {
   return {
     type: LOGOUT_HIDEMODAL
+  };
+};
+
+export const updateCurrentRouteTitle = data => {
+  return {
+    type: SET_CURRENT_PAGE_TITLE,
+    payload: data
   };
 };

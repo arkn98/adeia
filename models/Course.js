@@ -3,17 +3,16 @@ const Schema = mongoose.Schema;
 
 //create schema
 const CourseSchema = new Schema({
-  code: {
+  nameOfCourse: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
-  name: {
+  courseCode: {
     type: String,
-    required: true
-  },
-  type: {
-    type: String,
-    required: true
+    required: true,
+    trim: true,
+    unique: true
   }
 });
 

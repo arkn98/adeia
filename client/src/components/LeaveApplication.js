@@ -1,31 +1,87 @@
 import React, { Component } from 'react';
 import mainStyles from './Main.module.css';
 import styles from './LeaveApplication.module.css';
+import loginStyles from '../Login.module.css';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
+import { updateCurrentRouteTitle } from '../actions/utilActions';
+import { addLeave } from '../actions/leaveActions';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
-import './datePickerStyles.css';
+import './common/datePickerStyles.css';
 
 const cx = classNames.bind({ ...mainStyles, ...styles });
 
 moment().local();
 
+const leaveString = [
+  'Select a leave type',
+  'Casual Leave',
+  'Compensation Leave',
+  'Earn Leave',
+  'Medical Leave',
+  'On Duty',
+  'Restricted Holiday',
+  'Special Casual Leave',
+  'Casual Leave - 30 Days',
+  'Casual Leave - 20 Days',
+  'Casual Leave - 6 Days'
+];
+
+//staff type
+//0 -- regular teaching -- rt
+//1 -- regular non teaching -- rnt
+//2 -- teaching fellows -- tf
+//3 -- non teaching (no leave) -- nt
+//4 -- research scholars - 30 days -- rs30
+//5 -- research scholars - 20 days -- rs20
+//6 -- research scholars - others (6 days) -- rso
+//7 -- others -- oth
+
+const options = {
+  rt: {
+    type: [0, 1, 2, 3, 4, 5, 6, 7]
+  },
+  rnt: {
+    type: [0, 1, 2, 3, 4, 5, 6, 7]
+  },
+  tf: {
+    type: [0, 2, 5, 10]
+  },
+  nt: {
+    type: [0, 2]
+  },
+  rs30: {
+    type: [0, 5, 8]
+  },
+  rs20: {
+    type: [0, 5, 9]
+  },
+  rso: {
+    type: [0, 5, 8]
+  },
+  oth: {
+    type: [0]
+  }
+};
+
 class LeaveApplication extends Component {
   state = {
+    isSubmitting: false,
     isInfoBoxVisible: false,
-    isVacationSelected: false,
-    staffId: '',
-    name: '',
-    designation: '',
+    staffId: this.props.auth.user.staffId,
+    name: this.props.auth.user.name,
+    designation: this.props.auth.user.designation,
+    leaveType: leaveString[options[this.props.auth.user.staffType].type[1]],
     noOfDays: 1,
     from: moment(),
-    startDate: moment(),
     to: moment(),
-    reason: ''
+    isVacationSelected: false,
+    reason: '',
+    addressForCommunication: ''
   };
 
   inputOnChangeHandler = event => {
@@ -45,11 +101,15 @@ class LeaveApplication extends Component {
     return date;
   };
 
-  vacationSelectToggler = event => {
+  toggleSelect = () => {
     this.setState({
       ...this.state,
       isVacationSelected: !this.state.isVacationSelected
     });
+  };
+
+  vacationSelectToggler = event => {
+    this.toggleSelect();
   };
 
   infoBoxToggleHandler = event => {
@@ -73,63 +133,40 @@ class LeaveApplication extends Component {
       this.props.history.push('/dashboard');
     } */
     if (nextProps.errors) {
-      this.setState({ ...this.state, errors: nextProps.errors });
+      this.setState({
+        ...this.state,
+        errors: nextProps.errors,
+        isSubmitting: false
+      });
     }
   };
 
-  leaveString = [
-    'Select a leave category',
-    'Casual Leave',
-    'Compensation Leave',
-    'Earn Leave',
-    'Medical Leave',
-    'On Duty',
-    'Restricted Holiday',
-    'Special Casual Leave',
-    'Casual Leave - 30 Days',
-    'Casual Leave - 20 Days',
-    'Casual Leave - 6 Days'
-  ];
+  componentDidMount = () => {
+    this.props.updateCurrentRouteTitle('Leave Application');
+  };
 
-  //staff type
-  //0 -- regular teaching -- rt
-  //1 -- regular non teaching -- rnt
-  //2 -- teaching fellows -- tf
-  //3 -- non teaching (no leave) -- nt
-  //4 -- research scholars - 30 days -- rs30
-  //5 -- research scholars - 20 days -- rs20
-  //6 -- research scholars - others (6 days) -- rso
-  //7 -- others -- oth
+  formSubmitHandler = event => {
+    this.setState({ ...this.state, isSubmitting: true });
+    event.preventDefault();
 
-  options = {
-    rt: {
-      type: [0, 1, 2, 3, 4, 5, 6, 7]
-    },
-    rnt: {
-      type: [0, 1, 2, 3, 4, 5, 6, 7]
-    },
-    tf: {
-      type: [0, 2, 5, 10]
-    },
-    nt: {
-      type: [0, 2]
-    },
-    rs30: {
-      type: [0, 5, 8]
-    },
-    rs20: {
-      type: [0, 5, 9]
-    },
-    rso: {
-      type: [0, 5, 8]
-    },
-    oth: {
-      type: [0]
-    }
+    const newLeave = {
+      staffId: this.state.staffId,
+      name: this.state.name,
+      designation: this.state.designation,
+      leaveType: this.state.leaveType,
+      noOfDays: this.state.noOfDays,
+      from: this.state.from,
+      to: this.state.to,
+      isVacationSelected: this.state.isVacationSelected,
+      reason: this.state.reason,
+      addressForCommunication: this.state.addressForCommunication
+    };
+
+    this.props.addLeave(newLeave, this.props.history);
   };
 
   /*
-  0 - select a leave category
+  0 - select a leave type
   1 - casual leave
   2 - restricted holiday
   3 - special casual leave
@@ -149,9 +186,15 @@ class LeaveApplication extends Component {
 
   render() {
     const { errors } = this.props;
-    const optList = this.options[this.props.auth.user.staffType].type.map(
-      leaveType => {
-        return <option key={leaveType}>{this.leaveString[leaveType]}</option>;
+    const optList = options[this.props.auth.user.staffType].type.map(
+      (leaveType, index) => {
+        if (index == 0)
+          return (
+            <option disabled key={leaveType}>
+              {leaveString[leaveType]}
+            </option>
+          );
+        else return <option key={leaveType}>{leaveString[leaveType]}</option>;
       }
     );
 
@@ -237,7 +280,9 @@ class LeaveApplication extends Component {
                   </div>
                 </div>
               </div>
-              <form className={styles.formBody}>
+              <form
+                onSubmit={this.formSubmitHandler}
+                className={styles.formBody}>
                 <div
                   className={`${mainStyles.marginBottom20} ${
                     styles.formItemWrapper
@@ -255,7 +300,7 @@ class LeaveApplication extends Component {
                       type="text"
                       name="staffId"
                       onChange={this.inputOnChangeHandler}
-                      value={this.props.auth.user.staffId}
+                      value={this.state.staffId}
                     />
                   </div>
                 </div>
@@ -274,7 +319,7 @@ class LeaveApplication extends Component {
                       className={`${styles.formInput} ${styles.disabled}`}
                       disabled
                       type="text"
-                      value={this.props.auth.user.name}
+                      value={this.state.name}
                     />
                   </div>
                 </div>
@@ -293,7 +338,7 @@ class LeaveApplication extends Component {
                       className={`${styles.formInput} ${styles.disabled}`}
                       disabled
                       type="text"
-                      value={this.props.auth.user.designation}
+                      value={this.state.designation}
                     />
                   </div>
                 </div>
@@ -306,13 +351,13 @@ class LeaveApplication extends Component {
                     className={cx({
                       formFieldLabel: true,
                       marginBottom8: true,
-                      errorLabel: errors.category
+                      errorLabel: errors.leaveType
                     })}>
                     Leave Type
-                    {errors.category ? (
+                    {errors.leaveType ? (
                       <span className={styles.errorMessage}>
                         {' '}
-                        - {errors.category}
+                        - {errors.leaveType}
                       </span>
                     ) : null}
                   </h5>
@@ -322,16 +367,16 @@ class LeaveApplication extends Component {
                     }`}>
                     <select
                       onChange={this.inputOnChangeHandler}
-                      name="category"
-                      value={this.state.category}
+                      name="leaveType"
+                      value={this.state.leaveType}
                       className={cx({
                         formInput: true,
                         formSelect: true,
-                        formInputError: errors.designation
+                        formInputError: errors.leaveType
                       })}
                       type="text">
                       {optList}
-                      {/* <option>Select a category</option>
+                      {/* <option>Select a leave type</option>
                         <option>Regular Teaching Staff</option>
                         <option>Regular Non-Teaching Staff</option>
                         <option>Teaching Fellows</option>
@@ -427,6 +472,8 @@ class LeaveApplication extends Component {
                     }`}>
                     <div className={styles.inputWrapper}>
                       <div
+                        tabIndex="0"
+                        role="checkbox"
                         className={cx({
                           radioItem: true,
                           radioItemSelected: this.state.isVacationSelected
@@ -503,36 +550,75 @@ class LeaveApplication extends Component {
                       className={cx({
                         formFieldLabel: true,
                         marginBottom8: true,
-                        errorLabel: errors.reason
+                        errorLabel: errors.addressForCommunication
                       })}>
                       Address for communication{' '}
                       <span className={`${styles.smallText}`}>
                         (if permission is required to go out-of-station)
                       </span>
-                      {errors.reason ? (
+                      {errors.addressForCommunication ? (
                         <span className={styles.errorMessage}>
                           {' '}
-                          - {errors.reason}
+                          - {errors.addressForCommunication}
                         </span>
                       ) : null}
                     </h5>
                     <div className={styles.inputWrapper}>
                       <textarea
-                        name="reason"
+                        name="addressForCommunication"
                         className={cx({
                           formInput: true,
-                          formInputError: errors.address
+                          formInputError: errors.addressForCommunication
                         })}
                         style={{ resize: 'vertical', minHeight: '80px' }}
                         onChange={this.inputOnChangeHandler}
-                        value={this.state.address}
+                        value={this.state.addressForCommunication}
                       />
+                    </div>
+                  </div>
+                  <div
+                    className={`${mainStyles.marginBottom20} ${
+                      styles.formItemWrapper
+                    }`}>
+                    <div
+                      className={`${styles.inputWrapper} ${
+                        mainStyles.marginTop8
+                      }`}>
+                      <button
+                        style={{ borderRadius: '5px' }}
+                        type="submit"
+                        className={loginStyles.login}>
+                        {this.state.isSubmitting ? (
+                          <span className={loginStyles.spinner}>
+                            <span className={loginStyles.spinnerInner}>
+                              <span
+                                className={`${
+                                  loginStyles.pulsingEllipsisItem
+                                } ${loginStyles.spinnerItem}`}
+                              />
+                              <span
+                                className={`${
+                                  loginStyles.pulsingEllipsisItem
+                                } ${loginStyles.spinnerItem}`}
+                              />
+                              <span
+                                className={`${
+                                  loginStyles.pulsingEllipsisItem
+                                } ${loginStyles.spinnerItem}`}
+                              />
+                            </span>
+                          </span>
+                        ) : (
+                          <div className={loginStyles.contents}>
+                            Submit Application
+                          </div>
+                        )}
+                      </button>
                     </div>
                   </div>
                 </div>
                 {/* <div className={styles.radioGroup}>{radioList}</div> */}
               </form>
-              <div className={styles.formSubmit} />
             </div>
             {/* <div className={mainStyles.marginTop20}>
                 <div className={mainStyles.welcomeMessage}>Apply for leaves</div>
@@ -635,15 +721,18 @@ class LeaveApplication extends Component {
 
 LeaveApplication.propTypes = {
   auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  updateCurrentRouteTitle: PropTypes.func.isRequired,
+  addLeave: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
+  profile: state.profile
 });
 
 export default connect(
   mapStateToProps,
-  {}
+  { updateCurrentRouteTitle, addLeave }
 )(withRouter(LeaveApplication));

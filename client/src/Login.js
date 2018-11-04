@@ -16,26 +16,12 @@ class Login extends Component {
     errors: {}
   };
 
-  abcd = (
-    <button
-      type="submit"
-      class="marginBottom8-AtZOdT button-3k0cO7 button-38aScr lookFilled-1Gx00P colorBrand-3pXr91 sizeLarge-1vSeWK fullWidth-1orjjo grow-q77ONN submitting-3qlO9O">
-      <span class="spinner-2enMB9 spinner-3a9zLT">
-        <span class="inner-1gJC7_ pulsingEllipsis-3YiXRF">
-          <span class="pulsingEllipsisItem-32hhWL spinnerItem-3GlVyU" />
-          <span class="pulsingEllipsisItem-32hhWL spinnerItem-3GlVyU" />
-          <span class="pulsingEllipsisItem-32hhWL spinnerItem-3GlVyU" />
-        </span>
-      </span>
-      <div class="contents-18-Yxp">Login</div>
-    </button>
-  );
-
   inputOnChangeHandler = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
   formSubmitHandler = event => {
+    this.setState({ ...this.state, isSubmitting: true });
     event.preventDefault();
     const user = {
       email: this.state.email,
@@ -49,6 +35,9 @@ class Login extends Component {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push('/dashboard');
     }
+    setTimeout(() => {
+      this.emailInput.focus();
+    }, 500);
   };
 
   componentWillReceiveProps = nextProps => {
@@ -56,7 +45,11 @@ class Login extends Component {
       this.props.history.push('/dashboard');
     }
     if (nextProps.errors) {
-      this.setState({ ...this.state, errors: nextProps.errors });
+      this.setState({
+        ...this.state,
+        errors: nextProps.errors,
+        isSubmitting: false
+      });
     }
   };
 
@@ -98,6 +91,9 @@ class Login extends Component {
                     <input
                       name="email"
                       type="email"
+                      ref={input => {
+                        this.emailInput = input;
+                      }}
                       onChange={this.inputOnChangeHandler}
                       value={this.state.email}
                       className={cx({
@@ -134,7 +130,36 @@ class Login extends Component {
                   <button type="button" className={styles.link}>
                     Forgot your password?
                   </button>
-                  <button className={styles.login}>Login</button>
+                  <button
+                    className={
+                      this.state.isSubmitting
+                        ? `${styles.login} ${styles.submitting}`
+                        : `${styles.login}`
+                    }>
+                    {this.state.isSubmitting ? (
+                      <span className={styles.spinner}>
+                        <span className={styles.spinnerInner}>
+                          <span
+                            className={`${styles.pulsingEllipsisItem} ${
+                              styles.spinnerItem
+                            }`}
+                          />
+                          <span
+                            className={`${styles.pulsingEllipsisItem} ${
+                              styles.spinnerItem
+                            }`}
+                          />
+                          <span
+                            className={`${styles.pulsingEllipsisItem} ${
+                              styles.spinnerItem
+                            }`}
+                          />
+                        </span>
+                      </span>
+                    ) : (
+                      <div className={styles.contents}>Login</div>
+                    )}
+                  </button>
                   <div className={styles.marginTop4}>
                     <span className={styles.needAccount}>
                       Account not activated?

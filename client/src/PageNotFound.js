@@ -1,44 +1,37 @@
 import React, { Component } from 'react';
 import styles from './Home.module.css';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-class Home extends Component {
-  componentDidMount = () => {
-    if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/dashboard');
-    }
-  };
-
+class PageNotFound extends Component {
   render() {
     return (
       <div style={{ height: '100%' }} className={styles.app}>
         <div className={styles.banner}>
-          <div className={styles.title}>
-            Welcome to LMS - Leave Management System
+          <div
+            className={styles.title}
+            style={{
+              fontWeight: '800',
+              fontSize: '60px',
+              paddingBottom: '12px'
+            }}>
+            404
           </div>
           <div className={styles.text}>
-            An all-in-one application to apply for leaves, manage and keep track
-            of them
-            {/* , that works on both your desktop and phone. */}, for the
-            Department of Information Science & Technology.
+            We can't find the page that you're looking for :[
           </div>
           <div className={styles.buttons}>
-            <Link to="/login">
-              <div
-                style={{ flex: '1 1 auto' }}
-                className={`${styles.buttonWhite} ${styles.button}`}>
-                Login
-              </div>
-            </Link>
-            <Link to="/activate">
+            <div
+              onClick={() => {
+                this.props.history.goBack();
+              }}>
               <div
                 style={{ flex: '1 1 auto' }}
                 className={`${styles.buttonPrimary} ${styles.button}`}>
-                Activate Account
+                Go back
               </div>
-            </Link>
+            </div>
           </div>
         </div>
         <div className={styles.footer}>
@@ -86,7 +79,7 @@ class Home extends Component {
   }
 }
 
-Home.propTypes = {
+PageNotFound.propTypes = {
   auth: PropTypes.object.isRequired
 };
 
@@ -97,4 +90,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {}
-)(withRouter(Home));
+)(withRouter(PageNotFound));

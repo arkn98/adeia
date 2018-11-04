@@ -1,0 +1,145 @@
+caption,
+td,
+th {
+  border-collapse: separate;
+  border-spacing: 0;
+  word-break: break-all;
+  display: table-cell;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  vertical-align: middle;
+}
+
+.timetable .title {
+  align-items: center;
+  background: #4f545c;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  color: #fff;
+  display: flex;
+  font-weight: 600;
+  height: 36px;
+  padding-left: 8px;
+  font-size: 16px;
+  transition: color 0.17s ease, background 0.17s ease;
+}
+
+.lightTheme.timetable .title {
+  color: #4f545c;
+  background: rgba(185, 187, 190, 0.3);
+}
+
+.timetable table {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  box-shadow: 0 1px 3px #282b30;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 22px;
+  overflow: hidden;
+  width: 100%;
+  word-break: break-all;
+}
+
+.lightTheme.timetable table {
+  box-shadow: none;
+}
+
+.timetable thead {
+  background: #35383c;
+  transition: background 0.17s ease;
+}
+
+.lightTheme.timetable thead {
+  background: rgba(79, 84, 92, 0.1);
+}
+
+.timetable tbody tr {
+  background: #2e3136;
+  transition: background 0.17s ease;
+}
+
+.lightTheme.timetable tbody tr {
+  background: rgba(0, 0, 0, 0);
+}
+
+.timetable tbody tr:nth-child(2n) {
+  background: #35383c;
+}
+
+.lightTheme.timetable tbody tr:nth-child(2n) {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.timetable th,
+.timetable td {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.lightTheme.timetable th,
+.lightTheme.timetable td {
+  border: 1px solid rgba(79, 84, 92, 0.3);
+}
+
+.timetable th {
+  color: hsla(0, 0%, 100%, 0.8);
+  font-size: 13px;
+  line-height: 15px;
+  padding: 8px;
+  text-transform: capitalize;
+}
+
+.timetable td {
+  color: hsla(0, 0%, 100%, 0.5);
+  font-weight: 300;
+  max-width: 272px;
+  padding: 8px;
+  vertical-align: top;
+  width: 48px;
+  height: 48px;
+  transition: color 0.17s ease, font-weight 0.17s ease;
+}
+
+.lightTheme.timetable th {
+  font-weight: 500;
+}
+
+.lightTheme.timetable td,
+.lightTheme.timetable th {
+  color: #4f545c;
+}
+
+.timetable table tr:last-child td:first-child {
+  border-bottom-left-radius: 6px;
+}
+
+.timetable table tr:last-child td:last-child {
+  border-bottom-right-radius: 6px;
+}
+
+.slotContainer {
+  width: 100%;
+  display: flex;
+}
+
+.slot {
+  width: 50px;
+  height: 50px;
+  margin-right: 6px;
+  border: 1px solid black;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.slot:last-of-type {
+  margin-right: 0;
+}

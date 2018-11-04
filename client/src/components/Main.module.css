@@ -28,6 +28,7 @@
   flex: 1;
   height: 100%;
   width: 100%;
+  overflow-x: hidden;
   box-sizing: border-box;
   transition: background-color 0.17s ease;
 }

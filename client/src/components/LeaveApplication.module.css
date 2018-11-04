@@ -150,7 +150,7 @@
 }
 
 .lightTheme .formInput.disabled {
-  background-color: rgba(0, 0, 0, 0.01);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 textarea.formInput {
@@ -184,6 +184,10 @@ select.formInput {
   background: url(../assets/arrow-down-dark.svg) 99% / 24px no-repeat #fff;
 }
 
+.formSelect {
+  cursor: pointer;
+}
+
 .formSelect option:hover {
   background-color: #25282d;
   color: #fff;
@@ -206,6 +210,10 @@ select.formInput {
 }
 
 .disabled.formInput:hover {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.lightTheme .disabled.formInput:hover {
   border-color: rgba(79, 84, 92, 0.3);
 }
 
@@ -246,6 +254,7 @@ select.formInput {
   position: relative;
   display: flex;
   flex-direction: row;
+  transition: border-color 0.17s ease, background-color 0.17s ease;
 }
 
 .lightTheme .radioItem {

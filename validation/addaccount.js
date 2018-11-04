@@ -15,6 +15,10 @@ module.exports = function validateAddAccountInput(data) {
     errors.email = 'Enter a valid email address';
   }
 
+  if (!validator.isLength(data.password, { min: 8 })) {
+    errors.password = 'Password must be atleast 8 characters long';
+  }
+
   if (!validator.equals(data.password, data.password2)) {
     errors.password2 = 'Passwords must match';
   }
