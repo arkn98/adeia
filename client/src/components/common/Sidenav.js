@@ -6,6 +6,32 @@ import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
 import { clearCurrentProfile } from '../../actions/profileActions';
 import { showLogoutPopup } from '../../actions/utilActions';
+import { ReactComponent as MdEasel } from '../../assets/icons/md-easel.svg';
+import { ReactComponent as MdAdd } from '../../assets/icons/md-add.svg';
+import { ReactComponent as MdCalendar } from '../../assets/icons/md-calendar.svg';
+import { ReactComponent as MdCash } from '../../assets/icons/md-cash.svg';
+import { ReactComponent as MdCheckboxOutline } from '../../assets/icons/md-checkbox-outline.svg';
+import { ReactComponent as MdClipboard } from '../../assets/icons/md-clipboard.svg';
+import { ReactComponent as MdConstruct } from '../../assets/icons/md-construct.svg';
+import { ReactComponent as MdContact } from '../../assets/icons/md-contact.svg';
+import { ReactComponent as MdCube } from '../../assets/icons/md-cube.svg';
+import { ReactComponent as MdEyeOff } from '../../assets/icons/md-eye-off.svg';
+import { ReactComponent as MdEye } from '../../assets/icons/md-eye.svg';
+import { ReactComponent as MdKey } from '../../assets/icons/md-key.svg';
+import { ReactComponent as MdListBox } from '../../assets/icons/md-list-box.svg';
+import { ReactComponent as MdPersonAdd } from '../../assets/icons/md-person-add.svg';
+import { ReactComponent as MdRepeat } from '../../assets/icons/md-repeat.svg';
+import { ReactComponent as MdSchool } from '../../assets/icons/md-school.svg';
+import { ReactComponent as MdStats } from '../../assets/icons/md-stats.svg';
+import { ReactComponent as MdToday } from '../../assets/icons/md-today.svg';
+import { ReactComponent as LogoGithub } from '../../assets/icons/logo-github.svg';
+import { ReactComponent as MdSunny } from '../../assets/icons/md-sunny.svg';
+import { ReactComponent as MdMoon } from '../../assets/icons/md-moon.svg';
+import { ReactComponent as MdInformationCircle } from '../../assets/icons/md-information-circle.svg';
+import { ReactComponent as MdSettings } from '../../assets/icons/md-settings.svg';
+import { ReactComponent as MdLock } from '../../assets/icons/md-lock.svg';
+import { ReactComponent as MdClose } from '../../assets/icons/md-close-circle.svg';
+import { ReactComponent as MdBuild } from '../../assets/icons/md-build.svg';
 
 class Sidenav extends Component {
   state = {
@@ -20,8 +46,6 @@ class Sidenav extends Component {
     event.preventDefault();
     this.setState({ isSettingsMenuVisible: false });
     this.props.logoutPopupHandler();
-    //this.props.clearCurrentProfile();
-    //this.props.logoutUser();
   };
 
   render() {
@@ -37,14 +61,14 @@ class Sidenav extends Component {
     const { user } = this.props.auth;
     const isDarkTheme = this.props.isDarkTheme;
 
-    const adminLinks = (
+    let adminLinks = (
       <span>
         <NavLink
-          to="/dashboard"
           exact
+          to="/dashboard"
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-easel ${styles.customIcon}`} />
+          <MdEasel className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             Dashboard
@@ -53,22 +77,22 @@ class Sidenav extends Component {
         {/* <div className={styles.seperator} /> */}
         <header className={styles.menuHeader}>Manage</header>
         <NavLink
-          to="/dashboard/add-staff"
           exact
+          to="/dashboard/add-staff"
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-person-add ${styles.customIcon}`} />
+          <MdPersonAdd className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             Add Staff
           </div>
         </NavLink>
         <NavLink
-          to="/dashboard/add-admin"
           exact
+          to="/dashboard/add-admin"
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-key ${styles.customIcon}`} />
+          <MdKey className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             Add Privileged Account
@@ -79,7 +103,7 @@ class Sidenav extends Component {
           exact
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-school ${styles.customIcon}`} />
+          <MdSchool className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             Add Course
@@ -90,7 +114,7 @@ class Sidenav extends Component {
           exact
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-cube ${styles.customIcon}`} />
+          <MdCube className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             Add Class
@@ -102,7 +126,7 @@ class Sidenav extends Component {
           title="Leave Allocation"
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-today ${styles.customIcon}`} />
+          <MdToday className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             Leave Allocation
@@ -110,14 +134,14 @@ class Sidenav extends Component {
         </NavLink>
         <header className={styles.menuHeader}>Timetable</header>
         <NavLink
-          to="/dashboard/add-class"
+          to="/dashboard/timetable"
           exact
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-add ${styles.customIcon}`} />
+          <MdAdd className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
-            Add Timetable
+            Add/Update Timetable
           </div>
         </NavLink>
         <NavLink
@@ -125,7 +149,7 @@ class Sidenav extends Component {
           exact
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-eye ${styles.customIcon}`} />
+          <MdEye className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             View Timetable
@@ -136,7 +160,7 @@ class Sidenav extends Component {
           exact
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-clipboard ${styles.customIcon}`} />
+          <MdClipboard className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             Lab Allocation
@@ -148,7 +172,7 @@ class Sidenav extends Component {
           exact
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-calendar ${styles.customIcon}`} />
+          <MdCalendar className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             Add Holidays
@@ -159,7 +183,7 @@ class Sidenav extends Component {
           exact
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-list-box ${styles.customIcon}`} />
+          <MdListBox className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             View Holidays
@@ -171,7 +195,7 @@ class Sidenav extends Component {
           to="/dashboard/reports"
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-stats ${styles.customIcon}`} />
+          <MdStats className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             View Reports
@@ -192,7 +216,7 @@ class Sidenav extends Component {
           exact
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-easel ${styles.customIcon}`} />
+          <MdEasel className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             Dashboard
@@ -204,7 +228,7 @@ class Sidenav extends Component {
           exact
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-list-box ${styles.customIcon}`} />
+          <MdListBox className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             Apply for Leave
@@ -221,7 +245,7 @@ class Sidenav extends Component {
           exact
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-checkbox-outline ${styles.customIcon}`} />
+          <MdCheckboxOutline className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             Leave Status
@@ -233,7 +257,7 @@ class Sidenav extends Component {
           exact
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-cash ${styles.customIcon}`} />
+          <MdCash className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             CPL Credits
@@ -244,7 +268,7 @@ class Sidenav extends Component {
           exact
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-construct ${styles.customIcon}`} />
+          <MdConstruct className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             Alterations
@@ -255,7 +279,7 @@ class Sidenav extends Component {
           exact
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-repeat ${styles.customIcon}`} />
+          <MdRepeat className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             Compensations
@@ -267,7 +291,7 @@ class Sidenav extends Component {
           exact
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-eye ${styles.customIcon}`} />
+          <MdEye className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             Public Holidays
@@ -278,7 +302,7 @@ class Sidenav extends Component {
           exact
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-eye-off ${styles.customIcon}`} />
+          <MdEyeOff className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             Restricted Holidays
@@ -290,7 +314,40 @@ class Sidenav extends Component {
           to="/"
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <i className={`icon ion-md-stats ${styles.customIcon}`} />
+          <MdStats className={styles.customIconTest} />
+          &nbsp;
+          <div style={{ display: 'inline' }} className={styles.menuText}>
+            View Reports
+          </div>
+        </NavLink>
+        <NavLink
+          exact
+          to="/"
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdStats className={styles.customIconTest} />
+          &nbsp;
+          <div style={{ display: 'inline' }} className={styles.menuText}>
+            View Reports
+          </div>
+        </NavLink>
+        <NavLink
+          exact
+          to="/"
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdStats className={styles.customIconTest} />
+          &nbsp;
+          <div style={{ display: 'inline' }} className={styles.menuText}>
+            View Reports
+          </div>
+        </NavLink>
+        <NavLink
+          exact
+          to="/"
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdStats className={styles.customIconTest} />
           &nbsp;
           <div style={{ display: 'inline' }} className={styles.menuText}>
             View Reports
@@ -298,6 +355,7 @@ class Sidenav extends Component {
         </NavLink>
       </span>
     );
+    //adminLinks = staffLinks;
     let links = null;
     if (user.accountType === 0) {
       links = adminLinks;
@@ -323,20 +381,13 @@ class Sidenav extends Component {
                     href="https://github.com/arkn98/lms"
                     target="_blank"
                     rel="noopener noreferrer">
-                    <i
-                      className={`icon ion-logo-github ${
-                        styles.customHeaderIcon
-                      }`}
-                    />
+                    <LogoGithub className={styles.customHeaderIconTest} />
                   </a>
                 </div>
                 <div className={styles.iconWrapper}>
                   <Link to="/">
-                    <i
-                      title="Info"
-                      className={`icon ion-md-information-circle ${
-                        styles.customHeaderIcon
-                      }`}
+                    <MdInformationCircle
+                      className={styles.customHeaderIconTest}
                     />
                   </Link>
                 </div>
@@ -348,7 +399,7 @@ class Sidenav extends Component {
           </div>
           <div className={styles.userContainer}>
             <div className={styles.userAvatar}>
-              <i className={`icon ion-md-contact ${styles.customIcon}`} />
+              <MdContact className={styles.customIconTest} />
             </div>
             <div className={styles.userDetails}>
               <span className={styles.userName}>
@@ -362,10 +413,7 @@ class Sidenav extends Component {
               <div
                 className={settingsIconSelector.join(' ')}
                 onClick={this.settingsMenuClickHandler}>
-                <i
-                  className={`icon ion-md-settings ${styles.customIcon}`}
-                  title="Settings"
-                />
+                <MdSettings className={styles.customIconTest} />
               </div>
             </div>
           </div>
@@ -376,42 +424,27 @@ class Sidenav extends Component {
           } ${settingsMenuStyles.join(' ')}`}>
           <div className={styles.item} onClick={this.props.themeChangeHandler}>
             {this.props.isDarkTheme ? (
-              <i
-                className={`icon ion-md-sunny ${styles.menuIcon}`}
-                title="Update Profile"
-              />
+              <MdSunny className={styles.menuIconTest} />
             ) : (
-              <i
-                className={`icon ion-md-moon ${styles.menuIcon}`}
-                title="Update Profile"
-              />
+              <MdMoon className={styles.menuIconTest} />
             )}
             {this.props.isDarkTheme
               ? 'Switch to Light theme'
               : 'Switch to Dark Theme'}
           </div>
           <div className={styles.item}>
-            <i
-              className={`icon ion-md-build ${styles.menuIcon}`}
-              title="Update Profile"
-            />
+            <MdBuild className={styles.menuIconTest} />
             Update Profile
           </div>
           <div className={styles.item}>
-            <i
-              className={`icon ion-md-lock ${styles.menuIcon}`}
-              title="Change Password"
-            />
+            <MdLock className={styles.menuIconTest} />
             Change Password
           </div>
           <div className={styles.seperator2} />
           <div
             onClick={this.logoutHandler}
             className={`${styles.item} ${styles.danger}`}>
-            <i
-              className={`icon ion-md-close ${styles.menuIcon}`}
-              title="Logout"
-            />
+            <MdClose className={styles.menuIconTest} />
             Logout
           </div>
         </div>

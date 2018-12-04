@@ -45,6 +45,7 @@ class Home extends Component {
           <div>
             Currently maintained by&nbsp;
             <a
+              title="My GitHub user page"
               href="https://github.com/arkn98"
               target="_blank"
               rel="noopener noreferrer">
@@ -54,6 +55,7 @@ class Home extends Component {
           <div>|</div>
           <div>
             <a
+              title="GitHub repo"
               href="https://github.com/arkn98/lms"
               target="_blank"
               rel="noopener noreferrer">
@@ -63,17 +65,17 @@ class Home extends Component {
           <div>|</div>
           <div>
             <a
-              title="GitHub Repo"
-              href="https://github.com/arkn98/lms"
+              title="Report an issue"
+              href="https://github.com/arkn98/lms/issues"
               target="_blank"
               rel="noopener noreferrer">
-              Report Bugs
+              Report an issue
             </a>
           </div>
           <div>|</div>
           <div>
             <a
-              title="GitHub Repo"
+              title="Submit your feedback"
               href="https://github.com/arkn98/lms"
               target="_blank"
               rel="noopener noreferrer">

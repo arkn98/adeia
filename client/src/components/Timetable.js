@@ -7,8 +7,9 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { updateCurrentRouteTitle } from '../actions/utilActions';
-import Draggable from 'react-draggable';
 import classNames from 'classnames/bind';
+import axios from 'axios';
+import Temp from './temp';
 
 const cx = classNames.bind({ ...mainStyles, ...styles, ...loginStyles });
 
@@ -16,8 +17,11 @@ class Timetable extends Component {
   state = {
     isSubmitting: false,
     errors: {},
-    tableCellWidth: 0,
-    tableCellHeight: 0
+    classCode: '',
+    classesList: null,
+    isTouched: false,
+    isTableLoaded: false,
+    timetable: null
   };
 
   componentDidMount = () => {
@@ -34,21 +38,61 @@ class Timetable extends Component {
     }
   };
 
+  onBlur = event => {
+    this.setState({ ...this.state, isTouched: true });
+  };
+
   formSubmitHandler = event => {
     this.setState({ ...this.state, isSubmitting: true });
     event.preventDefault();
+  };
 
-    /*  const data = {
-      nameOfClass: this.state.nameOfClass,
-      classCode: this.state.classCode
-    }; */
+  componentWillMount = () => {
+    axios
+      .get('/api/timetable/get-classes')
+      .then(res => {
+        this.setState({
+          ...this.state,
+          classesList: res.data,
+          classCode: res.data[0].classCode
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
-    //this.props.addClass(data, this.props.history);
+  touched = false;
+
+  inputOnChangeHandler = event => {
+    if (event.target.name === 'classCode') {
+      let timetableObj = null;
+      if (this.touched === false) this.touched = true;
+      if (event.target.value !== '') {
+        axios
+          .post('/api/timetable/get-timetable', event.target.value)
+          .then(res => {
+            timetableObj = res.data;
+          })
+          .catch(err => {
+            timetableObj = null;
+            console.log(err);
+          });
+      }
+      this.setState({
+        ...this.state,
+        [event.target.name]: event.target.value,
+        isTouched: this.touched,
+        timetable: timetableObj
+      });
+    } else this.setState({ [event.target.name]: event.target.value });
   };
 
   render() {
     const errors = this.state.errors;
     const isDarkTheme = this.props.isDarkTheme;
+
+    const showTimetable = this.state.classCode === '' ? false : true;
 
     return (
       <div
@@ -72,47 +116,10 @@ class Timetable extends Component {
                   }}>
                   <h4 className={styles.formTitle}>Timetable</h4>
                   <div className={styles.formSubtitle}>
-                    Change timetables from here.
+                    Add/Change timetables from here.
                   </div>
                 </div>
               </div>
-              <div
-                className={`${mainStyles.marginBottom20} ${
-                  styles.formItemWrapper
-                }`}>
-                <div className={tableStyles.slotContainer}>
-                  <Draggable
-                    axis="both"
-                    onStart={this.handleStart}
-                    onDrag={this.handleDrag}
-                    onStop={this.handleStop}>
-                    <div
-                      className={tableStyles.slot}
-                      style={{ zIndex: '9999', cursor: 'move' }}>
-                      abcd
-                    </div>
-                  </Draggable>
-                  <div className={tableStyles.slot} />
-                  <div className={tableStyles.slot} />
-                  <div className={tableStyles.slot} />
-                  <div className={tableStyles.slot} />
-                  <div className={tableStyles.slot} />
-                  <div className={tableStyles.slot} />
-                  <div className={tableStyles.slot} />
-                  <div className={tableStyles.slot} />
-                  <div className={tableStyles.slot} />
-                </div>
-              </div>
-              <Draggable
-                axis="both"
-                onStart={this.handleStart}
-                onDrag={this.handleDrag}
-                onStop={this.handleStop}>
-                <div style={{ zIndex: '9999', cursor: 'move' }}>
-                  <div>Drag from here</div>
-                  <div>This readme is really dragging on...</div>
-                </div>
-              </Draggable>
               <form
                 onSubmit={this.formSubmitHandler}
                 className={styles.formBody}>
@@ -124,148 +131,131 @@ class Timetable extends Component {
                     className={cx({
                       formFieldLabel: true,
                       marginBottom8: true,
-                      errorLabel: errors.nameOfClass
-                    })}
-                    /* className={`${styles.formFieldLabel} ${
-                      mainStyles.marginBottom8
-                    }`} */
-                  >
-                    Class Name
-                    {errors.nameOfClass ? (
-                      <span className={loginStyles.errorMessage}>
-                        {' '}
-                        - {errors.nameOfClass}
-                      </span>
-                    ) : null}
-                  </h5>
-                  <div className={styles.inputWrapper}>
-                    <input
-                      onChange={this.inputOnChangeHandler}
-                      name="nameOfClass"
-                      value={this.state.nameOfClass}
-                      className={cx({
-                        formInput: true,
-                        formInputError: errors.nameOfClass
-                      })}
-                      type="text"
-                    />
-                  </div>
-                </div>
-                <div
-                  className={
-                    isDarkTheme
-                      ? `${mainStyles.marginBottom20} ${
-                          styles.formItemWrapper
-                        } ${tableStyles.timetable}`
-                      : `${mainStyles.marginBottom20} ${
-                          styles.formItemWrapper
-                        } ${tableStyles.timetable} ${tableStyles.lightTheme}`
-                  }>
-                  <h6 className={tableStyles.title}>Table Title</h6>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th style={{ textAlign: 'left' }}>Day</th>
-                        <th>Ⅰ</th>
-                        <th>Ⅱ</th>
-                        <th>Ⅲ</th>
-                        <th>Ⅳ</th>
-                        <th>Ⅴ</th>
-                        <th>Ⅵ</th>
-                        <th>Ⅶ</th>
-                        <th>Ⅷ</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td style={{ textAlign: 'left' }}>Monday</td>
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                      </tr>
-                      <tr>
-                        <td style={{ textAlign: 'left' }}>Tuesday</td>
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                      </tr>
-                      <tr>
-                        <td style={{ textAlign: 'left' }}>Wednesday</td>
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                      </tr>
-                      <tr>
-                        <td style={{ textAlign: 'left' }}>Thursday</td>
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                      </tr>
-                      <tr>
-                        <td style={{ textAlign: 'left' }}>Friday</td>
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div
-                  className={`${mainStyles.marginBottom20} ${
-                    styles.formItemWrapper
-                  }`}>
-                  <h5
-                    className={cx({
-                      formFieldLabel: true,
-                      marginBottom8: true,
                       errorLabel: errors.classCode
                     })}>
                     Class Code
-                    {errors.classCode ? (
+                    {errors.category ? (
                       <span className={loginStyles.errorMessage}>
                         {' '}
-                        - {errors.classCode}
+                        - {errors.category}
                       </span>
                     ) : null}
                   </h5>
                   <div className={styles.inputWrapper}>
-                    <input
+                    <select
+                      onBlur={this.onBlur}
                       onChange={this.inputOnChangeHandler}
                       name="classCode"
                       value={this.state.classCode}
                       className={cx({
                         formInput: true,
+                        formSelect: true,
                         formInputError: errors.classCode
-                      })}
-                      type="text"
-                    />
+                      })}>
+                      <option disabled>Select class code</option>
+                      {this.state.classesList === null ? (
+                        <option>Loading...</option>
+                      ) : (
+                        this.state.classesList.map(item => (
+                          <option
+                            key={item.classCode}
+                            value={item.classCode}>{`${item.classCode} - ${
+                            item.nameOfClass
+                          }`}</option>
+                        ))
+                      )}
+                    </select>
                   </div>
                 </div>
+                <Temp />
+                {showTimetable && this.state.isTableLoaded ? (
+                  <div
+                    className={
+                      isDarkTheme
+                        ? `${mainStyles.marginBottom20} ${
+                            styles.formItemWrapper
+                          } ${tableStyles.timetable}`
+                        : `${mainStyles.marginBottom20} ${
+                            styles.formItemWrapper
+                          } ${tableStyles.timetable} ${tableStyles.lightTheme}`
+                    }>
+                    <h6 className={tableStyles.title}>Table Title</h6>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th style={{ textAlign: 'left' }}>Day</th>
+                          <th>Ⅰ</th>
+                          <th>Ⅱ</th>
+                          <th>Ⅲ</th>
+                          <th>Ⅳ</th>
+                          <th>Ⅴ</th>
+                          <th>Ⅵ</th>
+                          <th>Ⅶ</th>
+                          <th>Ⅷ</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td style={{ textAlign: 'left' }}>Monday</td>
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                        </tr>
+                        <tr>
+                          <td style={{ textAlign: 'left' }}>Tuesday</td>
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                        </tr>
+                        <tr>
+                          <td style={{ textAlign: 'left' }}>Wednesday</td>
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                        </tr>
+                        <tr>
+                          <td style={{ textAlign: 'left' }}>Thursday</td>
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                        </tr>
+                        <tr>
+                          <td style={{ textAlign: 'left' }}>Friday</td>
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                ) : !this.state.isTableLoaded && this.state.isTouched ? (
+                  'Loading'
+                ) : null}
                 <div
                   className={`${mainStyles.marginBottom20} ${
                     styles.formItemWrapper
@@ -316,7 +306,10 @@ class Timetable extends Component {
 Timetable.propTypes = {
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
-  updateCurrentRouteTitle: PropTypes.func.isRequired
+  profile: PropTypes.object.isRequired,
+  timetable: PropTypes.object.isRequired,
+  updateCurrentRouteTitle: PropTypes.func.isRequired,
+  getAllClasses: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

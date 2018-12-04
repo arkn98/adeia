@@ -67,12 +67,28 @@ export const logoutUser = () => dispatch => {
 };
 
 // Activate user
-export const activateUser = (userData, history) => dispatch => {
+export const activateUser = (userData, profileData, history) => dispatch => {
   axios
     .post('/api/users/activate', userData)
     .then(res => {
+      axios
+        .post('/api/profile', profileData)
+        .then(res => {
+          dispatch({ type: CLEAR_ERRORS, payload: {} });
+          history.push('/login');
+        })
+        .catch(err =>
+          dispatch({ type: GET_ERRORS, payload: err.response.data })
+        );
+    })
+    .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
+};
+
+export const sendResetEmail = data => dispatch => {
+  axios
+    .post('/api/users/send-reset-email', data)
+    .then(res => {
       dispatch({ type: CLEAR_ERRORS, payload: {} });
-      history.push('/login');
     })
     .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
 };

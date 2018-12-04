@@ -7,6 +7,7 @@ const passport = require('passport');
 const users = require('./routes/api/users');
 const profile = require('./routes/api/profile');
 const admin = require('./routes/api/admin');
+const timetable = require('./routes/api/timetable');
 
 const app = express();
 
@@ -38,6 +39,7 @@ require('./config/passport.js')(passport);
 app.use('/api/users', users);
 app.use('/api/profile', profile);
 app.use('/api/admin', admin);
+app.use('/api/timetable', timetable);
 
 const port = process.env.PORT || 5000;
 

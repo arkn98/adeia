@@ -93,6 +93,7 @@ router.post('/', (req, res) => {
         leaveAllotted.noOfDays = noOfDays;
 
         let profileFields = new Profile({
+          staffId: req.body.staffId,
           user: user.id,
           prevLogins: req.body.prevLogins,
           cplCredits: req.body.cplCredits,

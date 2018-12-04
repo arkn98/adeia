@@ -4,6 +4,10 @@ const Schema = mongoose.Schema;
 //create schema
 const ProfileSchema = new Schema(
   {
+    staffId: {
+      type: String,
+      required: true
+    },
     user: {
       type: Schema.Types.ObjectId,
       ref: 'users'

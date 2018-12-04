@@ -37,7 +37,7 @@ const LeaveSchema = new Schema({
     default: makeid()
   },
   staffId: {
-    type: Number,
+    type: String,
     required: true
   },
   alternatingStaff: [

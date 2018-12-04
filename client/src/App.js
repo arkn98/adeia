@@ -7,6 +7,7 @@ import Dashboard from './Dashboard';
 import PageNotFound from './PageNotFound';
 import { Switch, Route } from 'react-router-dom';
 import PrivateRoute from './components/common/PrivateRoute';
+import ForgotPassword from './ForgotPassword';
 
 class App extends Component {
   render() {

@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import styles from './Home.module.css';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class PageNotFound extends Component {
   render() {
+    const isDarkTheme = this.props.isDarkTheme;
     return (
-      <div style={{ height: '100%' }} className={styles.app}>
+      <div
+        style={{ height: '100%' }}
+        className={
+          isDarkTheme ? `${styles.app}` : `${styles.app} ${styles.lightTheme}`
+        }>
         <div className={styles.banner}>
           <div
             className={styles.title}
@@ -38,6 +42,7 @@ class PageNotFound extends Component {
           <div>
             Currently maintained by&nbsp;
             <a
+              title="My GitHub user page"
               href="https://github.com/arkn98"
               target="_blank"
               rel="noopener noreferrer">
@@ -47,6 +52,7 @@ class PageNotFound extends Component {
           <div>|</div>
           <div>
             <a
+              title="GitHub repo"
               href="https://github.com/arkn98/lms"
               target="_blank"
               rel="noopener noreferrer">
@@ -56,18 +62,18 @@ class PageNotFound extends Component {
           <div>|</div>
           <div>
             <a
-              title="GitHub Repo"
-              href="https://github.com/arkn98/lms"
+              title="Issue Tracker"
+              href="https://github.com/arkn98/lms/issues"
               target="_blank"
               rel="noopener noreferrer">
-              Report Bugs
+              Report an issue
             </a>
           </div>
           <div>|</div>
           <div>
             <a
-              title="GitHub Repo"
-              href="https://github.com/arkn98/lms"
+              title="Submit your feedback"
+              href="https://goo.gl/forms/NP0pqpHuDlRYGoz92"
               target="_blank"
               rel="noopener noreferrer">
               Feedback
@@ -79,15 +85,8 @@ class PageNotFound extends Component {
   }
 }
 
-PageNotFound.propTypes = {
-  auth: PropTypes.object.isRequired
+PageNotFound.defaultProps = {
+  isDarkTheme: true
 };
 
-const mapStateToProps = state => ({
-  auth: state.auth
-});
-
-export default connect(
-  mapStateToProps,
-  {}
-)(withRouter(PageNotFound));
+export default withRouter(PageNotFound);

@@ -20,12 +20,13 @@
     "express": "^4.16.3",
     "jsonwebtoken": "^8.3.0",
     "mongoose": "^5.2.12",
+    "nodemailer": "^4.6.8",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "ua-parser-js": "^0.7.18",
     "validator": "^10.7.0"
   },
   "devDependencies": {
-    "nodemon": "^1.18.4"
+    "nodemon": "^1.18.7"
   }
 }

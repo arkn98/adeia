@@ -7,6 +7,12 @@
   justify-content: space-between;
   color: #fff;
   height: 100%;
+  transition: background 0.17s ease, color 0.17s ease;
+}
+
+.lightTheme.app {
+  background: #fff;
+  color: #4f545c;
 }
 
 .banner {
@@ -24,6 +30,11 @@
   line-height: 44px;
   text-align: center;
   max-width: calc(90% - 100px);
+  transition: color 0.17s ease;
+}
+
+.lightTheme .title {
+  color: #4f545c;
 }
 
 .text {
@@ -35,6 +46,11 @@
   color: hsla(0, 0%, 100%, 0.6);
   max-width: calc(90% - 100px);
   margin-bottom: 30px;
+  transition: color 0.17s ease;
+}
+
+.lightTheme .text {
+  color: #4f545c;
 }
 
 @media screen and (max-width: 465px) {
@@ -122,6 +138,11 @@
   padding-bottom: 24px;
   max-width: calc(100% - 100px);
   color: hsla(0, 0%, 100%, 0.25);
+  transition: color 0.17s ease;
+}
+
+.lightTheme .footer {
+  color: #4f545c;
 }
 
 @media screen and (max-width: 610px) {
@@ -146,7 +167,16 @@
     border-bottom 0.2s cubic-bezier(0.25, 0.25, 0.315, 1.35);
 }
 
+.lightTheme .footer a {
+  color: #4f545c;
+}
+
 .footer a:hover {
-  color: hsla(0, 0%, 100%, 0.5);
-  border-bottom: 1px solid hsla(0, 0%, 100%, 0.5);
+  color: hsla(0, 0%, 100%, 1);
+  border-bottom: 1px solid hsla(0, 0%, 100%, 1);
+}
+
+.lightTheme .footer a:hover {
+  color: #000;
+  border-bottom: 1px solid hsla(0, 0%, 0%, 1);
 }

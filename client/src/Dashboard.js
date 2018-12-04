@@ -12,6 +12,8 @@ import AddAdmin from './components/AddAdmin';
 import AddClass from './components/AddClass';
 import AddCourse from './components/AddCourse';
 import Timetable from './components/Timetable';
+import { ReactComponent as MdNotifications } from './assets/icons/md-notifications.svg';
+import { ReactComponent as MdHelpCirlce } from './assets/icons/md-help-circle.svg';
 import { connect } from 'react-redux';
 import {
   hideLogoutPopup,
@@ -23,6 +25,7 @@ import {
   clearCurrentProfile,
   getCurrentProfile
 } from './actions/profileActions';
+import { getAllClasses } from './actions/timetableActions';
 import Modal from './components/common/Modal';
 import PageNotFound from './PageNotFound';
 
@@ -61,6 +64,7 @@ class Dashboard extends Component {
 
   componentDidMount = () => {
     this.props.getCurrentProfile();
+    /* this.props.getAllClasses(); */
   };
 
   modals = null;
@@ -195,7 +199,7 @@ class Dashboard extends Component {
               />
             )}
           />
-          <Route component={PageNotFound} />
+          <Route render={() => <PageNotFound isDarkTheme={isDarkTheme} />} />
         </Switch>
       );
     } else if (this.props.auth.user.accountType === 1) {
@@ -219,7 +223,7 @@ class Dashboard extends Component {
               />
             )}
           />
-          <Route component={PageNotFound} />
+          <Route render={() => <PageNotFound isDarkTheme={isDarkTheme} />} />
         </Switch>
       );
     } else {
@@ -254,7 +258,7 @@ class Dashboard extends Component {
               />
             )}
           />
-          <Route component={PageNotFound} />
+          <Route render={() => <PageNotFound isDarkTheme={isDarkTheme} />} />
         </Switch>
       );
     }
@@ -290,12 +294,9 @@ class Dashboard extends Component {
                       <div
                         onClick={this.notificationsClickHandler}
                         className={styles.iconWrapper}
-                        style={{ position: 'relative' }}>
-                        <i
-                          className={`icon ion-md-notifications ${
-                            styles.customHeaderIcon
-                          }`}
-                        />
+                        style={{ position: 'relative' }}
+                        title="Notifications">
+                        <MdNotifications className={styles.customHeaderIcon} />
                         {notifCount !== 0 && notifCount !== null ? (
                           <div
                             className={`${notificationStyles.badgeWrapper} ${
@@ -303,8 +304,8 @@ class Dashboard extends Component {
                             }`}
                             style={
                               notifCount.length > 1
-                                ? { right: '-2px' }
-                                : { right: '+2px' }
+                                ? { right: '-7px' }
+                                : { right: '-2px' }
                             }>
                             {notifCount}
                           </div>
@@ -312,15 +313,11 @@ class Dashboard extends Component {
                       </div>
                       <div className={styles.iconWrapper}>
                         <a
-                          title="GitHub Repo"
+                          title="Help"
                           href="https://github.com/arkn98/lms"
                           target="_blank"
                           rel="noopener noreferrer">
-                          <i
-                            className={`icon ion-md-help-circle ${
-                              styles.customHeaderIcon
-                            }`}
-                          />
+                          <MdHelpCirlce className={styles.customHeaderIcon} />
                         </a>
                       </div>
                     </div>
@@ -396,13 +393,15 @@ Dashboard.propTypes = {
   clearCurrentProfile: PropTypes.func.isRequired,
   logoutUser: PropTypes.func.isRequired,
   changeTheme: PropTypes.func.isRequired,
-  showLogoutPopup: PropTypes.func.isRequired
+  showLogoutPopup: PropTypes.func.isRequired,
+  getAllClasses: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
   profile: state.profile,
-  utils: state.utils
+  utils: state.utils,
+  timetable: state.timetable
 });
 
 export default connect(
@@ -413,6 +412,7 @@ export default connect(
     clearCurrentProfile,
     logoutUser,
     changeTheme,
-    showLogoutPopup
+    showLogoutPopup,
+    getAllClasses
   }
 )(withRouter(Dashboard));

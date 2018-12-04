@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import styles from './Login.module.css';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { loginUser } from './actions/authActions';
+import { loginUser, sendResetEmail } from './actions/authActions';
 import classNames from 'classnames/bind';
 
 const cx = classNames.bind({ ...styles });
@@ -16,28 +16,13 @@ class Login extends Component {
     errors: {}
   };
 
-  inputOnChangeHandler = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
-  formSubmitHandler = event => {
-    this.setState({ ...this.state, isSubmitting: true });
-    event.preventDefault();
-    const user = {
-      email: this.state.email,
-      password: this.state.password
-    };
-
-    this.props.loginUser(user);
-  };
-
   componentDidMount = () => {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push('/dashboard');
     }
     setTimeout(() => {
       this.emailInput.focus();
-    }, 500);
+    }, 250);
   };
 
   componentWillReceiveProps = nextProps => {
@@ -51,6 +36,33 @@ class Login extends Component {
         isSubmitting: false
       });
     }
+  };
+
+  inputOnChangeHandler = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  forgotPasswordHandler = event => {
+    this.setState({ ...this.state, isSubmitting: true });
+    event.preventDefault();
+
+    const data = {
+      email: this.state.email
+    };
+
+    this.props.sendResetEmail(data);
+  };
+
+  formSubmitHandler = event => {
+    this.setState({ ...this.state, isSubmitting: true });
+    event.preventDefault();
+
+    const user = {
+      email: this.state.email,
+      password: this.state.password
+    };
+
+    this.props.loginUser(user);
   };
 
   render() {
@@ -127,7 +139,10 @@ class Login extends Component {
                       })}
                     />
                   </div>
-                  <button type="button" className={styles.link}>
+                  <button
+                    onClick={this.forgotPasswordHandler}
+                    type="button"
+                    className={styles.link}>
                     Forgot your password?
                   </button>
                   <button
@@ -175,6 +190,7 @@ class Login extends Component {
               <div>
                 Currently maintained by&nbsp;
                 <a
+                  title="My GitHub user page"
                   href="https://github.com/arkn98"
                   target="_blank"
                   rel="noopener noreferrer">
@@ -184,6 +200,7 @@ class Login extends Component {
               <div>|</div>
               <div>
                 <a
+                  title="GitHub repo"
                   href="https://github.com/arkn98/lms"
                   target="_blank"
                   rel="noopener noreferrer">
@@ -192,11 +209,23 @@ class Login extends Component {
               </div>
               <div>|</div>
               <div>
-                <a href="">Report Bugs</a>
+                <a
+                  title="Issue Tracker"
+                  href="https://github.com/arkn98/lms/issues"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  Report an issue
+                </a>
               </div>
               <div>|</div>
               <div>
-                <a href="">Feedback</a>
+                <a
+                  title="Submit your feedback"
+                  href="https://goo.gl/forms/NP0pqpHuDlRYGoz92"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  Feedback
+                </a>
               </div>
             </div>
           </div>
@@ -209,7 +238,8 @@ class Login extends Component {
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  sendResetEmail: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -219,5 +249,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { loginUser }
+  { loginUser, sendResetEmail }
 )(withRouter(Login));

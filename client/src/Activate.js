@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import styles from './Login.module.css';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { activateUser } from './actions/authActions';
 import { createProfile } from './actions/profileActions';
 import classNames from 'classnames/bind';
@@ -11,6 +11,7 @@ const cx = classNames.bind({ ...styles });
 
 class Activate extends Component {
   state = {
+    isSubmitting: false,
     email: '',
     staffId: '',
     password: '',
@@ -22,6 +23,9 @@ class Activate extends Component {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push('/dashboard');
     }
+    setTimeout(() => {
+      this.staffIdInput.focus();
+    }, 250);
   };
 
   componentWillReceiveProps = nextProps => {
@@ -29,7 +33,11 @@ class Activate extends Component {
       this.props.history.push('/dashboard');
     }
     if (nextProps.errors) {
-      this.setState({ ...this.state, errors: nextProps.errors });
+      this.setState({
+        ...this.state,
+        errors: nextProps.errors,
+        isSubmitting: false
+      });
     }
   };
 
@@ -38,6 +46,7 @@ class Activate extends Component {
   };
 
   formSubmitHandler = event => {
+    this.setState({ ...this.state, isSubmitting: true });
     event.preventDefault();
 
     const newUser = {
@@ -54,8 +63,8 @@ class Activate extends Component {
       leaveAllotted: {}
     };
 
-    this.props.createProfile(newProfile);
-    this.props.activateUser(newUser, this.props.history);
+    //this.props.createProfile(newProfile);
+    this.props.activateUser(newUser, newProfile, this.props.history);
   };
 
   render = () => {
@@ -78,8 +87,7 @@ class Activate extends Component {
                     className={cx({
                       inputLabel: true,
                       errorLabel: errors.staffId
-                    })}
-                  >
+                    })}>
                     Staff ID
                     {errors.staffId ? (
                       <span className={styles.errorMessage}>
@@ -90,6 +98,9 @@ class Activate extends Component {
                   </div>
                   <input
                     name="staffId"
+                    ref={input => {
+                      this.staffIdInput = input;
+                    }}
                     onChange={this.inputOnChangeHandler}
                     value={this.state.staffId}
                     className={cx({
@@ -103,8 +114,7 @@ class Activate extends Component {
                     className={cx({
                       inputLabel: true,
                       errorLabel: errors.email
-                    })}
-                  >
+                    })}>
                     Email
                     {errors.email ? (
                       <span className={styles.errorMessage}>
@@ -128,8 +138,7 @@ class Activate extends Component {
                     className={cx({
                       inputLabel: true,
                       errorLabel: errors.password
-                    })}
-                  >
+                    })}>
                     Password
                     {errors.password ? (
                       <span className={styles.errorMessage}>
@@ -154,8 +163,7 @@ class Activate extends Component {
                     className={cx({
                       inputLabel: true,
                       errorLabel: errors.password2
-                    })}
-                  >
+                    })}>
                     Confirm Password
                     {errors.password2 ? (
                       <span className={styles.errorMessage}>
@@ -175,8 +183,39 @@ class Activate extends Component {
                     })}
                   />
                 </div>
+                {/* 
                 <button type="submit" className={styles.login}>
                   Continue
+                </button> */}
+                <button
+                  className={
+                    this.state.isSubmitting
+                      ? `${styles.login} ${styles.submitting}`
+                      : `${styles.login}`
+                  }>
+                  {this.state.isSubmitting ? (
+                    <span className={styles.spinner}>
+                      <span className={styles.spinnerInner}>
+                        <span
+                          className={`${styles.pulsingEllipsisItem} ${
+                            styles.spinnerItem
+                          }`}
+                        />
+                        <span
+                          className={`${styles.pulsingEllipsisItem} ${
+                            styles.spinnerItem
+                          }`}
+                        />
+                        <span
+                          className={`${styles.pulsingEllipsisItem} ${
+                            styles.spinnerItem
+                          }`}
+                        />
+                      </span>
+                    </span>
+                  ) : (
+                    <div className={styles.contents}>Continue</div>
+                  )}
                 </button>
                 <div className={styles.marginTop4}>
                   <div className={`${styles.smallLink} ${styles.link}`}>
@@ -190,30 +229,42 @@ class Activate extends Component {
             <div>
               Currently maintained by&nbsp;
               <a
+                title="My GitHub user page"
                 href="https://github.com/arkn98"
                 target="_blank"
-                rel="noopener noreferrer"
-              >
+                rel="noopener noreferrer">
                 Arun Kumar
               </a>
             </div>
             <div>|</div>
             <div>
               <a
+                title="GitHub repo"
                 href="https://github.com/arkn98/lms"
                 target="_blank"
-                rel="noopener noreferrer"
-              >
+                rel="noopener noreferrer">
                 View Source Code
               </a>
             </div>
             <div>|</div>
             <div>
-              <a href="">Report Bugs</a>
+              <a
+                title="Issue Tracker"
+                href="https://github.com/arkn98/lms/issues"
+                target="_blank"
+                rel="noopener noreferrer">
+                Report an issue
+              </a>
             </div>
             <div>|</div>
             <div>
-              <a href="">Feedback</a>
+              <a
+                title="Submit your feedback"
+                href="https://goo.gl/forms/NP0pqpHuDlRYGoz92"
+                target="_blank"
+                rel="noopener noreferrer">
+                Feedback
+              </a>
             </div>
           </div>
         </div>

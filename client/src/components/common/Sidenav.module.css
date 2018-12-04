@@ -160,12 +160,12 @@
   padding-right: 5px;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: color 0.17s ease;
+  transition: color 0.17s ease, opacity 0.17s ease;
 }
 
 .lightTheme .menuText {
-  color: #4f545c;
-  opacity: 0.75;
+  color: #72767d;
+  opacity: 1;
 }
 
 .menuItemActive .menuText,
@@ -173,9 +173,16 @@
   opacity: 1;
 }
 
+.lightTheme .menuItem:hover .menuText {
+  color: #4f545c;
+}
+
 .lightTheme .menuItemActive .menuText {
   color: #fff;
-  opacity: 1;
+}
+
+.lightTheme .menuItemActive.menuItem:hover .menuText {
+  color: #fff;
 }
 
 .menuItem a {
@@ -196,6 +203,21 @@
   transition: color 0.17s ease;
 }
 
+.customIconTest {
+  fill: #f6f6f7;
+  position: relative;
+  width: 18px;
+  padding-right: 12px;
+  padding-left: 4px;
+  fill-opacity: 0.3;
+  transition: fill 0.17s ease;
+}
+
+.lightTheme .customIconTest {
+  fill: #72767d;
+  fill-opacity: 1;
+}
+
 .lightTheme .customIcon {
   opacity: 1;
   color: #4f545c;
@@ -204,6 +226,11 @@
 .lightTheme .menuItemActive .customIcon {
   color: #fff;
   opacity: 1;
+}
+
+.lightTheme .menuItemActive .customIconTest {
+  fill: #fff;
+  fill-opacity: 1;
 }
 
 .customHeaderIcons {
@@ -243,9 +270,24 @@
   transition: color 0.17s ease;
 }
 
+.customHeaderIconTest {
+  cursor: pointer;
+  position: relative;
+  fill: #f6f6f7;
+  width: 18px;
+  top: 4px;
+  fill-opacity: 0.3;
+  transition: fill 0.17s ease;
+}
+
 .lightTheme .customHeaderIcon {
   color: #4f545c;
   opacity: 0.75;
+}
+
+.lightTheme .customHeaderIconTest {
+  fill: #4f545c;
+  fill-opacity: 0.5;
 }
 
 .customHeaderIcons .iconWrapper:last-child {
@@ -256,13 +298,34 @@
   opacity: 0.6;
 }
 
+.customHeaderIconTest:hover {
+  fill-opacity: 0.6;
+}
+
 .lightTheme .customHeaderIcon:hover {
   opacity: 1;
+}
+
+.lightTheme .customHeaderIconTest:hover {
+  fill-opacity: 1;
+}
+
+.lightTheme .menuItem:hover .customIconTest {
+  fill: #4f545c;
+}
+
+.menuItemActive .customIconTest,
+.menuItem:hover .customIconTest {
+  fill-opacity: 1;
 }
 
 .menuItemActive .customIcon,
 .menuItem:hover .customIcon {
   opacity: 1;
+}
+
+.lightTheme .menuItemActive .customIconTest {
+  fill: #fff !important;
 }
 
 .menuHeader {
@@ -313,9 +376,24 @@
   transition: color 0.17s ease;
 }
 
+.userContainer .customIconTest {
+  fill: #f6f6f7;
+  width: 30px;
+  fill-opacity: 1;
+  top: 2px;
+  padding-left: 2px;
+  position: relative;
+  transition: fill 0.17s ease;
+}
+
 .lightTheme .userContainer .customIcon {
   color: #4f545c;
   opacity: 1;
+}
+
+.lightTheme .userContainer .customIconTest {
+  fill: #4f545c;
+  fill-opacity: 1;
 }
 
 .userContainer .userName {
@@ -351,8 +429,19 @@
   opacity: 0.75;
 }
 
+.userContainer .userSettings .customIconTest {
+  width: 16px;
+  padding-right: 0px;
+  padding-left: 0px;
+  fill-opacity: 0.75;
+}
+
 .lightTheme .userContainer .userSettings .customIcon {
   opacity: 1;
+}
+
+.lightTheme .userContainer .userSettings .customIconTest {
+  fill-opacity: 1;
 }
 
 .iconSelector {
@@ -365,24 +454,6 @@
   border-radius: 3px;
 }
 
-/* .settingsMenu {
-  border-radius: 5px;
-  background: #282b30;
-  overflow: hidden;
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.82), 0 1px 4px rgba(0, 0, 0, 0.1);
-  position: absolute;
-  display: none;
-  background-color: #2e2e2e;
-  bottom: 45px;
-  left: 55px;
-  min-width: 160px;
-  z-index: 1001;
-}
-
-.settingsMenuVisible {
-  display: block;
-} */
-
 .iconSelectorHovered,
 .userSettings:hover .iconSelector {
   background: hsla(0, 0%, 0%, 0.3);
@@ -392,27 +463,6 @@
 .lightTheme .userSettings:hover .iconSelector {
   background: rgba(79, 84, 92, 0.1);
 }
-
-/* 
-.userSettings:hover .iconSelector .customIcon {
-  opacity: 1;
-} */
-
-/* .settingsMenu li {
-  color: #fff;
-  cursor: pointer;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.settingsMenu:hover li:hover {
-  background-color: #25282d;
-}
-
-.settingsMenu li:hover {
-  background-color: #25282d;
-} */
 
 .popouts {
   /* left: 0;
@@ -435,9 +485,7 @@
   height: 152px;
   width: 216px;
   transform: translateY(-5%) translateX(calc(5% - 0.5px)) translateZ(0);
-  -webkit-transform: translateZ(0);
   transform: translateZ(0);
-  /* -webkit-font-smoothing: antialiased; */
 }
 
 .item {
@@ -451,11 +499,13 @@
   padding: 10px 14px;
   box-sizing: border-box;
   color: hsla(0, 0%, 100%, 0.6);
-  transition: color 0.17s ease;
+  fill: hsla(0, 0%, 100%, 0.6);
+  transition: color 0.17s ease, fill 0.17s ease;
 }
 
 .lightTheme .item {
   color: #4f545c;
+  fill: #4f545c;
 }
 
 .settingsMenu {
@@ -480,11 +530,15 @@
 .item:hover {
   background-color: #25282d;
   color: #fff;
+  fill: #fff;
 }
 
 .lightTheme .item:hover {
   background-color: rgba(79, 84, 92, 0.1);
   color: #4f545c;
+  fill: #4f545c;
+  opacity: 1;
+  fill-opacity: 1;
 }
 
 .menuIcon {
@@ -494,24 +548,39 @@
   opacity: 0.8;
 }
 
+.menuIconTest {
+  width: 16px;
+  flex-shrink: 0;
+  margin-right: 12px;
+  fill-opacity: 0.6;
+}
+
+.lightTheme .menuIconTest {
+  fill-opacity: 0.8;
+}
+
 .danger {
+  fill: rgb(240, 71, 71);
   color: rgb(240, 71, 71);
   font-weight: 500;
 }
 
 .lightTheme .danger {
   color: rgb(240, 71, 71);
+  fill: rgb(240, 71, 71);
   font-weight: 500;
 }
 
 .item.danger:hover {
   background-color: rgba(240, 71, 71, 0.1);
   color: rgb(240, 71, 71);
+  fill: rgb(240, 71, 71);
 }
 
 .item.danger:active {
   background-color: rgba(240, 71, 71, 1);
   color: #fff;
+  fill: #fff;
 }
 
 .seperator2 {

@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const passport = require('passport');
+const sendMail = require('../../utils/email');
 let parser = require('ua-parser-js');
 
 //load input validation
@@ -11,6 +12,7 @@ const validateRegisterInput = require('../../validation/register');
 const validateLoginInput = require('../../validation/login');
 const validateActivateInput = require('../../validation/activate');
 const validateAddAccountInput = require('../../validation/addaccount');
+const validateResetMailInput = require('../../validation/sendResetMail');
 
 //load user model
 const User = require('../../models/User');
@@ -82,45 +84,43 @@ router.post(
       if (!isValid) {
         return res.status(400).json(errors);
       }
-      User.findOne({ staffId: req.body.staffId, email: req.body.email }).then(
-        user => {
-          if (user) {
-            errors.staffId = 'Staff already exists';
-            return res.status(400).json(errors);
-          } else {
-            const newUser = new User({
-              staffId: req.body.staffId,
-              name: req.body.name,
-              designation: req.body.designation,
-              category: req.body.category,
-              staffType: req.body.staffType
-            });
+      User.findOne({ staffId: req.body.staffId }).then(user => {
+        if (user) {
+          errors.staffId = 'Staff already exists';
+          return res.status(400).json(errors);
+        } else {
+          const newUser = new User({
+            staffId: req.body.staffId,
+            name: req.body.name,
+            designation: req.body.designation,
+            category: req.body.category,
+            staffType: req.body.staffType
+          });
 
-            //0 -- regular teaching -- rt
-            //1 -- regular non teaching -- rnt
-            //2 -- teaching fellows -- tf
-            //3 -- non teaching (no leave) -- nt
-            //4 -- research scholars - 30 days -- rs30
-            //5 -- research scholars - 20 days -- rs20
-            //6 -- research scholars - others (6 days) -- rso
-            //7 -- others -- oth
+          //0 -- regular teaching -- rt
+          //1 -- regular non teaching -- rnt
+          //2 -- teaching fellows -- tf
+          //3 -- non teaching (no leave) -- nt
+          //4 -- research scholars - 30 days -- rs30
+          //5 -- research scholars - 20 days -- rs20
+          //6 -- research scholars - others (6 days) -- rso
+          //7 -- others -- oth
 
-            //<option>Regular Teaching Staff</option>
-            //<option>Regular Non-Teaching Staff</option>
-            //<option>Teaching Fellows</option>
-            //<option>Non-Teaching - No Leave</option>
-            //<option>Research Scholars - 30</option>
-            //<option>Research Scholars - 20</option>
-            //<option>Research Scholars - Others</option>
-            //<option>Others</option> */
+          //<option>Regular Teaching Staff</option>
+          //<option>Regular Non-Teaching Staff</option>
+          //<option>Teaching Fellows</option>
+          //<option>Non-Teaching - No Leave</option>
+          //<option>Research Scholars - 30</option>
+          //<option>Research Scholars - 20</option>
+          //<option>Research Scholars - Others</option>
+          //<option>Others</option> */
 
-            newUser
-              .save()
-              .then(user => res.json(user))
-              .catch(err => console.log(err));
-          }
+          newUser
+            .save()
+            .then(user => res.json(user))
+            .catch(err => console.log(err));
         }
-      );
+      });
     } else {
       return res
         .status(400)
@@ -139,26 +139,40 @@ router.post('/activate', (req, res) => {
   if (!isValid) {
     return res.status(400).json(errors);
   }
-  User.findOne({ staffId: req.body.staffId })
+  User.findOne({ email: req.body.email })
     .then(user => {
-      if (user.activated == 1) {
-        errors.staffId = 'Staff account already activated';
+      if (user) {
+        errors.email = 'Email already in use';
         return res.status(400).json(errors);
-      } else {
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(req.body.password, salt, (err, hash) => {
-            if (err) throw err;
-            user.set({ activated: 1, email: req.body.email, password: hash });
-            user
-              .save()
-              .then(user => res.json(user))
-              .catch(err => console.log(err));
-          });
-        });
       }
+      User.findOne({ staffId: req.body.staffId })
+        .then(user => {
+          if (user.activated == 1) {
+            errors.staffId = 'Staff account already activated';
+            return res.status(400).json(errors);
+          }
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(req.body.password, salt, (err, hash) => {
+              if (err) throw err;
+              user.set({
+                activated: 1,
+                email: req.body.email,
+                password: hash
+              });
+              user
+                .save()
+                .then(user => res.json(user))
+                .catch(err => console.log(err));
+            });
+          });
+        })
+        .catch(err => {
+          errors.staffId = 'Staff account not found';
+          return res.status(400).json(errors);
+        });
     })
     .catch(err => {
-      errors.staffId = 'No Staff account found';
+      errors.staffId = 'Staff account not found';
       return res.status(400).json(errors);
     });
 });
@@ -300,5 +314,23 @@ router.get(
       .catch(err => res.status(400).json(err));
   }
 ); */
+
+router.post('/send-reset-email', (req, res) => {
+  const { errors, isValid } = validateResetMailInput(req.body);
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+  const email = req.body.email;
+  User.findOne({ email })
+    .then(user => {
+      if (!user) {
+        errors.email = 'User not found';
+        return res.status(404).json(errors);
+      }
+      sendMail(email);
+      return res.json({ msg: 'Password reset mail sent to ' + email });
+    })
+    .catch(err => console.log(err));
+});
 
 module.exports = router;
