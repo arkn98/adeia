@@ -27,6 +27,10 @@
   margin-bottom: 0;
   line-height: 20px;
   font-size: 16px;
+  width: 95%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .lightTheme .formTitle {
@@ -34,6 +38,10 @@
 }
 
 .formSubtitle {
+  width: 95%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   color: #b9bbbe;
   line-height: 16px;
   font-size: 12px;
@@ -117,9 +125,18 @@
   text-transform: uppercase;
   flex: 1;
   font-weight: 600;
+  width: 95%;
   line-height: 16px;
   font-size: 14px;
   transition: color 0.17s ease;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.enforceSingleRow {
+  display: flex;
 }
 
 .lightTheme .formFieldLabel {

@@ -2,6 +2,8 @@
   border-radius: 5px;
   overflow: hidden;
   width: 216px;
+  overflow-y: auto;
+  max-height: 500px;
   display: none;
   background: #282b30;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.82), 0 1px 4px rgba(0, 0, 0, 0.1);
@@ -46,14 +48,20 @@
   z-index: 1001;
   position: absolute;
   overflow: hidden;
-  left: 1322px;
-  top: 37px;
-  transform: translateX(-100%) translateY(0%) translateZ(0px);
+  /* left: 1322px; */
+  top: 30px;
+  left: -380px;
   max-height: 578px;
   width: 420px;
-  min-height: 384px;
-  -webkit-font-smoothing: antialiased;
+  min-height: 384px; /*  */
   margin-top: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .popout {
+    left: -260px;
+    width: 320px;
+  }
 }
 
 .notifications {
@@ -74,7 +82,8 @@
   background-color: #35393e;
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
   border-radius: 5px 5px 0 0;
-  z-index: 1;
+  z-index: 1002;
+  position: relative;
   padding: 12px 20px;
   transition: background-color 0.17s ease, box-shadow 0.17s ease;
 }
@@ -98,9 +107,6 @@
   flex-shrink: 0;
   border-bottom-color: transparent;
   margin-bottom: 0;
-}
-
-.lightTheme .tabBar {
 }
 
 .tabBarItem {
@@ -151,14 +157,20 @@
   position: relative;
   display: flex;
   flex: 1;
+  overflow: hidden;
   min-height: 1px;
+  height: 100%;
+  max-height: 300px;
 }
 
 .scroller {
   overflow-y: auto;
   flex: 1;
+  height: 100%;
+  min-height: 1px;
   padding: 13px 5px 7px 13px;
   padding-right: 14px;
+  margin-bottom: 24px;
   min-height: 1px;
   box-sizing: border-box;
   border-radius: 0 0 5px 5px;
@@ -174,12 +186,7 @@
 } */
 
 .channelSeperator {
-  margin-bottom: 10px;
-  margin-top: 26px;
-}
-
-.channelSeperator:first-of-type {
-  margin-top: 13px;
+  margin-bottom: 4px;
 }
 
 .channelName {
@@ -216,12 +223,16 @@
   border-radius: 5px;
   border-style: solid;
   border-width: 2px;
-  margin: 0 0 6px;
+  margin-bottom: 16px;
   overflow: hidden;
   padding: 10px;
   position: relative;
   transition: border-color 0.1s ease-in-out, background-color 0.17s ease;
   cursor: pointer;
+}
+
+.msgGroupWrapper:last-of-type {
+  margin-bottom: 20px;
 }
 
 .lightTheme .msgGroupWrapper {

@@ -431,9 +431,12 @@ class LeaveApplication extends Component {
                       <div className={styles.formItemRowChild}>
                         <h5
                           className={`${styles.formFieldLabel} ${
-                            mainStyles.marginBottom8
-                          }`}>
-                          To{' '}
+                            styles.enforceSingleRow
+                          } ${mainStyles.marginBottom8}`}>
+                          To
+                          <span className={`${styles.smallText}`}>
+                            &nbsp; (weekends are automatically excluded)
+                          </span>
                           {/* <span
                               onMouseEnter={this.infoBoxToggleHandler}
                               onMouseLeave={this.infoBoxToggleHandler}

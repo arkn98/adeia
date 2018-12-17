@@ -9,13 +9,15 @@ let transporter = nodemailer.createTransport({
   }
 });
 
-let mailOptions = {
-  from: 'arun19091998@gmail.com',
-  subject: 'test email',
-  html: '<p><b>test mail</b></p>'
-};
-
-module.exports = function sendMail(email) {
+module.exports = function sendMail(email, token) {
+  let mailOptions = {
+    from: keys.emailID,
+    subject: 'test email',
+    html:
+      '<p><b>Click this link to reset your email - https://localhost:3000/reset-password/' +
+      token +
+      '</b></p>'
+  };
   mailOptions.to = email;
   transporter.sendMail(mailOptions, function(err, info) {
     if (err) console.log(err);

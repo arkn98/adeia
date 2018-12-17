@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const passport = require('passport');
 const sendMail = require('../../utils/email');
+const crypto = require('crypto');
 let parser = require('ua-parser-js');
 
 //load input validation
@@ -13,9 +14,11 @@ const validateLoginInput = require('../../validation/login');
 const validateActivateInput = require('../../validation/activate');
 const validateAddAccountInput = require('../../validation/addaccount');
 const validateResetMailInput = require('../../validation/sendResetMail');
+const validateResetPasswordInput = require('../../validation/resetPassword');
 
 //load user model
 const User = require('../../models/User');
+const Profile = require('../../models/Profile');
 
 // @route   GET   api/users/test
 // @desc    Tests users route
@@ -182,7 +185,7 @@ router.post('/activate', (req, res) => {
 // @access  Public
 router.post('/setlogindetails', (req, res) => {
   User.findOne({ staffId: req.body.staffId })
-    .then(user => {
+  .then(user => {
       user.set({ prevLogins: [...user.prevLogins, req.body.sessionData] });
       user
         .save()
@@ -209,19 +212,41 @@ router.get(
       });
     });
   }
-); */
+  ); */
 
 // @route   GET   api/users/getclientdetails
 // @desc    Login user / return JWT
 // @access  Public
 router.get('/getclientdetails', (req, res) => {
   let ua = parser(req.headers['user-agent']);
-  res.json({
+  return res.json({
     browser: ua.browser.name,
+    browserVersion: ua.browser.version,
     os: ua.os.name,
+    osVersion: ua.os.version,
     ip: req.headers['x-forwarded-for'],
     ip2: req.connection.remoteAddress
   });
+});
+
+router.post('/set-login-attempts', (req, res) => {
+  User.findOne({ email: req.body.email })
+    .then(user => {
+      if (!user) {
+        return res.status(404).json({ msg: 'User not found' });
+      }
+      Profile.findOne({ staffId: user.staffId })
+        .then(profile => {
+          if (!profile) {
+            return res.status(404).json({ msg: 'User not found' });
+          }
+          delete req.body.email;
+          profile.prevLogins.push(req.body);
+          profile.save();
+        })
+        .catch(err => console.log(err));
+    })
+    .catch(err => console.log(err));
 });
 
 // @route   POST   api/users/login
@@ -256,6 +281,12 @@ router.post('/login', (req, res) => {
           accountType: user.accountType,
           staffType: user.staffType
         };
+
+        if (user.resetPasswordToken && user.resetPasswordToken !== '') {
+          user.set({ resetPasswordToken: '', resetPasswordExpires: -1 });
+          user.save();
+        }
+
         //sign the token
         jwt.sign(
           payload,
@@ -292,7 +323,7 @@ router.get(
     });
   }
 );
- */
+*/
 
 /* router.post(
   '/current',
@@ -300,7 +331,7 @@ router.get(
   (req, res) => {
     let userObj = {};
     User.findOne({ staffId: req.body.staffId })
-      .then(user => {
+    .then(user => {
         userObj.staffId = user.staffId;
         userObj.email = user.email;
         userObj.name = user.name;
@@ -313,7 +344,7 @@ router.get(
       })
       .catch(err => res.status(400).json(err));
   }
-); */
+  ); */
 
 router.post('/send-reset-email', (req, res) => {
   const { errors, isValid } = validateResetMailInput(req.body);
@@ -327,10 +358,93 @@ router.post('/send-reset-email', (req, res) => {
         errors.email = 'User not found';
         return res.status(404).json(errors);
       }
-      sendMail(email);
-      return res.json({ msg: 'Password reset mail sent to ' + email });
+      const token = crypto.randomBytes(128).toString('hex');
+      user.set({
+        resetPasswordToken: token,
+        resetPasswordExpires: Date.now() + 30 * 60 * 1000
+      });
+      user
+        .save()
+        .then(user => {
+          sendMail(email, token);
+          return res.json({ msg: 'Password reset mail sent to ' + email });
+        })
+        .catch(err => {
+          errors.msg = 'Error';
+          return res.status(404).json(errors);
+        });
     })
     .catch(err => console.log(err));
+});
+
+router.get('/check-reset-token', (req, res) => {
+  /* const { errors, isValid } = validateResetTokenInput(req.query);
+  //
+  if (!isValid) {
+    return res.status(400).json(errors);
+  } */
+  console.log(req.query.token);
+  User.findOne({
+    resetPasswordToken: req.query.token,
+    resetPasswordExpires: { $gt: Date.now() }
+  }).then(user => {
+    if (!user) {
+      return res.status(404).json({ status: false });
+    }
+    let userObj = {};
+    userObj.name = user.name;
+    let tempPos = user.email.search('@');
+    tempPos = tempPos - 1;
+    let xString = '';
+    for (let i = 1; i < tempPos; i++) {
+      xString += 'x';
+    }
+    userObj.email =
+      user.email.charAt(0) + xString + user.email.substring(tempPos);
+    userObj.staffId = user.staffId;
+    res.json({ status: true, user: userObj });
+  });
+});
+
+// @route   POST   api/users/reset-password
+// @desc    Reset password
+// @access  Public - token protected
+router.post('/reset-password', (req, res) => {
+  const { errors, isValid } = validateResetPasswordInput(req.body);
+
+  //check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+  User.findOne({
+    staffId: req.body.staffId,
+    resetPasswordToken: req.body.token,
+    resetPasswordExpires: { $gt: Date.now() }
+  })
+    .then(user => {
+      if (!user) {
+        errors.msg = 'Link has expired';
+        return res.status(400).json(errors);
+      }
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(req.body.password, salt, (err, hash) => {
+          if (err) throw err;
+          user.set({
+            password: hash,
+            resetPasswordExpires: -1,
+            resetPasswordToken: ''
+          });
+          user
+            .save()
+            .then(user => res.json(user))
+            .catch(err => console.log(err));
+        });
+      });
+    })
+    .catch(err => {
+      errors.msg = 'Link has expired';
+      return res.status(400).json(errors);
+    });
 });
 
 module.exports = router;

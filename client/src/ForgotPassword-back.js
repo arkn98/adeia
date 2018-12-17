@@ -3,21 +3,21 @@ import { Link, withRouter } from 'react-router-dom';
 import styles from './Login.module.css';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  loginUser,
-  sendResetEmail,
-  setLoginAttempts
-} from './actions/authActions';
+import { activateUser } from './actions/authActions';
+import { createProfile } from './actions/profileActions';
 import classNames from 'classnames/bind';
+import axios from 'axios';
+import PageNotFound from './PageNotFound';
 
 const cx = classNames.bind({ ...styles });
 
-class Login extends Component {
+class ForgotPassword extends Component {
   state = {
     isSubmitting: false,
-    email: '',
-    password: '',
-    errors: {}
+    newPassword: '',
+    password2: '',
+    errors: {},
+    shouldDisplay: false
   };
 
   componentDidMount = () => {
@@ -25,14 +25,14 @@ class Login extends Component {
       this.props.history.push('/dashboard');
     }
     setTimeout(() => {
-      this.emailInput.focus();
+      if (this.newPasswordInput) this.newPasswordInput.focus();
     }, 250);
   };
 
   componentWillReceiveProps = nextProps => {
-    if (nextProps.auth.isAuthenticated) {
+    /* if (nextProps.auth.isAuthenticated) {
       this.props.history.push('/dashboard');
-    }
+    } */
     if (nextProps.errors) {
       this.setState({
         ...this.state,
@@ -42,41 +42,54 @@ class Login extends Component {
     }
   };
 
-  inputOnChangeHandler = event => {
-    this.setState({ [event.target.name]: event.target.value });
+  componentWillMount = () => {
+    const token = this.props.match.params.token;
+    //console.log(token);
+    axios
+      .get('/api/users/check-reset-token', {
+        params: {
+          token: token
+        }
+      })
+      .then(res => {
+        console.log(res.data);
+        this.setState({ ...this.state, shouldDisplay: res.data.status });
+      })
+      .catch(err => console.log(err));
   };
 
-  forgotPasswordHandler = event => {
-    this.setState({ ...this.state, isSubmitting: true });
-    event.preventDefault();
-
-    const data = {
-      email: this.state.email
-    };
-
-    this.props.sendResetEmail(data);
+  inputOnChangeHandler = event => {
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   formSubmitHandler = event => {
     this.setState({ ...this.state, isSubmitting: true });
     event.preventDefault();
 
-    const user = {
+    /* const newUser = {
       email: this.state.email,
-      password: this.state.password
+      staffId: this.state.staffId,
+      password: this.state.password,
+      password2: this.state.password2
     };
 
-    this.props.loginUser(user);
-    /* if (this.state.errors) this.props.setLoginAttempts(this.state.email, false);
-    else this.props.setLoginAttempts(this.state.email, true); */
+    const newProfile = {
+      staffId: this.state.staffId,
+      prevLogins: {},
+      cplCredits: 0,
+      leaveAllotted: {}
+    };
+
+    //this.props.createProfile(newProfile);
+    this.props.activateUser(newUser, newProfile, this.props.history); */
   };
 
-  render() {
+  render = () => {
     const { errors } = this.state;
-    return (
-      <div className={styles.root}>
-        <div className={styles.app}>
-          <div className={styles.dummy}>
+    if (this.state.shouldDisplay === true) {
+      return (
+        <div className={styles.root}>
+          <div className={styles.app}>
             <div className={styles.banner}>
               <div className={styles.logo}>
                 <Link to="/">LMS</Link>
@@ -85,10 +98,7 @@ class Login extends Component {
                 <div className={styles.logo}>
                   <Link to="/">LMS</Link>
                 </div>
-                <div className={styles.title}>Welcome back!</div>
-                <div className={styles.subTitle}>
-                  We're so excited to see you again!
-                </div>
+                <div className={styles.title}>Reset your password</div>
                 <form
                   onSubmit={this.formSubmitHandler}
                   className={styles.block}>
@@ -96,61 +106,53 @@ class Login extends Component {
                     <div
                       className={cx({
                         inputLabel: true,
-                        errorLabel: errors.email
+                        errorLabel: errors.newPassword
                       })}>
-                      Email
-                      {errors.email ? (
+                      New password
+                      {errors.newPassword ? (
                         <span className={styles.errorMessage}>
                           {' '}
-                          - {errors.email}
+                          - {errors.newPassword}
                         </span>
                       ) : null}
                     </div>
                     <input
-                      name="email"
-                      type="email"
+                      name="newPassword"
                       ref={input => {
-                        this.emailInput = input;
+                        this.newPasswordInput = input;
                       }}
                       onChange={this.inputOnChangeHandler}
-                      value={this.state.email}
+                      value={this.state.newPassword}
                       className={cx({
                         inputField: true,
-                        formInputError: errors.email
+                        formInputError: errors.newPassword
                       })}
                     />
                   </div>
-                  <div>
+                  <div className={styles.marginBottom20}>
                     <div
                       className={cx({
                         inputLabel: true,
-                        errorLabel: errors.password
+                        errorLabel: errors.password2
                       })}>
-                      Password
-                      {errors.password ? (
+                      Confirm Password
+                      {errors.password2 ? (
                         <span className={styles.errorMessage}>
                           {' '}
-                          - {errors.password}
+                          - {errors.password2}
                         </span>
                       ) : null}
                     </div>
                     <input
-                      name="password"
-                      type="password"
+                      name="password2"
                       onChange={this.inputOnChangeHandler}
-                      value={this.state.password}
+                      value={this.state.password2}
                       className={cx({
                         inputField: true,
-                        formInputError: errors.password
+                        formInputError: errors.password2
                       })}
                     />
                   </div>
-                  <button
-                    onClick={this.forgotPasswordHandler}
-                    type="button"
-                    className={styles.link}>
-                    Forgot your password?
-                  </button>
                   <button
                     className={
                       this.state.isSubmitting
@@ -178,15 +180,12 @@ class Login extends Component {
                         </span>
                       </span>
                     ) : (
-                      <div className={styles.contents}>Login</div>
+                      <div className={styles.contents}>Reset Password</div>
                     )}
                   </button>
                   <div className={styles.marginTop4}>
-                    <span className={styles.needAccount}>
-                      Account not activated?
-                    </span>
                     <div className={`${styles.smallLink} ${styles.link}`}>
-                      <Link to="/activate">Activate here</Link>
+                      <Link to="/login">Already have an account?</Link>
                     </div>
                   </div>
                 </form>
@@ -196,7 +195,6 @@ class Login extends Component {
               <div>
                 Currently maintained by&nbsp;
                 <a
-                  title="My GitHub user page"
                   href="https://github.com/arkn98"
                   target="_blank"
                   rel="noopener noreferrer">
@@ -206,7 +204,6 @@ class Login extends Component {
               <div>|</div>
               <div>
                 <a
-                  title="GitHub repo"
                   href="https://github.com/arkn98/lms"
                   target="_blank"
                   rel="noopener noreferrer">
@@ -215,38 +212,27 @@ class Login extends Component {
               </div>
               <div>|</div>
               <div>
-                <a
-                  title="Issue Tracker"
-                  href="https://github.com/arkn98/lms/issues"
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  Report an issue
-                </a>
+                <a href="">Report Bugs</a>
               </div>
               <div>|</div>
               <div>
-                <a
-                  title="Submit your feedback"
-                  href="https://goo.gl/forms/NP0pqpHuDlRYGoz92"
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  Feedback
-                </a>
+                <a href="">Feedback</a>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    );
-  }
+      );
+    } else {
+      return <PageNotFound />;
+    }
+  };
 }
 
-Login.propTypes = {
-  loginUser: PropTypes.func.isRequired,
+ForgotPassword.propTypes = {
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
-  sendResetEmail: PropTypes.func.isRequired,
-  setLoginAttempts: PropTypes.func.isRequired
+  activateUser: PropTypes.func.isRequired,
+  createProfile: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -256,5 +242,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { loginUser, sendResetEmail, setLoginAttempts }
-)(withRouter(Login));
+  { activateUser, createProfile }
+)(withRouter(ForgotPassword));

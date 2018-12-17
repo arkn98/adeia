@@ -1,4 +1,5 @@
 .app {
+  overflow: auto;
   background: #18191c;
   margin: none;
   padding: none;
@@ -67,6 +68,38 @@
   width: 50%;
 }
 
+.buttonTransparent {
+  border: 1px solid #fff;
+  cursor: pointer;
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 16px;
+  transition: background-color 0.1s ease, border-color 0.1s ease,
+    color 0.1s ease;
+}
+
+.buttonTransparent:hover,
+.buttonTransparent:active {
+  background-color: #7289da;
+  border-color: #7289da;
+  color: #fff;
+}
+
+.lightTheme .buttonTransparent {
+  border-color: #e3e7f8;
+  color: #7289da;
+}
+
+.lightTheme .buttonTransparent:hover,
+.lightTheme .buttonTransparent:active {
+  background-color: #7289da;
+  border-color: #7289da;
+  color: #fff;
+}
+
 .button {
   border-radius: 3px;
   width: 250px;
@@ -91,7 +124,7 @@
   margin-right: 0px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1024px) {
   .buttons {
     max-width: calc(90% - 50px);
   }
@@ -105,6 +138,7 @@
     margin-right: 0px;
   }
 }
+
 .button:hover {
   box-shadow: none;
   box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.4);
@@ -122,9 +156,6 @@
 }
 
 .footer {
-  /* min-width: 500px;
-  margin-left: auto;
-  margin-right: auto; */
   display: flex;
   flex-direction: row;
   justify-content: center;

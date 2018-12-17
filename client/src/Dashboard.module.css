@@ -16,6 +16,37 @@
   overflow: hidden;
 }
 
+@media screen and (max-width: 768px) {
+  .sideNavWrapper {
+    width: 0;
+    flex: none;
+  }
+
+  .sideNavVisible {
+    position: fixed;
+    z-index: 1001;
+    flex: none;
+    width: 240px !important;
+  }
+
+  .mainWrapper {
+    flex: none;
+    width: 100%;
+  }
+}
+
+.sideNavToggle {
+  padding-top: 3px !important;
+  margin-right: 8px;
+  height: 22px;
+}
+
+@media screen and (min-width: 769px) {
+  .sideNavToggle {
+    display: none;
+  }
+}
+
 .backdrop {
   bottom: 0;
   left: 0;

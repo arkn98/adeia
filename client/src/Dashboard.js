@@ -13,12 +13,15 @@ import AddClass from './components/AddClass';
 import AddCourse from './components/AddCourse';
 import Timetable from './components/Timetable';
 import { ReactComponent as MdNotifications } from './assets/icons/md-notifications.svg';
-import { ReactComponent as MdHelpCirlce } from './assets/icons/md-help-circle.svg';
+import { ReactComponent as MdMenu } from './assets/icons/md-menu.svg';
+import { ReactComponent as MdInformationCircle } from './assets/icons/md-information-circle.svg';
 import { connect } from 'react-redux';
 import {
   hideLogoutPopup,
   changeTheme,
-  showLogoutPopup
+  showLogoutPopup,
+  showInfoPopup,
+  hideInfoPopup
 } from './actions/utilActions';
 import { logoutUser } from './actions/authActions';
 import {
@@ -27,17 +30,41 @@ import {
 } from './actions/profileActions';
 import { getAllClasses } from './actions/timetableActions';
 import Modal from './components/common/Modal';
+import InfoModal from './components/common/InfoModal';
 import PageNotFound from './PageNotFound';
 
 class Dashboard extends Component {
   state = {
-    mouseX: 0,
-    mouseY: 0,
-    isNotificationsVisible: false
+    isNotificationsVisible: false,
+    isSideNavVisible: false
+  };
+
+  componentWillMount = () => {
+    this.props.getCurrentProfile();
+    this.unlisten = this.props.history.listen((location, action) => {
+      this.setState({
+        ...this.state,
+        isSideNavVisible: false,
+        isNotificationsVisible: false
+      });
+    });
+  };
+
+  componentWillUnmount = () => {
+    this.unlisten();
   };
 
   logoutPopupHandler = () => {
     this.props.showLogoutPopup();
+  };
+
+  infoPopupHandler = () => {
+    this.props.showInfoPopup();
+  };
+
+  infoPopupDismissHandler = event => {
+    event.preventDefault();
+    this.props.hideInfoPopup();
   };
 
   modalDismissHandler = event => {
@@ -63,11 +90,18 @@ class Dashboard extends Component {
   };
 
   componentDidMount = () => {
-    this.props.getCurrentProfile();
+    /* this.props.getCurrentProfile(); */
     /* this.props.getAllClasses(); */
   };
 
   modals = null;
+
+  sideNavToggle = () => {
+    this.setState({
+      ...this.state,
+      isSideNavVisible: !this.state.isSideNavVisible
+    });
+  };
 
   render() {
     let settingsMenuStyles = [];
@@ -82,7 +116,11 @@ class Dashboard extends Component {
     //const { user } = this.props.auth;
     //const { profile, loading } = this.props.profile;
     const { loading } = this.props.profile;
-    const { isLogoutModalVisible, isDarkTheme } = this.props.utils;
+    const {
+      isLogoutModalVisible,
+      isDarkTheme,
+      isInfoModalVisible
+    } = this.props.utils;
 
     let notifCount;
     if (!loading) {
@@ -93,7 +131,25 @@ class Dashboard extends Component {
       notifCount = null;
     }
 
-    if (isLogoutModalVisible) {
+    if (isInfoModalVisible) {
+      this.modals = (
+        <div className={notificationStyles.poputs}>
+          <div
+            className={styles.backdrop}
+            style={{
+              opacity: '0.85',
+              backgroundColor: '#000',
+              zIndex: '1000',
+              transform: 'translateZ(0px)'
+            }}
+          />
+          <InfoModal
+            isDarkTheme={isDarkTheme}
+            modalDismissHandler={this.infoPopupDismissHandler}
+          />
+        </div>
+      );
+    } else if (isLogoutModalVisible) {
       this.modals = (
         <div className={notificationStyles.poputs}>
           <div
@@ -263,16 +319,39 @@ class Dashboard extends Component {
       );
     }
 
+    let sideNavStyles = [];
+
+    if (this.state.isSideNavVisible) {
+      sideNavStyles.push(styles.sideNavVisible);
+      sideNavStyles.push(styles.sideNavWrapper);
+    } else {
+      sideNavStyles.push(styles.sideNavWrapper);
+    }
+
     return (
       <div style={{ height: '100%' }}>
         <div className={rootStyles.join(' ')}>
-          <div className={styles.sideNavWrapper}>
+          <div className={sideNavStyles.join(' ')}>
             <Sidenav
               isDarkTheme={isDarkTheme}
+              sideNavToggle={this.sideNavToggle}
+              isVisible={this.state.isSideNavVisible}
               routeChangeHandler={this.routeChangeHandler}
               themeChangeHandler={this.themeChangeHandler}
               logoutPopupHandler={this.logoutPopupHandler}
             />
+            {this.state.isSideNavVisible ? (
+              <div
+                onClick={this.sideNavToggle}
+                className={styles.backdrop}
+                style={{
+                  opacity: '0.85',
+                  backgroundColor: '#000',
+                  zIndex: '998',
+                  transform: 'translateZ(0px)'
+                }}
+              />
+            ) : null}
           </div>
           <div className={styles.mainWrapper}>
             <div
@@ -281,22 +360,268 @@ class Dashboard extends Component {
               <div className={styles.main}>
                 <div className={styles.topBarWrapper}>
                   <div className={styles.topBar}>
-                    <div className={styles.pageTitle}>
-                      {this.props.utils.currentPageTitle}
+                    <div style={{ display: 'flex' }}>
+                      <MdMenu
+                        onClick={this.sideNavToggle}
+                        className={`${styles.customHeaderIcon} ${
+                          styles.sideNavToggle
+                        }`}
+                      />
+                      <div className={styles.pageTitle}>
+                        {this.props.utils.currentPageTitle}
+                      </div>
                     </div>
                     <div className={styles.headerIcons}>
-                      {/*<div className={styles.searchBarWrapper}>
-                          <div className={styles.searchBar}>
-                            <div className={styles.search} />
-                          </div>
+                      <div className={styles.searchBarWrapper}>
+                        <div className={styles.searchBar}>
+                          <div className={styles.search} />
                         </div>
-                      <div className={styles.seperator} /> */}
+                      </div>
+                      <div className={styles.seperator} />
                       <div
-                        onClick={this.notificationsClickHandler}
                         className={styles.iconWrapper}
                         style={{ position: 'relative' }}
                         title="Notifications">
-                        <MdNotifications className={styles.customHeaderIcon} />
+                        <div
+                          style={{
+                            height: '100%',
+                            overflowY: 'hidden'
+                          }}
+                          className={`${notificationStyles.popouts} ${
+                            notificationStyles.popout
+                          } ${
+                            notificationStyles.notifications
+                          } ${settingsMenuStyles.join(' ')}`}>
+                          <div
+                            className={notificationStyles.notifHeader}
+                            style={{ paddingBottom: '0' }}>
+                            <div className={notificationStyles.title}>
+                              Notifications - {notifCount}
+                            </div>
+                            <div
+                              className={
+                                notificationStyles.notifHeaderTabWrapper
+                              }>
+                              <div className={notificationStyles.tabBar}>
+                                <div
+                                  role="button"
+                                  className={`${
+                                    notificationStyles.tabBarItem
+                                  } ${notificationStyles.tabBarItemSelected}`}>
+                                  All Servers
+                                </div>
+                                <div
+                                  role="button"
+                                  className={notificationStyles.tabBarItem}>
+                                  This Server
+                                </div>
+                              </div>
+                              <div className={notificationStyles.mentionFilter}>
+                                <div className={notificationStyles.label}>
+                                  Display:
+                                </div>
+                                <div className={notificationStyles.value}>
+                                  Everything
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className={notificationStyles.scrollWrap}>
+                            <div className={notificationStyles.scroller}>
+                              <span>
+                                <div
+                                  className={
+                                    notificationStyles.channelSeperator
+                                  }>
+                                  <span
+                                    className={notificationStyles.channelName}>
+                                    #general
+                                  </span>
+                                  <span
+                                    className={notificationStyles.guildName}>
+                                    Arkane
+                                  </span>
+                                </div>
+                                <div
+                                  className={
+                                    notificationStyles.msgGroupWrapper
+                                  }>
+                                  <div className={notificationStyles.msgGroup}>
+                                    <div
+                                      className={
+                                        notificationStyles.msgContainer
+                                      }>
+                                      <div className={notificationStyles.msg}>
+                                        <div
+                                          className={
+                                            notificationStyles.msgHeader
+                                          }
+                                        />
+                                        <div
+                                          className={
+                                            notificationStyles.msgContent
+                                          }
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div
+                                  className={
+                                    notificationStyles.channelSeperator
+                                  }>
+                                  <span
+                                    className={notificationStyles.channelName}>
+                                    #general
+                                  </span>
+                                  <span
+                                    className={notificationStyles.guildName}>
+                                    Arkane
+                                  </span>
+                                </div>
+                                <div
+                                  className={
+                                    notificationStyles.msgGroupWrapper
+                                  }>
+                                  <div className={notificationStyles.msgGroup}>
+                                    <div
+                                      className={
+                                        notificationStyles.msgContainer
+                                      }>
+                                      <div className={notificationStyles.msg}>
+                                        <div
+                                          className={
+                                            notificationStyles.msgHeader
+                                          }
+                                        />
+                                        <div
+                                          className={
+                                            notificationStyles.msgContent
+                                          }
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div
+                                  className={
+                                    notificationStyles.channelSeperator
+                                  }>
+                                  <span
+                                    className={notificationStyles.channelName}>
+                                    #general
+                                  </span>
+                                  <span
+                                    className={notificationStyles.guildName}>
+                                    Arkane
+                                  </span>
+                                </div>
+                                <div
+                                  className={
+                                    notificationStyles.msgGroupWrapper
+                                  }>
+                                  <div className={notificationStyles.msgGroup}>
+                                    <div
+                                      className={
+                                        notificationStyles.msgContainer
+                                      }>
+                                      <div className={notificationStyles.msg}>
+                                        <div
+                                          className={
+                                            notificationStyles.msgHeader
+                                          }
+                                        />
+                                        <div
+                                          className={
+                                            notificationStyles.msgContent
+                                          }
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div
+                                  className={
+                                    notificationStyles.channelSeperator
+                                  }>
+                                  <span
+                                    className={notificationStyles.channelName}>
+                                    #general
+                                  </span>
+                                  <span
+                                    className={notificationStyles.guildName}>
+                                    Arkane
+                                  </span>
+                                </div>
+                                <div
+                                  className={
+                                    notificationStyles.msgGroupWrapper
+                                  }>
+                                  <div className={notificationStyles.msgGroup}>
+                                    <div
+                                      className={
+                                        notificationStyles.msgContainer
+                                      }>
+                                      <div className={notificationStyles.msg}>
+                                        <div
+                                          className={
+                                            notificationStyles.msgHeader
+                                          }
+                                        />
+                                        <div
+                                          className={
+                                            notificationStyles.msgContent
+                                          }
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div
+                                  className={
+                                    notificationStyles.channelSeperator
+                                  }>
+                                  <span
+                                    className={notificationStyles.channelName}>
+                                    #general
+                                  </span>
+                                  <span
+                                    className={notificationStyles.guildName}>
+                                    Arkane
+                                  </span>
+                                </div>
+                                <div
+                                  className={
+                                    notificationStyles.msgGroupWrapper
+                                  }>
+                                  <div className={notificationStyles.msgGroup}>
+                                    <div
+                                      className={
+                                        notificationStyles.msgContainer
+                                      }>
+                                      <div className={notificationStyles.msg}>
+                                        <div
+                                          className={
+                                            notificationStyles.msgHeader
+                                          }
+                                        />
+                                        <div
+                                          className={
+                                            notificationStyles.msgContent
+                                          }
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <MdNotifications
+                          onClick={this.notificationsClickHandler}
+                          className={styles.customHeaderIcon}
+                        />
                         {notifCount !== 0 && notifCount !== null ? (
                           <div
                             className={`${notificationStyles.badgeWrapper} ${
@@ -312,13 +637,10 @@ class Dashboard extends Component {
                         ) : null}
                       </div>
                       <div className={styles.iconWrapper}>
-                        <a
-                          title="Help"
-                          href="https://github.com/arkn98/lms"
-                          target="_blank"
-                          rel="noopener noreferrer">
-                          <MdHelpCirlce className={styles.customHeaderIcon} />
-                        </a>
+                        <MdInformationCircle
+                          onClick={this.infoPopupHandler}
+                          className={styles.customHeaderIcon}
+                        />
                       </div>
                     </div>
                   </div>
@@ -328,56 +650,7 @@ class Dashboard extends Component {
             </div>
           </div>
         </div>
-        <div
-          className={`${notificationStyles.popouts}
-          ${notificationStyles.popout}
-          ${notificationStyles.notifications}
-          ${settingsMenuStyles.join(' ')}`}>
-          <div
-            className={notificationStyles.notifHeader}
-            style={{ paddingBottom: '0' }}>
-            <div className={notificationStyles.title}>
-              Notifications - {notifCount}
-            </div>
-            <div className={notificationStyles.notifHeaderTabWrapper}>
-              <div className={notificationStyles.tabBar}>
-                <div
-                  role="button"
-                  className={`${notificationStyles.tabBarItem} ${
-                    notificationStyles.tabBarItemSelected
-                  }`}>
-                  All Servers
-                </div>
-                <div role="button" className={notificationStyles.tabBarItem}>
-                  This Server
-                </div>
-              </div>
-              <div className={notificationStyles.mentionFilter}>
-                <div className={notificationStyles.label}>Display:</div>
-                <div className={notificationStyles.value}>Everything</div>
-              </div>
-            </div>
-          </div>
-          <div className={notificationStyles.scrollWrap}>
-            <div className={notificationStyles.scroller}>
-              <div className={notificationStyles.channelSeperator}>
-                <span className={notificationStyles.channelName}>#general</span>
-                <span className={notificationStyles.guildName}>Arkane</span>
-              </div>
-              <div className={notificationStyles.msgGroupWrapper}>
-                <div className={notificationStyles.msgGroup}>
-                  <div className={notificationStyles.msgContainer}>
-                    <div className={notificationStyles.msg}>
-                      <div className={notificationStyles.msgHeader} />
-                      <div className={notificationStyles.msgContent} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={notificationStyles.scrollBar} />
-          </div>
-        </div>
+
         {this.modals}
       </div>
     );
@@ -394,7 +667,9 @@ Dashboard.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   changeTheme: PropTypes.func.isRequired,
   showLogoutPopup: PropTypes.func.isRequired,
-  getAllClasses: PropTypes.func.isRequired
+  getAllClasses: PropTypes.func.isRequired,
+  showInfoPopup: PropTypes.func.isRequired,
+  hideInfoPopup: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -413,6 +688,8 @@ export default connect(
     logoutUser,
     changeTheme,
     showLogoutPopup,
-    getAllClasses
+    getAllClasses,
+    showInfoPopup,
+    hideInfoPopup
   }
 )(withRouter(Dashboard));

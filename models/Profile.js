@@ -14,12 +14,13 @@ const ProfileSchema = new Schema(
     },
     prevLogins: [
       {
-        default: {},
         attemptStatus: { type: String },
         timestamp: { type: String },
         ip: { type: String },
         browser: { type: String },
-        os: { type: String }
+        browserVersion: { type: String },
+        os: { type: String },
+        osVersion: { type: String }
       }
     ],
     notifications: { type: Array, default: [] },

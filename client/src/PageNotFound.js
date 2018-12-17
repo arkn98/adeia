@@ -32,7 +32,7 @@ class PageNotFound extends Component {
               }}>
               <div
                 style={{ flex: '1 1 auto' }}
-                className={`${styles.buttonPrimary} ${styles.button}`}>
+                className={styles.buttonTransparent}>
                 Go back
               </div>
             </div>

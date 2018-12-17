@@ -3,8 +3,28 @@ import styles from './Main.module.css';
 import { updateCurrentRouteTitle } from '../actions/utilActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import moment from 'moment';
+import { ReactComponent as MdDropdownPlus } from '../assets/icons/md-add-circle.svg';
+import { ReactComponent as MdDropdownMinus } from '../assets/icons/md-remove-circle.svg';
 
 class Main extends Component {
+  state = {
+    profile: {},
+    errors: {},
+    user: {},
+    prevLoginClickedIndex: -1
+  };
+
+  prevLoginClickedHandler = index => {
+    if (this.state.prevLoginClickedIndex === index)
+      this.setState({ ...this.state, prevLoginClickedIndex: -1 });
+    else
+      this.setState({
+        ...this.state,
+        prevLoginClickedIndex: index
+      });
+  };
+
   componentDidMount = () => {
     this.props.updateCurrentRouteTitle('Dashboard');
   };
@@ -13,6 +33,8 @@ class Main extends Component {
     let boxes = null;
 
     const isDarkTheme = this.props.isDarkTheme;
+
+    const { loading, profile } = this.props.profile;
 
     if (this.props.auth.user.accountType === 0) {
       boxes = (
@@ -171,19 +193,144 @@ class Main extends Component {
                 </div>
               ) : null}
               <div className={styles.box}>
-                <div className={styles.boxText}>
-                  <div>
-                    <span className={styles.title}>Recent Logins </span>
-                    <span className={styles.subtitle}>(approximate)</span>
+                <div style={{ overflowY: 'auto' }}>
+                  <div className={styles.boxText}>
+                    <div>
+                      <span className={styles.title}>
+                        Recent Login Attempts{' '}
+                      </span>
+                      <span className={styles.subtitle}>(approximate)</span>
+                    </div>
                   </div>
-                </div>
-                {/* <div className={styles.boxIcon}>
-                    <i
+                  {loading === true ||
+                  profile === null ||
+                  typeof profile.prevLogins === 'undefined' ? (
+                    <div
+                      style={{
+                        width: '100%',
+                        minHeight: '50px',
+                        height: '100%'
+                      }}>
+                      <span className={styles.spinner}>
+                        <span className={styles.spinnerInner}>
+                          <span
+                            className={`${styles.pulsingEllipsisItem} ${
+                              styles.spinnerItem
+                            }`}
+                          />
+                          <span
+                            className={`${styles.pulsingEllipsisItem} ${
+                              styles.spinnerItem
+                            }`}
+                          />
+                          <span
+                            className={`${styles.pulsingEllipsisItem} ${
+                              styles.spinnerItem
+                            }`}
+                          />
+                        </span>
+                      </span>
+                    </div>
+                  ) : (
+                    <div className={styles.prevLoginsContainer}>
+                      {profile.prevLogins
+                        .slice(1)
+                        .reverse()
+                        .map((item, index) => {
+                          return (
+                            <div
+                              onClick={() =>
+                                this.prevLoginClickedHandler(index)
+                              }
+                              key={index}
+                              name={index}
+                              className={styles.prevLoginItem}>
+                              <div className={styles.prevLoginItemTop}>
+                                <div>
+                                  {item.ip}{' '}
+                                  <span className={styles.subtitle}>
+                                    {this.state.prevLoginClickedIndex !== index
+                                      ? moment
+                                          .unix(item.timestamp)
+                                          .format('D-MMM-YY, hh:mm:ss A')
+                                      : null}
+
+                                    {/* {index === 0
+                                      ? '(Your current login)'
+                                      : null} */}
+                                  </span>
+                                </div>
+                                <div>
+                                  <span
+                                    style={{
+                                      color:
+                                        item.attemptStatus === 'false'
+                                          ? `rgb(240, 71, 71)`
+                                          : `rgb(67, 181, 129)`,
+                                      fontWeight: '500'
+                                    }}>
+                                    {item.attemptStatus === 'false'
+                                      ? 'Failed'
+                                      : 'Successful'}
+                                  </span>
+                                  {this.state.prevLoginClickedIndex !==
+                                  index ? (
+                                    <MdDropdownPlus
+                                      className={styles.customIconTest}
+                                    />
+                                  ) : (
+                                    <MdDropdownMinus
+                                      className={styles.customIconTest}
+                                    />
+                                  )}
+                                </div>
+                                {/* <div>{`${item.browser} - ${
+                                  item.browserVersion
+                                } - ${item.os} - ${item.osVersion}`}</div> */}
+                              </div>
+                              <div
+                                className={`${styles.prevLoginItemBody} ${
+                                  this.state.prevLoginClickedIndex === index
+                                    ? styles.prevLoginItemBodyVisible
+                                    : null
+                                }`}>
+                                <div>
+                                  {item.browser}{' '}
+                                  {typeof item.browserVersion !== 'undefined'
+                                    ? item.browserVersion
+                                    : null}{' '}
+                                  - {item.os}{' '}
+                                  {typeof item.osVersion !== 'undefined'
+                                    ? item.osVersion
+                                    : null}
+                                </div>
+                                <div>
+                                  {moment
+                                    .unix(item.timestamp)
+                                    .format('D-MMM-YY, hh:mm:ss A')}
+                                </div>
+                                {/* <div>{item.ip}</div>
+                                <div>
+                                  {moment
+                                    .unix(item.timestamp)
+                                    .format('Do MMMM, YY')}
+                                </div> */}
+                              </div>
+                            </div>
+                          );
+                        }, this)}
+                    </div>
+                  )}
+                  {/*
+                <div className={styles.boxIcon}>
+                   <i
                       className={`icon ion-md-repeat ${
                         styles.customHeaderIcon
                       }`}
-                    />
-                  </div> */}
+                    /> 
+                </div>
+                    */}
+                </div>
               </div>
             </div>
           </div>

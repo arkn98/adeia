@@ -5,6 +5,8 @@ import setAuthToken from '../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
 import isEmpty from '../validation/is-empty';
 
+moment().locale();
+
 // Register account (admin/office)
 export const registerUser = (userData, history) => dispatch => {
   axios
@@ -14,6 +16,38 @@ export const registerUser = (userData, history) => dispatch => {
       if (!isEmpty(err.response))
         return dispatch({ type: GET_ERRORS, payload: err.response.data });
     });
+};
+
+export const setLoginAttempts = (email, status) => dispatch => {
+  axios
+    .get('/api/users/getclientdetails')
+    .then(res => {
+      if (res.data) {
+        console.log(res.data);
+
+        let newObj = {
+          email: email,
+          attemptStatus: status,
+          timestamp: moment().unix(),
+          ip:
+            res.data.ip !== '' || res.data.ip !== null
+              ? res.data.ip
+              : res.data.ip2,
+          browser: res.data.browser,
+          browserVersion: res.data.browserVersion,
+          os: res.data.os,
+          osVersion: res.data.osVersion
+        };
+
+        console.log(newObj);
+
+        axios
+          .post('/api/users/set-login-attempts', newObj)
+          .then(data => console.log(data))
+          .catch(err => console.log(err));
+      }
+    })
+    .catch(err => console.log(err));
 };
 
 //register staff
@@ -39,12 +73,15 @@ export const loginUser = userData => dispatch => {
       setAuthToken(token);
       //decode token to get userdata
       const decoded = jwt_decode(token);
+      dispatch(setLoginAttempts(userData.email, true));
       dispatch(setCurrentUser(decoded));
       dispatch({ type: CLEAR_ERRORS, payload: {} });
     })
     .catch(err => {
-      if (!isEmpty(err.response))
+      if (!isEmpty(err.response)) {
+        dispatch(setLoginAttempts(userData.email, false));
         return dispatch({ type: GET_ERRORS, payload: err.response.data });
+      }
     });
 };
 
@@ -89,6 +126,16 @@ export const sendResetEmail = data => dispatch => {
     .post('/api/users/send-reset-email', data)
     .then(res => {
       dispatch({ type: CLEAR_ERRORS, payload: {} });
+    })
+    .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
+};
+
+export const resetPassword = (data, history) => dispatch => {
+  axios
+    .post('/api/users/reset-password', data)
+    .then(res => {
+      dispatch({ type: CLEAR_ERRORS, payload: {} });
+      history.push('/login');
     })
     .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
 };

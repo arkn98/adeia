@@ -29,8 +29,8 @@ import { ReactComponent as MdSunny } from '../../assets/icons/md-sunny.svg';
 import { ReactComponent as MdMoon } from '../../assets/icons/md-moon.svg';
 import { ReactComponent as MdInformationCircle } from '../../assets/icons/md-information-circle.svg';
 import { ReactComponent as MdSettings } from '../../assets/icons/md-settings.svg';
-import { ReactComponent as MdLock } from '../../assets/icons/md-lock.svg';
-import { ReactComponent as MdClose } from '../../assets/icons/md-close-circle.svg';
+import { ReactComponent as MdCloseCircle } from '../../assets/icons/md-close-circle.svg';
+import { ReactComponent as MdClose } from '../../assets/icons/md-close.svg';
 import { ReactComponent as MdBuild } from '../../assets/icons/md-build.svg';
 
 class Sidenav extends Component {
@@ -42,10 +42,17 @@ class Sidenav extends Component {
     this.setState({ isSettingsMenuVisible: !this.state.isSettingsMenuVisible });
   };
 
+  componentWillReceiveProps = nextprops => {
+    if (nextprops.isVisible) {
+      this.setState({ ...this.state, isSettingsMenuVisible: false });
+    }
+  };
+
   logoutHandler = event => {
     event.preventDefault();
     this.setState({ isSettingsMenuVisible: false });
     this.props.logoutPopupHandler();
+    if (this.props.isVisible) this.props.sideNavToggle();
   };
 
   render() {
@@ -60,6 +67,7 @@ class Sidenav extends Component {
 
     const { user } = this.props.auth;
     const isDarkTheme = this.props.isDarkTheme;
+    const isVisible = this.props.isVisible;
 
     let adminLinks = (
       <span>
@@ -355,7 +363,7 @@ class Sidenav extends Component {
         </NavLink>
       </span>
     );
-    //adminLinks = staffLinks;
+
     let links = null;
     if (user.accountType === 0) {
       links = adminLinks;
@@ -363,9 +371,22 @@ class Sidenav extends Component {
       links = staffLinks;
     }
 
+    let tempStyles = [];
+
+    if (isDarkTheme) {
+      tempStyles.push(styles.sideNavWrapper);
+    } else {
+      tempStyles.push(styles.sideNavWrapper);
+      tempStyles.push(styles.lightTheme);
+    }
+
+    if (isVisible) {
+      tempStyles.push(styles.sideNavVisible);
+    }
+
     return (
       <div
-        className={isDarkTheme ? '' : styles.lightTheme}
+        className={tempStyles.join(' ')}
         style={{ height: '100%', overflowY: 'hidden' }}>
         <div className={styles.sideNav}>
           <div className={styles.menu}>
@@ -375,6 +396,12 @@ class Sidenav extends Component {
               </Link>
               <div className={styles.menuText}>v2.0.1</div>
               <div className={styles.customHeaderIcons}>
+                <div className={`${styles.iconWrapper} ${styles.closeNavIcon}`}>
+                  <MdClose
+                    onClick={this.props.sideNavToggle}
+                    className={styles.customHeaderIconTest}
+                  />
+                </div>
                 <div className={styles.iconWrapper}>
                   <a
                     title="GitHub Repo"
@@ -384,13 +411,13 @@ class Sidenav extends Component {
                     <LogoGithub className={styles.customHeaderIconTest} />
                   </a>
                 </div>
-                <div className={styles.iconWrapper}>
+                {/* <div className={styles.iconWrapper}>
                   <Link to="/">
                     <MdInformationCircle
                       className={styles.customHeaderIconTest}
                     />
                   </Link>
-                </div>
+                </div> */}
               </div>
             </div>
             <div className={styles.scrollMenuWrapper}>
@@ -411,41 +438,39 @@ class Sidenav extends Component {
             </div>
             <div className={styles.userSettings}>
               <div
+                className={`${styles.popouts} ${
+                  styles.popout
+                } ${settingsMenuStyles.join(' ')}`}>
+                <div
+                  className={styles.item}
+                  onClick={this.props.themeChangeHandler}>
+                  {this.props.isDarkTheme ? (
+                    <MdSunny className={styles.menuIconTest} />
+                  ) : (
+                    <MdMoon className={styles.menuIconTest} />
+                  )}
+                  {this.props.isDarkTheme
+                    ? 'Switch to Light theme'
+                    : 'Switch to Dark Theme'}
+                </div>
+                <Link to="/dashboard/settings" className={styles.item}>
+                  <MdBuild className={styles.menuIconTest} />
+                  Account Settings
+                </Link>
+                <div className={styles.seperator2} />
+                <div
+                  onClick={this.logoutHandler}
+                  className={`${styles.item} ${styles.danger}`}>
+                  <MdCloseCircle className={styles.menuIconTest} />
+                  Logout
+                </div>
+              </div>
+              <div
                 className={settingsIconSelector.join(' ')}
                 onClick={this.settingsMenuClickHandler}>
                 <MdSettings className={styles.customIconTest} />
               </div>
             </div>
-          </div>
-        </div>
-        <div
-          className={`${styles.popouts} ${
-            styles.popout
-          } ${settingsMenuStyles.join(' ')}`}>
-          <div className={styles.item} onClick={this.props.themeChangeHandler}>
-            {this.props.isDarkTheme ? (
-              <MdSunny className={styles.menuIconTest} />
-            ) : (
-              <MdMoon className={styles.menuIconTest} />
-            )}
-            {this.props.isDarkTheme
-              ? 'Switch to Light theme'
-              : 'Switch to Dark Theme'}
-          </div>
-          <div className={styles.item}>
-            <MdBuild className={styles.menuIconTest} />
-            Update Profile
-          </div>
-          <div className={styles.item}>
-            <MdLock className={styles.menuIconTest} />
-            Change Password
-          </div>
-          <div className={styles.seperator2} />
-          <div
-            onClick={this.logoutHandler}
-            className={`${styles.item} ${styles.danger}`}>
-            <MdClose className={styles.menuIconTest} />
-            Logout
           </div>
         </div>
       </div>

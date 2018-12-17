@@ -62,6 +62,15 @@ const UserSchema = new Schema(
     },
     staffType: {
       type: String
+    },
+    resetPasswordToken: {
+      type: String,
+      default: '',
+      unique: true
+    },
+    resetPasswordExpires: {
+      type: Number,
+      default: -1
     }
   },
   { minimize: false }

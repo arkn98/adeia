@@ -12,6 +12,26 @@
   background-color: #f3f3f4;
 }
 
+.sideNavWrapper {
+  width: 100%;
+  height: 100%;
+  transition: width 0.17s ease;
+}
+
+@media screen and (max-width: 768px) {
+  .sideNavWrapper {
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+  }
+
+  .sideNavVisible {
+    width: 240px;
+  }
+}
+
 .menu {
   box-sizing: border-box;
   display: flex;
@@ -241,6 +261,30 @@
   align-items: center;
 }
 
+.closeNavIcon {
+  display: none !important;
+}
+
+.backdrop {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  position: fixed;
+  opacity: 0;
+  z-index: 998;
+}
+
+@media screen and (max-width: 768px) {
+  .customHeaderIcons .iconWrapper {
+    display: none;
+  }
+
+  .closeNavIcon {
+    display: block !important;
+  }
+}
+
 .logo .menuText {
   font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   line-height: 1.15;
@@ -265,7 +309,6 @@
   cursor: pointer;
   color: #f6f6f7;
   font-size: 18px;
-  /* display: inline; */
   opacity: 0.3;
   transition: color 0.17s ease;
 }
@@ -417,6 +460,7 @@
 
 .userContainer .userSettings {
   display: flex;
+  position: relative;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -465,27 +509,20 @@
 }
 
 .popouts {
-  /* left: 0;
-  right: 0;
-  top: 0;
-  margin: 0;
-  position: absolute;
-  border: none;*/
   z-index: 1000;
 }
 
 .popout {
   border-radius: 5px;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.82), 0 1px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1001;
-  position: relative;
+  z-index: 1000;
+  position: absolute;
+  display: inline-block;
   overflow: hidden;
-  left: 10px;
-  top: -34%;
-  height: 152px;
+  left: -184px;
+  top: -128px;
+  height: 114px;
   width: 216px;
-  transform: translateY(-5%) translateX(calc(5% - 0.5px)) translateZ(0);
-  transform: translateZ(0);
 }
 
 .item {
@@ -552,16 +589,25 @@
   width: 16px;
   flex-shrink: 0;
   margin-right: 12px;
-  fill-opacity: 0.6;
+  fill-opacity: 0.8;
+  transition: fill 0.17s ease, fill-opacity 0.17s ease;
+}
+
+.item:hover .menuIconTest {
+  fill-opacity: 1;
 }
 
 .lightTheme .menuIconTest {
   fill-opacity: 0.8;
 }
 
+.lightTheme .item:hover .menuIconTest {
+  fill-opacity: 1;
+}
+
 .danger {
   fill: rgb(240, 71, 71);
-  color: rgb(240, 71, 71);
+  color: rgba(240, 71, 71, 0.8);
   font-weight: 500;
 }
 
@@ -573,7 +619,7 @@
 
 .item.danger:hover {
   background-color: rgba(240, 71, 71, 0.1);
-  color: rgb(240, 71, 71);
+  color: rgba(240, 71, 71, 1);
   fill: rgb(240, 71, 71);
 }
 
@@ -581,6 +627,8 @@
   background-color: rgba(240, 71, 71, 1);
   color: #fff;
   fill: #fff;
+  opacity: 1;
+  fill-opacity: 1;
 }
 
 .seperator2 {
