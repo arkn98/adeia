@@ -32,11 +32,15 @@ if (localStorage.jwtToken) {
   }
 }
 
+let isDarkTheme = false;
+
 if (localStorage.themePreferences) {
-  if (localStorage.themePreferences === 'dark')
-    store.dispatch(setCurrentTheme(true));
-  else if (localStorage.themePreferences === 'light')
-    store.dispatch(setCurrentTheme(false));
+  if (localStorage.themePreferences === 'dark') {
+    isDarkTheme = true;
+  } else if (localStorage.themePreferences === 'light') {
+    isDarkTheme = false;
+  }
+  store.dispatch(setCurrentTheme(isDarkTheme));
 }
 
 ReactDOM.render(

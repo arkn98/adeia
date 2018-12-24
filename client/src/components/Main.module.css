@@ -35,6 +35,10 @@
   width: 6px;
 }
 
+.lightTheme .pulsingEllipsisItem {
+  background-color: #7289da;
+}
+
 .pulsingEllipsisItem:nth-of-type(2) {
   animation-delay: 0.2s;
 }
@@ -348,7 +352,7 @@
 
 .lightTheme .prevLoginItem {
   color: #4f545c;
-  background: rgba(255, 255, 255, 1);
+  background: rgba(79, 84, 92, 0.05);
   border: 1px solid rgba(79, 84, 92, 0.3);
 }
 
@@ -357,7 +361,7 @@
 }
 
 .lightTheme .prevLoginItem:hover {
-  border-color: #b9bbbe;
+  border-color: #040405;
 }
 
 .prevLoginItemTop {

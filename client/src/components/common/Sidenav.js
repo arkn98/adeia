@@ -27,7 +27,6 @@ import { ReactComponent as MdToday } from '../../assets/icons/md-today.svg';
 import { ReactComponent as LogoGithub } from '../../assets/icons/logo-github.svg';
 import { ReactComponent as MdSunny } from '../../assets/icons/md-sunny.svg';
 import { ReactComponent as MdMoon } from '../../assets/icons/md-moon.svg';
-import { ReactComponent as MdInformationCircle } from '../../assets/icons/md-information-circle.svg';
 import { ReactComponent as MdSettings } from '../../assets/icons/md-settings.svg';
 import { ReactComponent as MdCloseCircle } from '../../assets/icons/md-close-circle.svg';
 import { ReactComponent as MdClose } from '../../assets/icons/md-close.svg';
@@ -387,14 +386,16 @@ class Sidenav extends Component {
     return (
       <div
         className={tempStyles.join(' ')}
-        style={{ height: '100%', overflowY: 'hidden' }}>
+        style={{ height: '100%', overflow: 'hidden' }}>
         <div className={styles.sideNav}>
           <div className={styles.menu}>
             <div className={styles.logo}>
               <Link title="Leave Management System" href="/" to="/dashboard">
                 LMS
               </Link>
-              <div className={styles.menuText}>v2.0.1</div>
+              <div className={styles.menuText}>
+                {`v${process.env.REACT_APP_VERSION}`}
+              </div>
               <div className={styles.customHeaderIcons}>
                 <div className={`${styles.iconWrapper} ${styles.closeNavIcon}`}>
                   <MdClose

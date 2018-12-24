@@ -95,7 +95,6 @@ router.post('/', (req, res) => {
         let profileFields = new Profile({
           staffId: req.body.staffId,
           user: user.id,
-          prevLogins: req.body.prevLogins,
           cplCredits: req.body.cplCredits,
           leaveAllotted,
           leaveAvailable: leaveAllotted

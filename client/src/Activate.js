@@ -69,8 +69,13 @@ class Activate extends Component {
 
   render = () => {
     const { errors } = this.state;
+    const { isDarkTheme } = this.props.utils;
+
     return (
-      <div className={styles.root}>
+      <div
+        className={
+          isDarkTheme ? styles.root : `${styles.root} ${styles.lightTheme}`
+        }>
         <div className={styles.app}>
           <div className={styles.banner}>
             <div className={styles.logo}>
@@ -276,13 +281,15 @@ class Activate extends Component {
 Activate.propTypes = {
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
+  utils: PropTypes.object.isRequired,
   activateUser: PropTypes.func.isRequired,
   createProfile: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
+  utils: state.utils
 });
 
 export default connect(

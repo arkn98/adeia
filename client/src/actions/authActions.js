@@ -62,7 +62,7 @@ export const registerStaff = (userData, history) => dispatch => {
 };
 
 //Login user - get user token
-export const loginUser = userData => dispatch => {
+export const loginUser = (userData, history) => dispatch => {
   axios
     .post('api/users/login', userData)
     .then(res => {
@@ -76,6 +76,7 @@ export const loginUser = userData => dispatch => {
       dispatch(setLoginAttempts(userData.email, true));
       dispatch(setCurrentUser(decoded));
       dispatch({ type: CLEAR_ERRORS, payload: {} });
+      history.push('/dashboard');
     })
     .catch(err => {
       if (!isEmpty(err.response)) {

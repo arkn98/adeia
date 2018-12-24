@@ -3,62 +3,69 @@ import axios from 'axios';
 
 const clickHandler = event => {
   event.preventDefault();
-  let newTimetable = {
+  /* let newTimetable = {
     timetable: {
       day01: {
         h01: {
-          courseCode: '',
-          handlingStaffId: '',
+          courseCode: null,
+          handlingStaffId: null,
           additionalStaffId: []
         },
         h02: {
-          courseCode: '',
-          handlingStaffId: '',
+          courseCode: null,
+          handlingStaffId: null,
           additionalStaffId: []
         },
         h03: {
-          courseCode: '',
-          handlingStaffId: '',
+          courseCode: null,
+          handlingStaffId: null,
           additionalStaffId: []
         },
         h04: {
-          courseCode: '',
-          handlingStaffId: '',
+          courseCode: null,
+          handlingStaffId: null,
           additionalStaffId: []
         },
         h05: {
-          courseCode: '',
-          handlingStaffId: '',
+          courseCode: null,
+          handlingStaffId: null,
           additionalStaffId: []
         },
         h06: {
-          courseCode: '',
-          handlingStaffId: '',
+          courseCode: null,
+          handlingStaffId: null,
           additionalStaffId: []
         },
         h07: {
-          courseCode: '',
-          handlingStaffId: '',
+          courseCode: null,
+          handlingStaffId: null,
           additionalStaffId: []
         },
         h08: {
-          courseCode: '',
-          handlingStaffId: '',
+          courseCode: null,
+          handlingStaffId: null,
           additionalStaffId: []
         }
       }
     }
-  };
+  }; */
+  let newTimetable = {};
   newTimetable.classCode = 'BT3G';
-  for (let i = 1; i <= 1; i++) {
+  let day = [];
+  for (let i = 1; i <= 5; i++) {
+    let today = [];
     for (let j = 1; j <= 8; j++) {
-      newTimetable.timetable['day0' + i]['h0' + j].courseCode = 'CA7001';
-      newTimetable.timetable['day0' + i]['h0' + j].handlingStaffId = '12345';
-      newTimetable.timetable['day0' + i]['h0' + j].additionalStaffId.push(
-        '12345'
-      );
+      let hour = {};
+      hour.courseCode = 'CA7001';
+      hour.handlingStaffId = '12345';
+      hour.additionalStaffId = [];
+      hour.additionalStaffId.push('12345');
+      today.push(hour);
     }
+    day.push(today);
   }
+
+  newTimetable.timetable = day;
 
   console.log(newTimetable);
   axios

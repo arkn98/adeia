@@ -50,6 +50,11 @@
   width: 480px;
 }
 
+.lightTheme .authbox {
+  background: #fff;
+  color: #36393f;
+}
+
 /* .root {
   background-color: #202225;
   display: flex;
@@ -181,6 +186,10 @@
   color: #fff;
 }
 
+.lightTheme .title {
+  color: #72767d;
+}
+
 .subTitle {
   text-align: center;
   color: #72767d;
@@ -205,6 +214,10 @@
   line-height: 16px;
   font-size: 14px;
   margin-bottom: 8px;
+}
+
+.lightTheme .inputLabel {
+  color: #72767d;
 }
 
 .formInputError {
@@ -243,6 +256,13 @@
   background-color: rgba(0, 0, 0, 0.1);
   border-color: rgba(0, 0, 0, 0.3);
   color: #f6f6f7;
+}
+
+.lightTheme .inputField {
+  background-color: rgba(79, 84, 92, 0.02);
+  background-color: #fff;
+  border-color: rgba(79, 84, 92, 0.3);
+  color: #4f545c;
 }
 
 .inputField:hover {

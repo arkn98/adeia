@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styles from './Home.module.css';
 import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 class PageNotFound extends Component {
   render() {
@@ -86,7 +85,7 @@ class PageNotFound extends Component {
 }
 
 PageNotFound.defaultProps = {
-  isDarkTheme: true
+  isDarkTheme: false
 };
 
 export default withRouter(PageNotFound);

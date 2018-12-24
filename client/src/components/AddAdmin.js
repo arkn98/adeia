@@ -55,6 +55,22 @@ class AddAdmin extends Component {
     this.setState({ ...this.state, isSubmitting: true });
     event.preventDefault();
 
+    let staffType = '';
+    if (this.state.category === 'Regular Teaching Staff') staffType = 'rt';
+    else if (this.state.category === 'Regular Non-Teaching Staff')
+      staffType = 'rnt';
+    else if (this.state.category === 'Teaching Fellows') staffType = 'tf';
+    else if (this.state.category === 'Non-Teaching - No Leave')
+      staffType = 'nt';
+    else if (this.state.category === 'Research Scholars - 30')
+      staffType = 'rs30';
+    else if (this.state.category === 'Research Scholars - 20')
+      staffType = 'rs20';
+    else if (this.state.category === 'Research Scholars - Others')
+      staffType = 'rso';
+    else if (this.state.category === 'Others') staffType = 'oth';
+    else staffType = null;
+
     const newUser = {
       accountType: this.state.selectedRadio,
       email: this.state.email,
@@ -63,7 +79,8 @@ class AddAdmin extends Component {
       staffId: this.state.staffId,
       name: this.state.name,
       designation: this.state.designation,
-      category: this.state.category
+      category: this.state.category,
+      staffType
     };
 
     this.props.registerUser(newUser, this.props.history);
@@ -216,6 +233,51 @@ class AddAdmin extends Component {
                         <div radio-key={1} className={styles.radioContent}>
                           <div radio-key={1} className={styles.title}>
                             Office
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        key={3}
+                        className={cx({
+                          radioItem: true,
+                          radioItemSelected: !(this.state.selectedRadio ^ 3)
+                        })}
+                        onClick={this.radioClickHandler}
+                        radio-key={3}>
+                        <label className={styles.checkBoxWrapper} radio-key={3}>
+                          <input
+                            radio-key={3}
+                            className={styles.formInput}
+                            type="checkbox"
+                          />
+                          <div
+                            radio-key={3}
+                            className={cx({
+                              checkBoxCheckmarkOutline: true,
+                              checked: !(this.state.selectedRadio ^ 3)
+                            })}>
+                            <svg
+                              className={styles.checkboxCheckmark}
+                              name="Checkmark"
+                              radio-key={3}
+                              width="18"
+                              height="18"
+                              viewBox="0 0 18 18"
+                              xmlns="http://www.w3.org/2000/svg">
+                              <g fill="none" radio-key={3} fillRule="evenodd">
+                                <polyline
+                                  radio-key={3}
+                                  stroke="#7289da"
+                                  strokeWidth="2"
+                                  points="3.5 9.5 7 13 15 5"
+                                />
+                              </g>
+                            </svg>
+                          </div>
+                        </label>
+                        <div radio-key={3} className={styles.radioContent}>
+                          <div radio-key={3} className={styles.title}>
+                            Developer
                           </div>
                         </div>
                       </div>

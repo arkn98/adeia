@@ -12,17 +12,21 @@ class Home extends Component {
   };
 
   render() {
+    const { isDarkTheme } = this.props.utils;
+
     return (
-      <div style={{ height: '100%' }} className={styles.app}>
+      <div
+        style={{ height: '100%' }}
+        className={
+          isDarkTheme ? styles.app : `${styles.app} ${styles.lightTheme}`
+        }>
         <div className={styles.banner}>
           <div className={styles.title}>
             Welcome to LMS - Leave Management System
           </div>
           <div className={styles.text}>
             An all-in-one application to apply for leaves, manage and keep track
-            of them
-            {/* , that works on both your desktop and phone. */}, for the
-            Department of Information Science & Technology.
+            of them, for the Department of Information Science & Technology.
           </div>
           <div className={styles.buttons}>
             <Link to="/login">
@@ -89,11 +93,13 @@ class Home extends Component {
 }
 
 Home.propTypes = {
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  utils: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  utils: state.utils
 });
 
 export default connect(

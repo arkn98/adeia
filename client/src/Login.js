@@ -9,6 +9,7 @@ import {
   setLoginAttempts
 } from './actions/authActions';
 import classNames from 'classnames/bind';
+import Spinner from './components/common/Spinner';
 
 const cx = classNames.bind({ ...styles });
 
@@ -30,9 +31,6 @@ class Login extends Component {
   };
 
   componentWillReceiveProps = nextProps => {
-    if (nextProps.auth.isAuthenticated) {
-      this.props.history.push('/dashboard');
-    }
     if (nextProps.errors) {
       this.setState({
         ...this.state,
@@ -66,15 +64,18 @@ class Login extends Component {
       password: this.state.password
     };
 
-    this.props.loginUser(user);
-    /* if (this.state.errors) this.props.setLoginAttempts(this.state.email, false);
-    else this.props.setLoginAttempts(this.state.email, true); */
+    this.props.loginUser(user, this.props.history);
   };
 
   render() {
     const { errors } = this.state;
+    const { isDarkTheme } = this.props.utils;
+
     return (
-      <div className={styles.root}>
+      <div
+        className={
+          isDarkTheme ? styles.root : `${styles.root} ${styles.lightTheme}`
+        }>
         <div className={styles.app}>
           <div className={styles.dummy}>
             <div className={styles.banner}>
@@ -158,25 +159,7 @@ class Login extends Component {
                         : `${styles.login}`
                     }>
                     {this.state.isSubmitting ? (
-                      <span className={styles.spinner}>
-                        <span className={styles.spinnerInner}>
-                          <span
-                            className={`${styles.pulsingEllipsisItem} ${
-                              styles.spinnerItem
-                            }`}
-                          />
-                          <span
-                            className={`${styles.pulsingEllipsisItem} ${
-                              styles.spinnerItem
-                            }`}
-                          />
-                          <span
-                            className={`${styles.pulsingEllipsisItem} ${
-                              styles.spinnerItem
-                            }`}
-                          />
-                        </span>
-                      </span>
+                      <Spinner isDarkTheme={isDarkTheme} isStripped={true} />
                     ) : (
                       <div className={styles.contents}>Login</div>
                     )}
@@ -244,6 +227,7 @@ class Login extends Component {
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
+  utils: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   sendResetEmail: PropTypes.func.isRequired,
   setLoginAttempts: PropTypes.func.isRequired
@@ -251,7 +235,8 @@ Login.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
+  utils: state.utils
 });
 
 export default connect(

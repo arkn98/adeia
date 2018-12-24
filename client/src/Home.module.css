@@ -89,7 +89,7 @@
 }
 
 .lightTheme .buttonTransparent {
-  border-color: #e3e7f8;
+  border-color: #dcddde;
   color: #7289da;
 }
 
@@ -148,6 +148,10 @@
 .buttonWhite {
   background: #fff;
   color: #000;
+}
+
+.lightTheme .buttonWhite {
+  border: 1px solid #4f545c;
 }
 
 .buttonPrimary {

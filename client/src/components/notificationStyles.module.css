@@ -386,3 +386,41 @@
   padding: 3px 3px;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 }
+
+.emptyPlaceholder {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  align-items: center;
+}
+
+.bottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+}
+
+.emptyPlaceholder .body {
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  white-space: pre;
+  margin-top: 20px;
+  font-weight: 500;
+  color: hsla(0, 0%, 100%, 0.2);
+}
+
+.lightTheme .emptyPlaceholder .body {
+  color: #737f8d;
+}
+
+.emptyPlaceholder .image {
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: 94px 120px;
+  height: 128px;
+  width: 128px;
+  margin-top: 46px;
+  flex: 1;
+}

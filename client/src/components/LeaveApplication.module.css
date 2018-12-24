@@ -21,7 +21,6 @@
   color: #f6f6f7;
   text-transform: uppercase;
   flex: 1;
-  letter-spacing: 0.3px;
   font-weight: 600;
   margin-top: 0;
   margin-bottom: 0;
@@ -121,7 +120,6 @@
 
 .formFieldLabel {
   color: #fff;
-  letter-spacing: 0.5px;
   text-transform: uppercase;
   flex: 1;
   font-weight: 600;
@@ -274,9 +272,17 @@ select.formInput {
   transition: border-color 0.17s ease, background-color 0.17s ease;
 }
 
+.radioItem:hover {
+  border-color: #040405;
+}
+
 .lightTheme .radioItem {
   border-color: rgba(79, 84, 92, 0.3);
   background-color: #fff;
+}
+
+.lightTheme .radioItem:hover {
+  border-color: #040405;
 }
 
 /* .radioItem:nth-child(n) {
@@ -292,9 +298,17 @@ select.formInput {
   border-color: rgb(114, 137, 218);
 }
 
+.radioItem:hover.radioItemSelected {
+  border-color: rgb(114, 137, 218);
+}
+
 .lightTheme .radioItemSelected {
   border-color: rgb(114, 137, 218);
   background-color: rgb(114, 137, 218);
+}
+
+.lightTheme .radioItem:hover.radioItemSelected {
+  border-color: rgb(114, 137, 218);
 }
 
 .checkBoxWrapper {

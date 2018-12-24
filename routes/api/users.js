@@ -55,7 +55,8 @@ router.post(
                   designation: req.body.designation,
                   category: req.body.category,
                   activated: 1,
-                  password: hash
+                  password: hash,
+                  staffType: req.body.staffType
                 });
                 newUser
                   .save()

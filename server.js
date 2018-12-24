@@ -5,6 +5,10 @@ const fs = require('fs');
 const https = require('https');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const path = require('path');
+
+mongoose.set('useCreateIndex', true);
+mongoose.set('useNewUrlParser', true);
 
 const users = require('./routes/api/users');
 const profile = require('./routes/api/profile');
@@ -16,20 +20,16 @@ const app = express();
 //body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+/* app.use(express.static(path.join(__dirname, 'client', 'build'))); */
 
 //DB  config
 const db = require('./config/keys').mongoURI;
 
 //connect to mongodb
 mongoose
-  .connect(
-    db,
-    { useNewUrlParser: true }
-  )
+  .connect(db)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
-
-mongoose.set('useCreateIndex', true);
 
 //passport middleware
 app.use(passport.initialize());
@@ -45,11 +45,15 @@ app.use('/api/timetable', timetable);
 
 const port = process.env.PORT || 5000;
 
-/* app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+/* app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 }); */
 
-https
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
+/* https
   .createServer(
     {
       key: fs.readFileSync('config/server.key'),
@@ -60,3 +64,4 @@ https
   .listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
+ */

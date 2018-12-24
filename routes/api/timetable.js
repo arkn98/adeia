@@ -22,7 +22,6 @@ router.post(
   (req, res) => {
     if (req.user.accountType === 0) {
       const { errors, isValid } = validateAddTimetableInput(req.body);
-      //check validation
       if (!isValid) {
         return res.status(400).json(errors);
       }
@@ -35,47 +34,51 @@ router.post(
             Class.findOne({ classCode: req.body.classCode })
               .then(myClass => {
                 if (myClass) {
-                  let newTimetable = new Timetable({
-                    class: myClass.id,
-                    classCode: req.body.classCode
-                  });
-                  for (let i = 1; i <= 1; i++) {
-                    for (let j = 1; j <= 8; j++) {
-                      if (
-                        req.body.timetable['day0' + i]['h0' + j].courseCode !==
-                        ''
-                      ) {
-                        newTimetable.timetable['day0' + i][
-                          'h0' + j
-                        ].courseCode =
-                          req.body.timetable['day0' + i]['h0' + j].courseCode;
-                        User.findOne({
-                          staffId:
-                            req.body.timetable['day0' + i]['h0' + j]
-                              .handlingStaffId
-                        }).then(staff => {
-                          if (staff) {
-                            newTimetable.timetable['day0' + i][
-                              'h0' + j
-                            ].handlingStaff = staff.id;
-                            let tempString = 'timetable.day0' + i + '.h0' + j;
-                            newTimetable.markModified(tempString);
-                            req.body.timetable['day0' + i][
-                              'h0' + j
-                            ].additionalStaffId.map(staffId => {
-                              User.findOne({ staffId: staffId }).then(staff => {
-                                if (staff) {
-                                  newTimetable.timetable['day0' + i][
-                                    'h0' + j
-                                  ].additionalStaff.push(staff.id);
-                                }
+                  let obj = [];
+                  req.body.timetable.map((day, index) => {
+                    let dayarr = [];
+                    day.map((hour, index2) => {
+                      let hourobj = {
+                        courseCode: hour.courseCode,
+                        handlingStaff: undefined,
+                        additionalStaff: []
+                      };
+                      User.findOne({ staffId: hour.handlingStaffId })
+                        .then(user => {
+                          if (user) {
+                            hourobj.handlingStaff = user.id;
+                            if (
+                              typeof hour.additionalStaffId !== 'undefined' &&
+                              hour.additionalStaffId.length > 0
+                            ) {
+                              hour.additionalStaffId.map(id => {
+                                User.findOne({ staffId: id })
+                                  .then(addStaff => {
+                                    //console.log(id);
+                                    if (addStaff)
+                                      hourobj.additionalStaff.push(addStaff.id);
+                                  })
+                                  .catch();
                               });
-                            });
+                            }
                           }
-                        });
-                      }
-                    }
-                  }
+                        })
+                        .catch();
+                      dayarr.push(hourobj);
+                    });
+                    obj.push(dayarr);
+                  });
+
+                  console.log(obj);
+
+                  let newTimetable = new Timetable({
+                    classCode: req.body.classCode,
+                    class: myClass.id,
+                    timetable: obj
+                  });
+
+                  //console.log(newTimetable);
+
                   newTimetable
                     .save()
                     .then(timetable => res.json(timetable))

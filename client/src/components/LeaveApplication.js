@@ -188,7 +188,7 @@ class LeaveApplication extends Component {
     const { errors } = this.props;
     const optList = options[this.props.auth.user.staffType].type.map(
       (leaveType, index) => {
-        if (index == 0)
+        if (index === 0)
           return (
             <option disabled key={leaveType}>
               {leaveString[leaveType]}
@@ -477,6 +477,7 @@ class LeaveApplication extends Component {
                       <div
                         tabIndex="0"
                         role="checkbox"
+                        aria-checked={this.state.isVacationSelected}
                         className={cx({
                           radioItem: true,
                           radioItemSelected: this.state.isVacationSelected

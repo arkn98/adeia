@@ -14,8 +14,16 @@ class App extends Component {
     return (
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/activate" component={Activate} />
+        <Route
+          exact
+          path="/login"
+          render={() => <Login isDarkTheme={this.props.isDarkTheme} />}
+        />
+        <Route
+          exact
+          path="/activate"
+          render={() => <Activate isDarkTheme={this.props.isDarkTheme} />}
+        />
         <Route path="/reset-password/:token" component={ForgotPassword} />
         <Switch>
           <PrivateRoute path="/dashboard" component={Dashboard} />

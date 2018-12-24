@@ -34,13 +34,6 @@ class AddClass extends Component {
     }
   };
 
-  radioClickHandler = event => {
-    let opt = event.target.getAttribute('radio-key');
-    if (this.state.selectedRadio !== opt && opt != null) {
-      this.setState({ ...this.state, selectedRadio: opt, accountType: opt });
-    }
-  };
-
   inputOnChangeHandler = event => {
     this.setState({ [event.target.name]: event.target.value });
   };

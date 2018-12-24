@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import styles from './Main.module.css';
 import { updateCurrentRouteTitle } from '../actions/utilActions';
+import { getCurrentProfile } from '../actions/profileActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import Spinner from './common/Spinner';
 import { ReactComponent as MdDropdownPlus } from '../assets/icons/md-add-circle.svg';
 import { ReactComponent as MdDropdownMinus } from '../assets/icons/md-remove-circle.svg';
 
@@ -17,7 +19,10 @@ class Main extends Component {
 
   prevLoginClickedHandler = index => {
     if (this.state.prevLoginClickedIndex === index)
-      this.setState({ ...this.state, prevLoginClickedIndex: -1 });
+      this.setState({
+        ...this.state,
+        prevLoginClickedIndex: -1
+      });
     else
       this.setState({
         ...this.state,
@@ -205,13 +210,22 @@ class Main extends Component {
                   {loading === true ||
                   profile === null ||
                   typeof profile.prevLogins === 'undefined' ? (
-                    <div
-                      style={{
+                    <Spinner
+                      isDarkTheme={isDarkTheme}
+                      myStyle={{
                         width: '100%',
                         minHeight: '50px',
-                        height: '100%'
+                        height: '100%',
+                        position: 'relative'
+                      }}
+                    /> /* (
+                    <div
+                      style={{
+                        
                       }}>
-                      <span className={styles.spinner}>
+                      <span
+                        className={styles.spinner}
+                        style={{ position: 'absolute', top: '-25%' }}>
                         <span className={styles.spinnerInner}>
                           <span
                             className={`${styles.pulsingEllipsisItem} ${
@@ -231,10 +245,11 @@ class Main extends Component {
                         </span>
                       </span>
                     </div>
+                  ) */
                   ) : (
                     <div className={styles.prevLoginsContainer}>
                       {profile.prevLogins
-                        .slice(1)
+                        .slice(0)
                         .reverse()
                         .map((item, index) => {
                           return (
@@ -242,7 +257,7 @@ class Main extends Component {
                               onClick={() =>
                                 this.prevLoginClickedHandler(index)
                               }
-                              key={index}
+                              key={item.id}
                               name={index}
                               className={styles.prevLoginItem}>
                               <div className={styles.prevLoginItemTop}>
@@ -254,10 +269,9 @@ class Main extends Component {
                                           .unix(item.timestamp)
                                           .format('D-MMM-YY, hh:mm:ss A')
                                       : null}
-
                                     {/* {index === 0
-                                      ? '(Your current login)'
-                                      : null} */}
+                                      ? ' (Your current login)'
+                                    : null} */}
                                   </span>
                                 </div>
                                 <div>
@@ -284,15 +298,12 @@ class Main extends Component {
                                     />
                                   )}
                                 </div>
-                                {/* <div>{`${item.browser} - ${
-                                  item.browserVersion
-                                } - ${item.os} - ${item.osVersion}`}</div> */}
                               </div>
                               <div
                                 className={`${styles.prevLoginItemBody} ${
                                   this.state.prevLoginClickedIndex === index
                                     ? styles.prevLoginItemBodyVisible
-                                    : null
+                                    : ''
                                 }`}>
                                 <div>
                                   {item.browser}{' '}
@@ -309,12 +320,6 @@ class Main extends Component {
                                     .unix(item.timestamp)
                                     .format('D-MMM-YY, hh:mm:ss A')}
                                 </div>
-                                {/* <div>{item.ip}</div>
-                                <div>
-                                  {moment
-                                    .unix(item.timestamp)
-                                    .format('Do MMMM, YY')}
-                                </div> */}
                               </div>
                             </div>
                           );
@@ -343,15 +348,18 @@ class Main extends Component {
 Main.propTypes = {
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
-  updateCurrentRouteTitle: PropTypes.func.isRequired
+  utils: PropTypes.object.isRequired,
+  updateCurrentRouteTitle: PropTypes.func.isRequired,
+  getCurrentProfile: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  profile: state.profile
+  profile: state.profile,
+  utils: state.utils
 });
 
 export default connect(
   mapStateToProps,
-  { updateCurrentRouteTitle }
+  { updateCurrentRouteTitle, getCurrentProfile }
 )(Main);

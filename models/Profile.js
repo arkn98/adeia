@@ -12,17 +12,19 @@ const ProfileSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'users'
     },
-    prevLogins: [
-      {
-        attemptStatus: { type: String },
-        timestamp: { type: String },
-        ip: { type: String },
-        browser: { type: String },
-        browserVersion: { type: String },
-        os: { type: String },
-        osVersion: { type: String }
-      }
-    ],
+    prevLogins: {
+      type: [
+        {
+          attemptStatus: { type: String },
+          timestamp: { type: String },
+          ip: { type: String },
+          browser: { type: String },
+          browserVersion: { type: String },
+          os: { type: String },
+          osVersion: { type: String }
+        }
+      ]
+    },
     notifications: { type: Array, default: [] },
     cplCredits: {
       type: Number,

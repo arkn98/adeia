@@ -15,7 +15,7 @@
 .sideNavWrapper {
   width: 100%;
   height: 100%;
-  transition: width 0.17s ease;
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @media screen and (max-width: 768px) {
@@ -287,11 +287,9 @@
 
 .logo .menuText {
   font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  line-height: 1.15;
   text-rendering: optimizeLegibility;
   padding-right: 12px;
   padding-left: 4px;
-  line-height: 32px;
   font-weight: 500;
   font-size: 10px;
   position: relative;

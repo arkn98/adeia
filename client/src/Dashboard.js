@@ -14,6 +14,8 @@ import AddCourse from './components/AddCourse';
 import Timetable from './components/Timetable';
 import { ReactComponent as MdNotifications } from './assets/icons/md-notifications.svg';
 import { ReactComponent as MdMenu } from './assets/icons/md-menu.svg';
+import { ReactComponent as EmptyNotifDark } from './assets/empty-mentions-dark.svg';
+import { ReactComponent as EmptyNotifLight } from './assets/empty-mentions-light.svg';
 import { ReactComponent as MdInformationCircle } from './assets/icons/md-information-circle.svg';
 import { connect } from 'react-redux';
 import {
@@ -32,6 +34,7 @@ import { getAllClasses } from './actions/timetableActions';
 import Modal from './components/common/Modal';
 import InfoModal from './components/common/InfoModal';
 import PageNotFound from './PageNotFound';
+import Spinner from './components/common/Spinner';
 
 class Dashboard extends Component {
   state = {
@@ -40,7 +43,7 @@ class Dashboard extends Component {
   };
 
   componentWillMount = () => {
-    this.props.getCurrentProfile();
+    //this.props.getCurrentProfile();
     this.unlisten = this.props.history.listen((location, action) => {
       this.setState({
         ...this.state,
@@ -90,7 +93,7 @@ class Dashboard extends Component {
   };
 
   componentDidMount = () => {
-    /* this.props.getCurrentProfile(); */
+    this.props.getCurrentProfile();
     /* this.props.getAllClasses(); */
   };
 
@@ -115,7 +118,7 @@ class Dashboard extends Component {
 
     //const { user } = this.props.auth;
     //const { profile, loading } = this.props.profile;
-    const { loading } = this.props.profile;
+    const { loading, profile } = this.props.profile;
     const {
       isLogoutModalVisible,
       isDarkTheme,
@@ -429,191 +432,93 @@ class Dashboard extends Component {
                           <div className={notificationStyles.scrollWrap}>
                             <div className={notificationStyles.scroller}>
                               <span>
-                                <div
-                                  className={
-                                    notificationStyles.channelSeperator
-                                  }>
-                                  <span
-                                    className={notificationStyles.channelName}>
-                                    #general
-                                  </span>
-                                  <span
-                                    className={notificationStyles.guildName}>
-                                    Arkane
-                                  </span>
-                                </div>
-                                <div
-                                  className={
-                                    notificationStyles.msgGroupWrapper
-                                  }>
-                                  <div className={notificationStyles.msgGroup}>
-                                    <div
-                                      className={
-                                        notificationStyles.msgContainer
-                                      }>
-                                      <div className={notificationStyles.msg}>
-                                        <div
-                                          className={
-                                            notificationStyles.msgHeader
-                                          }
-                                        />
-                                        <div
-                                          className={
-                                            notificationStyles.msgContent
-                                          }
-                                        />
-                                      </div>
+                                {loading === true ||
+                                profile === null ||
+                                typeof profile.notifications === 'undefined' ? (
+                                  <Spinner
+                                    isDarkTheme={isDarkTheme}
+                                    myStyle={{
+                                      width: '100%',
+                                      height: '100%',
+                                      position: 'relative'
+                                    }}
+                                  />
+                                ) : profile.notifications.length === 0 ? (
+                                  <div
+                                    className={`${
+                                      notificationStyles.emptyPlaceholder
+                                    } ${notificationStyles.bottm}`}>
+                                    <div className={notificationStyles.body}>
+                                      And in the beginning... there was silence.
                                     </div>
+                                    {isDarkTheme ? (
+                                      <EmptyNotifDark
+                                        className={notificationStyles.image}
+                                      />
+                                    ) : (
+                                      <EmptyNotifLight
+                                        className={notificationStyles.image}
+                                      />
+                                    )}
                                   </div>
-                                </div>
-                                <div
-                                  className={
-                                    notificationStyles.channelSeperator
-                                  }>
-                                  <span
-                                    className={notificationStyles.channelName}>
-                                    #general
-                                  </span>
-                                  <span
-                                    className={notificationStyles.guildName}>
-                                    Arkane
-                                  </span>
-                                </div>
-                                <div
-                                  className={
-                                    notificationStyles.msgGroupWrapper
-                                  }>
-                                  <div className={notificationStyles.msgGroup}>
-                                    <div
-                                      className={
-                                        notificationStyles.msgContainer
-                                      }>
-                                      <div className={notificationStyles.msg}>
-                                        <div
-                                          className={
-                                            notificationStyles.msgHeader
-                                          }
-                                        />
-                                        <div
-                                          className={
-                                            notificationStyles.msgContent
-                                          }
-                                        />
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div
-                                  className={
-                                    notificationStyles.channelSeperator
-                                  }>
-                                  <span
-                                    className={notificationStyles.channelName}>
-                                    #general
-                                  </span>
-                                  <span
-                                    className={notificationStyles.guildName}>
-                                    Arkane
-                                  </span>
-                                </div>
-                                <div
-                                  className={
-                                    notificationStyles.msgGroupWrapper
-                                  }>
-                                  <div className={notificationStyles.msgGroup}>
-                                    <div
-                                      className={
-                                        notificationStyles.msgContainer
-                                      }>
-                                      <div className={notificationStyles.msg}>
-                                        <div
-                                          className={
-                                            notificationStyles.msgHeader
-                                          }
-                                        />
-                                        <div
-                                          className={
-                                            notificationStyles.msgContent
-                                          }
-                                        />
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div
-                                  className={
-                                    notificationStyles.channelSeperator
-                                  }>
-                                  <span
-                                    className={notificationStyles.channelName}>
-                                    #general
-                                  </span>
-                                  <span
-                                    className={notificationStyles.guildName}>
-                                    Arkane
-                                  </span>
-                                </div>
-                                <div
-                                  className={
-                                    notificationStyles.msgGroupWrapper
-                                  }>
-                                  <div className={notificationStyles.msgGroup}>
-                                    <div
-                                      className={
-                                        notificationStyles.msgContainer
-                                      }>
-                                      <div className={notificationStyles.msg}>
-                                        <div
-                                          className={
-                                            notificationStyles.msgHeader
-                                          }
-                                        />
-                                        <div
-                                          className={
-                                            notificationStyles.msgContent
-                                          }
-                                        />
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div
-                                  className={
-                                    notificationStyles.channelSeperator
-                                  }>
-                                  <span
-                                    className={notificationStyles.channelName}>
-                                    #general
-                                  </span>
-                                  <span
-                                    className={notificationStyles.guildName}>
-                                    Arkane
-                                  </span>
-                                </div>
-                                <div
-                                  className={
-                                    notificationStyles.msgGroupWrapper
-                                  }>
-                                  <div className={notificationStyles.msgGroup}>
-                                    <div
-                                      className={
-                                        notificationStyles.msgContainer
-                                      }>
-                                      <div className={notificationStyles.msg}>
-                                        <div
-                                          className={
-                                            notificationStyles.msgHeader
-                                          }
-                                        />
-                                        <div
-                                          className={
-                                            notificationStyles.msgContent
-                                          }
-                                        />
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
+                                ) : (
+                                  profile.notifications
+                                    .slice(0)
+                                    .reverse()
+                                    .map((notif, index) => {
+                                      return (
+                                        <React.Fragment>
+                                          <div
+                                            className={
+                                              notificationStyles.channelSeperator
+                                            }>
+                                            <span
+                                              className={
+                                                notificationStyles.channelName
+                                              }>
+                                              #general
+                                            </span>
+                                            <span
+                                              className={
+                                                notificationStyles.guildName
+                                              }>
+                                              Arkane
+                                            </span>
+                                          </div>
+                                          <div
+                                            className={
+                                              notificationStyles.msgGroupWrapper
+                                            }>
+                                            <div
+                                              className={
+                                                notificationStyles.msgGroup
+                                              }>
+                                              <div
+                                                className={
+                                                  notificationStyles.msgContainer
+                                                }>
+                                                <div
+                                                  className={
+                                                    notificationStyles.msg
+                                                  }>
+                                                  <div
+                                                    className={
+                                                      notificationStyles.msgHeader
+                                                    }
+                                                  />
+                                                  <div
+                                                    className={
+                                                      notificationStyles.msgContent
+                                                    }
+                                                  />
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </React.Fragment>
+                                      );
+                                    })
+                                )}
                               </span>
                             </div>
                           </div>
@@ -650,7 +555,6 @@ class Dashboard extends Component {
             </div>
           </div>
         </div>
-
         {this.modals}
       </div>
     );
