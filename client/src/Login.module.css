@@ -443,6 +443,11 @@
     display: block;
     color: #fff;
   }
+
+  .lightTheme .authbox > .logo {
+    color: #72767d;
+  }
+
   .banner > .logo {
     display: none;
   }

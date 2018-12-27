@@ -16,6 +16,11 @@ table {
   vertical-align: middle;
 }
 
+.timetable {
+  overflow-x: auto;
+  min-width: 500px;
+}
+
 .timetable .title {
   align-items: center;
   background: #4f545c;

@@ -20,7 +20,11 @@ const Spinner = props => {
         </span>
       </React.Fragment>
     );
-  else
+  else {
+    let subStyle = { position: 'absolute' };
+    if (props.subStyle !== null) {
+      subStyle = { ...subStyle, ...props.subStyle };
+    }
     return (
       <div style={props.myStyle}>
         <span
@@ -29,7 +33,7 @@ const Spinner = props => {
               ? `${styles.spinner}`
               : `${styles.lightTheme} ${styles.spinner}`
           }
-          style={{ position: 'absolute', top: '-25%' }}>
+          style={subStyle}>
           <span className={styles.spinnerInner}>
             <span
               className={`${styles.pulsingEllipsisItem} ${styles.spinnerItem}`}
@@ -44,6 +48,7 @@ const Spinner = props => {
         </span>
       </div>
     );
+  }
 };
 
 export default Spinner;

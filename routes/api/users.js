@@ -244,6 +244,7 @@ router.post('/set-login-attempts', (req, res) => {
           delete req.body.email;
           profile.prevLogins.push(req.body);
           profile.save();
+          return res.json(profile);
         })
         .catch(err => console.log(err));
     })

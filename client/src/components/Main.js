@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import styles from './Main.module.css';
 import { updateCurrentRouteTitle } from '../actions/utilActions';
-import { getCurrentProfile } from '../actions/profileActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Spinner from './common/Spinner';
 import { ReactComponent as MdDropdownPlus } from '../assets/icons/md-add-circle.svg';
 import { ReactComponent as MdDropdownMinus } from '../assets/icons/md-remove-circle.svg';
+import ProgressBar from './common/ProgressBar';
 
 class Main extends Component {
   state = {
@@ -33,6 +33,20 @@ class Main extends Component {
   componentDidMount = () => {
     this.props.updateCurrentRouteTitle('Dashboard');
   };
+
+  leaveTypeNames = [
+    'Dummy',
+    'Casual leave',
+    'Compensation leave',
+    'Earn leave',
+    'Medical leave',
+    'On Duty',
+    'Restricted holiday',
+    'Special Casual leave',
+    'Casual leave',
+    'Casual leave',
+    'Casual leave'
+  ];
 
   render() {
     let boxes = null;
@@ -184,17 +198,69 @@ class Main extends Component {
             <div className={`${styles.boxContainer} ${styles.mainFuncs}`}>
               {this.props.auth.user.accountType !== 0 ? (
                 <div className={styles.box}>
-                  <div className={styles.boxText}>
-                    <div className={styles.title}>Leave Availability</div>
-                    {/* <div className={styles.subtitle}>Leave Availability</div> */}
-                  </div>
-                  {/* <div className={styles.boxIcon}>
-                    <i
+                  <div style={{ overflowY: 'auto' }}>
+                    <div className={styles.boxText}>
+                      <div>
+                        <span className={styles.title}>Available Leaves</span>
+                        {/*<span className={styles.subtitle}>(approximate)</span>*/}
+                      </div>
+                    </div>
+                    {loading === true ||
+                    profile === null ||
+                    typeof profile.prevLogins === 'undefined' ? (
+                      <Spinner
+                        isDarkTheme={isDarkTheme}
+                        myStyle={{
+                          width: '100%',
+                          minHeight: '50px',
+                          height: '100%',
+                          position: 'relative'
+                        }}
+                        subStyle={{ top: '-25%' }}
+                      />
+                    ) : (
+                      <div className={styles.itemsContainer}>
+                        {profile.leaveAvailable.leaveAllowed
+                          .filter(x => x !== 0)
+                          .map((item, index) => {
+                            return (
+                              <div key={index} className={styles.leaveItem}>
+                                <div className={styles.leaveItemInfo}>
+                                  <div className={styles.leaveTypeTitle}>
+                                    {this.leaveTypeNames[item]}
+                                  </div>
+                                  <div className={styles.leaveTypeStats}>
+                                    {profile.leaveAvailable.noOfDays[item]} /{' '}
+                                    {profile.leaveAllotted.noOfDays[item]}
+                                  </div>
+                                </div>
+
+                                <ProgressBar
+                                  key={index}
+                                  myKey={index}
+                                  isDarkTheme={isDarkTheme}
+                                  barWidth={
+                                    profile.leaveAvailable.noOfDays[item]
+                                  }
+                                  trackWidth={
+                                    profile.leaveAllotted.noOfDays[item]
+                                  }
+                                />
+                              </div>
+                            );
+                          }, this)}
+                      </div>
+                    )}
+                    {/*
+                <div className={styles.boxIcon}>
+                   <i
                       className={`icon ion-md-repeat ${
                         styles.customHeaderIcon
                       }`}
-                    />
-                  </div> */}
+                    /> 
+                </div>
+                    */}
+                  </div>
                 </div>
               ) : null}
               <div className={styles.box}>
@@ -218,36 +284,10 @@ class Main extends Component {
                         height: '100%',
                         position: 'relative'
                       }}
-                    /> /* (
-                    <div
-                      style={{
-                        
-                      }}>
-                      <span
-                        className={styles.spinner}
-                        style={{ position: 'absolute', top: '-25%' }}>
-                        <span className={styles.spinnerInner}>
-                          <span
-                            className={`${styles.pulsingEllipsisItem} ${
-                              styles.spinnerItem
-                            }`}
-                          />
-                          <span
-                            className={`${styles.pulsingEllipsisItem} ${
-                              styles.spinnerItem
-                            }`}
-                          />
-                          <span
-                            className={`${styles.pulsingEllipsisItem} ${
-                              styles.spinnerItem
-                            }`}
-                          />
-                        </span>
-                      </span>
-                    </div>
-                  ) */
+                      subStyle={{ top: '-25%' }}
+                    />
                   ) : (
-                    <div className={styles.prevLoginsContainer}>
+                    <div className={styles.itemsContainer}>
                       {profile.prevLogins
                         .slice(0)
                         .reverse()
@@ -257,7 +297,7 @@ class Main extends Component {
                               onClick={() =>
                                 this.prevLoginClickedHandler(index)
                               }
-                              key={item.id}
+                              key={index}
                               name={index}
                               className={styles.prevLoginItem}>
                               <div className={styles.prevLoginItemTop}>
@@ -269,9 +309,9 @@ class Main extends Component {
                                           .unix(item.timestamp)
                                           .format('D-MMM-YY, hh:mm:ss A')
                                       : null}
-                                    {/* {index === 0
+                                    {index === 0
                                       ? ' (Your current login)'
-                                    : null} */}
+                                      : null}
                                   </span>
                                 </div>
                                 <div>
@@ -349,8 +389,7 @@ Main.propTypes = {
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
   utils: PropTypes.object.isRequired,
-  updateCurrentRouteTitle: PropTypes.func.isRequired,
-  getCurrentProfile: PropTypes.func.isRequired
+  updateCurrentRouteTitle: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -361,5 +400,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { updateCurrentRouteTitle, getCurrentProfile }
+  { updateCurrentRouteTitle }
 )(Main);

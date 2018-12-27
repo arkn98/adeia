@@ -1,6 +1,11 @@
 import axios from 'axios';
 import * as moment from 'moment';
-import { GET_ERRORS, SET_CURRENT_USER, CLEAR_ERRORS } from './types';
+import {
+  GET_ERRORS,
+  SET_CURRENT_USER,
+  CLEAR_ERRORS,
+  SET_LOGIN_ATTEMPT_DETAILS
+} from './types';
 import setAuthToken from '../utils/setAuthToken';
 import jwt_decode from 'jwt-decode';
 import isEmpty from '../validation/is-empty';
@@ -43,7 +48,9 @@ export const setLoginAttempts = (email, status) => dispatch => {
 
         axios
           .post('/api/users/set-login-attempts', newObj)
-          .then(data => console.log(data))
+          .then(data => {
+            dispatch({ type: SET_LOGIN_ATTEMPT_DETAILS });
+          })
           .catch(err => console.log(err));
       }
     })

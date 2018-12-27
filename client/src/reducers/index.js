@@ -4,11 +4,17 @@ import errorReducer from './errorReducer';
 import profileReducer from './profileReducer';
 import utilReducer from './utilReducer';
 import timetableReducer from './timetableReducer';
+import classReducer from './classReducer';
+import courseReducer from './courseReducer';
+import staffReducer from './staffReducer';
 
 export default combineReducers({
   auth: authReducer,
   errors: errorReducer,
   profile: profileReducer,
   utils: utilReducer,
-  timetable: timetableReducer
+  timetable: timetableReducer,
+  classes: classReducer,
+  courses: courseReducer,
+  staff: staffReducer
 });

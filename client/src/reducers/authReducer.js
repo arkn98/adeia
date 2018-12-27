@@ -9,13 +9,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_LOGIN_ATTEMPT_DETAILS:
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          prevLogins: [...state.user.prevLogins, action.payload]
-        }
-      };
+      return { ...state };
     case SET_CURRENT_USER:
       return {
         ...state,

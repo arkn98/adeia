@@ -330,11 +330,41 @@
   opacity: 1;
 }
 
-.prevLoginsContainer {
+.itemsContainer {
   margin-left: 16px;
   margin-right: 16px;
   padding-bottom: 12px;
   box-sizing: border-box;
+}
+
+.leaveItem {
+  margin-bottom: 12px;
+}
+
+.leaveItemInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 3px;
+}
+
+.leaveTypeTitle {
+  color: #fff;
+  font-weight: 600;
+  transition: color 0.17s ease;
+}
+
+.leaveTypeStats {
+  color: #fff;
+  font-weight: 500;
+  transition: color 0.17s ease;
+  font-size: 12px;
+}
+
+.lightTheme .leaveTypeTitle,
+.lightTheme .leaveTypeStats {
+  color: #4f545c;
 }
 
 .prevLoginItem {

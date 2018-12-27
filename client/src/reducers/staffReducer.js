@@ -1,25 +1,25 @@
 import {
-  GET_CLASSES,
-  CLASSES_LOADING,
+  GET_STAFF,
+  STAFF_LOADING,
   GET_ERRORS,
   CLEAR_ERRORS
 } from '../actions/types';
 
 const initialState = {
-  classList: null,
+  staffList: null,
   loading: false
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_CLASSES: {
+    case GET_STAFF: {
       return {
         ...state,
-        classList: action.payload,
+        staffList: action.payload,
         loading: false
       };
     }
-    case CLASSES_LOADING: {
+    case STAFF_LOADING: {
       return {
         ...state,
         loading: true

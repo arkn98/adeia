@@ -16,7 +16,10 @@ const TimetableSchema = new Schema({
   timetable: [
     [
       {
-        courseCode: String,
+        courseCode: {
+          type: Schema.Types.ObjectId,
+          ref: 'courses'
+        },
         handlingStaff: {
           type: Schema.Types.ObjectId,
           ref: 'users'

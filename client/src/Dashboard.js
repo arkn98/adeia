@@ -30,7 +30,11 @@ import {
   clearCurrentProfile,
   getCurrentProfile
 } from './actions/profileActions';
-import { getAllClasses } from './actions/timetableActions';
+import {
+  getAllClasses,
+  getAllCourses,
+  getAllStaff
+} from './actions/timetableActions';
 import Modal from './components/common/Modal';
 import InfoModal from './components/common/InfoModal';
 import PageNotFound from './PageNotFound';
@@ -43,7 +47,6 @@ class Dashboard extends Component {
   };
 
   componentWillMount = () => {
-    //this.props.getCurrentProfile();
     this.unlisten = this.props.history.listen((location, action) => {
       this.setState({
         ...this.state,
@@ -93,8 +96,12 @@ class Dashboard extends Component {
   };
 
   componentDidMount = () => {
-    this.props.getCurrentProfile();
-    /* this.props.getAllClasses(); */
+    setTimeout(() => {
+      this.props.getCurrentProfile(false);
+    }, 350);
+    this.props.getAllClasses();
+    this.props.getAllCourses();
+    this.props.getAllStaff();
   };
 
   modals = null;
@@ -126,10 +133,14 @@ class Dashboard extends Component {
     } = this.props.utils;
 
     let notifCount;
-    if (!loading) {
-      //notifCount = profile.notifications.length;
+    if (
+      !loading &&
+      profile !== null &&
+      typeof profile.notifications !== 'undefined'
+    ) {
+      notifCount = profile.notifications.length;
       //notifCount = null;
-      notifCount = '9+';
+      //notifCount = '9+';
     } else {
       notifCount = null;
     }
@@ -189,7 +200,6 @@ class Dashboard extends Component {
             path="/dashboard/view-holidays"
             exact
             component={ViewHolidays}
-            notifCount={notifCount}
             isDarkTheme={isDarkTheme}
           />
           <Route
@@ -198,7 +208,6 @@ class Dashboard extends Component {
             render={() => (
               <Timetable
                 notificationsClickHandler={this.notificationsClickHandler}
-                notifCount={notifCount}
                 isDarkTheme={isDarkTheme}
               />
             )}
@@ -209,7 +218,6 @@ class Dashboard extends Component {
             render={() => (
               <AddStaff
                 notificationsClickHandler={this.notificationsClickHandler}
-                notifCount={notifCount}
                 isDarkTheme={isDarkTheme}
               />
             )}
@@ -220,7 +228,6 @@ class Dashboard extends Component {
             render={() => (
               <AddClass
                 notificationsClickHandler={this.notificationsClickHandler}
-                notifCount={notifCount}
                 isDarkTheme={isDarkTheme}
               />
             )}
@@ -231,7 +238,6 @@ class Dashboard extends Component {
             render={() => (
               <AddCourse
                 notificationsClickHandler={this.notificationsClickHandler}
-                notifCount={notifCount}
                 isDarkTheme={isDarkTheme}
               />
             )}
@@ -242,7 +248,6 @@ class Dashboard extends Component {
             render={() => (
               <AddAdmin
                 notificationsClickHandler={this.notificationsClickHandler}
-                notifCount={notifCount}
                 isDarkTheme={isDarkTheme}
               />
             )}
@@ -253,7 +258,6 @@ class Dashboard extends Component {
             render={() => (
               <Main
                 notificationsClickHandler={this.notificationsClickHandler}
-                notifCount={notifCount}
                 isDarkTheme={isDarkTheme}
               />
             )}
@@ -268,7 +272,6 @@ class Dashboard extends Component {
             path="/dashboard/view-holidays"
             exact
             component={ViewHolidays}
-            notifCount={notifCount}
             isDarkTheme={isDarkTheme}
           />
           <Route
@@ -277,7 +280,6 @@ class Dashboard extends Component {
             render={() => (
               <Main
                 notificationsClickHandler={this.notificationsClickHandler}
-                notifCount={notifCount}
                 isDarkTheme={isDarkTheme}
               />
             )}
@@ -294,7 +296,6 @@ class Dashboard extends Component {
             render={() => (
               <LeaveApplication
                 notificationsClickHandler={this.notificationsClickHandler}
-                notifCount={notifCount}
                 isDarkTheme={isDarkTheme}
               />
             )}
@@ -303,7 +304,6 @@ class Dashboard extends Component {
             path="/dashboard/view-holidays"
             exact
             component={ViewHolidays}
-            notifCount={notifCount}
             isDarkTheme={isDarkTheme}
           />
           <Route
@@ -312,7 +312,6 @@ class Dashboard extends Component {
             render={() => (
               <Main
                 notificationsClickHandler={this.notificationsClickHandler}
-                notifCount={notifCount}
                 isDarkTheme={isDarkTheme}
               />
             )}
@@ -447,7 +446,7 @@ class Dashboard extends Component {
                                   <div
                                     className={`${
                                       notificationStyles.emptyPlaceholder
-                                    } ${notificationStyles.bottm}`}>
+                                    } ${notificationStyles.bottom}`}>
                                     <div className={notificationStyles.body}>
                                       And in the beginning... there was silence.
                                     </div>
@@ -572,6 +571,8 @@ Dashboard.propTypes = {
   changeTheme: PropTypes.func.isRequired,
   showLogoutPopup: PropTypes.func.isRequired,
   getAllClasses: PropTypes.func.isRequired,
+  getAllCourses: PropTypes.func.isRequired,
+  getAllStaff: PropTypes.func.isRequired,
   showInfoPopup: PropTypes.func.isRequired,
   hideInfoPopup: PropTypes.func.isRequired
 };
@@ -580,7 +581,10 @@ const mapStateToProps = state => ({
   auth: state.auth,
   profile: state.profile,
   utils: state.utils,
-  timetable: state.timetable
+  timetable: state.timetable,
+  classes: state.classes,
+  courses: state.courses,
+  staff: state.staff
 });
 
 export default connect(
@@ -593,6 +597,8 @@ export default connect(
     changeTheme,
     showLogoutPopup,
     getAllClasses,
+    getAllCourses,
+    getAllStaff,
     showInfoPopup,
     hideInfoPopup
   }

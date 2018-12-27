@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 import { updateCurrentRouteTitle } from '../actions/utilActions';
 import classNames from 'classnames/bind';
 import axios from 'axios';
-import Temp from './temp';
 
 const cx = classNames.bind({ ...mainStyles, ...styles, ...loginStyles });
 
@@ -18,10 +17,9 @@ class Timetable extends Component {
     isSubmitting: false,
     errors: {},
     classCode: '',
-    classesList: null,
-    isTouched: false,
     isTableLoaded: false,
-    timetable: null
+    timetable: null,
+    nameOfClass: ''
   };
 
   componentDidMount = () => {
@@ -38,41 +36,24 @@ class Timetable extends Component {
     }
   };
 
-  onBlur = event => {
-    this.setState({ ...this.state, isTouched: true });
-  };
-
   formSubmitHandler = event => {
     this.setState({ ...this.state, isSubmitting: true });
     event.preventDefault();
   };
 
-  componentWillMount = () => {
-    axios
-      .get('/api/timetable/get-classes')
-      .then(res => {
-        this.setState({
-          ...this.state,
-          classesList: res.data,
-          classCode: res.data[0].classCode
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
-  touched = false;
-
   inputOnChangeHandler = event => {
     if (event.target.name === 'classCode') {
       let timetableObj = null;
-      if (this.touched === false) this.touched = true;
       if (event.target.value !== '') {
+        //console.log(event.target.value);
+        let tempObj = {
+          classCode: event.target.value
+        };
         axios
-          .post('/api/timetable/get-timetable', event.target.value)
+          .post('/api/timetable/get-timetable', tempObj)
           .then(res => {
-            timetableObj = res.data;
+            console.log(res);
+            timetableObj = res.data.timetable;
           })
           .catch(err => {
             timetableObj = null;
@@ -81,18 +62,52 @@ class Timetable extends Component {
       }
       this.setState({
         ...this.state,
-        [event.target.name]: event.target.value,
-        isTouched: this.touched,
-        timetable: timetableObj
+        timetable: timetableObj,
+        nameOfClass: event.target.nameOfClass,
+        [event.target.name]: event.target.value
       });
-    } else this.setState({ [event.target.name]: event.target.value });
+    } else {
+      this.setState({ [event.target.name]: event.target.value });
+    }
+  };
+
+  testClickHandler = event => {
+    event.preventDefault();
+    let newTimetable = {};
+    newTimetable.classCode = 'BT3G';
+    newTimetable.classId = this.props.classes.classList.find(
+      x => x.classCode === 'BT3G'
+    )._id;
+    let day = [];
+    for (let i = 1; i <= 5; i++) {
+      let today = [];
+      for (let j = 1; j <= 8; j++) {
+        let hour = {};
+        hour.courseCode = this.props.courses.courseList.find(
+          x => x.courseCode === 'CA7001'
+        )._id;
+        hour.handlingStaffId = this.props.staff.staffList.find(
+          x => x.staffId === '12345'
+        )._id;
+        hour.additionalStaffId = [];
+        hour.additionalStaffId.push(
+          this.props.staff.staffList.find(x => x.staffId === '12345')._id
+        );
+        today.push(hour);
+      }
+      day.push(today);
+    }
+    newTimetable.timetable = day;
+    console.log(newTimetable);
+    axios
+      .post('/api/timetable/add-timetable', newTimetable)
+      .then(timetable => console.log(timetable))
+      .catch(err => console.log(err));
   };
 
   render() {
     const errors = this.state.errors;
     const isDarkTheme = this.props.isDarkTheme;
-
-    const showTimetable = this.state.classCode === '' ? false : true;
 
     return (
       <div
@@ -153,10 +168,14 @@ class Timetable extends Component {
                         formInputError: errors.classCode
                       })}>
                       <option disabled>Select class code</option>
-                      {this.state.classesList === null ? (
+                      {typeof this.props.classes === 'undefined' ||
+                      (Object.keys(this.props.classes).length === 0 &&
+                        this.props.classes.constructor === Object) ||
+                      this.props.classes.classList === null ||
+                      this.props.classes.loading ? (
                         <option>Loading...</option>
                       ) : (
-                        this.state.classesList.map(item => (
+                        this.props.classes.classList.map(item => (
                           <option
                             key={item.classCode}
                             value={item.classCode}>{`${item.classCode} - ${
@@ -167,95 +186,100 @@ class Timetable extends Component {
                     </select>
                   </div>
                 </div>
-                <Temp />
-                {showTimetable && this.state.isTableLoaded ? (
-                  <div
-                    className={
-                      isDarkTheme
-                        ? `${mainStyles.marginBottom20} ${
-                            styles.formItemWrapper
-                          } ${tableStyles.timetable}`
-                        : `${mainStyles.marginBottom20} ${
-                            styles.formItemWrapper
-                          } ${tableStyles.timetable} ${tableStyles.lightTheme}`
-                    }>
-                    <h6 className={tableStyles.title}>Table Title</h6>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th style={{ textAlign: 'left' }}>Day</th>
-                          <th>Ⅰ</th>
-                          <th>Ⅱ</th>
-                          <th>Ⅲ</th>
-                          <th>Ⅳ</th>
-                          <th>Ⅴ</th>
-                          <th>Ⅵ</th>
-                          <th>Ⅶ</th>
-                          <th>Ⅷ</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td style={{ textAlign: 'left' }}>Monday</td>
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                        </tr>
-                        <tr>
-                          <td style={{ textAlign: 'left' }}>Tuesday</td>
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                        </tr>
-                        <tr>
-                          <td style={{ textAlign: 'left' }}>Wednesday</td>
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                        </tr>
-                        <tr>
-                          <td style={{ textAlign: 'left' }}>Thursday</td>
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                        </tr>
-                        <tr>
-                          <td style={{ textAlign: 'left' }}>Friday</td>
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                          <td />
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                ) : !this.state.isTableLoaded && this.state.isTouched ? (
-                  'Loading'
-                ) : null}
+                <div
+                  onClick={this.testClickHandler}
+                  style={{ cursor: 'pointer' }}>
+                  click me
+                </div>
+                <div
+                  className={
+                    isDarkTheme
+                      ? `${mainStyles.marginBottom20} ${
+                          styles.formItemWrapper
+                        } ${tableStyles.timetable}`
+                      : `${mainStyles.marginBottom20} ${
+                          styles.formItemWrapper
+                        } ${tableStyles.timetable} ${tableStyles.lightTheme}`
+                  }>
+                  <h6 className={tableStyles.title}>
+                    {this.props.classes.loading ||
+                    this.props.classes.classList === null
+                      ? 'Loading'
+                      : this.state.nameOfClass}
+                  </h6>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th style={{ textAlign: 'left' }}>Day</th>
+                        <th>Ⅰ</th>
+                        <th>Ⅱ</th>
+                        <th>Ⅲ</th>
+                        <th>Ⅳ</th>
+                        <th>Ⅴ</th>
+                        <th>Ⅵ</th>
+                        <th>Ⅶ</th>
+                        <th>Ⅷ</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style={{ textAlign: 'left' }}>Monday</td>
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                      </tr>
+                      <tr>
+                        <td style={{ textAlign: 'left' }}>Tuesday</td>
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                      </tr>
+                      <tr>
+                        <td style={{ textAlign: 'left' }}>Wednesday</td>
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                      </tr>
+                      <tr>
+                        <td style={{ textAlign: 'left' }}>Thursday</td>
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                      </tr>
+                      <tr>
+                        <td style={{ textAlign: 'left' }}>Friday</td>
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                        <td />
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
                 <div
                   className={`${mainStyles.marginBottom20} ${
                     styles.formItemWrapper
@@ -307,15 +331,19 @@ Timetable.propTypes = {
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
+  courses: PropTypes.object.isRequired,
   timetable: PropTypes.object.isRequired,
-  updateCurrentRouteTitle: PropTypes.func.isRequired,
-  getAllClasses: PropTypes.func.isRequired
+  updateCurrentRouteTitle: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
-  profile: state.profile
+  profile: state.profile,
+  classes: state.classes,
+  courses: state.courses,
+  staff: state.staff
 });
 
 export default connect(
