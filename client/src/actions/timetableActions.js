@@ -5,8 +5,36 @@ import {
   GET_COURSES,
   COURSES_LOADING,
   STAFF_LOADING,
-  GET_STAFF
+  GET_STAFF,
+  GET_TIMETABLE,
+  TIMETABLE_LOADING,
+  CLEAR_TIMETABLE
 } from './types';
+
+export const setTimetableLoading = () => {
+  return {
+    type: TIMETABLE_LOADING
+  };
+};
+
+export const getTimetable = classCode => dispatch => {
+  dispatch(setTimetableLoading());
+  axios
+    .post('/api/timetable/get-timetable', classCode)
+    .then(res => {
+      dispatch({
+        type: GET_TIMETABLE,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      //console.log(err);
+      dispatch({
+        type: GET_TIMETABLE,
+        payload: {}
+      });
+    });
+};
 
 export const getAllClasses = () => dispatch => {
   dispatch(setClassesLoading());
@@ -22,7 +50,7 @@ export const getAllClasses = () => dispatch => {
       console.log(err);
       dispatch({
         type: GET_CLASSES,
-        payload: {}
+        payload: []
       });
     });
 };

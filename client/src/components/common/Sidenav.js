@@ -405,7 +405,7 @@ class Sidenav extends Component {
                 </div>
                 <div className={styles.iconWrapper}>
                   <a
-                    title="GitHub Repo"
+                    title="GitHub repo"
                     href="https://github.com/arkn98/lms"
                     target="_blank"
                     rel="noopener noreferrer">

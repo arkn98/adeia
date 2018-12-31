@@ -41,6 +41,8 @@ table {
 }
 
 .timetable table {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
   box-shadow: 0 1px 3px #282b30;
@@ -84,16 +86,19 @@ table {
 
 .timetable th,
 .timetable td {
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.3);
 }
 
 .lightTheme.timetable th,
 .lightTheme.timetable td {
-  border: 1px solid rgba(79, 84, 92, 0.3);
+  border-style: solid;
+  border-color: rgba(79, 84, 92, 0.3);
 }
 
 .timetable th {
-  color: hsla(0, 0%, 100%, 0.8);
+  color: hsla(0, 0%, 100%, 0.5);
+  font-weight: 500;
   font-size: 13px;
   line-height: 15px;
   padding: 8px;
@@ -101,14 +106,19 @@ table {
 }
 
 .timetable td {
-  color: hsla(0, 0%, 100%, 0.5);
-  font-weight: 300;
+  color: hsla(0, 0%, 100%, 0.8);
+  font-size: 14px;
+  font-weight: 500;
   max-width: 272px;
   padding: 8px;
-  vertical-align: top;
+  vertical-align: center;
   width: 48px;
   height: 48px;
   transition: color 0.17s ease, font-weight 0.17s ease;
+}
+
+.selectContainer {
+  /*max-width: 100px !important;*/
 }
 
 .lightTheme.timetable th {
@@ -118,6 +128,31 @@ table {
 .lightTheme.timetable td,
 .lightTheme.timetable th {
   color: #4f545c;
+}
+
+/*top borders*/
+.timetable table tr:first-child th {
+  border-top-width: 1px;
+}
+
+/*left borders*/
+.timetable table tr th:first-child,
+.timetable table tr td:first-child {
+  border-left-width: 1px;
+}
+
+.timetable table tr th,
+.timetable table tr td {
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+}
+
+.timetable table tr:first-child th:first-child {
+  border-top-left-radius: 6px;
+}
+
+.timetable table tr:first-child th:last-child {
+  border-top-right-radius: 6px;
 }
 
 .timetable table tr:last-child td:first-child {

@@ -6,7 +6,7 @@ import {
 } from '../actions/types';
 
 const initialState = {
-  staffList: null,
+  staffList: [],
   loading: false
 };
 

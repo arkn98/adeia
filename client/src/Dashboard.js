@@ -98,7 +98,7 @@ class Dashboard extends Component {
   componentDidMount = () => {
     setTimeout(() => {
       this.props.getCurrentProfile(false);
-    }, 350);
+    }, 500);
     this.props.getAllClasses();
     this.props.getAllCourses();
     this.props.getAllStaff();
