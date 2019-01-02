@@ -19,11 +19,9 @@ import { ReactComponent as EmptyNotifLight } from './assets/empty-mentions-light
 import { ReactComponent as MdInformationCircle } from './assets/icons/md-information-circle.svg';
 import { connect } from 'react-redux';
 import {
-  hideLogoutPopup,
   changeTheme,
   showLogoutPopup,
-  showInfoPopup,
-  hideInfoPopup
+  hideLogoutPopup
 } from './actions/utilActions';
 import { logoutUser } from './actions/authActions';
 import {
@@ -35,15 +33,17 @@ import {
   getAllCourses,
   getAllStaff
 } from './actions/timetableActions';
+import LogoutModal from './components/common/LogoutModal';
 import Modal from './components/common/Modal';
-import InfoModal from './components/common/InfoModal';
 import PageNotFound from './PageNotFound';
 import Spinner from './components/common/Spinner';
 
 class Dashboard extends Component {
   state = {
     isNotificationsVisible: false,
-    isSideNavVisible: false
+    isSideNavVisible: false,
+    isInfoModalVisible: false,
+    isLogoutModalVisible: false
   };
 
   componentWillMount = () => {
@@ -62,20 +62,28 @@ class Dashboard extends Component {
 
   logoutPopupHandler = () => {
     this.props.showLogoutPopup();
+    //this.setState({ ...this.state, isLogoutModalVisible: true });
   };
 
-  infoPopupHandler = () => {
-    this.props.showInfoPopup();
+  infoPopupHandler = event => {
+    event.preventDefault();
+    //this.props.showInfoPopup();
+    this.setState({
+      ...this.state,
+      isInfoModalVisible: true
+    });
   };
 
   infoPopupDismissHandler = event => {
     event.preventDefault();
-    this.props.hideInfoPopup();
+    //this.props.hideInfoPopup();
+    this.setState({ ...this.state, isInfoModalVisible: false });
   };
 
   modalDismissHandler = event => {
     event.preventDefault();
     this.props.hideLogoutPopup();
+    //this.setState({ ...this.state, isLogoutModalVisible: false });
   };
 
   modalConfirmHandler = event => {
@@ -145,7 +153,7 @@ class Dashboard extends Component {
       notifCount = null;
     }
 
-    if (isInfoModalVisible) {
+    if (this.state.isInfoModalVisible) {
       this.modals = (
         <div className={notificationStyles.poputs}>
           <div
@@ -157,10 +165,12 @@ class Dashboard extends Component {
               transform: 'translateZ(0px)'
             }}
           />
-          <InfoModal
+          <Modal
             isDarkTheme={isDarkTheme}
-            modalDismissHandler={this.infoPopupDismissHandler}
-          />
+            modalTitle="About"
+            modalDismissHandler={this.infoPopupDismissHandler}>
+            fill in info here...
+          </Modal>
         </div>
       );
     } else if (isLogoutModalVisible) {
@@ -175,7 +185,7 @@ class Dashboard extends Component {
               transform: 'translateZ(0px)'
             }}
           />
-          <Modal
+          <LogoutModal
             isDarkTheme={isDarkTheme}
             modalConfirmHandler={this.modalConfirmHandler}
             modalDismissHandler={this.modalDismissHandler}
@@ -189,7 +199,7 @@ class Dashboard extends Component {
     let rootStyles = [];
     rootStyles.push(styles.dashMount);
 
-    //if (!isDarkTheme) rootStyles.push('lightTheme');
+    //if (!isDarkTheme) rootStyles.push(styles.lightTheme);
     if (!isDarkTheme) settingsMenuStyles.push(notificationStyles.lightTheme);
 
     let routes = null;
@@ -207,6 +217,8 @@ class Dashboard extends Component {
             exact
             render={() => (
               <Timetable
+                newEntryHandler={this.newEntryHandler}
+                editEntryHandler={this.editEntryHandler}
                 notificationsClickHandler={this.notificationsClickHandler}
                 isDarkTheme={isDarkTheme}
               />
@@ -572,9 +584,7 @@ Dashboard.propTypes = {
   showLogoutPopup: PropTypes.func.isRequired,
   getAllClasses: PropTypes.func.isRequired,
   getAllCourses: PropTypes.func.isRequired,
-  getAllStaff: PropTypes.func.isRequired,
-  showInfoPopup: PropTypes.func.isRequired,
-  hideInfoPopup: PropTypes.func.isRequired
+  getAllStaff: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -598,8 +608,6 @@ export default connect(
     showLogoutPopup,
     getAllClasses,
     getAllCourses,
-    getAllStaff,
-    showInfoPopup,
-    hideInfoPopup
+    getAllStaff
   }
 )(withRouter(Dashboard));

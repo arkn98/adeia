@@ -15,27 +15,24 @@ class Modal extends Component {
         <div className={styles.inner}>
           <div
             className={`${styles.modalInner} ${styles.container} ${
-              styles.big
+              styles.small
             }`}>
             <div className={`${styles.flexItem} ${styles.header}`}>
-              <h4 className={styles.title}>About</h4>
-              <div
-                onClick={this.props.modalDismissHandler}
-                className={styles.buttonTransparent}>
-                Close
-              </div>
+              <h4 className={styles.title}>Log Out</h4>
             </div>
             <div
               className={`${styles.flexItem} ${styles.body} ${
                 styles.scrollWrap
               }`}>
               <div className={`${styles.scroller} ${styles.bodyInner}`}>
-                <div className={styles.contentText}>fill in info here...</div>
+                <div className={styles.contentText}>
+                  Are you sure you want to log out?
+                </div>
               </div>
             </div>
-            {/* <div className={`${styles.flexItem} ${styles.footer}`}>
+            <div className={`${styles.flexItem} ${styles.footer}`}>
               <button
-                onClick={this.props.modalDismissHandler}
+                onClick={this.props.modalConfirmHandler}
                 className={`${styles.button} ${styles.lookFilled} ${
                   styles.buttonRed
                 }`}>
@@ -46,7 +43,7 @@ class Modal extends Component {
                 className={`${styles.button} ${styles.lookLink}`}>
                 <div className={styles.contents}>Cancel</div>
               </button>
-            </div> */}
+            </div>
           </div>
         </div>
       </div>

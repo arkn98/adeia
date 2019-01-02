@@ -10,7 +10,9 @@ import { updateCurrentRouteTitle } from '../actions/utilActions';
 import { getTimetable } from '../actions/timetableActions';
 import classNames from 'classnames/bind';
 import axios from 'axios';
-import Select, { createFilter } from 'react-select';
+//import Select, { createFilter } from 'react-select';
+import Slot from './common/Slot';
+import Spinner from './common/Spinner';
 
 const cx = classNames.bind({ ...mainStyles, ...styles, ...loginStyles });
 
@@ -20,7 +22,87 @@ class Timetable extends Component {
     errors: {},
     classCode: '',
     isTableLoaded: false,
-    timetable: null,
+    isEntryVisible: false,
+    isEditEntry: false,
+    entryContent: {
+      start: '',
+      duration: '1',
+      title: '',
+      day: '',
+      entry: [
+        {
+          courseCode: '',
+          handlingStaff: '',
+          additionalStaff: ''
+        },
+        {
+          courseCode: '',
+          handlingStaff: '',
+          additionalStaff: ''
+        }
+      ]
+    },
+    timetable: [
+      [
+        {
+          start: 1,
+          duration: 4,
+          courseCode: 'CA7001',
+          handlingStaff: 'abcd',
+          additionalStaff: ['1234', 'sjdfhsdf']
+        }
+      ],
+      [
+        {
+          start: 1,
+          duration: 4,
+          courseCode: 'CA7001',
+          handlingStaff: 'abcd',
+          additionalStaff: ['1234', 'sjdfhsdf']
+        }
+      ],
+      [
+        {
+          start: 1,
+          duration: 1,
+          courseCode: 'CA7001',
+          handlingStaff: 'abcd',
+          additionalStaff: ['1234', 'sjdfhsdf']
+        },
+        {
+          start: 2,
+          duration: 4,
+          courseCode: 'CA7001',
+          handlingStaff: 'abcd',
+          additionalStaff: ['1234', 'sjdfhsdf']
+        },
+        {
+          start: 6,
+          duration: 3,
+          courseCode: 'CA7001',
+          handlingStaff: 'abcd',
+          additionalStaff: ['1234', 'sjdfhsdf']
+        }
+      ],
+      [
+        {
+          start: 1,
+          duration: 4,
+          courseCode: 'CA7001',
+          handlingStaff: 'abcd',
+          additionalStaff: ['1234', 'sjdfhsdf']
+        }
+      ],
+      [
+        {
+          start: 1,
+          duration: 4,
+          courseCode: 'CA7001',
+          handlingStaff: 'abcd',
+          additionalStaff: ['1234', 'sjdfhsdf']
+        }
+      ]
+    ],
     nameOfClass: ''
   };
 
@@ -41,6 +123,28 @@ class Timetable extends Component {
   formSubmitHandler = event => {
     this.setState({ ...this.state, isSubmitting: true });
     event.preventDefault();
+  };
+
+  entryOnChangeHandler = (event, index) => {
+    let arr = this.state.entryContent.entry.slice(0);
+    arr[index][event.target.name] = event.target.value;
+    this.setState({
+      ...this.state,
+      entryContent: {
+        ...this.state.entryContent,
+        entry: arr
+      }
+    });
+  };
+
+  entryStartDurationHandler = event => {
+    this.setState({
+      ...this.state,
+      entryContent: {
+        ...this.state.entryContent,
+        [event.target.name]: event.target.value
+      }
+    });
   };
 
   inputOnChangeHandler = event => {
@@ -89,9 +193,246 @@ class Timetable extends Component {
       .catch(err => console.log(err));
   };
 
+  addNewEntry = event => {
+    this.setState({
+      ...this.state,
+      isEntryVisible: true,
+      isEditEntry: false,
+      entryContent: {
+        title: `Add new entry - ${this.days[event.target.getAttribute('day')]}`,
+        day: event.target.getAttribute('day'),
+        start: event.target.getAttribute('hour'),
+        duration: 1,
+        entry: [
+          {
+            courseCode: '',
+            handlingStaff: '',
+            additionalStaff: ''
+          }
+        ]
+      }
+    });
+    //this.props.newEntryHandler({});
+  };
+
+  editExistingEntry = event => {
+    let row = parseInt(event.target.getAttribute('day'));
+    let col = parseInt(event.target.getAttribute('hour'));
+
+    //console.log(row);
+    //console.log(
+    //  this.state.timetable[row].find(x => x.start === parseInt(col)).start
+    //);
+
+    let start = this.state.timetable[row].find(x => x.start === parseInt(col))
+      .start;
+    let duration = this.state.timetable[row].find(
+      x => x.start === parseInt(col)
+    ).duration;
+    let courseCode = this.state.timetable[row].find(
+      x => x.start === parseInt(col)
+    ).courseCode;
+    let handlingStaff = this.state.timetable[row].find(
+      x => x.start === parseInt(col)
+    ).handlingStaff;
+    let additionalStaff = this.state.timetable[row].find(
+      x => x.start === parseInt(col)
+    ).additionalStaff;
+
+    this.setState({
+      ...this.state,
+      isEntryVisible: true,
+      isEditEntry: true,
+      entryContent: {
+        title: `Edit entry - ${this.days[row]}`,
+        day: event.target.getAttribute('day'),
+        start,
+        duration,
+        entry: [
+          {
+            courseCode,
+            handlingStaff,
+            additionalStaff
+          }
+        ]
+      }
+    });
+  };
+
+  days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  newEntrySubmitHandler = event => {
+    event.preventDefault();
+    const newTimetable = this.state.timetable.slice(0);
+    let newDay = newTimetable[this.state.entryContent.day].slice(0);
+
+    let newHour = {
+      start: parseInt(this.state.entryContent.start),
+      duration:
+        parseInt(this.state.entryContent.start) +
+          parseInt(this.state.entryContent.duration) >
+        8
+          ? parseInt(this.state.entryContent.duration) -
+            (parseInt(this.state.entryContent.start) +
+              parseInt(this.state.entryContent.duration) -
+              8) +
+            1
+          : parseInt(this.state.entryContent.duration),
+      courseCode: this.state.entryContent.entry[0].courseCode,
+      handlingStaff: this.state.entryContent.entry[0].handlingStaff,
+      additionalStaff: this.state.entryContent.entry[0].additionalStaff
+    };
+
+    if (this.state.isEditEntry) {
+      let toRemoveIndex = 0;
+      newDay.map((x, index) => {
+        if (x.start === this.state.entryContent.start) {
+          toRemoveIndex = index;
+          return;
+        }
+      });
+
+      newDay[toRemoveIndex] = newHour;
+      newTimetable[this.state.entryContent.day] = newDay;
+      this.setState({
+        ...this.state,
+        timetable: newTimetable,
+        isEntryVisible: false,
+        isEditEntry: false,
+        entryContent: {
+          entry: []
+        }
+      });
+    } else {
+      /* if (toRemoveIndex !== -1) {
+        newDay = newDay.filter((x, index) => index !== toRemoveIndex);
+      } */
+      let hourStart = parseInt(this.state.entryContent.start);
+      let hourEnd =
+        parseInt(this.state.entryContent.start) +
+        parseInt(this.state.entryContent.duration);
+      let toRemoveIndexes = [];
+      let leftOverlap = -1;
+      let rightOverlap = -1;
+      newDay.map((hour, index) => {
+        let tempStart = hour.start;
+        let tempEnd = hour.start + hour.duration;
+        if (tempStart >= hourStart && tempEnd <= hourEnd) {
+          toRemoveIndexes.push(index);
+        } else if (hourEnd >= tempStart && hourEnd < tempEnd) {
+          leftOverlap = index;
+        } else if (hourStart >= tempStart && hourStart < tempEnd) {
+          rightOverlap = index;
+        }
+      });
+
+      if (leftOverlap !== -1) {
+        newDay[leftOverlap].duration =
+          newDay[leftOverlap].duration - (hourEnd - newDay[leftOverlap].start);
+        newDay[leftOverlap].start = hourEnd + 1 > 8 ? 8 : hourEnd;
+      }
+
+      if (rightOverlap !== -1) {
+        newDay[rightOverlap].duration =
+          newDay[rightOverlap].duration -
+          (newDay[rightOverlap].start +
+            newDay[rightOverlap].duration -
+            hourStart);
+      }
+
+      if (toRemoveIndexes.length !== 0) {
+        if (
+          !window.confirm(
+            'Your entry is overlapping with existing entries. Do you wish to proceed?'
+          )
+        )
+          return;
+      }
+
+      for (let i = toRemoveIndexes.length - 1; i >= 0; i--)
+        newDay.splice(toRemoveIndexes[i], 1);
+
+      newDay.splice(newDay.length - 1, 0, newHour);
+      newDay.sort((a, b) => a.start - b.start);
+      newTimetable[this.state.entryContent.day] = newDay;
+      this.setState({
+        ...this.state,
+        timetable: newTimetable,
+        isEntryVisible: false,
+        isEditEntry: false,
+        entryContent: { entry: [] }
+      });
+    }
+  };
+
+  addAdditionalCourseClickHandler = event => {
+    event.preventDefault();
+    let arr = this.state.entryContent.entry.slice(0);
+    arr.push({ courseCode: '', handlingStaff: '', additionalStaff: '' });
+    this.setState({
+      ...this.state,
+      entryContent: { ...this.state.entryContent, entry: arr }
+    });
+  };
+
   render() {
     const errors = this.state.errors;
     const isDarkTheme = this.props.isDarkTheme;
+
+    let slots = [];
+    let row;
+    for (row = 0; row < 5; row++) {
+      let hours = [];
+      hours.push(<td style={{ textAlign: 'left' }}>{this.days[row]}</td>);
+      let tempIndex = 1;
+      this.state.timetable[row].map((hour, index) => {
+        if (hour.start !== tempIndex) {
+          while (hour.start - tempIndex > 0) {
+            hours.push(
+              <td
+                key={tempIndex}
+                onClick={this.addNewEntry}
+                day={row}
+                hour={tempIndex}
+                className={tableStyles.hoverableTd}
+              />
+            );
+            tempIndex++;
+          }
+        }
+        hours.push(
+          <Slot
+            onClick={this.editExistingEntry}
+            day={row}
+            hour={tempIndex}
+            key={tempIndex}
+            colSpan={
+              hour.start + hour.duration - tempIndex === 0
+                ? 1
+                : hour.start + hour.duration - tempIndex
+            }>
+            {hour.courseCode}
+          </Slot>
+        );
+        tempIndex +=
+          hour.start + hour.duration - tempIndex === 0
+            ? 1
+            : hour.start + hour.duration - tempIndex;
+      });
+      while (tempIndex < 9) {
+        hours.push(
+          <td
+            key={tempIndex}
+            hour={tempIndex}
+            day={row}
+            onClick={this.addNewEntry}
+            className={tableStyles.hoverableTd}
+          />
+        );
+        tempIndex++;
+      }
+      slots.push(<tr>{hours}</tr>);
+    }
 
     const filterConfig = {
       ignoreCase: true,
@@ -199,6 +540,15 @@ class Timetable extends Component {
       });
     }
 
+    let entryStyles = [];
+    entryStyles.push(styles.entry);
+    entryStyles.push(mainStyles.marginBottom20);
+    entryStyles.push(styles.formItemWrapper);
+
+    if (this.state.isEntryVisible) {
+      entryStyles.push(styles.entryVisible);
+    }
+
     return (
       <div
         className={
@@ -276,6 +626,180 @@ class Timetable extends Component {
                     </select>
                   </div>
                 </div>
+                <div className={entryStyles.join(' ')}>
+                  <h5
+                    className={cx({
+                      formFieldLabel: true,
+                      marginBottom8: true,
+                      errorLabel: errors.classCode
+                    })}>
+                    Add Entry
+                    {errors.category ? (
+                      <span className={loginStyles.errorMessage}>
+                        {' '}
+                        - {errors.category}
+                      </span>
+                    ) : null}
+                  </h5>
+                  <div
+                    className={`${styles.formItemRow} ${
+                      mainStyles.marginBottom8
+                    }`}>
+                    <div className={styles.formItemRowChild}>
+                      <h5
+                        className={`${styles.formFieldLabel} ${
+                          mainStyles.marginBottom8
+                        }`}>
+                        Start Hour
+                      </h5>
+                      <div className={styles.inputWrapper}>
+                        <select
+                          onBlur={this.onBlur}
+                          onChange={this.entryStartDurationHandler}
+                          name="start"
+                          value={this.state.entryContent.start}
+                          className={cx({
+                            formInput: true,
+                            formSelect: true,
+                            formInputError: errors.classCode
+                          })}>
+                          <option disabled>Select class code</option>
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                          <option>5</option>
+                          <option>6</option>
+                          <option>7</option>
+                          <option>8</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className={styles.formItemRowChild}>
+                      <h5
+                        className={`${styles.formFieldLabel} ${
+                          mainStyles.marginBottom8
+                        }`}>
+                        Duration
+                      </h5>
+                      <div className={styles.inputWrapper}>
+                        <input
+                          className={`${styles.formInput}`}
+                          type="text"
+                          onChange={this.entryStartDurationHandler}
+                          name="duration"
+                          value={this.state.entryContent.duration}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  {this.state.entryContent.entry.map((entry, index) => {
+                    return (
+                      <div
+                        className={`${styles.formItemRow} ${
+                          mainStyles.marginBottom8
+                        }`}>
+                        <div className={styles.formItemRowChild}>
+                          <h5
+                            className={`${styles.formFieldLabel} ${
+                              mainStyles.marginBottom8
+                            }`}>
+                            Course Code
+                          </h5>
+                          <div className={styles.inputWrapper}>
+                            <input
+                              className={`${styles.formInput}`}
+                              type="text"
+                              onChange={e =>
+                                this.entryOnChangeHandler(e, index)
+                              }
+                              name="courseCode"
+                              value={
+                                this.state.entryContent.entry[index].courseCode
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div className={styles.formItemRowChild}>
+                          <h5
+                            className={`${styles.formFieldLabel} ${
+                              mainStyles.marginBottom8
+                            }`}>
+                            Handling Staff
+                          </h5>
+                          <div className={styles.inputWrapper}>
+                            <input
+                              className={`${styles.formInput}`}
+                              type="text"
+                              onChange={e =>
+                                this.entryOnChangeHandler(e, index)
+                              }
+                              name="handlingStaff"
+                              value={
+                                this.state.entryContent.entry[index]
+                                  .handlingStaff
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div className={styles.formItemRowChild}>
+                          <h5
+                            className={`${styles.formFieldLabel} ${
+                              mainStyles.marginBottom8
+                            }`}>
+                            Additional Staff
+                          </h5>
+                          <div className={styles.inputWrapper}>
+                            <input
+                              className={`${styles.formInput}`}
+                              type="text"
+                              onChange={e =>
+                                this.entryOnChangeHandler(e, index)
+                              }
+                              name="additionalStaff"
+                              value={
+                                this.state.entryContent.entry[index]
+                                  .additionalStaff
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div
+                          className={`${styles.formItemRowChild} ${
+                            styles.flexColBottom
+                          }`}>
+                          <div className={styles.inputWrapper}>
+                            {this.state.entryContent.entry.length ===
+                            index + 1 ? (
+                              <button
+                                type="submit"
+                                onClick={this.newEntrySubmitHandler}
+                                className={styles.primaryButton}>
+                                {this.state.isSubmitting ? (
+                                  <Spinner
+                                    isDarkTheme={isDarkTheme}
+                                    isStripped={true}
+                                  />
+                                ) : (
+                                  <div className={styles.contents}>
+                                    {' '}
+                                    {this.state.isEditEntry ? `Update` : `Add`}
+                                  </div>
+                                )}
+                              </button>
+                            ) : null}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                  <div
+                    styles={{ cursor: 'pointer' }}
+                    onClick={this.addAdditionalCourseClickHandler}>
+                    add additional course{' '}
+                  </div>
+                </div>
+
                 <div
                   onClick={this.testClickHandler}
                   style={{ cursor: 'pointer' }}>
@@ -312,7 +836,8 @@ class Timetable extends Component {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
+                      {slots}
+                      {/* <tr>
                         <td style={{ textAlign: 'left' }}>Monday</td>
                         <td>
                           <Select
@@ -340,22 +865,21 @@ class Timetable extends Component {
                         <td />
                         <td />
                         <td />
-                        {/* <td />
                         <td />
                         <td />
-                        <td /> */}
+                        <td />
+                        <td />
                       </tr>
                       <tr>
                         <td style={{ textAlign: 'left' }}>Wednesday</td>
                         <td />
                         <td />
                         <td />
-                        <td />
-                        {/* 
-                        <td />
+                        <td /> 
                         <td />
                         <td />
-                        <td /> */}
+                        <td />
+                        <td />
                       </tr>
                       <tr>
                         <td style={{ textAlign: 'left' }}>Thursday</td>
@@ -363,10 +887,10 @@ class Timetable extends Component {
                         <td />
                         <td />
                         <td />
-                        {/* <td />
                         <td />
                         <td />
-                        <td /> */}
+                        <td />
+                        <td />
                       </tr>
                       <tr>
                         <td style={{ textAlign: 'left' }}>Friday</td>
@@ -374,12 +898,11 @@ class Timetable extends Component {
                         <td />
                         <td />
                         <td />
-                        {/* 
                         <td />
                         <td />
                         <td />
-                        <td /> */}
-                      </tr>
+                        <td />
+                      </tr> */}
                     </tbody>
                   </table>
                 </div>

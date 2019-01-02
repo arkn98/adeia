@@ -588,7 +588,6 @@
   flex-shrink: 0;
   margin-right: 12px;
   fill-opacity: 0.8;
-  transition: fill 0.17s ease, fill-opacity 0.17s ease;
 }
 
 .item:hover .menuIconTest {

@@ -26,7 +26,7 @@
   margin-bottom: 0;
   line-height: 20px;
   font-size: 16px;
-  width: 95%;
+  max-width: 95%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -37,7 +37,7 @@
 }
 
 .formSubtitle {
-  width: 95%;
+  max-width: 95%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -53,6 +53,17 @@
 .formItemWrapper {
   width: 100%;
   /* min-width: 543px; */
+}
+
+.entry {
+  display: none;
+  width: 100%;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.entryVisible {
+  display: flex;
 }
 
 .smallText {
@@ -86,9 +97,9 @@
 }
 
 .formItemRowChild {
-  flex: 0 1 auto;
-  max-width: 33.3333%;
-  width: 33.333%;
+  flex: 1;
+  /*max-width: 100%;*/
+  /*width: 33.333%;*/
   margin-left: 16px;
 }
 
@@ -103,6 +114,17 @@
 @media screen and (max-width: 1080px) {
   .formItemWrapper {
     width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .formItemRow {
+    flex-direction: column;
+  }
+
+  .formItemRowChild {
+    margin-top: 16px;
+    margin-left: 0;
   }
 }
 
@@ -185,14 +207,12 @@ select.formInput {
   font-size: 16px;
   line-height: 18px;
   margin: 0;
-  /* padding: 10px 14px; */
   box-sizing: border-box;
   font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   text-rendering: optimizeLegibility;
   color: hsla(0, 0%, 100%, 1);
   appearance: none;
-  /* background: #282b30; */
-  background: url(../assets/arrow-down.svg) 99% / 24px no-repeat #282b30;
+  background: url(../assets/arrow-down.svg) 99% / 24px no-repeat #33353a;
 }
 
 .lightTheme select.formInput {
@@ -386,4 +406,49 @@ select.formInput {
 
 .lightTheme .disabled {
   background: rgba(0, 0, 0, 0.01);
+}
+
+.primaryButton {
+  position: relative;
+  padding: 2px 16px;
+  outline: 0;
+  justify-content: center;
+  cursor: pointer;
+  display: flex;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 3px;
+  align-items: center;
+  transition: background-color 0.17s ease, color 0.17s ease;
+  min-height: 44px;
+  height: 44px;
+  width: 100%;
+  background-color: #7289da;
+}
+
+.formItemRowChild .primaryButton {
+  min-height: 40px;
+  height: 40px;
+}
+
+.flexColBottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.primaryButton .contents {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.primaryButton:hover {
+  background-color: #677bc4;
+}
+
+.submitting .primaryButton:hover {
+  background-color: #7289da;
 }

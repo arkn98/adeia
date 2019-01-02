@@ -18,7 +18,6 @@ table {
 
 .timetable {
   overflow-x: auto;
-  min-width: 500px;
 }
 
 .timetable .title {
@@ -52,6 +51,7 @@ table {
   overflow: hidden;
   width: 100%;
   word-break: break-all;
+  table-layout: fixed;
 }
 
 .lightTheme.timetable table {
@@ -209,4 +209,21 @@ table {
   box-sizing: border-box;
   background-color: rgba(79, 84, 92, 0.1);
   color: #4f545c;
+}
+
+.timetable table tr td.hoverableTd {
+  cursor: pointer;
+  transition: background-color 0.17s ease, color 0.17s ease;
+}
+
+.timetable table tr td.hoverableTd:hover {
+  background-color: rgba(79, 84, 92, 1);
+  color: #fff;
+  /* box-shadow: 0 1px 1px rgba(79, 84, 92, 0.1); */
+}
+
+.lightTheme.timetable table tr td.hoverableTd:hover {
+  background-color: rgba(79, 84, 92, 0.4);
+  color: #fff;
+  /* box-shadow: 0 1px 1px rgba(79, 84, 92, 0.4); */
 }

@@ -43,14 +43,14 @@ class Sidenav extends Component {
 
   componentWillReceiveProps = nextprops => {
     if (nextprops.isVisible) {
-      this.setState({ ...this.state, isSettingsMenuVisible: false });
+      this.setState({ ...this.state });
     }
   };
 
   logoutHandler = event => {
     event.preventDefault();
-    this.setState({ isSettingsMenuVisible: false });
     this.props.logoutPopupHandler();
+    this.setState({ isSettingsMenuVisible: false });
     if (this.props.isVisible) this.props.sideNavToggle();
   };
 
