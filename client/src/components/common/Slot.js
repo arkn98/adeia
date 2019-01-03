@@ -2,6 +2,11 @@ import React from 'react';
 import styles from './tableStyles.module.css';
 
 const Slot = props => {
+  let items = [];
+  props.children.forEach(item => {
+    items.push(item.courseCode);
+  });
+
   return (
     <td
       onClick={props.onClick}
@@ -9,7 +14,7 @@ const Slot = props => {
       hour={props.hour}
       colSpan={props.colSpan}
       className={styles.hoverableTd}>
-      {props.children}
+      {items.join(' ')}
     </td>
   );
 };

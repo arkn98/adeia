@@ -134,11 +134,7 @@ class Dashboard extends Component {
     //const { user } = this.props.auth;
     //const { profile, loading } = this.props.profile;
     const { loading, profile } = this.props.profile;
-    const {
-      isLogoutModalVisible,
-      isDarkTheme,
-      isInfoModalVisible
-    } = this.props.utils;
+    const { isLogoutModalVisible, isDarkTheme } = this.props.utils;
 
     let notifCount;
     if (

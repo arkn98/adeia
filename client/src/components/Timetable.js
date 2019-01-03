@@ -10,7 +10,7 @@ import { updateCurrentRouteTitle } from '../actions/utilActions';
 import { getTimetable } from '../actions/timetableActions';
 import classNames from 'classnames/bind';
 import axios from 'axios';
-//import Select, { createFilter } from 'react-select';
+import Select, { createFilter } from 'react-select';
 import Slot from './common/Slot';
 import Spinner from './common/Spinner';
 
@@ -26,6 +26,7 @@ class Timetable extends Component {
     isEditEntry: false,
     entryContent: {
       start: '',
+      clickedCol: '',
       duration: '1',
       title: '',
       day: '',
@@ -47,59 +48,92 @@ class Timetable extends Component {
         {
           start: 1,
           duration: 4,
-          courseCode: 'CA7001',
-          handlingStaff: 'abcd',
-          additionalStaff: ['1234', 'sjdfhsdf']
+          course: [
+            {
+              courseCode: 'CA7001',
+              handlingStaff: 'abcd',
+              additionalStaff: ['1234', 'sjdfhsdf']
+            }
+          ]
         }
       ],
       [
         {
           start: 1,
           duration: 4,
-          courseCode: 'CA7001',
-          handlingStaff: 'abcd',
-          additionalStaff: ['1234', 'sjdfhsdf']
+          course: [
+            {
+              courseCode: 'CA7001',
+              handlingStaff: 'abcd',
+              additionalStaff: ['1234', 'sjdfhsdf']
+            }
+          ]
         }
       ],
       [
         {
           start: 1,
           duration: 1,
-          courseCode: 'CA7001',
-          handlingStaff: 'abcd',
-          additionalStaff: ['1234', 'sjdfhsdf']
+          course: [
+            {
+              courseCode: 'CA7001',
+              handlingStaff: 'abcd',
+              additionalStaff: ['1234', 'sjdfhsdf']
+            }
+          ]
         },
         {
           start: 2,
           duration: 4,
-          courseCode: 'CA7001',
-          handlingStaff: 'abcd',
-          additionalStaff: ['1234', 'sjdfhsdf']
+          course: [
+            {
+              courseCode: 'CA7001',
+              handlingStaff: 'abcd',
+              additionalStaff: ['1234', 'sjdfhsdf']
+            }
+          ]
         },
         {
           start: 6,
           duration: 3,
-          courseCode: 'CA7001',
-          handlingStaff: 'abcd',
-          additionalStaff: ['1234', 'sjdfhsdf']
+          course: [
+            {
+              courseCode: 'CA7001',
+              handlingStaff: 'abcd',
+              additionalStaff: ['1234', 'sjdfhsdf']
+            }
+          ]
         }
       ],
       [
         {
           start: 1,
           duration: 4,
-          courseCode: 'CA7001',
-          handlingStaff: 'abcd',
-          additionalStaff: ['1234', 'sjdfhsdf']
+          course: [
+            {
+              courseCode: 'CA7001',
+              handlingStaff: 'abcd',
+              additionalStaff: ['1234', 'sjdfhsdf']
+            }
+          ]
         }
       ],
       [
         {
           start: 1,
           duration: 4,
-          courseCode: 'CA7001',
-          handlingStaff: 'abcd',
-          additionalStaff: ['1234', 'sjdfhsdf']
+          course: [
+            {
+              courseCode: 'CA7001',
+              handlingStaff: 'abcd',
+              additionalStaff: ['1234', 'sjdfhsdf']
+            },
+            {
+              courseCode: 'CA7002',
+              handlingStaff: 'abcde',
+              additionalStaff: ['1234e', 'sjdfhsdfe']
+            }
+          ]
         }
       ]
     ],
@@ -128,6 +162,18 @@ class Timetable extends Component {
   entryOnChangeHandler = (event, index) => {
     let arr = this.state.entryContent.entry.slice(0);
     arr[index][event.target.name] = event.target.value;
+    this.setState({
+      ...this.state,
+      entryContent: {
+        ...this.state.entryContent,
+        entry: arr
+      }
+    });
+  };
+
+  entrySelectOnChangeHandler = (value, index, name) => {
+    let arr = this.state.entryContent.entry.slice(0);
+    arr[index][name] = value;
     this.setState({
       ...this.state,
       entryContent: {
@@ -229,15 +275,27 @@ class Timetable extends Component {
     let duration = this.state.timetable[row].find(
       x => x.start === parseInt(col)
     ).duration;
-    let courseCode = this.state.timetable[row].find(
-      x => x.start === parseInt(col)
-    ).courseCode;
-    let handlingStaff = this.state.timetable[row].find(
-      x => x.start === parseInt(col)
-    ).handlingStaff;
-    let additionalStaff = this.state.timetable[row].find(
-      x => x.start === parseInt(col)
-    ).additionalStaff;
+    let courseCode = [];
+    this.state.timetable[row]
+      .find(x => x.start === parseInt(col))
+      .course.map(course => courseCode.push(course.courseCode));
+    let handlingStaff = [];
+    this.state.timetable[row]
+      .find(x => x.start === parseInt(col))
+      .course.map(staff => handlingStaff.push(staff.handlingStaff));
+    let additionalStaff = [];
+    this.state.timetable[row]
+      .find(x => x.start === parseInt(col))
+      .course.map(addlstaff => additionalStaff.push(addlstaff.additionalStaff));
+
+    let newEntry = [];
+    courseCode.forEach((course, index) => {
+      let obj = {};
+      obj.courseCode = course;
+      obj.handlingStaff = handlingStaff[index];
+      obj.additionalStaff = additionalStaff[index];
+      newEntry.push(obj);
+    });
 
     this.setState({
       ...this.state,
@@ -245,16 +303,11 @@ class Timetable extends Component {
       isEditEntry: true,
       entryContent: {
         title: `Edit entry - ${this.days[row]}`,
+        clickedCol: col,
         day: event.target.getAttribute('day'),
         start,
         duration,
-        entry: [
-          {
-            courseCode,
-            handlingStaff,
-            additionalStaff
-          }
-        ]
+        entry: newEntry
       }
     });
   };
@@ -265,6 +318,15 @@ class Timetable extends Component {
     event.preventDefault();
     const newTimetable = this.state.timetable.slice(0);
     let newDay = newTimetable[this.state.entryContent.day].slice(0);
+
+    let course = [];
+    this.state.entryContent.entry.forEach((entry, index) => {
+      let obj = {};
+      obj.courseCode = entry.courseCode;
+      obj.handlingStaff = entry.handlingStaff;
+      obj.additionalStaff = entry.additionalStaff;
+      course.push(obj);
+    });
 
     let newHour = {
       start: parseInt(this.state.entryContent.start),
@@ -278,35 +340,18 @@ class Timetable extends Component {
               8) +
             1
           : parseInt(this.state.entryContent.duration),
-      courseCode: this.state.entryContent.entry[0].courseCode,
-      handlingStaff: this.state.entryContent.entry[0].handlingStaff,
-      additionalStaff: this.state.entryContent.entry[0].additionalStaff
+      course
     };
 
     if (this.state.isEditEntry) {
-      let toRemoveIndex = 0;
-      newDay.map((x, index) => {
-        if (x.start === this.state.entryContent.start) {
-          toRemoveIndex = index;
-          return;
+      let mainIndexToRemove = -1;
+      newDay.forEach((item, index) => {
+        if (item.start === parseInt(this.state.entryContent.clickedCol)) {
+          mainIndexToRemove = index;
         }
       });
+      newDay.splice(mainIndexToRemove, 1);
 
-      newDay[toRemoveIndex] = newHour;
-      newTimetable[this.state.entryContent.day] = newDay;
-      this.setState({
-        ...this.state,
-        timetable: newTimetable,
-        isEntryVisible: false,
-        isEditEntry: false,
-        entryContent: {
-          entry: []
-        }
-      });
-    } else {
-      /* if (toRemoveIndex !== -1) {
-        newDay = newDay.filter((x, index) => index !== toRemoveIndex);
-      } */
       let hourStart = parseInt(this.state.entryContent.start);
       let hourEnd =
         parseInt(this.state.entryContent.start) +
@@ -314,12 +359,12 @@ class Timetable extends Component {
       let toRemoveIndexes = [];
       let leftOverlap = -1;
       let rightOverlap = -1;
-      newDay.map((hour, index) => {
+      newDay.forEach((hour, index) => {
         let tempStart = hour.start;
         let tempEnd = hour.start + hour.duration;
         if (tempStart >= hourStart && tempEnd <= hourEnd) {
           toRemoveIndexes.push(index);
-        } else if (hourEnd >= tempStart && hourEnd < tempEnd) {
+        } else if (hourEnd > tempStart && hourEnd < tempEnd) {
           leftOverlap = index;
         } else if (hourStart >= tempStart && hourStart < tempEnd) {
           rightOverlap = index;
@@ -329,7 +374,7 @@ class Timetable extends Component {
       if (leftOverlap !== -1) {
         newDay[leftOverlap].duration =
           newDay[leftOverlap].duration - (hourEnd - newDay[leftOverlap].start);
-        newDay[leftOverlap].start = hourEnd + 1 > 8 ? 8 : hourEnd;
+        newDay[leftOverlap].start = hourEnd > 8 ? 8 : hourEnd;
       }
 
       if (rightOverlap !== -1) {
@@ -345,13 +390,68 @@ class Timetable extends Component {
           !window.confirm(
             'Your entry is overlapping with existing entries. Do you wish to proceed?'
           )
-        )
+        ) {
           return;
+        }
+        for (let i = toRemoveIndexes.length - 1; i >= 0; i--)
+          newDay.splice(toRemoveIndexes[i], 1);
       }
 
-      for (let i = toRemoveIndexes.length - 1; i >= 0; i--)
-        newDay.splice(toRemoveIndexes[i], 1);
+      newDay.splice(newDay.length - 1, 0, newHour);
+      newDay.sort((a, b) => a.start - b.start);
+      newTimetable[this.state.entryContent.day] = newDay;
+      this.setState({
+        ...this.state,
+        timetable: newTimetable,
+        isEntryVisible: false,
+        isEditEntry: false,
+        entryContent: { entry: [] }
+      });
+    } else {
+      let hourStart = parseInt(this.state.entryContent.start);
+      let hourEnd =
+        parseInt(this.state.entryContent.start) +
+        parseInt(this.state.entryContent.duration);
+      let toRemoveIndexes = [];
+      let leftOverlap = -1;
+      let rightOverlap = -1;
+      newDay.forEach((hour, index) => {
+        let tempStart = hour.start;
+        let tempEnd = hour.start + hour.duration;
+        if (tempStart >= hourStart && tempEnd <= hourEnd) {
+          toRemoveIndexes.push(index);
+        } else if (hourEnd > tempStart && hourEnd < tempEnd) {
+          leftOverlap = index;
+        } else if (hourStart >= tempStart && hourStart < tempEnd) {
+          rightOverlap = index;
+        }
+      });
 
+      if (leftOverlap !== -1) {
+        newDay[leftOverlap].duration =
+          newDay[leftOverlap].duration - (hourEnd - newDay[leftOverlap].start);
+        newDay[leftOverlap].start = hourEnd > 8 ? 8 : hourEnd;
+      }
+
+      if (rightOverlap !== -1) {
+        newDay[rightOverlap].duration =
+          newDay[rightOverlap].duration -
+          (newDay[rightOverlap].start +
+            newDay[rightOverlap].duration -
+            hourStart);
+      }
+
+      if (toRemoveIndexes.length !== 0) {
+        if (
+          !window.confirm(
+            'Your entry is overlapping with existing entries. Do you wish to proceed?'
+          )
+        ) {
+          return;
+        }
+        for (let i = toRemoveIndexes.length - 1; i >= 0; i--)
+          newDay.splice(toRemoveIndexes[i], 1);
+      }
       newDay.splice(newDay.length - 1, 0, newHour);
       newDay.sort((a, b) => a.start - b.start);
       newTimetable[this.state.entryContent.day] = newDay;
@@ -380,19 +480,18 @@ class Timetable extends Component {
     const isDarkTheme = this.props.isDarkTheme;
 
     let slots = [];
-    let row;
-    for (row = 0; row < 5; row++) {
+    this.state.timetable.forEach((row, index) => {
       let hours = [];
-      hours.push(<td style={{ textAlign: 'left' }}>{this.days[row]}</td>);
+      hours.push(<td style={{ textAlign: 'left' }}>{this.days[index]}</td>);
       let tempIndex = 1;
-      this.state.timetable[row].map((hour, index) => {
+      row.forEach((hour, index) => {
         if (hour.start !== tempIndex) {
           while (hour.start - tempIndex > 0) {
             hours.push(
               <td
                 key={tempIndex}
                 onClick={this.addNewEntry}
-                day={row}
+                day={index}
                 hour={tempIndex}
                 className={tableStyles.hoverableTd}
               />
@@ -403,7 +502,7 @@ class Timetable extends Component {
         hours.push(
           <Slot
             onClick={this.editExistingEntry}
-            day={row}
+            day={index}
             hour={tempIndex}
             key={tempIndex}
             colSpan={
@@ -411,7 +510,7 @@ class Timetable extends Component {
                 ? 1
                 : hour.start + hour.duration - tempIndex
             }>
-            {hour.courseCode}
+            {hour.course}
           </Slot>
         );
         tempIndex +=
@@ -424,7 +523,7 @@ class Timetable extends Component {
           <td
             key={tempIndex}
             hour={tempIndex}
-            day={row}
+            day={index}
             onClick={this.addNewEntry}
             className={tableStyles.hoverableTd}
           />
@@ -432,7 +531,7 @@ class Timetable extends Component {
         tempIndex++;
       }
       slots.push(<tr>{hours}</tr>);
-    }
+    });
 
     const filterConfig = {
       ignoreCase: true,
@@ -469,6 +568,7 @@ class Timetable extends Component {
       }),
       control: (provided, state) => ({
         alignItems: 'left',
+        height: '40px',
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
@@ -494,7 +594,8 @@ class Timetable extends Component {
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
         top: '50%',
-        transform: 'translateY(-50%)'
+        transform: 'translateY(-50%)',
+        color: isDarkTheme ? 'hsla(0, 0%, 100%, 0.8)' : '#4f545c'
       }),
       input: (provided, state) => ({
         color: isDarkTheme ? '#fff' : '#4f545c'
@@ -504,10 +605,6 @@ class Timetable extends Component {
       }),
       indicatorSeparator: () => ({
         display: 'none'
-      }),
-      singleValue: (provided, state) => ({
-        ...provided,
-        color: isDarkTheme ? 'hsla(0, 0%, 100%, 0.8)' : '#4f545c'
       }),
       dropdownIndicator: (provided, state) => ({
         display: 'flex',
@@ -521,7 +618,7 @@ class Timetable extends Component {
       })
     };
 
-    let classOptions = [];
+    let courseOptions = [];
     if (
       typeof this.props.courses === 'undefined' ||
       (Object.keys(this.props.courses).length === 0 &&
@@ -529,15 +626,23 @@ class Timetable extends Component {
       this.props.courses.courseList === [] ||
       this.props.courses.loading
     ) {
-      classOptions = [];
+      courseOptions = [];
     } else {
-      this.props.courses.courseList.map(item => {
-        let temp = {
-          value: item.courseCode,
-          label: `${item.courseCode} - ${item.nameOfCourse}`
-        };
-        classOptions.push(temp);
-      });
+      this.props.courses.courseList
+        .filter(item => {
+          let found = this.state.entryContent.entry.some(
+            entry => item.courseCode === entry.courseCode
+          );
+          return !found;
+        })
+        .forEach(item => {
+          let temp = {
+            value: item.courseCode,
+            label: `${item.courseCode} - ${item.nameOfCourse}`
+          };
+
+          courseOptions.push(temp);
+        });
     }
 
     let entryStyles = [];
@@ -633,7 +738,7 @@ class Timetable extends Component {
                       marginBottom8: true,
                       errorLabel: errors.classCode
                     })}>
-                    Add Entry
+                    {this.state.entryContent.title}
                     {errors.category ? (
                       <span className={loginStyles.errorMessage}>
                         {' '}
@@ -707,7 +812,7 @@ class Timetable extends Component {
                             Course Code
                           </h5>
                           <div className={styles.inputWrapper}>
-                            <input
+                            {/* <input
                               className={`${styles.formInput}`}
                               type="text"
                               onChange={e =>
@@ -717,6 +822,23 @@ class Timetable extends Component {
                               value={
                                 this.state.entryContent.entry[index].courseCode
                               }
+                            /> */}
+                            <Select
+                              name="courseCode"
+                              options={courseOptions}
+                              isLoading={this.props.classes.loading}
+                              isSearchable={true}
+                              onChange={val =>
+                                this.entrySelectOnChangeHandler(
+                                  val.value,
+                                  index,
+                                  'courseCode'
+                                )
+                              }
+                              placeholder="Course..."
+                              styles={customStyles}
+                              className={tableStyles.selectContainer}
+                              filterOption={createFilter(filterConfig)}
                             />
                           </div>
                         </div>
