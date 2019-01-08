@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './tableStyles.module.css';
+import PropTypes from 'prop-types';
 
 const Slot = props => {
   let items = [];
@@ -17,6 +18,10 @@ const Slot = props => {
       {items.join(' ')}
     </td>
   );
+};
+
+Slot.defaultProps = {
+  children: []
 };
 
 export default Slot;

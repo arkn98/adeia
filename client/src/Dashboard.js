@@ -106,7 +106,7 @@ class Dashboard extends Component {
   componentDidMount = () => {
     setTimeout(() => {
       this.props.getCurrentProfile(false);
-    }, 500);
+    }, 1000);
     this.props.getAllClasses();
     this.props.getAllCourses();
     this.props.getAllStaff();
@@ -355,10 +355,9 @@ class Dashboard extends Component {
                 onClick={this.sideNavToggle}
                 className={styles.backdrop}
                 style={{
-                  opacity: '0.85',
+                  opacity: '0.5',
                   backgroundColor: '#000',
-                  zIndex: '998',
-                  transform: 'translateZ(0px)'
+                  zIndex: '998'
                 }}
               />
             ) : null}

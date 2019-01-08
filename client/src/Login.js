@@ -74,7 +74,7 @@ class Login extends Component {
     return (
       <div
         className={
-          isDarkTheme ? styles.root : `${styles.root} ${styles.lightTheme}`
+          isDarkTheme ? `${styles.root}` : `${styles.root} ${styles.lightTheme}`
         }>
         <div className={styles.app}>
           <div className={styles.dummy}>

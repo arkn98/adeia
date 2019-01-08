@@ -58,12 +58,97 @@
 .entry {
   display: none;
   width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border-radius: 5px;
   flex-direction: column;
   justify-content: flex-start;
+  background: rgba(0, 0, 0, 0.1);
+  transition: background 0.17s ease;
+}
+
+.lightTheme .entry {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.addNewEntry {
+  cursor: pointer;
+  border-radius: 5px;
+  box-sizing: border-box;
+  padding: 6px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.17s ease;
+}
+
+.addNewEntry .customIconTest {
+  width: 12px;
+  fill-opacity: 1;
+}
+
+.addNewEntry:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.addNewEntry:hover .customIconTest {
+  fill-opacity: 1;
 }
 
 .entryVisible {
   display: flex;
+}
+
+.customIconTest {
+  fill: #f6f6f7;
+  position: relative;
+  width: 18px;
+  fill-opacity: 0.3;
+  transition: fill 0.17s ease, fill-opacity 0.17s ease;
+}
+
+.customIconTestBig {
+  width: 18px;
+}
+
+.lightTheme .customIconTest {
+  fill: #72767d;
+  fill-opacity: 1;
+}
+
+.entryIconWrapper {
+  /*background: #72767d;*/
+  width: 24px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  align-items: center;
+  height: 24px;
+  border-radius: 3px;
+  transition: background 0.17s ease;
+}
+
+.entryIconWrapperBig {
+  width: 36px;
+  height: 36px;
+}
+
+.entryIconWrapper:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.danger .customIconTest {
+  fill: rgb(240, 71, 71);
+  fill-opacity: 0.8;
+}
+
+.danger.entryIconWrapper:hover {
+  background-color: rgba(240, 71, 71, 0.1);
+}
+
+.entryIconWrapper:hover .customIconTest {
+  fill-opacity: 1;
 }
 
 .smallText {
@@ -96,11 +181,42 @@
   justify-content: space-between;
 }
 
+.marginBottom8 {
+  margin-bottom: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .formItemRow.marginBottom8 {
+    margin-bottom: none;
+  }
+}
+
 .formItemRowChild {
   flex: 1;
   /*max-width: 100%;*/
   /*width: 33.333%;*/
   margin-left: 16px;
+}
+
+.entryNumber {
+  top: 12px;
+  margin-right: 8px;
+  margin-left: 12px;
+  position: relative;
+}
+
+.entryDeleteIcon {
+  top: 12px;
+  margin-left: 16px;
+  position: relative;
+}
+
+.entryTitleRow {
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .formItemRowChild .inputWrapper {
@@ -117,14 +233,61 @@
   }
 }
 
+.entryDeleteIcon.entryDeleteIconInline {
+  display: none;
+}
+
 @media screen and (max-width: 768px) {
   .formItemRow {
     flex-direction: column;
   }
 
-  .formItemRowChild {
-    margin-top: 16px;
+  .entryNumber {
+    top: 0;
     margin-left: 0;
+    margin-right: 0;
+  }
+
+  .entryNumberFix {
+    flex: 1 0 auto;
+    text-align: center;
+    position: relative;
+    left: 18px;
+  }
+
+  .entryNumber.col {
+    flex-direction: row;
+  }
+
+  .formItemRowChild {
+    margin-top: 12px;
+    margin-left: 0;
+  }
+
+  .entryDeleteIcon {
+    flex: 0 0 auto;
+    justify-content: center !important;
+    align-items: center !important;
+    top: 0;
+    margin-left: 0;
+    margin-bottom: 0;
+  }
+
+  .entryDeleteIcon {
+    display: none !important;
+  }
+
+  .entryDeleteIconInline.entryDeleteIcon {
+    display: flex !important;
+  }
+
+  .entryDeleteIcon .entryIconWrapperBig {
+    width: 100%;
+  }
+
+  .entryDeleteIconInline.entryDeleteIcon .entryIconWrapperBig {
+    width: 36px;
+    height: 36px;
   }
 }
 
@@ -153,6 +316,12 @@
   flex-wrap: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.entryTitle {
+  white-space: normal;
+  text-overflow: clip;
+  width: 100%;
 }
 
 .enforceSingleRow {
@@ -202,8 +371,22 @@ textarea.formInput {
   color: hsla(0, 0%, 100%, 1);
 }
 
+.infoBox {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  cursor: default;
+  box-sizing: border-box;
+  color: #72767d;
+  transition: color 0.17s ease;
+}
+
+.lightTheme .infoBox {
+  color: rgba(114, 118, 125, 0.6);
+}
+
 select.formInput {
-  border-radius: 5px;
+  border-radius: 3px;
   font-size: 16px;
   line-height: 18px;
   margin: 0;
@@ -212,7 +395,8 @@ select.formInput {
   text-rendering: optimizeLegibility;
   color: hsla(0, 0%, 100%, 1);
   appearance: none;
-  background: url(../assets/arrow-down.svg) 99% / 24px no-repeat #33353a;
+  background: url(../assets/arrow-down.svg) 99% / 24px no-repeat
+    rgba(0, 0, 0, 0.1);
 }
 
 .lightTheme select.formInput {
@@ -431,11 +615,32 @@ select.formInput {
   height: 40px;
 }
 
-.flexColBottom {
+.flex {
   display: flex;
+}
+
+.col {
   flex-direction: column;
-  justify-content: flex-end;
+}
+
+.flexCrossAxisCenter {
   align-items: center;
+}
+
+.flexCrossAxisStart {
+  align-items: flex-start;
+}
+
+.flexCrossAxisCenter {
+  align-items: center;
+}
+
+.flexMainAxisCenter {
+  justify-content: center;
+}
+
+.flexMainAxisEnd {
+  justify-content: flex-end;
 }
 
 .primaryButton .contents {

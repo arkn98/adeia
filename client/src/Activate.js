@@ -77,199 +77,203 @@ class Activate extends Component {
           isDarkTheme ? styles.root : `${styles.root} ${styles.lightTheme}`
         }>
         <div className={styles.app}>
-          <div className={styles.banner}>
-            <div className={styles.logo}>
-              <Link to="/">LMS</Link>
-            </div>
-            <div className={styles.authbox}>
+          <div className={styles.dummy}>
+            <div className={styles.banner}>
               <div className={styles.logo}>
                 <Link to="/">LMS</Link>
               </div>
-              <div className={styles.title}>Activate your account</div>
-              <form onSubmit={this.formSubmitHandler} className={styles.block}>
-                <div className={styles.marginBottom20}>
-                  <div
-                    className={cx({
-                      inputLabel: true,
-                      errorLabel: errors.staffId
-                    })}>
-                    Staff ID
-                    {errors.staffId ? (
-                      <span className={styles.errorMessage}>
-                        {' '}
-                        - {errors.staffId}
-                      </span>
-                    ) : null}
-                  </div>
-                  <input
-                    name="staffId"
-                    ref={input => {
-                      this.staffIdInput = input;
-                    }}
-                    onChange={this.inputOnChangeHandler}
-                    value={this.state.staffId}
-                    className={cx({
-                      inputField: true,
-                      formInputError: errors.staffId
-                    })}
-                  />
+              <div className={styles.authbox}>
+                <div className={styles.logo}>
+                  <Link to="/">LMS</Link>
                 </div>
-                <div className={styles.marginBottom20}>
-                  <div
-                    className={cx({
-                      inputLabel: true,
-                      errorLabel: errors.email
-                    })}>
-                    Email
-                    {errors.email ? (
-                      <span className={styles.errorMessage}>
-                        {' '}
-                        - {errors.email}
-                      </span>
-                    ) : null}
+                <div className={styles.title}>Activate your account</div>
+                <form
+                  onSubmit={this.formSubmitHandler}
+                  className={styles.block}>
+                  <div className={styles.marginBottom20}>
+                    <div
+                      className={cx({
+                        inputLabel: true,
+                        errorLabel: errors.staffId
+                      })}>
+                      Staff ID
+                      {errors.staffId ? (
+                        <span className={styles.errorMessage}>
+                          {' '}
+                          - {errors.staffId}
+                        </span>
+                      ) : null}
+                    </div>
+                    <input
+                      name="staffId"
+                      ref={input => {
+                        this.staffIdInput = input;
+                      }}
+                      onChange={this.inputOnChangeHandler}
+                      value={this.state.staffId}
+                      className={cx({
+                        inputField: true,
+                        formInputError: errors.staffId
+                      })}
+                    />
                   </div>
-                  <input
-                    name="email"
-                    onChange={this.inputOnChangeHandler}
-                    value={this.state.email}
-                    className={cx({
-                      inputField: true,
-                      formInputError: errors.email
-                    })}
-                  />
-                </div>
-                <div className={styles.marginBottom20}>
-                  <div
-                    className={cx({
-                      inputLabel: true,
-                      errorLabel: errors.password
-                    })}>
-                    Password
-                    {errors.password ? (
-                      <span className={styles.errorMessage}>
-                        {' '}
-                        - {errors.password}
-                      </span>
-                    ) : null}
+                  <div className={styles.marginBottom20}>
+                    <div
+                      className={cx({
+                        inputLabel: true,
+                        errorLabel: errors.email
+                      })}>
+                      Email
+                      {errors.email ? (
+                        <span className={styles.errorMessage}>
+                          {' '}
+                          - {errors.email}
+                        </span>
+                      ) : null}
+                    </div>
+                    <input
+                      name="email"
+                      onChange={this.inputOnChangeHandler}
+                      value={this.state.email}
+                      className={cx({
+                        inputField: true,
+                        formInputError: errors.email
+                      })}
+                    />
                   </div>
-                  <input
-                    name="password"
-                    onChange={this.inputOnChangeHandler}
-                    type="password"
-                    value={this.state.password}
-                    className={cx({
-                      inputField: true,
-                      formInputError: errors.password
-                    })}
-                  />
-                </div>
-                <div className={styles.marginBottom20}>
-                  <div
-                    className={cx({
-                      inputLabel: true,
-                      errorLabel: errors.password2
-                    })}>
-                    Confirm Password
-                    {errors.password2 ? (
-                      <span className={styles.errorMessage}>
-                        {' '}
-                        - {errors.password2}
-                      </span>
-                    ) : null}
+                  <div className={styles.marginBottom20}>
+                    <div
+                      className={cx({
+                        inputLabel: true,
+                        errorLabel: errors.password
+                      })}>
+                      Password
+                      {errors.password ? (
+                        <span className={styles.errorMessage}>
+                          {' '}
+                          - {errors.password}
+                        </span>
+                      ) : null}
+                    </div>
+                    <input
+                      name="password"
+                      onChange={this.inputOnChangeHandler}
+                      type="password"
+                      value={this.state.password}
+                      className={cx({
+                        inputField: true,
+                        formInputError: errors.password
+                      })}
+                    />
                   </div>
-                  <input
-                    name="password2"
-                    onChange={this.inputOnChangeHandler}
-                    type="password"
-                    value={this.state.password2}
-                    className={cx({
-                      inputField: true,
-                      formInputError: errors.password2
-                    })}
-                  />
-                </div>
-                {/* 
+                  <div className={styles.marginBottom20}>
+                    <div
+                      className={cx({
+                        inputLabel: true,
+                        errorLabel: errors.password2
+                      })}>
+                      Confirm Password
+                      {errors.password2 ? (
+                        <span className={styles.errorMessage}>
+                          {' '}
+                          - {errors.password2}
+                        </span>
+                      ) : null}
+                    </div>
+                    <input
+                      name="password2"
+                      onChange={this.inputOnChangeHandler}
+                      type="password"
+                      value={this.state.password2}
+                      className={cx({
+                        inputField: true,
+                        formInputError: errors.password2
+                      })}
+                    />
+                  </div>
+                  {/* 
                 <button type="submit" className={styles.login}>
                   Continue
                 </button> */}
-                <button
-                  className={
-                    this.state.isSubmitting
-                      ? `${styles.login} ${styles.submitting}`
-                      : `${styles.login}`
-                  }>
-                  {this.state.isSubmitting ? (
-                    <span className={styles.spinner}>
-                      <span className={styles.spinnerInner}>
-                        <span
-                          className={`${styles.pulsingEllipsisItem} ${
-                            styles.spinnerItem
-                          }`}
-                        />
-                        <span
-                          className={`${styles.pulsingEllipsisItem} ${
-                            styles.spinnerItem
-                          }`}
-                        />
-                        <span
-                          className={`${styles.pulsingEllipsisItem} ${
-                            styles.spinnerItem
-                          }`}
-                        />
+                  <button
+                    className={
+                      this.state.isSubmitting
+                        ? `${styles.login} ${styles.submitting}`
+                        : `${styles.login}`
+                    }>
+                    {this.state.isSubmitting ? (
+                      <span className={styles.spinner}>
+                        <span className={styles.spinnerInner}>
+                          <span
+                            className={`${styles.pulsingEllipsisItem} ${
+                              styles.spinnerItem
+                            }`}
+                          />
+                          <span
+                            className={`${styles.pulsingEllipsisItem} ${
+                              styles.spinnerItem
+                            }`}
+                          />
+                          <span
+                            className={`${styles.pulsingEllipsisItem} ${
+                              styles.spinnerItem
+                            }`}
+                          />
+                        </span>
                       </span>
-                    </span>
-                  ) : (
-                    <div className={styles.contents}>Continue</div>
-                  )}
-                </button>
-                <div className={styles.marginTop4}>
-                  <div className={`${styles.smallLink} ${styles.link}`}>
-                    <Link to="/login">Already have an account?</Link>
+                    ) : (
+                      <div className={styles.contents}>Continue</div>
+                    )}
+                  </button>
+                  <div className={styles.marginTop4}>
+                    <div className={`${styles.smallLink} ${styles.link}`}>
+                      <Link to="/login">Already have an account?</Link>
+                    </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
-          </div>
-          <div className={styles.footer}>
-            <div>
-              Currently maintained by&nbsp;
-              <a
-                title="My GitHub user page"
-                href="https://github.com/arkn98"
-                target="_blank"
-                rel="noopener noreferrer">
-                Arun Kumar
-              </a>
-            </div>
-            <div>|</div>
-            <div>
-              <a
-                title="GitHub repo"
-                href="https://github.com/arkn98/lms"
-                target="_blank"
-                rel="noopener noreferrer">
-                View Source Code
-              </a>
-            </div>
-            <div>|</div>
-            <div>
-              <a
-                title="Issue Tracker"
-                href="https://github.com/arkn98/lms/issues"
-                target="_blank"
-                rel="noopener noreferrer">
-                Report an issue
-              </a>
-            </div>
-            <div>|</div>
-            <div>
-              <a
-                title="Submit your feedback"
-                href="https://goo.gl/forms/NP0pqpHuDlRYGoz92"
-                target="_blank"
-                rel="noopener noreferrer">
-                Feedback
-              </a>
+            <div className={styles.footer}>
+              <div>
+                Currently maintained by&nbsp;
+                <a
+                  title="My GitHub user page"
+                  href="https://github.com/arkn98"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  Arun Kumar
+                </a>
+              </div>
+              <div>|</div>
+              <div>
+                <a
+                  title="GitHub repo"
+                  href="https://github.com/arkn98/lms"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  View Source Code
+                </a>
+              </div>
+              <div>|</div>
+              <div>
+                <a
+                  title="Issue Tracker"
+                  href="https://github.com/arkn98/lms/issues"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  Report an issue
+                </a>
+              </div>
+              <div>|</div>
+              <div>
+                <a
+                  title="Submit your feedback"
+                  href="https://goo.gl/forms/NP0pqpHuDlRYGoz92"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  Feedback
+                </a>
+              </div>
             </div>
           </div>
         </div>

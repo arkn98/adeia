@@ -12,6 +12,9 @@ import classNames from 'classnames/bind';
 import axios from 'axios';
 import Select, { createFilter } from 'react-select';
 import Slot from './common/Slot';
+import { ReactComponent as MdClose } from '../assets/icons/md-close.svg';
+import { ReactComponent as MdAdd } from '../assets/icons/md-add.svg';
+import { ReactComponent as MdTrash } from '../assets/icons/md-trash.svg';
 import Spinner from './common/Spinner';
 
 const cx = classNames.bind({ ...mainStyles, ...styles, ...loginStyles });
@@ -171,6 +174,24 @@ class Timetable extends Component {
     });
   };
 
+  entryCloseHandler = event => {
+    event.preventDefault();
+    this.setState({ ...this.state, isEntryVisible: false, isEditEntry: false });
+  };
+
+  entryRemoveHandler = (event, index) => {
+    event.preventDefault();
+    if (!window.confirm('Are you sure you want to remove the entry?')) {
+      return;
+    }
+    let newEntry = this.state.entryContent.entry.splice(0);
+    newEntry.splice(index, 1);
+    this.setState({
+      ...this.state,
+      entryContent: { ...this.state.entryContent, entry: newEntry }
+    });
+  };
+
   entrySelectOnChangeHandler = (value, index, name) => {
     let arr = this.state.entryContent.entry.slice(0);
     arr[index][name] = value;
@@ -270,8 +291,14 @@ class Timetable extends Component {
     //  this.state.timetable[row].find(x => x.start === parseInt(col)).start
     //);
 
-    let start = this.state.timetable[row].find(x => x.start === parseInt(col))
-      .start;
+    //console.log(col);
+    let start = this.state.timetable[row].find(x => {
+      console.log(row);
+      console.log(col);
+      console.log(x.start);
+      return x.start === col;
+    }).start;
+    //console.log(start);
     let duration = this.state.timetable[row].find(
       x => x.start === parseInt(col)
     ).duration;
@@ -484,7 +511,7 @@ class Timetable extends Component {
       let hours = [];
       hours.push(<td style={{ textAlign: 'left' }}>{this.days[index]}</td>);
       let tempIndex = 1;
-      row.forEach((hour, index) => {
+      row.forEach((hour, index2) => {
         if (hour.start !== tempIndex) {
           while (hour.start - tempIndex > 0) {
             hours.push(
@@ -619,6 +646,7 @@ class Timetable extends Component {
     };
 
     let courseOptions = [];
+    let staffOptions = [];
     if (
       typeof this.props.courses === 'undefined' ||
       (Object.keys(this.props.courses).length === 0 &&
@@ -642,6 +670,32 @@ class Timetable extends Component {
           };
 
           courseOptions.push(temp);
+        });
+    }
+
+    if (
+      typeof this.props.staff === 'undefined' ||
+      (Object.keys(this.props.staff).length === 0 &&
+        this.props.staff.constructor === Object) ||
+      this.props.staff.staffList === [] ||
+      this.props.staff.loading
+    ) {
+      staffOptions = [];
+    } else {
+      this.props.staff.staffList
+        /* .filter(item => {
+          let found = this.state.entryContent.entry.some(
+            entry => item.staffId === entry.handlingStaff
+          );
+          return !found;
+        }) */
+        .forEach(item => {
+          let temp = {
+            value: item.staffId,
+            label: `${item.staffId} - ${item.name}`
+          };
+
+          staffOptions.push(temp);
         });
     }
 
@@ -732,20 +786,46 @@ class Timetable extends Component {
                   </div>
                 </div>
                 <div className={entryStyles.join(' ')}>
-                  <h5
-                    className={cx({
-                      formFieldLabel: true,
-                      marginBottom8: true,
-                      errorLabel: errors.classCode
-                    })}>
-                    {this.state.entryContent.title}
-                    {errors.category ? (
-                      <span className={loginStyles.errorMessage}>
-                        {' '}
-                        - {errors.category}
-                      </span>
-                    ) : null}
-                  </h5>
+                  <div
+                    className={`${styles.formItemRow} ${
+                      mainStyles.marginBottom8
+                    }`}>
+                    <div
+                      className={`${styles.formItemRowChild} ${
+                        styles.entryTitleRow
+                      }`}>
+                      <h5
+                        className={cx({
+                          formFieldLabel: true,
+                          entryTitle: true,
+                          marginBottom8: true,
+                          errorLabel: errors.classCode
+                        })}>
+                        {this.state.entryContent.title}
+                        {errors.category ? (
+                          <span className={loginStyles.errorMessage}>
+                            {' '}
+                            - {errors.category}
+                          </span>
+                        ) : null}
+                      </h5>
+                      <div
+                        className={styles.entryIconWrapper}
+                        onClick={this.entryCloseHandler}>
+                        <MdClose className={styles.customIconTest} />
+                      </div>
+                    </div>
+                    {/* <div
+                      className={`${styles.formItemRowChild} ${
+                        styles.entryRowChild
+                      }`}>
+                      <div
+                        className={styles.entryIconWrapper}
+                        onClick={this.entryCloseHandler}>
+                        <MdClose className={styles.customIconTest} />
+                      </div>
+                    </div> */}
+                  </div>
                   <div
                     className={`${styles.formItemRow} ${
                       mainStyles.marginBottom8
@@ -798,21 +878,60 @@ class Timetable extends Component {
                       </div>
                     </div>
                   </div>
-                  {this.state.entryContent.entry.map((entry, index) => {
-                    return (
-                      <div
-                        className={`${styles.formItemRow} ${
-                          mainStyles.marginBottom8
-                        }`}>
-                        <div className={styles.formItemRowChild}>
-                          <h5
-                            className={`${styles.formFieldLabel} ${
-                              mainStyles.marginBottom8
+                  <div
+                    style={{
+                      border: '1px solid rgba(0, 0, 0, 0.3)',
+                      borderRadius: '5px',
+                      padding: '12px'
+                    }}
+                    className={mainStyles.marginBottom8}>
+                    {this.state.entryContent.entry.map((entry, index) => {
+                      return (
+                        <div
+                          className={`${styles.formItemRow} ${
+                            mainStyles.marginBottom8
+                          }`}>
+                          <div
+                            className={`${styles.flex} ${styles.col} ${
+                              styles.flexMainAxisCenter
+                            } ${styles.flexCrossAxisCenter} ${
+                              styles.entryNumber
                             }`}>
-                            Course Code
-                          </h5>
-                          <div className={styles.inputWrapper}>
-                            {/* <input
+                            <div className={styles.entryNumberFix}>
+                              <h5 className={styles.formFieldLabel}>
+                                {index + 1}
+                              </h5>
+                            </div>
+                            <div
+                              className={`${styles.flex} ${styles.col} ${
+                                styles.flexMainAxisCenter
+                              } ${styles.flexCrossAxisStart} ${
+                                styles.entryDeleteIcon
+                              } ${styles.entryDeleteIconInline}`}>
+                              <div
+                                className={`${styles.danger} ${
+                                  styles.entryIconWrapper
+                                } ${styles.entryIconWrapperBig}`}
+                                onClick={e =>
+                                  this.entryRemoveHandler(e, index)
+                                }>
+                                <MdTrash
+                                  className={`${styles.customIconTest} ${
+                                    styles.customIconTestBig
+                                  }`}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className={styles.formItemRowChild}>
+                            <h5
+                              className={`${styles.formFieldLabel} ${
+                                mainStyles.marginBottom8
+                              }`}>
+                              Course Code
+                            </h5>
+                            <div className={styles.inputWrapper}>
+                              {/* <input
                               className={`${styles.formInput}`}
                               type="text"
                               onChange={e =>
@@ -823,110 +942,137 @@ class Timetable extends Component {
                                 this.state.entryContent.entry[index].courseCode
                               }
                             /> */}
-                            <Select
-                              name="courseCode"
-                              options={courseOptions}
-                              isLoading={this.props.classes.loading}
-                              isSearchable={true}
-                              onChange={val =>
-                                this.entrySelectOnChangeHandler(
-                                  val.value,
-                                  index,
-                                  'courseCode'
-                                )
-                              }
-                              placeholder="Course..."
-                              styles={customStyles}
-                              className={tableStyles.selectContainer}
-                              filterOption={createFilter(filterConfig)}
-                            />
+                              <Select
+                                name="courseCode"
+                                options={courseOptions}
+                                isLoading={this.props.classes.loading}
+                                isSearchable={true}
+                                onChange={val =>
+                                  this.entrySelectOnChangeHandler(
+                                    val.value,
+                                    index,
+                                    'courseCode'
+                                  )
+                                }
+                                placeholder="Course..."
+                                styles={customStyles}
+                                className={tableStyles.selectContainer}
+                                filterOption={createFilter(filterConfig)}
+                              />
+                            </div>
                           </div>
-                        </div>
-                        <div className={styles.formItemRowChild}>
-                          <h5
-                            className={`${styles.formFieldLabel} ${
-                              mainStyles.marginBottom8
+                          <div className={styles.formItemRowChild}>
+                            <h5
+                              className={`${styles.formFieldLabel} ${
+                                mainStyles.marginBottom8
+                              }`}>
+                              Handling Staff
+                            </h5>
+                            <div className={styles.inputWrapper}>
+                              <input
+                                className={`${styles.formInput}`}
+                                type="text"
+                                onChange={e =>
+                                  this.entryOnChangeHandler(e, index)
+                                }
+                                name="handlingStaff"
+                                value={
+                                  this.state.entryContent.entry[index]
+                                    .handlingStaff
+                                }
+                              />
+                            </div>
+                          </div>
+                          <div className={styles.formItemRowChild}>
+                            <h5
+                              className={`${styles.formFieldLabel} ${
+                                mainStyles.marginBottom8
+                              }`}>
+                              Additional Staff
+                            </h5>
+                            <div className={styles.inputWrapper}>
+                              <input
+                                className={`${styles.formInput}`}
+                                type="text"
+                                onChange={e =>
+                                  this.entryOnChangeHandler(e, index)
+                                }
+                                name="additionalStaff"
+                                value={
+                                  this.state.entryContent.entry[index]
+                                    .additionalStaff
+                                }
+                              />
+                            </div>
+                          </div>
+                          <div
+                            className={`${styles.flex} ${styles.col} ${
+                              styles.flexMainAxisCenter
+                            } ${styles.flexCrossAxisStart} ${
+                              styles.entryDeleteIcon
                             }`}>
-                            Handling Staff
-                          </h5>
-                          <div className={styles.inputWrapper}>
-                            <input
-                              className={`${styles.formInput}`}
-                              type="text"
-                              onChange={e =>
-                                this.entryOnChangeHandler(e, index)
-                              }
-                              name="handlingStaff"
-                              value={
-                                this.state.entryContent.entry[index]
-                                  .handlingStaff
-                              }
-                            />
+                            <div
+                              className={`${styles.danger} ${
+                                styles.entryIconWrapper
+                              } ${styles.entryIconWrapperBig}`}
+                              onClick={e => this.entryRemoveHandler(e, index)}>
+                              <MdTrash
+                                className={`${styles.customIconTest} ${
+                                  styles.customIconTestBig
+                                }`}
+                              />
+                            </div>
                           </div>
-                        </div>
-                        <div className={styles.formItemRowChild}>
-                          <h5
-                            className={`${styles.formFieldLabel} ${
-                              mainStyles.marginBottom8
+                          <div
+                            className={`${styles.formItemRowChild} ${
+                              styles.flex
+                            } ${styles.col} ${styles.flexMainAxisEnd} ${
+                              styles.flexCrossAxisStart
                             }`}>
-                            Additional Staff
-                          </h5>
-                          <div className={styles.inputWrapper}>
-                            <input
-                              className={`${styles.formInput}`}
-                              type="text"
-                              onChange={e =>
-                                this.entryOnChangeHandler(e, index)
-                              }
-                              name="additionalStaff"
-                              value={
-                                this.state.entryContent.entry[index]
-                                  .additionalStaff
-                              }
-                            />
+                            <div className={styles.inputWrapper}>
+                              {this.state.entryContent.entry.length ===
+                              index + 1 ? (
+                                <button
+                                  type="submit"
+                                  onClick={this.newEntrySubmitHandler}
+                                  className={styles.primaryButton}>
+                                  {this.state.isSubmitting ? (
+                                    <Spinner
+                                      isDarkTheme={isDarkTheme}
+                                      isStripped={true}
+                                    />
+                                  ) : (
+                                    <div className={styles.contents}>
+                                      {' '}
+                                      {this.state.isEditEntry
+                                        ? `Update`
+                                        : `Add`}
+                                    </div>
+                                  )}
+                                </button>
+                              ) : null}
+                            </div>
                           </div>
                         </div>
-                        <div
-                          className={`${styles.formItemRowChild} ${
-                            styles.flexColBottom
-                          }`}>
-                          <div className={styles.inputWrapper}>
-                            {this.state.entryContent.entry.length ===
-                            index + 1 ? (
-                              <button
-                                type="submit"
-                                onClick={this.newEntrySubmitHandler}
-                                className={styles.primaryButton}>
-                                {this.state.isSubmitting ? (
-                                  <Spinner
-                                    isDarkTheme={isDarkTheme}
-                                    isStripped={true}
-                                  />
-                                ) : (
-                                  <div className={styles.contents}>
-                                    {' '}
-                                    {this.state.isEditEntry ? `Update` : `Add`}
-                                  </div>
-                                )}
-                              </button>
-                            ) : null}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                   <div
-                    styles={{ cursor: 'pointer' }}
+                    className={styles.formItemRow}
                     onClick={this.addAdditionalCourseClickHandler}>
-                    add additional course{' '}
+                    <div className={styles.addNewEntry}>
+                      <MdAdd className={styles.customIconTest} />
+                    </div>
                   </div>
                 </div>
-
-                <div
+                <div className={styles.infoBox}>
+                  Click on the cells to add/update slots in the timetable.
+                </div>
+                {/* <div
                   onClick={this.testClickHandler}
                   style={{ cursor: 'pointer' }}>
                   click me
-                </div>
+                </div> */}
                 <div
                   className={
                     isDarkTheme

@@ -27,9 +27,13 @@ class App extends Component {
         <Route path="/reset-password/:token" component={ForgotPassword} />
         <Switch>
           <PrivateRoute path="/dashboard" component={Dashboard} />
-          <Route component={PageNotFound} />
+          <Route
+            render={() => <PageNotFound isDarkTheme={this.props.isDarkTheme} />}
+          />
         </Switch>
-        <Route component={PageNotFound} />
+        <Route
+          render={() => <PageNotFound isDarkTheme={this.props.isDarkTheme} />}
+        />
       </Switch>
     );
   }

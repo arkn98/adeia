@@ -1,6 +1,7 @@
 .app {
   overflow: auto;
   background: #18191c;
+  background: #2f3136;
   margin: none;
   padding: none;
   display: flex;
@@ -161,6 +162,7 @@
 
 .footer {
   display: flex;
+  flex: 0 0 64px;
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -170,7 +172,6 @@
   margin-right: auto;
   margin-left: auto;
   box-sizing: border-box;
-  padding-bottom: 24px;
   max-width: calc(100% - 100px);
   color: hsla(0, 0%, 100%, 0.25);
   transition: color 0.17s ease;
@@ -184,7 +185,10 @@
   .footer {
     flex-wrap: wrap;
     margin-top: 20px;
+    flex: 0 0 auto;
+    margin-bottom: 12px;
   }
+
   .footer div {
     margin-top: 5px;
   }

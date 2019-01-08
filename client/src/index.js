@@ -46,7 +46,7 @@ if (localStorage.themePreferences) {
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <App isDarkTheme={isDarkTheme} />
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')
