@@ -8,10 +8,11 @@ import {
 } from './types';
 
 // Get current profile
-export const getCurrentProfile = (shouldSetProfileLoading = true) => dispatch => {
-  if (shouldSetProfileLoading)
-    dispatch(setProfileLoading());
-  axios
+export const getCurrentProfile = (
+  shouldSetProfileLoading = true
+) => dispatch => {
+  if (shouldSetProfileLoading) dispatch(setProfileLoading());
+  return axios
     .get('/api/profile')
     .then(res =>
       dispatch({

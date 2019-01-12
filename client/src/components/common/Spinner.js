@@ -51,4 +51,8 @@ const Spinner = props => {
   }
 };
 
+Spinner.defaultProps = {
+  isDarkTheme: false
+};
+
 export default Spinner;

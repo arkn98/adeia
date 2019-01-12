@@ -1,0 +1,15 @@
+.flex {
+  display: flex;
+}
+
+.col {
+  flex-direction: column;
+}
+
+.flexMainAxisCenter {
+  justify-content: center;
+}
+
+.flexCrossAxisCenter {
+  align-items: center;
+}

@@ -17,6 +17,70 @@
       #root {
         height: 100%;
       }
+
+      #spinnerContainer {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 999;
+        background-color: #fff;
+      }
+
+      .spinner {
+        display: flex;
+        height: 100%;
+        justify-content: center;
+        left: 0;
+        margin: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        align-items: center;
+      }
+
+      .spinnerInner {
+        display: flex;
+        height: auto;
+        justify-content: center;
+        position: relative;
+        width: 28px;
+      }
+
+      .pulsingEllipsisItem {
+        animation: spinner-pulsing-ellipsis 1.4s infinite ease-in-out;
+        background-color: #7289da;
+        border-radius: 3px;
+        display: inline-block;
+        height: 6px;
+        margin-right: 2px;
+        opacity: 0.3;
+        width: 6px;
+      }
+
+      .pulsingEllipsisItem:nth-of-type(2) {
+        animation-delay: 0.2s;
+      }
+
+      .pulsingEllipsisItem:nth-of-type(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes spinner-pulsing-ellipsis {
+        0% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.3;
+          transform: scale(0.8);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
     </style>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -32,6 +96,15 @@
 
   <body>
     <noscript> You need to enable JavaScript to run this app. </noscript>
+    <div id="spinnerContainer">
+      <span class="spinner">
+        <span class="spinnerInner">
+          <span class="pulsingEllipsisItem spinnerItem"></span>
+          <span class="pulsingEllipsisItem spinnerItem"></span>
+          <span class="pulsingEllipsisItem spinnerItem"></span>
+        </span>
+      </span>
+    </div>
     <div id="root"></div>
     <!--
       This HTML file is a template.

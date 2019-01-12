@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const fs = require('fs');
+const compression = require('compression');
 const https = require('https');
 const bodyParser = require('body-parser');
 const passport = require('passport');
@@ -20,7 +21,7 @@ const app = express();
 //body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-/* app.use(express.static(path.join(__dirname, 'client', 'build'))); */
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 //DB  config
 const db = require('./config/keys').mongoURI;
@@ -33,6 +34,7 @@ mongoose
 
 //passport middleware
 app.use(passport.initialize());
+app.use(compression());
 
 //passport config
 require('./config/passport.js')(passport);
@@ -45,9 +47,9 @@ app.use('/api/timetable', timetable);
 
 const port = process.env.PORT || 5000;
 
-/* app.get('*', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-}); */
+});
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

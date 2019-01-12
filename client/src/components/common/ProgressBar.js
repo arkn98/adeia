@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styles from './progressBarStyles.module.css';
 
 class ProgressBar extends Component {
-  state = {
+  /* state = {
     transitionEnd: false
   };
 
@@ -10,7 +10,7 @@ class ProgressBar extends Component {
     setTimeout(() => {
       this.setState({ ...this.state, transitionEnd: true });
     }, 0);
-  };
+  }; */
 
   render = () => {
     let widthPercent = (this.props.barWidth / this.props.trackWidth) * 100;
@@ -24,9 +24,11 @@ class ProgressBar extends Component {
         }>
         <div
           className={
-            this.state.transitionEnd
-              ? `${styles.inner} ${styles.innerTransitionEnd}`
-              : styles.inner
+            /* this.state.transitionEnd
+              ?  */ `${styles.inner} ${
+              styles.innerTransitionEnd
+            }`
+            /* : styles.inner */
           }
           style={{ width: `${widthPercent}%` }}
         />

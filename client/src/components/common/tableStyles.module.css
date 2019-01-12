@@ -111,14 +111,10 @@ table {
   font-weight: 500;
   max-width: 272px;
   padding: 8px;
-  vertical-align: center;
-  width: 48px;
-  height: 48px;
+  height: 36px;
+  /* vertical-align: center;
+  width: 48px; */
   transition: color 0.17s ease, font-weight 0.17s ease;
-}
-
-.selectContainer {
-  /*max-width: 100px !important;*/
 }
 
 .lightTheme.timetable th {
@@ -194,9 +190,6 @@ table {
   box-sizing: border-box;
   background-color: #fff;
   color: #4f545c;
-}
-
-.lightTheme .item {
 }
 
 .itemHighlighted {

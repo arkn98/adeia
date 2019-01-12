@@ -10,6 +10,16 @@ import PrivateRoute from './components/common/PrivateRoute';
 import ForgotPassword from './ForgotPassword';
 
 class App extends Component {
+  componentDidMount = () => {
+    const element = document.getElementById('spinnerContainer');
+    if (element) {
+      //element.classList.add('available');
+      element.outerHTML = '';
+      /* setTimeout(() => {
+      }, 5000); */
+    }
+  };
+
   render() {
     return (
       <Switch>

@@ -213,6 +213,13 @@ class Dashboard extends Component {
             exact
             render={() => (
               <Timetable
+                auth={this.props.auth}
+                utils={this.props.utils}
+                profile={this.props.profile}
+                classes={this.props.classes}
+                courses={this.props.courses}
+                staff={this.props.staff}
+                timetable={this.props.timetable}
                 newEntryHandler={this.newEntryHandler}
                 editEntryHandler={this.editEntryHandler}
                 notificationsClickHandler={this.notificationsClickHandler}
@@ -265,6 +272,9 @@ class Dashboard extends Component {
             exact
             render={() => (
               <Main
+                auth={this.props.auth}
+                utils={this.props.utils}
+                profile={this.props.profile}
                 notificationsClickHandler={this.notificationsClickHandler}
                 isDarkTheme={isDarkTheme}
               />
@@ -287,6 +297,9 @@ class Dashboard extends Component {
             exact
             render={() => (
               <Main
+                auth={this.props.auth}
+                utils={this.props.utils}
+                profile={this.props.profile}
                 notificationsClickHandler={this.notificationsClickHandler}
                 isDarkTheme={isDarkTheme}
               />
@@ -319,6 +332,9 @@ class Dashboard extends Component {
             exact
             render={() => (
               <Main
+                auth={this.props.auth}
+                utils={this.props.utils}
+                profile={this.props.profile}
                 notificationsClickHandler={this.notificationsClickHandler}
                 isDarkTheme={isDarkTheme}
               />

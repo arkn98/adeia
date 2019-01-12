@@ -38,7 +38,7 @@ export const getTimetable = classCode => dispatch => {
 
 export const getAllClasses = () => dispatch => {
   dispatch(setClassesLoading());
-  axios
+  return axios
     .get('/api/timetable/get-classes')
     .then(res =>
       dispatch({
@@ -63,7 +63,7 @@ export const setClassesLoading = () => {
 
 export const getAllCourses = () => dispatch => {
   dispatch(setCoursesLoading());
-  axios
+  return axios
     .get('/api/timetable/get-courses')
     .then(res =>
       dispatch({
@@ -82,7 +82,7 @@ export const getAllCourses = () => dispatch => {
 
 export const getAllStaff = () => dispatch => {
   dispatch(setStaffLoading());
-  axios
+  return axios
     .get('/api/timetable/get-staff')
     .then(res =>
       dispatch({

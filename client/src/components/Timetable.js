@@ -147,6 +147,13 @@ class Timetable extends Component {
     this.props.updateCurrentRouteTitle('Timetable');
   };
 
+  componentWillMount = () => {
+    this.setState({
+      ...this.state,
+      classCode: this.props.classes.classList
+    });
+  };
+
   componentWillReceiveProps = nextProps => {
     if (nextProps.errors) {
       this.setState({
@@ -228,7 +235,16 @@ class Timetable extends Component {
 
   testClickHandler = event => {
     event.preventDefault();
-    let newTimetable = {};
+    let newTimetable = {
+      classCode: this.state.classCode
+    };
+    newTimetable.classId = this.props.classes.classList.find(
+      x => x.classCode === this.state.classCode
+    )._id;
+
+    newTimetable.timetable = this.state.timetable;
+
+    /*
     newTimetable.classCode = 'BT3G';
     newTimetable.classId = this.props.classes.classList.find(
       x => x.classCode === 'BT3G'
@@ -253,11 +269,13 @@ class Timetable extends Component {
       day.push(today);
     }
     newTimetable.timetable = day;
+    */
     console.log(newTimetable);
-    axios
+    /*axios
       .post('/api/timetable/add-timetable', newTimetable)
       .then(timetable => console.log(timetable))
       .catch(err => console.log(err));
+      */
   };
 
   addNewEntry = event => {
@@ -293,9 +311,9 @@ class Timetable extends Component {
 
     //console.log(col);
     let start = this.state.timetable[row].find(x => {
-      console.log(row);
+      /* console.log(row);
       console.log(col);
-      console.log(x.start);
+      console.log(x.start); */
       return x.start === col;
     }).start;
     //console.log(start);
@@ -767,21 +785,20 @@ class Timetable extends Component {
                         formInputError: errors.classCode
                       })}>
                       <option disabled>Select class code</option>
-                      {typeof this.props.classes === 'undefined' ||
-                      (Object.keys(this.props.classes).length === 0 &&
-                        this.props.classes.constructor === Object) ||
-                      this.props.classes.classList === null ||
-                      this.props.classes.loading ? (
+                      {/* /* typeof this.props.classes === 'undefined' ||
+                      ( this
+                        .props.classes
+                        .loading /* ||
+                        /* (Object.keys(this.props.classes).length === 0 &&
+                          this.props.classes.constructor === Object)) ||
+                      this.props.classes.classList === null ? (
                         <option>Loading...</option>
-                      ) : (
-                        this.props.classes.classList.map(item => (
-                          <option
-                            key={item.classCode}
-                            value={item.classCode}>{`${item.classCode} - ${
-                            item.nameOfClass
-                          }`}</option>
-                        ))
-                      )}
+                      ) : ( */
+                      this.props.classes.classList.map((item, index) => (
+                        <option key={item.classCode} value={item.classCode}>{`${
+                          item.classCode
+                        } - ${item.nameOfClass}`}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -882,9 +899,9 @@ class Timetable extends Component {
                     style={{
                       border: '1px solid rgba(0, 0, 0, 0.3)',
                       borderRadius: '5px',
-                      padding: '12px'
+                      padding: '12px 12px 6px 12px'
                     }}
-                    className={mainStyles.marginBottom8}>
+                    className={mainStyles.marginBottom6}>
                     {this.state.entryContent.entry.map((entry, index) => {
                       return (
                         <div
@@ -947,6 +964,14 @@ class Timetable extends Component {
                                 options={courseOptions}
                                 isLoading={this.props.classes.loading}
                                 isSearchable={true}
+                                value={{
+                                  value: this.state.entryContent.entry[index]
+                                    .courseCode,
+                                  label: `${
+                                    this.state.entryContent.entry[index]
+                                      .courseCode
+                                  }`
+                                }}
                                 onChange={val =>
                                   this.entrySelectOnChangeHandler(
                                     val.value,
@@ -1056,23 +1081,30 @@ class Timetable extends Component {
                         </div>
                       );
                     })}
+                    <div
+                      className={styles.formItemRow}
+                      onClick={this.addAdditionalCourseClickHandler}>
+                      <div className={styles.addNewEntry}>
+                        <MdAdd className={styles.customIconTest} />
+                      </div>
+                    </div>
                   </div>
-                  <div
+                  {/* <div
                     className={styles.formItemRow}
                     onClick={this.addAdditionalCourseClickHandler}>
                     <div className={styles.addNewEntry}>
                       <MdAdd className={styles.customIconTest} />
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className={styles.infoBox}>
                   Click on the cells to add/update slots in the timetable.
                 </div>
-                {/* <div
+                <div
                   onClick={this.testClickHandler}
                   style={{ cursor: 'pointer' }}>
                   click me
-                </div> */}
+                </div>
                 <div
                   className={
                     isDarkTheme
@@ -1103,75 +1135,7 @@ class Timetable extends Component {
                         <th>Ⅷ</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      {slots}
-                      {/* <tr>
-                        <td style={{ textAlign: 'left' }}>Monday</td>
-                        <td>
-                          <Select
-                            options={classOptions}
-                            isLoading={this.props.classes.loading}
-                            isSearchable={true}
-                            placeholder="Course"
-                            isMulti={true}
-                            styles={customStyles}
-                            className={tableStyles.selectContainer}
-                            filterOption={createFilter(filterConfig)}
-                          />
-                        </td>
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                      </tr>
-                      <tr>
-                        <td style={{ textAlign: 'left' }}>Tuesday</td>
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                      </tr>
-                      <tr>
-                        <td style={{ textAlign: 'left' }}>Wednesday</td>
-                        <td />
-                        <td />
-                        <td />
-                        <td /> 
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                      </tr>
-                      <tr>
-                        <td style={{ textAlign: 'left' }}>Thursday</td>
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                      </tr>
-                      <tr>
-                        <td style={{ textAlign: 'left' }}>Friday</td>
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                        <td />
-                      </tr> */}
-                    </tbody>
+                    <tbody>{slots}</tbody>
                   </table>
                 </div>
                 <div
@@ -1225,10 +1189,7 @@ Timetable.propTypes = {
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
-  classes: PropTypes.shape({
-    loading: PropTypes.bool.isRequired,
-    classList: PropTypes.array.isRequired
-  }),
+  classes: PropTypes.object.isRequired,
   courses: PropTypes.object.isRequired,
   timetable: PropTypes.object.isRequired,
   updateCurrentRouteTitle: PropTypes.func.isRequired,
@@ -1236,14 +1197,21 @@ Timetable.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth,
+  /* auth: state.auth,
   errors: state.errors,
   profile: state.profile,
   classes: state.classes,
   courses: state.courses,
   staff: state.staff,
-  timetable: state.timetable
+  timetable: state.timetable */
 });
+
+Timetable.defaultProps = {
+  classes: {
+    classList: [],
+    loading: false
+  }
+};
 
 export default connect(
   mapStateToProps,

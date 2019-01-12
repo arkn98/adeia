@@ -16,18 +16,24 @@ const TimetableSchema = new Schema({
   timetable: [
     [
       {
-        courseCode: {
-          type: Schema.Types.ObjectId,
-          ref: 'courses'
-        },
-        handlingStaff: {
-          type: Schema.Types.ObjectId,
-          ref: 'users'
-        },
-        additionalStaff: [
+        start: { type: Number, required: true },
+        duration: { type: Number, required: true },
+        course: [
           {
-            type: Schema.Types.ObjectId,
-            ref: 'users'
+            courseCode: {
+              type: Schema.Types.ObjectId,
+              ref: 'courses'
+            },
+            handlingStaff: {
+              type: Schema.Types.ObjectId,
+              ref: 'users'
+            },
+            additionalStaff: [
+              {
+                type: Schema.Types.ObjectId,
+                ref: 'users'
+              }
+            ]
           }
         ]
       }
