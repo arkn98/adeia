@@ -48,7 +48,8 @@ table {
   font-size: 14px;
   font-weight: 300;
   line-height: 22px;
-  overflow: hidden;
+  min-width: 768px;
+  overflow-x: auto;
   width: 100%;
   word-break: break-all;
   table-layout: fixed;

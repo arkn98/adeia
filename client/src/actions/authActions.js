@@ -12,6 +12,10 @@ import isEmpty from '../validation/is-empty';
 
 moment().locale();
 
+export const clearErrors = () => dispatch => {
+  dispatch({ type: CLEAR_ERRORS, payload: {} });
+};
+
 // Register account (admin/office)
 export const registerUser = (userData, history) => dispatch => {
   axios
@@ -34,10 +38,7 @@ export const setLoginAttempts = (email, status) => dispatch => {
           email: email,
           attemptStatus: status,
           timestamp: moment().unix(),
-          ip:
-            res.data.ip !== '' || res.data.ip !== null
-              ? res.data.ip
-              : res.data.ip2,
+          ip: res.data.ip,
           browser: res.data.browser,
           browserVersion: res.data.browserVersion,
           os: res.data.os,
@@ -69,7 +70,7 @@ export const registerStaff = (userData, history) => dispatch => {
 };
 
 //Login user - get user token
-export const loginUser = (userData, history) => dispatch => {
+export const loginUser = (userData, history, destination = '') => dispatch => {
   axios
     .post('api/users/login', userData)
     .then(res => {
@@ -83,7 +84,7 @@ export const loginUser = (userData, history) => dispatch => {
       dispatch(setLoginAttempts(userData.email, true));
       dispatch(setCurrentUser(decoded));
       dispatch({ type: CLEAR_ERRORS, payload: {} });
-      history.push('/dashboard');
+      history.push(destination !== '' ? destination : '/dashboard');
     })
     .catch(err => {
       if (!isEmpty(err.response)) {
@@ -131,7 +132,7 @@ export const activateUser = (userData, profileData, history) => dispatch => {
 
 export const sendResetEmail = data => dispatch => {
   axios
-    .post('/api/users/send-reset-email', data)
+    .post('/api/users/reset-password-request', data)
     .then(res => {
       dispatch({ type: CLEAR_ERRORS, payload: {} });
     })
@@ -146,4 +147,11 @@ export const resetPassword = (data, history) => dispatch => {
       history.push('/login');
     })
     .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
+};
+
+export const clearResetToken = (data, history) => dispatch => {
+  axios
+    .put('api/users/clear-reset-token', data)
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
 };

@@ -17,7 +17,7 @@ import { ReactComponent as MdMenu } from './assets/icons/md-menu.svg';
 import { ReactComponent as EmptyNotifDark } from './assets/empty-mentions-dark.svg';
 import { ReactComponent as EmptyNotifLight } from './assets/empty-mentions-light.svg';
 import { ReactComponent as MdInformationCircle } from './assets/icons/md-information-circle.svg';
-import { connect } from 'react-redux';
+/* import { connect } from 'react-redux';
 import {
   changeTheme,
   showLogoutPopup,
@@ -32,7 +32,7 @@ import {
   getAllClasses,
   getAllCourses,
   getAllStaff
-} from './actions/timetableActions';
+} from './actions/timetableActions'; */
 import LogoutModal from './components/common/LogoutModal';
 import Modal from './components/common/Modal';
 import PageNotFound from './PageNotFound';
@@ -133,8 +133,9 @@ class Dashboard extends Component {
 
     //const { user } = this.props.auth;
     //const { profile, loading } = this.props.profile;
-    const { loading, profile } = this.props.profile;
-    const { isLogoutModalVisible, isDarkTheme } = this.props.utils;
+    const props = this.props;
+    const { loading, profile } = props.profile;
+    const { isLogoutModalVisible, isDarkTheme } = props.utils;
 
     let notifCount;
     if (
@@ -199,7 +200,7 @@ class Dashboard extends Component {
     if (!isDarkTheme) settingsMenuStyles.push(notificationStyles.lightTheme);
 
     let routes = null;
-    if (this.props.auth.user.accountType === 0) {
+    if (props.auth.user.accountType === 0) {
       routes = (
         <Switch>
           <Route
@@ -213,16 +214,15 @@ class Dashboard extends Component {
             exact
             render={() => (
               <Timetable
-                auth={this.props.auth}
-                utils={this.props.utils}
-                profile={this.props.profile}
-                classes={this.props.classes}
-                courses={this.props.courses}
-                staff={this.props.staff}
-                timetable={this.props.timetable}
+                auth={props.auth}
+                utils={props.utils}
+                profile={props.profile}
+                classes={props.classes}
+                courses={props.courses}
+                staff={props.staff}
+                timetable={props.timetable}
                 newEntryHandler={this.newEntryHandler}
                 editEntryHandler={this.editEntryHandler}
-                notificationsClickHandler={this.notificationsClickHandler}
                 isDarkTheme={isDarkTheme}
               />
             )}
@@ -230,52 +230,32 @@ class Dashboard extends Component {
           <Route
             path="/dashboard/add-staff"
             exact
-            render={() => (
-              <AddStaff
-                notificationsClickHandler={this.notificationsClickHandler}
-                isDarkTheme={isDarkTheme}
-              />
-            )}
+            render={() => <AddStaff isDarkTheme={isDarkTheme} />}
           />
           <Route
             path="/dashboard/add-class"
             exact
-            render={() => (
-              <AddClass
-                notificationsClickHandler={this.notificationsClickHandler}
-                isDarkTheme={isDarkTheme}
-              />
-            )}
+            render={() => <AddClass isDarkTheme={isDarkTheme} />}
           />
           <Route
             path="/dashboard/add-course"
             exact
-            render={() => (
-              <AddCourse
-                notificationsClickHandler={this.notificationsClickHandler}
-                isDarkTheme={isDarkTheme}
-              />
-            )}
+            render={() => <AddCourse isDarkTheme={isDarkTheme} />}
           />
           <Route
             path="/dashboard/add-admin"
             exact
-            render={() => (
-              <AddAdmin
-                notificationsClickHandler={this.notificationsClickHandler}
-                isDarkTheme={isDarkTheme}
-              />
-            )}
+            render={() => <AddAdmin isDarkTheme={isDarkTheme} />}
           />
           <Route
             path="/dashboard"
             exact
             render={() => (
               <Main
-                auth={this.props.auth}
-                utils={this.props.utils}
-                profile={this.props.profile}
-                notificationsClickHandler={this.notificationsClickHandler}
+                auth={props.auth}
+                utils={props.utils}
+                profile={props.profile}
+                updateCurrentRouteTitle={props.updateCurrentRouteTitle}
                 isDarkTheme={isDarkTheme}
               />
             )}
@@ -283,7 +263,7 @@ class Dashboard extends Component {
           <Route render={() => <PageNotFound isDarkTheme={isDarkTheme} />} />
         </Switch>
       );
-    } else if (this.props.auth.user.accountType === 1) {
+    } else if (props.auth.user.accountType === 1) {
       routes = (
         <Switch>
           <Route
@@ -297,10 +277,10 @@ class Dashboard extends Component {
             exact
             render={() => (
               <Main
-                auth={this.props.auth}
-                utils={this.props.utils}
-                profile={this.props.profile}
-                notificationsClickHandler={this.notificationsClickHandler}
+                auth={props.auth}
+                utils={props.utils}
+                profile={props.profile}
+                updateCurrentRouteTitle={props.updateCurrentRouteTitle}
                 isDarkTheme={isDarkTheme}
               />
             )}
@@ -316,7 +296,10 @@ class Dashboard extends Component {
             exact
             render={() => (
               <LeaveApplication
-                notificationsClickHandler={this.notificationsClickHandler}
+                auth={props.auth}
+                errors={props.errors}
+                updateCurrentRouteTitle={props.updateCurrentRouteTitle}
+                addLeave={props.addLeave}
                 isDarkTheme={isDarkTheme}
               />
             )}
@@ -332,10 +315,10 @@ class Dashboard extends Component {
             exact
             render={() => (
               <Main
-                auth={this.props.auth}
-                utils={this.props.utils}
-                profile={this.props.profile}
-                notificationsClickHandler={this.notificationsClickHandler}
+                auth={props.auth}
+                utils={props.utils}
+                profile={props.profile}
+                updateCurrentRouteTitle={props.updateCurrentRouteTitle}
                 isDarkTheme={isDarkTheme}
               />
             )}
@@ -393,7 +376,7 @@ class Dashboard extends Component {
                         }`}
                       />
                       <div className={styles.pageTitle}>
-                        {this.props.utils.currentPageTitle}
+                        {props.utils.currentPageTitle}
                       </div>
                     </div>
                     <div className={styles.headerIcons}>
@@ -599,16 +582,16 @@ Dashboard.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth,
+  /* auth: state.auth,
   profile: state.profile,
   utils: state.utils,
   timetable: state.timetable,
   classes: state.classes,
   courses: state.courses,
-  staff: state.staff
+  staff: state.staff */
 });
 
-export default connect(
+export default /* connect(
   mapStateToProps,
   {
     getCurrentProfile,
@@ -621,4 +604,6 @@ export default connect(
     getAllCourses,
     getAllStaff
   }
-)(withRouter(Dashboard));
+)( */ withRouter(
+  Dashboard
+) /* ) */;

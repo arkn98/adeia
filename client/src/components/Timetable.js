@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import mainStyles from './Main.module.css';
 import styles from './LeaveApplication.module.css';
-import loginStyles from '../Login.module.css';
+import loginStyles from '../components/Login.module.css';
 import tableStyles from './common/tableStyles.module.css';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -145,13 +145,6 @@ class Timetable extends Component {
 
   componentDidMount = () => {
     this.props.updateCurrentRouteTitle('Timetable');
-  };
-
-  componentWillMount = () => {
-    this.setState({
-      ...this.state,
-      classCode: this.props.classes.classList
-    });
   };
 
   componentWillReceiveProps = nextProps => {
@@ -784,7 +777,7 @@ class Timetable extends Component {
                         formSelect: true,
                         formInputError: errors.classCode
                       })}>
-                      <option disabled>Select class code</option>
+                      <option value="">Select class code</option>
                       {/* /* typeof this.props.classes === 'undefined' ||
                       ( this
                         .props.classes

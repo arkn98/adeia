@@ -225,8 +225,11 @@ router.get('/getclientdetails', (req, res) => {
     browserVersion: ua.browser.version,
     os: ua.os.name,
     osVersion: ua.os.version,
-    ip: req.headers['x-forwarded-for'],
-    ip2: req.connection.remoteAddress
+    ip:
+      (req.headers['x-forwarded-for'] || '').split(',').pop() ||
+      req.connection.remoteAddress ||
+      req.socket.remoteAddress ||
+      (req.connection.socket ? req.connection.socket.remoteAddress : null)
   });
 });
 
@@ -348,7 +351,7 @@ router.get(
   }
   ); */
 
-router.post('/send-reset-email', (req, res) => {
+router.post('/reset-password-request', (req, res) => {
   const { errors, isValid } = validateResetMailInput(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
@@ -360,11 +363,21 @@ router.post('/send-reset-email', (req, res) => {
         errors.email = 'User not found';
         return res.status(404).json(errors);
       }
-      const token = crypto.randomBytes(128).toString('hex');
-      user.set({
-        resetPasswordToken: token,
-        resetPasswordExpires: Date.now() + 30 * 60 * 1000
-      });
+      let token = crypto.randomBytes(128).toString('hex');
+      let hash = crypto
+        .createHash('sha256')
+        .update(token)
+        .digest('hex');
+      if (user.resetPasswordToken === '') {
+        user.set({
+          resetPasswordToken: hash,
+          resetPasswordExpires: Date.now() + 30 * 60 * 1000
+        });
+      } else {
+        user.set({
+          resetPasswordToken: hash
+        });
+      }
       user
         .save()
         .then(user => {
@@ -380,14 +393,12 @@ router.post('/send-reset-email', (req, res) => {
 });
 
 router.get('/check-reset-token', (req, res) => {
-  /* const { errors, isValid } = validateResetTokenInput(req.query);
-  //
-  if (!isValid) {
-    return res.status(400).json(errors);
-  } */
-  console.log(req.query.token);
+  let hash = crypto
+    .createHash('sha256')
+    .update(req.query.token)
+    .digest('hex');
   User.findOne({
-    resetPasswordToken: req.query.token,
+    resetPasswordToken: hash,
     resetPasswordExpires: { $gt: Date.now() }
   }).then(user => {
     if (!user) {
@@ -408,6 +419,30 @@ router.get('/check-reset-token', (req, res) => {
   });
 });
 
+// @route   POST   api/users/clear-reset-token
+// @desc    Removes token from user account
+// @access  Public - token protected
+router.put('/clear-reset-token', (req, res) => {
+  User.findOne({
+    staffId: req.body.staffId
+  })
+    .then(user => {
+      if (user) {
+        user.set({
+          resetPasswordExpires: -1,
+          resetPasswordToken: ''
+        });
+        user
+          .save()
+          .then(res => res.json({ msg: 'Clear token success' }))
+          .catch(err => console.log(err));
+      }
+    })
+    .catch(err => {
+      return res.status(400).json(err);
+    });
+});
+
 // @route   POST   api/users/reset-password
 // @desc    Reset password
 // @access  Public - token protected
@@ -418,9 +453,13 @@ router.post('/reset-password', (req, res) => {
   if (!isValid) {
     return res.status(400).json(errors);
   }
+  let hash = crypto
+    .createHash('sha256')
+    .update(req.body.token)
+    .digest('hex');
   User.findOne({
     staffId: req.body.staffId,
-    resetPasswordToken: req.body.token,
+    resetPasswordToken: hash,
     resetPasswordExpires: { $gt: Date.now() }
   })
     .then(user => {

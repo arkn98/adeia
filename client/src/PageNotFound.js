@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Home.module.css';
+import styles from './components/Home.module.css';
 import { withRouter } from 'react-router-dom';
 
 const PageNotFound = props => {

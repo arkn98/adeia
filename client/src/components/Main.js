@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import styles from './Main.module.css';
-import { updateCurrentRouteTitle } from '../actions/utilActions';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Spinner from './common/Spinner';
@@ -392,13 +390,4 @@ Main.propTypes = {
   updateCurrentRouteTitle: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-  auth: state.auth,
-  profile: state.profile,
-  utils: state.utils
-});
-
-export default connect(
-  mapStateToProps,
-  { updateCurrentRouteTitle }
-)(Main);
+export default Main;

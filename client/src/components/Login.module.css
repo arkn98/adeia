@@ -1,14 +1,10 @@
 .root {
   height: 100%;
   width: 100%;
-  /* background: url('./assets/loginbg.jpg') no-repeat center center; */
-  /* background-size: cover; */
-  /* background: #2f3136; */
-
   background-color: #2f3136;
-  background-image: url('./assets/boxes-bg-dark.svg');
-  background-size: auto auto;
-
+  background: url('../assets/boxes-bg-dark.svg');
+  background-position: fixed;
+  background-size: 768px auto;
   position: absolute;
   overflow: hidden;
   overflow-y: auto;
@@ -16,11 +12,11 @@
 
 .lightTheme.root {
   background-color: #fff;
-  background-image: url('./assets/boxes-bg-white.svg');
+  background: url('../assets/boxes-bg-white.svg');
 }
 
 .app {
-  height: 100%;
+  /* height: 100%; */
 }
 
 .dummy {
@@ -29,6 +25,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: stretch;
+  min-height: 100vh;
 }
 
 .banner {
@@ -61,6 +58,17 @@
   font-size: 18px;
   padding: 40px;
   width: 480px;
+  margin-bottom: auto;
+  margin-top: auto;
+  opacity: 0;
+  transform: translateY(-100px) translateZ(-100px);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    opacity 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.authbox.authboxTransitionEnd {
+  opacity: 1;
+  transform: none;
 }
 
 .lightTheme .authbox {
@@ -88,6 +96,7 @@
 @media screen and (max-width: 486px) {
   .root {
     background: none;
+    overflow-y: hidden;
   }
 
   .app {
@@ -95,7 +104,7 @@
   }
 
   .banner {
-    flex: 1 1 auto;
+    flex: 1 0 auto;
     margin-bottom: 0;
   }
 
@@ -106,6 +115,10 @@
     width: 100%;
     margin: 0;
     overflow-x: hidden;
+    justify-content: flex-start;
+    opacity: 1;
+    transform: none;
+    background: linear-gradient(to left bottom, #3d4046, #1e1e23);
   }
 
   .block {
@@ -182,9 +195,9 @@
   letter-spacing: 0.5px;
   text-transform: uppercase;
   cursor: default;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 16px;
-  font-size: 14px;
+  font-size: 12px;
   margin-bottom: 8px;
 }
 
@@ -297,9 +310,13 @@
   .link:hover::after {
     opacity: 1;
   }
+
+  .link:focus::after {
+    opacity: 1;
+  }
 }
 
-.login {
+.submitButton {
   position: relative;
   padding: 2px 16px;
   outline: 0;
@@ -319,7 +336,7 @@
   margin-bottom: 8px;
 }
 
-.login .contents {
+.submitButton .contents {
   font-size: 16px;
   line-height: 24px;
   font-weight: 500;
@@ -384,11 +401,12 @@
   pointer-events: none;
 }
 
-.login:hover {
+.submitButton:hover,
+.submitButton:focus {
   background-color: #677bc4;
 }
 
-.submitting .login:hover {
+.submitting .submitButton:hover {
   background-color: #7289da;
 }
 
@@ -399,6 +417,7 @@
 }
 
 .logo {
+  flex: 0 0 auto;
   z-index: 2;
   font-family: 'UniSans';
   font-weight: 900;

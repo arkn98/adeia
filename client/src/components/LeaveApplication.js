@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import mainStyles from './Main.module.css';
 import styles from './LeaveApplication.module.css';
-import loginStyles from '../Login.module.css';
-import { withRouter } from 'react-router-dom';
+import loginStyles from '../components/Login.module.css';
 import classNames from 'classnames/bind';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
-import { updateCurrentRouteTitle } from '../actions/utilActions';
-import { addLeave } from '../actions/leaveActions';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import './common/datePickerStyles.css';
@@ -736,7 +732,7 @@ const mapStateToProps = state => ({
   profile: state.profile
 });
 
-export default connect(
+export default /* connect(
   mapStateToProps,
   { updateCurrentRouteTitle, addLeave }
-)(withRouter(LeaveApplication));
+)(withRouter( */ LeaveApplication /* )) */;

@@ -23,13 +23,14 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 400px;
 }
 
 .title {
   font-size: 36px;
   color: #fff;
   font-weight: bold;
-  line-height: 44px;
+  line-height: 36px;
   text-align: center;
   max-width: calc(90% - 100px);
   transition: color 0.17s ease;
@@ -47,12 +48,26 @@
   margin-top: 0px;
   color: hsla(0, 0%, 100%, 0.6);
   max-width: calc(90% - 100px);
-  margin-bottom: 30px;
+  margin-bottom: 24px;
   transition: color 0.17s ease;
 }
 
 .lightTheme .text {
   color: #4f545c;
+}
+
+@media screen and (max-height: 600px) and (max-width: 400px) {
+  .title {
+    font-size: 24px;
+    line-height: 24px;
+  }
+
+  .text {
+    max-width: 90%;
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 0;
+  }
 }
 
 @media screen and (max-width: 465px) {
@@ -106,6 +121,7 @@
   width: 250px;
   height: 45px;
   display: flex;
+  flex: 1 1 auto;
   cursor: pointer;
   transform: translateY(0px);
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
@@ -129,8 +145,20 @@
   .buttons {
     max-width: calc(90% - 50px);
   }
+
   .buttons .button {
     margin-top: 16px;
+  }
+
+  .text {
+    margin-bottom: 12px;
+  }
+}
+
+@media screen and (max-height: 600px) and (max-width: 400px) {
+  .buttons .button {
+    width: 50%;
+    min-width: 150px;
   }
 }
 
@@ -186,7 +214,7 @@
     flex-wrap: wrap;
     margin-top: 20px;
     flex: 0 0 auto;
-    margin-bottom: 12px;
+    padding-bottom: 24px;
   }
 
   .footer div {

@@ -11,6 +11,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
 import { clearCurrentProfile } from './actions/profileActions';
+import AppContainer from './containers/AppContainer';
 
 //check for user token
 if (localStorage.jwtToken) {
@@ -46,7 +47,7 @@ if (localStorage.themePreferences) {
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <App isDarkTheme={isDarkTheme} />
+      <AppContainer isDarkTheme={isDarkTheme} />
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')

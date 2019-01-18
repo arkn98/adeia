@@ -31,7 +31,9 @@ const Slot = props => {
           return (
             <div day={props.day} hour={props.hour} key={index}>
               {item.courseCode} - {item.handlingStaff} -{' '}
-              {item.additionalStaff.join(', ')}
+              {Array.isArray(item.additionalStaff)
+                ? item.additionalStaff.join(', ')
+                : item.additionalStaff}
             </div>
           );
         })}

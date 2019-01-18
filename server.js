@@ -21,7 +21,9 @@ const app = express();
 //body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'client', 'build')));
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client', 'build')));
+}
 
 //DB  config
 const db = require('./config/keys').mongoURI;
@@ -47,9 +49,11 @@ app.use('/api/timetable', timetable);
 
 const port = process.env.PORT || 5000;
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-});
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

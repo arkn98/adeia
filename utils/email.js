@@ -14,7 +14,7 @@ module.exports = function sendMail(email, token) {
     from: keys.emailID,
     subject: 'test email',
     html:
-      '<p><b>Click this link to reset your email - http://localhost:3000/reset-password/' +
+      '<p><b>Click this link to reset your email - http://localhost:3000/reset-password?token=' +
       token +
       '</b></p>'
   };
