@@ -70,6 +70,10 @@ const UserSchema = new Schema(
     resetPasswordExpires: {
       type: Number,
       default: -1
+    },
+    pwdResetTime: {
+      type: Number,
+      default: -1
     }
   },
   { minimize: false }

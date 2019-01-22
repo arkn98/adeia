@@ -9,7 +9,21 @@ let transporter = nodemailer.createTransport({
   }
 });
 
-module.exports = function sendMail(email, token) {
+const sendPasswordChangedMail = email => {
+  let mailOptions = {
+    from: keys.emailID,
+    subject: 'Your password has changed',
+    html:
+      'This is to inform you that your account password has changed recently.'
+  };
+  mailOptions.to = email;
+  transporter.sendMail(mailOptions, function(err, info) {
+    if (err) console.log(err);
+    else console.log(info);
+  });
+};
+
+const sendPasswordResetMail = (email, token) => {
   let mailOptions = {
     from: keys.emailID,
     subject: 'test email',
@@ -23,4 +37,9 @@ module.exports = function sendMail(email, token) {
     if (err) console.log(err);
     else console.log(info);
   });
+};
+
+module.exports = {
+  sendPasswordChangedMail,
+  sendPasswordResetMail
 };

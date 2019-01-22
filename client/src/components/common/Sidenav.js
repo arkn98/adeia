@@ -390,7 +390,7 @@ class Sidenav extends Component {
         <div className={styles.sideNav}>
           <div className={styles.menu}>
             <div className={styles.logo}>
-              <Link title="Leave Management System" href="/" to="/dashboard">
+              <Link title="Leave Management System" to="/">
                 LMS
               </Link>
               <div className={styles.menuText}>

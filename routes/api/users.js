@@ -4,7 +4,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const passport = require('passport');
-const sendMail = require('../../utils/email');
+const {
+  sendPasswordChangedMail,
+  sendPasswordResetMail
+} = require('../../utils/email');
 const crypto = require('crypto');
 let parser = require('ua-parser-js');
 
@@ -19,11 +22,6 @@ const validateResetPasswordInput = require('../../validation/resetPassword');
 //load user model
 const User = require('../../models/User');
 const Profile = require('../../models/Profile');
-
-// @route   GET   api/users/test
-// @desc    Tests users route
-// @access  Public
-router.get('/test', (req, res) => res.json({ msg: 'Users works' }));
 
 // @route   POST  api/users/add-account
 // @desc    Add admin/office accounts
@@ -181,40 +179,6 @@ router.post('/activate', (req, res) => {
     });
 });
 
-/* // @route   GET   api/users/getclientdetails
-// @desc    store login details in db
-// @access  Public
-router.post('/setlogindetails', (req, res) => {
-  User.findOne({ staffId: req.body.staffId })
-  .then(user => {
-      user.set({ prevLogins: [...user.prevLogins, req.body.sessionData] });
-      user
-        .save()
-        .then(user => res.json({ msg: 'Success' }))
-        .catch(err => console.log(err));
-    })
-    .catch(err => {
-      console.log(err);
-    });
-}); */
-
-/* // @route   GET   api/users/getlogindetails
-// @desc    Return current user
-// @access  Private
-router.get(
-  '/getlogindetails',
-  passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    let sessionData = [];
-    User.findOne({ staffId: req.body.staffId }).then(user => {
-      sessionData = user.prevLogins;
-      res.json({
-        prevLogins: sessionData
-      });
-    });
-  }
-  ); */
-
 // @route   GET   api/users/getclientdetails
 // @desc    Login user / return JWT
 // @access  Public
@@ -233,6 +197,9 @@ router.get('/getclientdetails', (req, res) => {
   });
 });
 
+// @route   POST   api/users/set-login-attemps
+// @desc    Adds success/failure login attemps to user
+// @access  Public
 router.post('/set-login-attempts', (req, res) => {
   User.findOne({ email: req.body.email })
     .then(user => {
@@ -270,7 +237,8 @@ router.post('/login', (req, res) => {
   User.findOne({ email }).then(user => {
     //check for user
     if (!user) {
-      errors.email = 'User not found';
+      errors.email = 'Wrong credentials';
+      errors.password = 'Wrong credentials';
       return res.status(404).json(errors);
     }
     //check password
@@ -305,52 +273,17 @@ router.post('/login', (req, res) => {
           }
         );
       } else {
-        errors.password = 'Password incorrect';
+        errors.email = 'Wrong credentials';
+        errors.password = 'Wrong credentials';
         return res.status(400).json(errors);
       }
     });
   });
 });
 
-/* // @route   GET   api/users/current
-// @desc    Return current user
-// @access  Private
-router.get(
-  '/current',
-  passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    res.json({
-      staffId: req.user.staffId,
-      name: req.user.name,
-      email: req.user.email,
-      designation: req.user.designation,
-      category: req.user.category
-    });
-  }
-);
-*/
-
-/* router.post(
-  '/current',
-  passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    let userObj = {};
-    User.findOne({ staffId: req.body.staffId })
-    .then(user => {
-        userObj.staffId = user.staffId;
-        userObj.email = user.email;
-        userObj.name = user.name;
-        userObj.notifications = user.notifications;
-        userObj.prevLogins = user.prevLogins;
-        userObj.category = user.category;
-        userObj.designation = user.designation;
-        userObj.accountType = user.accountType;
-        res.json(userObj);
-      })
-      .catch(err => res.status(400).json(err));
-  }
-  ); */
-
+// @route   POST   api/users/reset-password-request
+// @desc    Adds password reset token with 30 mins expiry and sends email to the user
+// @access  Public
 router.post('/reset-password-request', (req, res) => {
   const { errors, isValid } = validateResetMailInput(req.body);
   if (!isValid) {
@@ -359,39 +292,53 @@ router.post('/reset-password-request', (req, res) => {
   const email = req.body.email;
   User.findOne({ email })
     .then(user => {
-      if (!user) {
-        errors.email = 'User not found';
-        return res.status(404).json(errors);
-      }
-      let token = crypto.randomBytes(128).toString('hex');
-      let hash = crypto
-        .createHash('sha256')
-        .update(token)
-        .digest('hex');
-      if (user.resetPasswordToken === '') {
-        user.set({
-          resetPasswordToken: hash,
-          resetPasswordExpires: Date.now() + 30 * 60 * 1000
-        });
-      } else {
-        user.set({
-          resetPasswordToken: hash
-        });
-      }
-      user
-        .save()
-        .then(user => {
-          sendMail(email, token);
+      if (user) {
+        let token = crypto.randomBytes(128).toString('hex');
+        let hash = crypto
+          .createHash('sha256')
+          .update(token)
+          .digest('hex');
+        if (
+          user.resetPasswordToken === '' ||
+          user.resetPasswordExpires < Date.now()
+        ) {
+          user.set({
+            resetPasswordToken: hash,
+            resetPasswordExpires: Date.now() + 30 * 60 * 1000
+          });
+        } else {
+          user.set({
+            resetPasswordToken: hash
+          });
+        }
+        user.save().then(user => {
+          sendPasswordResetMail(email, token);
           return res.json({ msg: 'Password reset mail sent to ' + email });
-        })
-        .catch(err => {
-          errors.msg = 'Error';
-          return res.status(404).json(errors);
-        });
+        }) /* .catch(err => {
+          return res.json({ msg: 'Password reset mail sent to ' + email });
+        }); */;
+      } else {
+        return res.json({ msg: 'Password reset mail sent to ' + email });
+      }
     })
     .catch(err => console.log(err));
 });
 
+// @route   GET   api/users/get-pwd-reset-time
+// @desc    Returns the last password reset time (UNIX) from user account
+// @access  Public
+router.get('/get-pwd-reset-time', (req, res) => {
+  User.findById(req.query.id).then(user => {
+    if (!user) {
+      return res.json({ pwdResetTime: -1 });
+    }
+    return res.json({ pwdResetTime: user.pwdResetTime });
+  });
+});
+
+// @route   GET   api/users/check-reset-token
+// @desc    Checks if password reset token is valid
+// @access  Public
 router.get('/check-reset-token', (req, res) => {
   let hash = crypto
     .createHash('sha256')
@@ -402,7 +349,7 @@ router.get('/check-reset-token', (req, res) => {
     resetPasswordExpires: { $gt: Date.now() }
   }).then(user => {
     if (!user) {
-      return res.status(404).json({ status: false });
+      return res.json({ status: false });
     }
     let userObj = {};
     userObj.name = user.name;
@@ -419,7 +366,7 @@ router.get('/check-reset-token', (req, res) => {
   });
 });
 
-// @route   POST   api/users/clear-reset-token
+// @route   PUT   api/users/clear-reset-token
 // @desc    Removes token from user account
 // @access  Public - token protected
 router.put('/clear-reset-token', (req, res) => {
@@ -473,11 +420,15 @@ router.post('/reset-password', (req, res) => {
           user.set({
             password: hash,
             resetPasswordExpires: -1,
-            resetPasswordToken: ''
+            resetPasswordToken: '',
+            pwdResetTime: Date.now()
           });
           user
             .save()
-            .then(user => res.json(user))
+            .then(user => {
+              sendPasswordChangedMail(user.email);
+              res.json(user);
+            })
             .catch(err => console.log(err));
         });
       });

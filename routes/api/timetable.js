@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const Class = require('../../models/Class');
 const Course = require('../../models/Course');
 const User = require('../../models/User');
-const Timetable = require('../../models/Timetable');
+const Timetable = require('../../models/TestTimetable');
 
 //load input validation
 const validateAddTimetableInput = require('../../validation/addTimetable');
@@ -18,6 +18,55 @@ const validateAddTimetableInput = require('../../validation/addTimetable');
 router.get('/test', (req, res) => res.json({ msg: 'Timetable works' }));
 
 router.post(
+  '/add-timetable',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    if (req.user.accountType === 0) {
+      //add validation
+      /* const { errors, isValid } = validateAddTimetableInput(req.body);
+      if (!isValid) {
+        return res.status(400).json(errors);
+      } */
+      Timetable.findOne({
+        class: req.body.classId,
+        day: req.body.day,
+        hour: req.body.hour
+      }).then(timetable => {
+        if (!timetable) {
+          let newTimetable = new Timetable({
+            class: req.body.classId,
+            day: req.body.day,
+            hour: req.body.hour,
+            course: req.body.course,
+            staff: req.body.staff,
+            staffRole: req.body.staffRole
+          });
+          //console.log(newTimetable);
+          newTimetable
+            .save()
+            .then(timetable => res.json(timetable))
+            .catch(err => console.log(err));
+        } else {
+          timetable.set({
+            course: req.body.course,
+            staff: req.body.staff,
+            staffRole: req.body.staffRole
+          });
+          timetable
+            .save()
+            .then(timetable => res.json(timetable))
+            .catch(err => console.log(err));
+        }
+      });
+    } else {
+      return res
+        .status(400)
+        .json({ msg: 'You do not have sufficient permissions' });
+    }
+  }
+);
+
+/* router.post(
   '/add-timetable',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
@@ -70,19 +119,21 @@ router.post(
         .json({ msg: 'You do not have sufficient permissions' });
     }
   }
-);
+); */
 
-router.post(
-  '/get-timetable',
+router.get(
+  '/get-timetable-day',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     if (req.user.accountType === 0) {
       const errors = {};
-      console.log(req.body);
-      Timetable.findOne({ classCode: req.body.classCode })
-        .populate('class')
-        .populate('timetable.handlingStaff')
-        .lean()
+      //add validation
+      console.log(req.query);
+      Timetable.find({ class: req.query.classId, day: req.query.day })
+        .sort({ day: 1, hour: 1 })
+        .populate({ path: 'class', select: 'classCode' })
+        .populate({ path: 'course', select: 'courseCode' })
+        .populate({ path: 'staff', select: 'staffId name' })
         .then(timetable => {
           if (timetable) {
             console.log(timetable);

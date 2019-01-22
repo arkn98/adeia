@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styles from './Login.module.css';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
@@ -121,9 +121,6 @@ class ResetPassword extends Component {
   render() {
     const { errors, shouldDisplay, isLoading } = this.state;
     const { isDarkTheme } = this.props;
-    const { isAuthenticated, history, match } = this.props;
-
-    /* if (isAuthenticated) return <Redirect to="/dashboard" />; */
 
     let toRender = null;
     if (!isLoading) {

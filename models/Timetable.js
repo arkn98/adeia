@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+/* const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 //create schema
@@ -42,3 +42,4 @@ const TimetableSchema = new Schema({
 });
 
 module.exports = Timetable = mongoose.model('timetables', TimetableSchema);
+ */

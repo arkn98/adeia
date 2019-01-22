@@ -215,12 +215,12 @@ class Dashboard extends Component {
             render={() => (
               <Timetable
                 auth={props.auth}
+                errors={props.errors}
                 utils={props.utils}
                 profile={props.profile}
                 classes={props.classes}
                 courses={props.courses}
                 staff={props.staff}
-                timetable={props.timetable}
                 newEntryHandler={this.newEntryHandler}
                 editEntryHandler={this.editEntryHandler}
                 isDarkTheme={isDarkTheme}

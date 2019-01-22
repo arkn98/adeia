@@ -69,6 +69,20 @@ export const registerStaff = (userData, history) => dispatch => {
     });
 };
 
+export const getPwdResetTime = userData => dispatch => {
+  axios
+    .get('/api/users/check-pwd-reset-time', {
+      params: {
+        id: userData.id
+      }
+    })
+    .then(res => {
+      console.log(res);
+      /* return res.data; */
+    })
+    .catch(err => console.log(err));
+};
+
 //Login user - get user token
 export const loginUser = (userData, history, destination = '') => dispatch => {
   axios

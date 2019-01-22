@@ -215,29 +215,48 @@ class Timetable extends Component {
   };
 
   inputOnChangeHandler = event => {
-    /* if (event.target.name === 'classCode') {
-      if (event.target.value !== '') {
-        let tempObj = {
-          classCode: event.target.value
-        };
-        this.props.getTimetable(tempObj);
-      }
-    } */
     this.setState({ [event.target.name]: event.target.value });
+    if (event.target.name === 'classCode') {
+      axios
+        .get('/api/timetable/get-timetable-day', {
+          params: {
+            classId: this.props.classes.classList.find(
+              x => x.classCode === event.target.value
+            )._id,
+            day: 1
+          }
+        })
+        .then(res => console.log(res.data))
+        .catch(err => console.log(err));
+    }
   };
 
   testClickHandler = event => {
     event.preventDefault();
     let newTimetable = {
-      classCode: this.state.classCode
+      day: 1,
+      hour: 1,
+      staffRole: 'MAIN'
     };
     newTimetable.classId = this.props.classes.classList.find(
-      x => x.classCode === this.state.classCode
+      x => x.classCode === 'BT3G'
+    )._id;
+    newTimetable.course = this.props.courses.courseList.find(
+      x => x.courseCode === 'CA7001'
+    )._id;
+    newTimetable.staff = this.props.staff.staffList.find(
+      x => x.staffId === '12345'
     )._id;
 
-    newTimetable.timetable = this.state.timetable;
+    axios
+      .post('/api/timetable/add-timetable', newTimetable)
+      .then(timetable => console.log(timetable))
+      .catch(err => console.log(err));
+  };
 
-    /*
+  /* testClickHandler = event => {
+    event.preventDefault();
+    let newTimetable = {};
     newTimetable.classCode = 'BT3G';
     newTimetable.classId = this.props.classes.classList.find(
       x => x.classCode === 'BT3G'
@@ -262,14 +281,12 @@ class Timetable extends Component {
       day.push(today);
     }
     newTimetable.timetable = day;
-    */
     console.log(newTimetable);
-    /*axios
+    axios
       .post('/api/timetable/add-timetable', newTimetable)
       .then(timetable => console.log(timetable))
       .catch(err => console.log(err));
-      */
-  };
+  }; */
 
   addNewEntry = event => {
     this.setState({

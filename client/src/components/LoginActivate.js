@@ -43,7 +43,7 @@ class LoginActivate extends Component {
     }, 0);
   };
 
-  static getDerivedStateFromProps = (nextProps, prevState) => {
+  /* static getDerivedStateFromProps = (nextProps, prevState) => {
     if (nextProps.errors) {
       return { errors: nextProps.errors };
     }
@@ -57,18 +57,29 @@ class LoginActivate extends Component {
         ...this.state,
         isSubmitting: false
       });
-    }
-  };
+    } */
+  /* if (
+      Object.keys(nextProps.errors).length === 0 &&
+      nextProps.errors.constructor === Object
+    ) {
+      this.setState({ ...this.state, isSubmitting: false });
+    } */
+  /* }; */
 
-  /* componentWillReceiveProps = nextProps => {
+  componentWillReceiveProps = nextProps => {
     if (nextProps.errors) {
       this.setState({
         ...this.state,
         errors: nextProps.errors,
         isSubmitting: false
       });
-    }
-  }; */
+    } /*  else {
+      this.setState({
+        ...this.state,
+        isSubmitting: false
+      });
+    } */
+  };
 
   inputOnChangeHandler = event => {
     if (event.target.name === 'email')
@@ -103,6 +114,10 @@ class LoginActivate extends Component {
     const state = this.state;
     this.setState({ ...state, isSubmitting: true });
     this.props.sendResetEmail({ email: state.email });
+  };
+
+  componentWillUnmount = () => {
+    this.props.clearErrors();
   };
 
   loginSubmitHandler = event => {
