@@ -9,6 +9,7 @@ import { registerStaff } from '../actions/authActions';
 import { createProfile } from '../actions/profileActions';
 import { updateCurrentRouteTitle } from '../actions/utilActions';
 import classNames from 'classnames/bind';
+import Spinner from './common/Spinner';
 
 const cx = classNames.bind({ ...mainStyles, ...styles, ...loginStyles });
 
@@ -250,29 +251,16 @@ class AddStaff extends Component {
                       mainStyles.marginTop8
                     }`}>
                     <button
-                      style={{ borderRadius: '5px' }}
                       type="submit"
-                      className={loginStyles.login}>
+                      className={
+                        this.state.isSubmitting
+                          ? `${loginStyles.submitButton} ${
+                              loginStyles.submitting
+                            }`
+                          : `${loginStyles.submitButton}`
+                      }>
                       {this.state.isSubmitting ? (
-                        <span className={loginStyles.spinner}>
-                          <span className={loginStyles.spinnerInner}>
-                            <span
-                              className={`${loginStyles.pulsingEllipsisItem} ${
-                                loginStyles.spinnerItem
-                              }`}
-                            />
-                            <span
-                              className={`${loginStyles.pulsingEllipsisItem} ${
-                                loginStyles.spinnerItem
-                              }`}
-                            />
-                            <span
-                              className={`${loginStyles.pulsingEllipsisItem} ${
-                                loginStyles.spinnerItem
-                              }`}
-                            />
-                          </span>
-                        </span>
+                        <Spinner isDarkTheme={isDarkTheme} isInButton={true} />
                       ) : (
                         <div className={loginStyles.contents}>Add Staff</div>
                       )}

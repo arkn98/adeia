@@ -16,12 +16,7 @@ class ProgressBar extends Component {
     let widthPercent = (this.props.barWidth / this.props.trackWidth) * 100;
     widthPercent = widthPercent.toFixed(0);
     return (
-      <div
-        className={
-          this.props.isDarkTheme
-            ? styles.container
-            : `${styles.container} ${styles.lightTheme}`
-        }>
+      <div className={styles.container}>
         <div
           className={
             /* this.state.transitionEnd

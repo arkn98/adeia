@@ -4,15 +4,8 @@ import mainStyles from './Main.module.css';
 
 class ViewHolidays extends Component {
   render() {
-    const isDarkTheme = this.props.isDarkTheme;
-
     return (
-      <div
-        className={
-          isDarkTheme
-            ? `${mainStyles.scrollWrapper}`
-            : `${mainStyles.scrollWrapper} ${mainStyles.lightTheme}`
-        }>
+      <div className={mainStyles.scrollWrapper}>
         <div className={mainStyles.contentWrapper}>
           <div className={mainStyles.body}>
             <div

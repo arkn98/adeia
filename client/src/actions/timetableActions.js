@@ -11,12 +11,14 @@ import {
   CLEAR_TIMETABLE
 } from './types';
 
+// set timetable loading in global state
 export const setTimetableLoading = () => {
   return {
     type: TIMETABLE_LOADING
   };
 };
 
+// set timetable loading in global state
 export const getTimetable = classCode => dispatch => {
   dispatch(setTimetableLoading());
   axios
@@ -36,6 +38,7 @@ export const getTimetable = classCode => dispatch => {
     });
 };
 
+// retrieves all classes
 export const getAllClasses = () => dispatch => {
   dispatch(setClassesLoading());
   return axios
@@ -55,12 +58,14 @@ export const getAllClasses = () => dispatch => {
     });
 };
 
+// set classes loading
 export const setClassesLoading = () => {
   return {
     type: CLASSES_LOADING
   };
 };
 
+// retrieve all courses
 export const getAllCourses = () => dispatch => {
   dispatch(setCoursesLoading());
   return axios
@@ -80,6 +85,7 @@ export const getAllCourses = () => dispatch => {
     });
 };
 
+// retrieve all staff
 export const getAllStaff = () => dispatch => {
   dispatch(setStaffLoading());
   return axios
@@ -99,12 +105,14 @@ export const getAllStaff = () => dispatch => {
     });
 };
 
+// set staff loading
 export const setStaffLoading = () => {
   return {
     type: STAFF_LOADING
   };
 };
 
+// set courses loading
 export const setCoursesLoading = () => {
   return {
     type: COURSES_LOADING

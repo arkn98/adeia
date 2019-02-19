@@ -42,9 +42,10 @@ class Sidenav extends Component {
   };
 
   componentWillReceiveProps = nextprops => {
-    if (nextprops.isVisible) {
-      this.setState({ ...this.state });
-    }
+    this.setState({
+      ...this.state,
+      isSettingsMenuVisible: nextprops.isSettingsMenuVisible
+    });
   };
 
   logoutHandler = event => {
@@ -65,7 +66,6 @@ class Sidenav extends Component {
     }
 
     const { user } = this.props.auth;
-    const isDarkTheme = this.props.isDarkTheme;
     const isVisible = this.props.isVisible;
 
     let adminLinks = (
@@ -371,14 +371,7 @@ class Sidenav extends Component {
     }
 
     let tempStyles = [];
-
-    if (isDarkTheme) {
-      tempStyles.push(styles.sideNavWrapper);
-    } else {
-      tempStyles.push(styles.sideNavWrapper);
-      tempStyles.push(styles.lightTheme);
-    }
-
+    tempStyles.push(styles.sideNavWrapper);
     if (isVisible) {
       tempStyles.push(styles.sideNavVisible);
     }
@@ -439,6 +432,7 @@ class Sidenav extends Component {
             </div>
             <div className={styles.userSettings}>
               <div
+                ref={this.props.setMenuRef}
                 className={`${styles.popouts} ${
                   styles.popout
                 } ${settingsMenuStyles.join(' ')}`}>
@@ -446,13 +440,16 @@ class Sidenav extends Component {
                   className={styles.item}
                   onClick={this.props.themeChangeHandler}>
                   {this.props.isDarkTheme ? (
-                    <MdSunny className={styles.menuIconTest} />
+                    <React.Fragment>
+                      <MdSunny className={styles.menuIconTest} />
+                      Switch to Light theme
+                    </React.Fragment>
                   ) : (
-                    <MdMoon className={styles.menuIconTest} />
+                    <React.Fragment>
+                      <MdMoon className={styles.menuIconTest} />
+                      Switch to Dark Theme
+                    </React.Fragment>
                   )}
-                  {this.props.isDarkTheme
-                    ? 'Switch to Light theme'
-                    : 'Switch to Dark Theme'}
                 </div>
                 <Link to="/dashboard/settings" className={styles.item}>
                   <MdBuild className={styles.menuIconTest} />

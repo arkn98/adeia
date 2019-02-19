@@ -30,10 +30,17 @@ const Slot = props => {
         {items.map((item, index) => {
           return (
             <div day={props.day} hour={props.hour} key={index}>
-              {item.courseCode} - {item.handlingStaff} -{' '}
-              {Array.isArray(item.additionalStaff)
-                ? item.additionalStaff.join(', ')
-                : item.additionalStaff}
+              {item.courseCode} - {item.handlingStaff}{' '}
+              {(typeof item.additionalStaff === 'string' &&
+                item.additionalStaff.length) ||
+              (Array.isArray(item.additionalStaff) &&
+                item.additionalStaff.length !== 0)
+                ? ` - ${
+                    Array.isArray(item.additionalStaff)
+                      ? item.additionalStaff.join(', ')
+                      : item.additionalStaff
+                  }`
+                : null}
             </div>
           );
         })}

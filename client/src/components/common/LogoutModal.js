@@ -6,12 +6,7 @@ class Modal extends Component {
 
   render() {
     return (
-      <div
-        className={
-          this.props.isDarkTheme
-            ? `${styles.modal}`
-            : `${styles.modal} ${styles.lightTheme}`
-        }>
+      <div className={styles.modal} ref={this.props.myRef}>
         <div className={styles.inner}>
           <div
             className={`${styles.modalInner} ${styles.container} ${

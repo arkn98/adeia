@@ -34,7 +34,7 @@ table {
   transition: color 0.17s ease, background 0.17s ease;
 }
 
-.lightTheme.timetable .title {
+:global(.lightTheme) .timetable .title {
   color: #4f545c;
   background: rgba(185, 187, 190, 0.3);
 }
@@ -55,7 +55,7 @@ table {
   table-layout: fixed;
 }
 
-.lightTheme.timetable table {
+:global(.lightTheme) .timetable table {
   box-shadow: none;
 }
 
@@ -64,7 +64,7 @@ table {
   transition: background 0.17s ease;
 }
 
-.lightTheme.timetable thead {
+:global(.lightTheme) .timetable thead {
   background: rgba(79, 84, 92, 0.1);
 }
 
@@ -73,7 +73,7 @@ table {
   transition: background 0.17s ease;
 }
 
-.lightTheme.timetable tbody tr {
+:global(.lightTheme) .timetable tbody tr {
   background: rgba(0, 0, 0, 0);
 }
 
@@ -81,7 +81,7 @@ table {
   background: #35383c;
 }
 
-.lightTheme.timetable tbody tr:nth-child(2n) {
+:global(.lightTheme) .timetable tbody tr:nth-child(2n) {
   background: rgba(0, 0, 0, 0.05);
 }
 
@@ -91,8 +91,8 @@ table {
   border-color: rgba(0, 0, 0, 0.3);
 }
 
-.lightTheme.timetable th,
-.lightTheme.timetable td {
+:global(.lightTheme) .timetable th,
+:global(.lightTheme) .timetable td {
   border-style: solid;
   border-color: rgba(79, 84, 92, 0.3);
 }
@@ -118,12 +118,12 @@ table {
   transition: color 0.17s ease, font-weight 0.17s ease;
 }
 
-.lightTheme.timetable th {
+:global(.lightTheme) .timetable th {
   font-weight: 500;
 }
 
-.lightTheme.timetable td,
-.lightTheme.timetable th {
+:global(.lightTheme) .timetable td,
+:global(.lightTheme) .timetable th {
   color: #4f545c;
 }
 
@@ -216,7 +216,7 @@ table {
   /* box-shadow: 0 1px 1px rgba(79, 84, 92, 0.1); */
 }
 
-.lightTheme.timetable table tr td.hoverableTd:hover {
+:global(.lightTheme) .timetable table tr td.hoverableTd:hover {
   background-color: rgba(79, 84, 92, 0.4);
   color: #fff;
   /* box-shadow: 0 1px 1px rgba(79, 84, 92, 0.4); */

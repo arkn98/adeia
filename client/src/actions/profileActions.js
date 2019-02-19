@@ -31,26 +31,10 @@ export const getCurrentProfile = (
 
 // Create Profile
 export const createProfile = profileData => dispatch => {
-  axios.post('/api/profile', profileData);
-};
-
-/* // Create Profile
-export const createProfile = profileData => dispatch => {
   axios
     .post('/api/profile', profileData)
-    .then(res => {
-      dispatch({
-        type: CLEAR_ERRORS,
-        payload: {}
-      });
-    })
-    .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      })
-    );
-}; */
+    .then(res => dispatch({ type: CLEAR_ERRORS, payload: {} }));
+};
 
 //profile loading
 export const setProfileLoading = () => {

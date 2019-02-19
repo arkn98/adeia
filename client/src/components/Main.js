@@ -48,9 +48,6 @@ class Main extends Component {
 
   render() {
     let boxes = null;
-
-    const isDarkTheme = this.props.isDarkTheme;
-
     const { loading, profile } = this.props.profile;
 
     if (this.props.auth.user.accountType === 0) {
@@ -178,12 +175,7 @@ class Main extends Component {
       );
     }
     return (
-      <div
-        className={
-          isDarkTheme
-            ? `${styles.scrollWrapper}`
-            : `${styles.scrollWrapper} ${styles.lightTheme}`
-        }>
+      <div className={styles.scrollWrapper}>
         <div className={styles.contentWrapper}>
           <div className={styles.body}>
             <div
@@ -207,7 +199,6 @@ class Main extends Component {
                     profile === null ||
                     typeof profile.prevLogins === 'undefined' ? (
                       <Spinner
-                        isDarkTheme={isDarkTheme}
                         myStyle={{
                           width: '100%',
                           minHeight: '50px',
@@ -236,7 +227,6 @@ class Main extends Component {
                                 <ProgressBar
                                   key={index}
                                   myKey={index}
-                                  isDarkTheme={isDarkTheme}
                                   barWidth={
                                     profile.leaveAvailable.noOfDays[item]
                                   }
@@ -275,7 +265,6 @@ class Main extends Component {
                   profile === null ||
                   typeof profile.prevLogins === 'undefined' ? (
                     <Spinner
-                      isDarkTheme={isDarkTheme}
                       myStyle={{
                         width: '100%',
                         minHeight: '50px',

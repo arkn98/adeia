@@ -17,24 +17,8 @@ import { ReactComponent as MdMenu } from './assets/icons/md-menu.svg';
 import { ReactComponent as EmptyNotifDark } from './assets/empty-mentions-dark.svg';
 import { ReactComponent as EmptyNotifLight } from './assets/empty-mentions-light.svg';
 import { ReactComponent as MdInformationCircle } from './assets/icons/md-information-circle.svg';
-/* import { connect } from 'react-redux';
-import {
-  changeTheme,
-  showLogoutPopup,
-  hideLogoutPopup
-} from './actions/utilActions';
-import { logoutUser } from './actions/authActions';
-import {
-  clearCurrentProfile,
-  getCurrentProfile
-} from './actions/profileActions';
-import {
-  getAllClasses,
-  getAllCourses,
-  getAllStaff
-} from './actions/timetableActions'; */
 import LogoutModal from './components/common/LogoutModal';
-import Modal from './components/common/Modal';
+import InfoModal from './components/common/InfoModal';
 import PageNotFound from './PageNotFound';
 import Spinner from './components/common/Spinner';
 
@@ -43,10 +27,13 @@ class Dashboard extends Component {
     isNotificationsVisible: false,
     isSideNavVisible: false,
     isInfoModalVisible: false,
-    isLogoutModalVisible: false
+    isLogoutModalVisible: false,
+    isSettingsMenuVisible: false
   };
 
   componentWillMount = () => {
+    this._isMounted = true;
+    document.addEventListener('click', this.handleGlobalClick);
     this.unlisten = this.props.history.listen((location, action) => {
       this.setState({
         ...this.state,
@@ -56,18 +43,38 @@ class Dashboard extends Component {
     });
   };
 
+  handleGlobalClick = event => {
+    if (this._isMounted && this.state.isNotificationsVisible) {
+      //const element = ReactDOM.findDOMNode(this);
+      if (this.notifElement && !this.notifElement.contains(event.target)) {
+        this.hideNotifications();
+      }
+    }
+
+    if (this._isMounted) {
+      if (
+        this.settingsMenuElement &&
+        !this.settingsMenuElement.contains(event.target)
+      ) {
+        this.settingsMenuHide();
+      } else {
+        this.settingsMenuShow();
+      }
+    }
+  };
+
   componentWillUnmount = () => {
+    this._isMounted = false;
     this.unlisten();
+    document.removeEventListener('click', this.handleGlobalClick);
   };
 
   logoutPopupHandler = () => {
     this.props.showLogoutPopup();
-    //this.setState({ ...this.state, isLogoutModalVisible: true });
   };
 
   infoPopupHandler = event => {
     event.preventDefault();
-    //this.props.showInfoPopup();
     this.setState({
       ...this.state,
       isInfoModalVisible: true
@@ -76,14 +83,12 @@ class Dashboard extends Component {
 
   infoPopupDismissHandler = event => {
     event.preventDefault();
-    //this.props.hideInfoPopup();
     this.setState({ ...this.state, isInfoModalVisible: false });
   };
 
   modalDismissHandler = event => {
     event.preventDefault();
     this.props.hideLogoutPopup();
-    //this.setState({ ...this.state, isLogoutModalVisible: false });
   };
 
   modalConfirmHandler = event => {
@@ -93,14 +98,41 @@ class Dashboard extends Component {
     this.props.logoutUser();
   };
 
-  notificationsClickHandler = event => {
+  closeLogoutModal = event => {
+    if (this._isMounted && this.props.utils.isLogoutModalVisible) {
+      this.props.hideLogoutPopup();
+    }
+  };
+
+  closeInfoModal = event => {
+    if (this._isMounted && this.state.isInfoModalVisible) {
+      this.setState({ ...this.state, isInfoModalVisible: false });
+    }
+  };
+
+  showNotifications = () => {
     this.setState({
-      isNotificationsVisible: !this.state.isNotificationsVisible
+      isNotificationsVisible: true
     });
+  };
+
+  hideNotifications = () => {
+    this.setState({
+      isNotificationsVisible: false
+    });
+  };
+
+  notificationsClickHandler = event => {
+    if (this.state.isNotificationsVisible) this.hideNotifications();
+    else this.showNotifications();
   };
 
   themeChangeHandler = event => {
     this.props.changeTheme(this.props.utils.isDarkTheme);
+  };
+
+  setMenuRef = ref => {
+    this.settingsMenuElement = ref;
   };
 
   componentDidMount = () => {
@@ -118,6 +150,20 @@ class Dashboard extends Component {
     this.setState({
       ...this.state,
       isSideNavVisible: !this.state.isSideNavVisible
+    });
+  };
+
+  settingsMenuShow = () => {
+    this.setState({
+      ...this.state,
+      isSettingsMenuVisible: true
+    });
+  };
+
+  settingsMenuHide = () => {
+    this.setState({
+      ...this.state,
+      isSettingsMenuVisible: false
     });
   };
 
@@ -152,7 +198,9 @@ class Dashboard extends Component {
 
     if (this.state.isInfoModalVisible) {
       this.modals = (
-        <div className={notificationStyles.poputs}>
+        <div
+          className={notificationStyles.poputs}
+          onClick={this.closeInfoModal}>
           <div
             className={styles.backdrop}
             style={{
@@ -162,17 +210,20 @@ class Dashboard extends Component {
               transform: 'translateZ(0px)'
             }}
           />
-          <Modal
+          <InfoModal
+            myRef={element => (this.infoModalElement = element)}
             isDarkTheme={isDarkTheme}
             modalTitle="About"
             modalDismissHandler={this.infoPopupDismissHandler}>
             fill in info here...
-          </Modal>
+          </InfoModal>
         </div>
       );
     } else if (isLogoutModalVisible) {
       this.modals = (
-        <div className={notificationStyles.poputs}>
+        <div
+          className={notificationStyles.poputs}
+          onClick={this.closeLogoutModal}>
           <div
             className={styles.backdrop}
             style={{
@@ -183,6 +234,7 @@ class Dashboard extends Component {
             }}
           />
           <LogoutModal
+            myRef={element => (this.logoutModalElement = element)}
             isDarkTheme={isDarkTheme}
             modalConfirmHandler={this.modalConfirmHandler}
             modalDismissHandler={this.modalDismissHandler}
@@ -342,6 +394,8 @@ class Dashboard extends Component {
         <div className={rootStyles.join(' ')}>
           <div className={sideNavStyles.join(' ')}>
             <Sidenav
+              setMenuRef={this.setMenuRef}
+              isSettingsMenuVisible={this.state.isSettingsMenuVisible}
               isDarkTheme={isDarkTheme}
               sideNavToggle={this.sideNavToggle}
               isVisible={this.state.isSideNavVisible}
@@ -391,6 +445,9 @@ class Dashboard extends Component {
                         style={{ position: 'relative' }}
                         title="Notifications">
                         <div
+                          ref={input => {
+                            this.notifElement = input;
+                          }}
                           style={{
                             height: '100%',
                             overflowY: 'hidden'

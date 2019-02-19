@@ -5,17 +5,15 @@ import PropTypes from 'prop-types';
 import Footer from './common/Footer';
 
 const Home = props => {
-  const { isDarkTheme, isAuthenticated } = props;
+  const { isAuthenticated, username = '', history } = props;
 
   return (
-    <div
-      style={{ height: '100%' }}
-      className={
-        isDarkTheme ? styles.app : `${styles.app} ${styles.lightTheme}`
-      }>
+    <div style={{ height: '100%' }} className={styles.app}>
       <div className={styles.banner}>
         <div className={styles.title}>
-          Welcome to LMS - Leave Management System
+          {isAuthenticated
+            ? `Welcome back, ${username}`
+            : 'Welcome to LMS - Leave Management System'}
         </div>
         <div className={styles.text}>
           An all-in-one application to apply for leaves, manage and keep track
@@ -23,11 +21,23 @@ const Home = props => {
         </div>
         <div className={styles.buttons}>
           {isAuthenticated ? (
-            <Link to="/dashboard">
-              <div className={`${styles.buttonPrimary} ${styles.button}`}>
-                Dashboard
+            <>
+              <Link to="/dashboard">
+                <div className={`${styles.buttonPrimary} ${styles.button}`}>
+                  Dashboard
+                </div>
+              </Link>
+              <div>
+                <div
+                  className={`${styles.buttonWhite} ${styles.button}`}
+                  onClick={event => {
+                    props.logoutUser();
+                    history.push('/login');
+                  }}>
+                  Not your account? Login
+                </div>
               </div>
-            </Link>
+            </>
           ) : (
             <Fragment>
               <Link to="/login">
@@ -44,14 +54,14 @@ const Home = props => {
           )}
         </div>
       </div>
-      <Footer isDarkTheme={isDarkTheme} />
+      <Footer />
     </div>
   );
 };
 
 Home.propTypes = {
-  isDarkTheme: PropTypes.bool.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired
+  isAuthenticated: PropTypes.bool.isRequired,
+  username: PropTypes.string.isRequired
 };
 
 export default withRouter(Home);

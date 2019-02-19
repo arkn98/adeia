@@ -12,6 +12,7 @@ import isEmpty from '../validation/is-empty';
 
 moment().locale();
 
+// clear all errors set due to some event
 export const clearErrors = () => dispatch => {
   dispatch({ type: CLEAR_ERRORS, payload: {} });
 };
@@ -27,13 +28,12 @@ export const registerUser = (userData, history) => dispatch => {
     });
 };
 
+// parse UA of client & add corresponding success/failure entry in their profile
 export const setLoginAttempts = (email, status) => dispatch => {
   axios
     .get('/api/users/getclientdetails')
     .then(res => {
       if (res.data) {
-        console.log(res.data);
-
         let newObj = {
           email: email,
           attemptStatus: status,
@@ -44,9 +44,6 @@ export const setLoginAttempts = (email, status) => dispatch => {
           os: res.data.os,
           osVersion: res.data.osVersion
         };
-
-        console.log(newObj);
-
         axios
           .post('/api/users/set-login-attempts', newObj)
           .then(data => {
@@ -67,20 +64,6 @@ export const registerStaff = (userData, history) => dispatch => {
       if (!isEmpty(err.response))
         return dispatch({ type: GET_ERRORS, payload: err.response.data });
     });
-};
-
-export const getPwdResetTime = userData => dispatch => {
-  axios
-    .get('/api/users/check-pwd-reset-time', {
-      params: {
-        id: userData.id
-      }
-    })
-    .then(res => {
-      console.log(res);
-      /* return res.data; */
-    })
-    .catch(err => console.log(err));
 };
 
 //Login user - get user token
@@ -144,6 +127,7 @@ export const activateUser = (userData, profileData, history) => dispatch => {
     .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
 };
 
+// create password reset request & send token via email
 export const sendResetEmail = data => dispatch => {
   axios
     .post('/api/users/reset-password-request', data)
@@ -153,6 +137,7 @@ export const sendResetEmail = data => dispatch => {
     .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
 };
 
+// reset password
 export const resetPassword = (data, history) => dispatch => {
   axios
     .post('/api/users/reset-password', data)
@@ -163,6 +148,7 @@ export const resetPassword = (data, history) => dispatch => {
     .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
 };
 
+// clear password reset token (usually done when user logs in; or actually uses the reset token)
 export const clearResetToken = (data, history) => dispatch => {
   axios
     .put('api/users/clear-reset-token', data)

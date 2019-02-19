@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { addCourse } from '../actions/classActions';
 import { updateCurrentRouteTitle } from '../actions/utilActions';
 import classNames from 'classnames/bind';
+import Spinner from './common/Spinner';
 
 const cx = classNames.bind({ ...mainStyles, ...styles, ...loginStyles });
 
@@ -98,41 +99,6 @@ class AddCourse extends Component {
                     className={cx({
                       formFieldLabel: true,
                       marginBottom8: true,
-                      errorLabel: errors.nameOfCourse
-                    })}
-                    /* className={`${styles.formFieldLabel} ${
-                        mainStyles.marginBottom8
-                      }`} */
-                  >
-                    Course Name
-                    {errors.nameOfCourse ? (
-                      <span className={loginStyles.errorMessage}>
-                        {' '}
-                        - {errors.nameOfCourse}
-                      </span>
-                    ) : null}
-                  </h5>
-                  <div className={styles.inputWrapper}>
-                    <input
-                      onChange={this.inputOnChangeHandler}
-                      name="nameOfCourse"
-                      value={this.state.nameOfCourse}
-                      className={cx({
-                        formInput: true,
-                        formInputError: errors.nameOfCourse
-                      })}
-                      type="text"
-                    />
-                  </div>
-                </div>
-                <div
-                  className={`${mainStyles.marginBottom20} ${
-                    styles.formItemWrapper
-                  }`}>
-                  <h5
-                    className={cx({
-                      formFieldLabel: true,
-                      marginBottom8: true,
                       errorLabel: errors.courseCode
                     })}
                     /* className={`${styles.formFieldLabel} ${
@@ -164,34 +130,56 @@ class AddCourse extends Component {
                   className={`${mainStyles.marginBottom20} ${
                     styles.formItemWrapper
                   }`}>
+                  <h5
+                    className={cx({
+                      formFieldLabel: true,
+                      marginBottom8: true,
+                      errorLabel: errors.nameOfCourse
+                    })}
+                    /* className={`${styles.formFieldLabel} ${
+                        mainStyles.marginBottom8
+                      }`} */
+                  >
+                    Course Name
+                    {errors.nameOfCourse ? (
+                      <span className={loginStyles.errorMessage}>
+                        {' '}
+                        - {errors.nameOfCourse}
+                      </span>
+                    ) : null}
+                  </h5>
+                  <div className={styles.inputWrapper}>
+                    <input
+                      onChange={this.inputOnChangeHandler}
+                      name="nameOfCourse"
+                      value={this.state.nameOfCourse}
+                      className={cx({
+                        formInput: true,
+                        formInputError: errors.nameOfCourse
+                      })}
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div
+                  className={`${mainStyles.marginBottom20} ${
+                    styles.formItemWrapper
+                  }`}>
                   <div
                     className={`${styles.inputWrapper} ${
                       mainStyles.marginTop8
                     }`}>
                     <button
-                      style={{ borderRadius: '5px' }}
                       type="submit"
-                      className={loginStyles.login}>
+                      className={
+                        this.state.isSubmitting
+                          ? `${loginStyles.submitButton} ${
+                              loginStyles.submitting
+                            }`
+                          : `${loginStyles.submitButton}`
+                      }>
                       {this.state.isSubmitting ? (
-                        <span className={loginStyles.spinner}>
-                          <span className={loginStyles.spinnerInner}>
-                            <span
-                              className={`${loginStyles.pulsingEllipsisItem} ${
-                                loginStyles.spinnerItem
-                              }`}
-                            />
-                            <span
-                              className={`${loginStyles.pulsingEllipsisItem} ${
-                                loginStyles.spinnerItem
-                              }`}
-                            />
-                            <span
-                              className={`${loginStyles.pulsingEllipsisItem} ${
-                                loginStyles.spinnerItem
-                              }`}
-                            />
-                          </span>
-                        </span>
+                        <Spinner isDarkTheme={isDarkTheme} isInButton={true} />
                       ) : (
                         <div className={loginStyles.contents}>Add Course</div>
                       )}

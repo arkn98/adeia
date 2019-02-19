@@ -1,16 +1,14 @@
 import React from 'react';
 import styles from './footerStyles.module.css';
 
-const Footer = ({ isDarkTheme, textColor = null, lightTextColor = null }) => {
+const Footer = ({ altStyle = false }) => {
   return (
     <div
       className={
-        isDarkTheme ? styles.footer : `${styles.footer} ${styles.lightTheme}`
-      }
-      style={{
-        color:
-          textColor !== null ? (isDarkTheme ? textColor : lightTextColor) : null
-      }}>
+        altStyle === false
+          ? `${styles.footer}`
+          : `${styles.footer} ${styles.footerAltColors}`
+      }>
       <div>
         Currently maintained by&nbsp;
         <a

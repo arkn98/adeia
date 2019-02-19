@@ -7,7 +7,7 @@
   overflow: hidden;
 }
 
-.lightTheme.container {
+:global(.lightTheme) .container {
   background: #dcddde;
 }
 

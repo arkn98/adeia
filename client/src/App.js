@@ -17,59 +17,68 @@ class App extends Component {
 
   render() {
     const props = this.props;
-    const { auth, utils, errors } = props;
+    const { auth, utils, errors, logoutUser } = props;
     const { isDarkTheme } = utils;
-    const { isAuthenticated } = auth;
+    const { isAuthenticated, user } = auth;
     return (
-      <Switch>
-        <Route
-          exact
-          path="/"
-          render={() => (
-            <Home isAuthenticated={isAuthenticated} isDarkTheme={isDarkTheme} />
-          )}
-        />
-        <Route
-          exact
-          path="/login"
-          key="login"
-          render={() => (
-            <LoginActivateContainer
-              isDarkTheme={isDarkTheme}
-              isAuthenticated={isAuthenticated}
-            />
-          )}
-        />
-        <Route
-          exact
-          key="activate"
-          path="/activate"
-          render={() => (
-            <LoginActivateContainer
-              isDarkTheme={isDarkTheme}
-              isAuthenticated={isAuthenticated}
-            />
-          )}
-        />
-        <Route
-          path="/reset-password"
-          render={() => (
-            <ForgotPasswordContainer
-              isDarkTheme={isDarkTheme}
-              isAuthenticated={isAuthenticated}
-            />
-          )}
-        />
+      <div
+        className={!isDarkTheme ? 'lightTheme' : null}
+        style={{ height: '100%' }}>
         <Switch>
-          <PrivateRoute
-            location={this.props.location}
-            path="/dashboard"
-            component={TestContainer}
+          <Route
+            exact
+            path="/"
+            render={() => (
+              <Home
+                isAuthenticated={isAuthenticated}
+                username={user.name}
+                isDarkTheme={isDarkTheme}
+                logoutUser={logoutUser}
+              />
+            )}
           />
+          <Route
+            exact
+            path="/login"
+            key="login"
+            render={() => (
+              <LoginActivateContainer
+                isDarkTheme={isDarkTheme}
+                isAuthenticated={isAuthenticated}
+              />
+            )}
+          />
+          <Route
+            exact
+            key="activate"
+            path="/activate"
+            render={() => (
+              <LoginActivateContainer
+                isDarkTheme={isDarkTheme}
+                isAuthenticated={isAuthenticated}
+              />
+            )}
+          />
+          <Route
+            path="/reset-password"
+            render={() => (
+              <ForgotPasswordContainer
+                isDarkTheme={isDarkTheme}
+                isAuthenticated={isAuthenticated}
+              />
+            )}
+          />
+          <Switch>
+            <PrivateRoute
+              location={this.props.location}
+              path="/dashboard"
+              component={TestContainer}
+            />
+            <Route render={() => <PageNotFound isDarkTheme={isDarkTheme} />} />
+          </Switch>
           <Route render={() => <PageNotFound isDarkTheme={isDarkTheme} />} />
         </Switch>
-        <Route render={() => <PageNotFound isDarkTheme={isDarkTheme} />} />
-      </Switch>
+      </div>
     );
   }
 }

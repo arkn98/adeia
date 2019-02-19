@@ -1,0 +1,23 @@
+/*! inuitcss | Apache License, Version 2.0 | github.com/inuitcss/inuitcss */
+
+$global-baseline: 6px !default;
+
+$global-spacing-unit-factor-tiny: 1 !default;
+$global-spacing-unit-factor-small: 2 !default;
+$global-spacing-unit-factor: 4 !default;
+$global-spacing-unit-factor-large: 8 !default;
+$global-spacing-unit-factor-huge: 16 !default;
+
+$global-spacing-unit-tiny: $global-baseline * $global-spacing-unit-factor-tiny;
+$global-spacing-unit-small: $global-baseline * $global-spacing-unit-factor-small;
+$global-spacing-unit: $global-baseline * $global-spacing-unit-factor;
+$global-spacing-unit-large: $global-baseline * $global-spacing-unit-factor-large;
+$global-spacing-unit-huge: $global-baseline * $global-spacing-unit-factor-huge;
+
+$global-font-size: 16px !default;
+$global-line-height: $global-spacing-unit !default;
+
+$global-radius: 5px !default;
+
+$global-font-face: 'Domus', 'Whitney', 'Helvetica Neue', Helvetica, Arial,
+  sans-serif;

@@ -24,7 +24,9 @@ class Timetable extends Component {
     isSubmitting: false,
     errors: {},
     classCode: '',
+    file: null,
     isTableLoaded: false,
+    isClassSelectTouched: false,
     isEntryVisible: false,
     isEditEntry: false,
     entryContent: {
@@ -37,12 +39,7 @@ class Timetable extends Component {
         {
           courseCode: '',
           handlingStaff: '',
-          additionalStaff: ''
-        },
-        {
-          courseCode: '',
-          handlingStaff: '',
-          additionalStaff: ''
+          additionalStaff: []
         }
       ]
     },
@@ -54,8 +51,8 @@ class Timetable extends Component {
           course: [
             {
               courseCode: 'CA7001',
-              handlingStaff: 'abcd',
-              additionalStaff: ['1234', 'sjdfhsdf']
+              handlingStaff: '12345',
+              additionalStaff: ['123456']
             }
           ]
         }
@@ -67,8 +64,8 @@ class Timetable extends Component {
           course: [
             {
               courseCode: 'CA7001',
-              handlingStaff: 'abcd',
-              additionalStaff: ['1234', 'sjdfhsdf']
+              handlingStaff: '12345',
+              additionalStaff: ['123456']
             }
           ]
         }
@@ -80,8 +77,8 @@ class Timetable extends Component {
           course: [
             {
               courseCode: 'CA7001',
-              handlingStaff: 'abcd',
-              additionalStaff: ['1234', 'sjdfhsdf']
+              handlingStaff: '12345',
+              additionalStaff: ['123456']
             }
           ]
         },
@@ -91,8 +88,8 @@ class Timetable extends Component {
           course: [
             {
               courseCode: 'CA7001',
-              handlingStaff: 'abcd',
-              additionalStaff: ['1234', 'sjdfhsdf']
+              handlingStaff: '12345',
+              additionalStaff: ['123456']
             }
           ]
         },
@@ -102,8 +99,8 @@ class Timetable extends Component {
           course: [
             {
               courseCode: 'CA7001',
-              handlingStaff: 'abcd',
-              additionalStaff: ['1234', 'sjdfhsdf']
+              handlingStaff: '12345',
+              additionalStaff: ['123456']
             }
           ]
         }
@@ -115,8 +112,8 @@ class Timetable extends Component {
           course: [
             {
               courseCode: 'CA7001',
-              handlingStaff: 'abcd',
-              additionalStaff: ['1234', 'sjdfhsdf']
+              handlingStaff: '12345',
+              additionalStaff: ['123456']
             }
           ]
         }
@@ -128,13 +125,13 @@ class Timetable extends Component {
           course: [
             {
               courseCode: 'CA7001',
-              handlingStaff: 'abcd',
-              additionalStaff: ['1234', 'sjdfhsdf']
+              handlingStaff: '12345',
+              additionalStaff: ['123456']
             },
             {
               courseCode: 'CA7002',
-              handlingStaff: 'abcde',
-              additionalStaff: ['1234e', 'sjdfhsdfe']
+              handlingStaff: '12345',
+              additionalStaff: ['123456']
             }
           ]
         }
@@ -160,6 +157,50 @@ class Timetable extends Component {
   formSubmitHandler = event => {
     this.setState({ ...this.state, isSubmitting: true });
     event.preventDefault();
+    let newTimetable = this.state.timetable.map((day, dayIndex) => {
+      return day.map((hour, hourIndex) => {
+        let newHour = { ...hour };
+        newHour.course = hour.course.map((courseObj, courseIndex) => {
+          let newCourse = { ...courseObj };
+          newCourse.courseCode = this.props.courses.courseList.find(
+            x => x.courseCode === courseObj.courseCode
+          )._id;
+          newCourse.handlingStaff = this.props.staff.staffList.find(
+            x => x.staffId === courseObj.handlingStaff
+          )._id;
+          if (Array.isArray(courseObj.additionalStaff)) {
+            newCourse.additionalStaff = courseObj.additionalStaff.map(
+              addtlstaff =>
+                this.props.staff.staffList.find(x => x.staffId === addtlstaff)
+                  ._id
+            );
+          } else if (typeof courseObj.additionalStaff === 'string') {
+            newCourse.additionalStaff = this.props.staff.staffList.find(
+              x => x.staffId === courseObj.additionalStaff
+            )._id;
+          }
+          return newCourse;
+        });
+        return newHour;
+      });
+    });
+    //console.log(newTimetable);
+    let temp = {
+      timetable: newTimetable,
+      classId: this.props.classes.classList.find(
+        x => x.classCode === this.state.classCode
+      )._id
+    };
+    axios
+      .post('/api/timetable/add-timetable', temp)
+      .then(res => {
+        console.log(res.data);
+        this.setState({ ...this.state, isSubmitting: false });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({ ...this.state, isSubmitting: false });
+      });
   };
 
   entryOnChangeHandler = (event, index) => {
@@ -215,19 +256,42 @@ class Timetable extends Component {
   };
 
   inputOnChangeHandler = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({
+      [event.target.name]: event.target.value
+    });
     if (event.target.name === 'classCode') {
-      axios
-        .get('/api/timetable/get-timetable-day', {
-          params: {
-            classId: this.props.classes.classList.find(
-              x => x.classCode === event.target.value
-            )._id,
-            day: 1
-          }
-        })
-        .then(res => console.log(res.data))
-        .catch(err => console.log(err));
+      if (event.target.value !== this.state.classCode) {
+        /* let classId = this.props.classes.classList.find(
+          x => x.classCode === event.target.value
+        )._id;
+        this.props.getTimetable(classId); */
+        axios
+          .get('/api/timetable/get-timetable', {
+            params: {
+              classId: this.props.classes.classList.find(
+                x => x.classCode === event.target.value
+              )._id
+            }
+          })
+          .then(res => {
+            this.setState({
+              ...this.state,
+              timetable: res.data,
+              isTableLoaded: true,
+              isClassSelectTouched: true,
+              isEntryVisible: false,
+              entryContent: { entry: [] }
+            });
+          })
+          .catch(err => {
+            this.setState({
+              ...this.state,
+              isTableLoaded: true,
+              isClassSelectTouched: true
+            });
+            console.log(err);
+          });
+      }
     }
   };
 
@@ -235,11 +299,12 @@ class Timetable extends Component {
     event.preventDefault();
     let newTimetable = {
       day: 1,
-      hour: 1,
-      staffRole: 'MAIN'
+      hour: 3,
+      duration: 4,
+      staffRole: 'ADDITIONAL'
     };
     newTimetable.classId = this.props.classes.classList.find(
-      x => x.classCode === 'BT3G'
+      x => x.classCode === this.state.classCode
     )._id;
     newTimetable.course = this.props.courses.courseList.find(
       x => x.courseCode === 'CA7001'
@@ -249,44 +314,20 @@ class Timetable extends Component {
     )._id;
 
     axios
-      .post('/api/timetable/add-timetable', newTimetable)
-      .then(timetable => console.log(timetable))
+      .post('/api/timetable/add-timetable-day', newTimetable)
+      .then(res => {
+        console.log(res.data);
+        this.setState({
+          ...this.state,
+          timetable: res.data,
+          isTableLoaded: true,
+          isClassSelectTouched: true,
+          isEntryVisible: false,
+          entryContent: { entry: [] }
+        });
+      })
       .catch(err => console.log(err));
   };
-
-  /* testClickHandler = event => {
-    event.preventDefault();
-    let newTimetable = {};
-    newTimetable.classCode = 'BT3G';
-    newTimetable.classId = this.props.classes.classList.find(
-      x => x.classCode === 'BT3G'
-    )._id;
-    let day = [];
-    for (let i = 1; i <= 5; i++) {
-      let today = [];
-      for (let j = 1; j <= 8; j++) {
-        let hour = {};
-        hour.courseCode = this.props.courses.courseList.find(
-          x => x.courseCode === 'CA7001'
-        )._id;
-        hour.handlingStaffId = this.props.staff.staffList.find(
-          x => x.staffId === '12345'
-        )._id;
-        hour.additionalStaffId = [];
-        hour.additionalStaffId.push(
-          this.props.staff.staffList.find(x => x.staffId === '12345')._id
-        );
-        today.push(hour);
-      }
-      day.push(today);
-    }
-    newTimetable.timetable = day;
-    console.log(newTimetable);
-    axios
-      .post('/api/timetable/add-timetable', newTimetable)
-      .then(timetable => console.log(timetable))
-      .catch(err => console.log(err));
-  }; */
 
   addNewEntry = event => {
     this.setState({
@@ -307,26 +348,12 @@ class Timetable extends Component {
         ]
       }
     });
-    //this.props.newEntryHandler({});
   };
 
   editExistingEntry = event => {
     let row = parseInt(event.target.getAttribute('day'));
     let col = parseInt(event.target.getAttribute('hour'));
-
-    //console.log(row);
-    //console.log(
-    //  this.state.timetable[row].find(x => x.start === parseInt(col)).start
-    //);
-
-    //console.log(col);
-    let start = this.state.timetable[row].find(x => {
-      /* console.log(row);
-      console.log(col);
-      console.log(x.start); */
-      return x.start === col;
-    }).start;
-    //console.log(start);
+    let start = this.state.timetable[row].find(x => x.start === col).start;
     let duration = this.state.timetable[row].find(
       x => x.start === parseInt(col)
     ).duration;
@@ -520,6 +547,26 @@ class Timetable extends Component {
     }
   };
 
+  sendFile = event => {
+    event.preventDefault();
+    this.fileUpload(this.state.file).then(res => console.log(res.data));
+  };
+
+  fileOnChangeHandler = event => {
+    this.setState({ file: event.target.files[0] });
+  };
+
+  fileUpload = file => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    };
+    return axios.post('/upload', formData, config);
+  };
+
   addAdditionalCourseClickHandler = event => {
     event.preventDefault();
     let arr = this.state.entryContent.entry.slice(0);
@@ -531,7 +578,7 @@ class Timetable extends Component {
   };
 
   render() {
-    const errors = this.state.errors;
+    const { errors, isTableLoaded, isClassSelectTouched } = this.state;
     const isDarkTheme = this.props.isDarkTheme;
 
     let slots = [];
@@ -737,14 +784,7 @@ class Timetable extends Component {
     }
 
     return (
-      <div
-        className={
-          isDarkTheme
-            ? `${mainStyles.scrollWrapper}`
-            : `${mainStyles.scrollWrapper} ${mainStyles.lightTheme} ${
-                styles.lightTheme
-              }`
-        }>
+      <div className={mainStyles.scrollWrapper}>
         <div className={mainStyles.contentWrapper}>
           <div className={mainStyles.body}>
             <div className={`${styles.formWrapper}`}>
@@ -794,7 +834,9 @@ class Timetable extends Component {
                         formSelect: true,
                         formInputError: errors.classCode
                       })}>
-                      <option value="">Select class code</option>
+                      <option value="" disabled selected>
+                        Select class code
+                      </option>
                       {/* /* typeof this.props.classes === 'undefined' ||
                       ( this
                         .props.classes
@@ -1072,10 +1114,7 @@ class Timetable extends Component {
                                   onClick={this.newEntrySubmitHandler}
                                   className={styles.primaryButton}>
                                   {this.state.isSubmitting ? (
-                                    <Spinner
-                                      isDarkTheme={isDarkTheme}
-                                      isStripped={true}
-                                    />
+                                    <Spinner isStripped={true} />
                                   ) : (
                                     <div className={styles.contents}>
                                       {' '}
@@ -1107,46 +1146,64 @@ class Timetable extends Component {
                     </div>
                   </div> */}
                 </div>
-                <div className={styles.infoBox}>
-                  Click on the cells to add/update slots in the timetable.
-                </div>
-                <div
-                  onClick={this.testClickHandler}
-                  style={{ cursor: 'pointer' }}>
-                  click me
-                </div>
-                <div
-                  className={
-                    isDarkTheme
-                      ? `${mainStyles.marginBottom20} ${
-                          styles.formItemWrapper
-                        } ${tableStyles.timetable}`
-                      : `${mainStyles.marginBottom20} ${
-                          styles.formItemWrapper
-                        } ${tableStyles.timetable} ${tableStyles.lightTheme}`
-                  }>
-                  {/* <h6 className={tableStyles.title}>
+                {!isTableLoaded ? /* isClassSelectTouched ? (
+                      <Spinner isStripped={true} />
+                    ) : */ null : (
+                  <React.Fragment>
+                    <div className={styles.infoBox}>
+                      Click on the cells to add/update slots in the timetable.
+                    </div>
+                    <div
+                      onClick={this.testClickHandler}
+                      style={{ cursor: 'pointer' }}>
+                      click me
+                    </div>
+
+                    <div
+                      className={`${mainStyles.marginBottom20} ${
+                        styles.formItemWrapper
+                      } ${tableStyles.timetable}`}>
+                      {/* <h6 className={tableStyles.title}>
                     {this.props.classes.loading ||
                     this.props.classes.classList === null
                       ? 'Loading'
                       : this.state.nameOfClass}
                   </h6> */}
-                  <table>
-                    <thead>
-                      <tr>
-                        <th style={{ textAlign: 'left' }}>Day</th>
-                        <th>Ⅰ</th>
-                        <th>Ⅱ</th>
-                        <th>Ⅲ</th>
-                        <th>Ⅳ</th>
-                        <th>Ⅴ</th>
-                        <th>Ⅵ</th>
-                        <th>Ⅶ</th>
-                        <th>Ⅷ</th>
-                      </tr>
-                    </thead>
-                    <tbody>{slots}</tbody>
-                  </table>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th style={{ textAlign: 'left' }}>Day</th>
+                            <th>Ⅰ</th>
+                            <th>Ⅱ</th>
+                            <th>Ⅲ</th>
+                            <th>Ⅳ</th>
+                            <th>Ⅴ</th>
+                            <th>Ⅵ</th>
+                            <th>Ⅶ</th>
+                            <th>Ⅷ</th>
+                          </tr>
+                        </thead>
+                        <tbody>{slots}</tbody>
+                      </table>
+                    </div>
+                  </React.Fragment>
+                )}
+                <div
+                  className={`${mainStyles.marginBottom20} ${
+                    styles.formItemWrapper
+                  }`}>
+                  <input
+                    name="file"
+                    type="file"
+                    onChange={this.fileOnChangeHandler}
+                    /* ref={ele => (this.fileInput = ele)} */
+                  />
+                  {/* <FilePond
+                    allowMultiple={false}
+                    name={'test'}
+                    server="/upload"
+                  /> */}
+                  <button onClick={this.sendFile}>send</button>
                 </div>
                 <div
                   className={`${mainStyles.marginBottom20} ${
@@ -1157,31 +1214,20 @@ class Timetable extends Component {
                       mainStyles.marginTop8
                     }`}>
                     <button
-                      style={{ borderRadius: '5px' }}
                       type="submit"
-                      className={loginStyles.login}>
+                      className={
+                        this.state.isSubmitting
+                          ? `${loginStyles.submitButton} ${
+                              loginStyles.submitting
+                            }`
+                          : `${loginStyles.submitButton}`
+                      }>
                       {this.state.isSubmitting ? (
-                        <span className={loginStyles.spinner}>
-                          <span className={loginStyles.spinnerInner}>
-                            <span
-                              className={`${loginStyles.pulsingEllipsisItem} ${
-                                loginStyles.spinnerItem
-                              }`}
-                            />
-                            <span
-                              className={`${loginStyles.pulsingEllipsisItem} ${
-                                loginStyles.spinnerItem
-                              }`}
-                            />
-                            <span
-                              className={`${loginStyles.pulsingEllipsisItem} ${
-                                loginStyles.spinnerItem
-                              }`}
-                            />
-                          </span>
-                        </span>
+                        <Spinner isInButton={true} />
                       ) : (
-                        <div className={loginStyles.contents}>Add Class</div>
+                        <div className={loginStyles.contents}>
+                          Add Timetable
+                        </div>
                       )}
                     </button>
                   </div>

@@ -10,7 +10,7 @@
   overflow-y: auto;
 }
 
-.lightTheme.root {
+:global(.lightTheme) .root {
   background-color: #fff;
   background: url('../assets/boxes-bg-white.svg');
 }
@@ -71,7 +71,7 @@
   transform: none;
 }
 
-.lightTheme .authbox {
+:global(.lightTheme) .authbox {
   background: #fff;
   color: #36393f;
 }
@@ -89,7 +89,7 @@
   color: hsla(0, 0%, 100%, 0.25);
 }
 
-.lightTheme .footer {
+:global(.lightTheme) .footer {
   color: #4f545c;
 }
 
@@ -148,7 +148,7 @@
     border-bottom 0.2s cubic-bezier(0.25, 0.25, 0.315, 1.35);
 }
 
-.lightTheme .footer a {
+:global(.lightTheme) .footer a {
   color: #4f545c;
 }
 
@@ -157,7 +157,7 @@
   border-bottom: 1px solid hsla(0, 0%, 100%, 1);
 }
 
-.lightTheme .footer a:hover {
+:global(.lightTheme) .footer a:hover {
   color: #000;
   border-bottom: 1px solid hsla(0, 0%, 0%, 1);
 }
@@ -171,7 +171,7 @@
   color: #fff;
 }
 
-.lightTheme .title {
+:global(.lightTheme) .title {
   color: #72767d;
 }
 
@@ -201,7 +201,7 @@
   margin-bottom: 8px;
 }
 
-.lightTheme .inputLabel {
+:global(.lightTheme) .inputLabel {
   color: #72767d;
 }
 
@@ -243,7 +243,7 @@
   color: #f6f6f7;
 }
 
-.lightTheme .inputField {
+:global(.lightTheme) .inputField {
   background-color: rgba(79, 84, 92, 0.02);
   background-color: #fff;
   border-color: rgba(79, 84, 92, 0.3);
@@ -435,7 +435,7 @@
     color: #fff;
   }
 
-  .lightTheme .authbox > .logo {
+  :global(.lightTheme) .authbox > .logo {
     color: #72767d;
   }
 
@@ -459,6 +459,6 @@
   }
 }
 
-.lightTheme .logo {
+:global(.lightTheme) .logo {
   color: #36393f;
 }

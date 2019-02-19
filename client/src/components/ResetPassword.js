@@ -120,7 +120,6 @@ class ResetPassword extends Component {
 
   render() {
     const { errors, shouldDisplay, isLoading } = this.state;
-    const { isDarkTheme } = this.props;
 
     let toRender = null;
     if (!isLoading) {
@@ -203,7 +202,7 @@ class ResetPassword extends Component {
                     : `${styles.submitButton}`
                 }>
                 {this.state.isSubmitting ? (
-                  <Spinner isDarkTheme={isDarkTheme} isStripped={true} />
+                  <Spinner isInButton={true} />
                 ) : (
                   <div className={styles.contents}>Reset Password</div>
                 )}
@@ -247,7 +246,7 @@ class ResetPassword extends Component {
                       : `${styles.submitButton}`
                   }>
                   {this.state.isSubmitting ? (
-                    <Spinner isDarkTheme={isDarkTheme} isStripped={true} />
+                    <Spinner isInButton={true} />
                   ) : (
                     <div className={styles.contents}>Back to Login</div>
                   )}
@@ -274,14 +273,8 @@ class ResetPassword extends Component {
       );
     }
 
-    let rootStyles = [];
-    rootStyles.push(styles.root);
-    if (!isDarkTheme) {
-      rootStyles.push(styles.lightTheme);
-    }
-
     return (
-      <div className={rootStyles.join(' ')}>
+      <div className={styles.root}>
         <div className={styles.app}>
           <div className={styles.dummy}>
             <div className={styles.banner}>
@@ -290,11 +283,7 @@ class ResetPassword extends Component {
               </div>
               {toRender}
             </div>
-            <Footer
-              textColor="hsla(0, 0%, 100%, 0.75)"
-              lightTextColor="#4f545c"
-              isDarkTheme={isDarkTheme}
-            />
+            <Footer altStyle={true} />
           </div>
         </div>
       </div>

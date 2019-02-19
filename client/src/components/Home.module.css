@@ -12,7 +12,7 @@
   transition: background 0.17s ease, color 0.17s ease;
 }
 
-.lightTheme.app {
+:global(.lightTheme) .app {
   background: #fff;
   color: #4f545c;
 }
@@ -36,7 +36,7 @@
   transition: color 0.17s ease;
 }
 
-.lightTheme .title {
+:global(.lightTheme) .title {
   color: #4f545c;
 }
 
@@ -52,7 +52,7 @@
   transition: color 0.17s ease;
 }
 
-.lightTheme .text {
+:global(.lightTheme) .text {
   color: #4f545c;
 }
 
@@ -104,13 +104,13 @@
   color: #fff;
 }
 
-.lightTheme .buttonTransparent {
+:global(.lightTheme) .buttonTransparent {
   border-color: #dcddde;
   color: #7289da;
 }
 
-.lightTheme .buttonTransparent:hover,
-.lightTheme .buttonTransparent:active {
+:global(.lightTheme) .buttonTransparent:hover,
+:global(.lightTheme) .buttonTransparent:active {
   background-color: #7289da;
   border-color: #7289da;
   color: #fff;
@@ -179,7 +179,7 @@
   color: #000;
 }
 
-.lightTheme .buttonWhite {
+:global(.lightTheme) .buttonWhite {
   border: 1px solid #4f545c;
 }
 
@@ -205,7 +205,7 @@
   transition: color 0.17s ease;
 }
 
-.lightTheme .footer {
+:global(.lightTheme) .footer {
   color: #4f545c;
 }
 
@@ -234,7 +234,7 @@
     border-bottom 0.2s cubic-bezier(0.25, 0.25, 0.315, 1.35);
 }
 
-.lightTheme .footer a {
+:global(.lightTheme) .footer a {
   color: #4f545c;
 }
 
@@ -243,7 +243,7 @@
   border-bottom: 1px solid hsla(0, 0%, 100%, 1);
 }
 
-.lightTheme .footer a:hover {
+:global(.lightTheme) .footer a:hover {
   color: #000;
   border-bottom: 1px solid hsla(0, 0%, 0%, 1);
 }

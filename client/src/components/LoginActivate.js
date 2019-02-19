@@ -136,7 +136,6 @@ class LoginActivate extends Component {
 
   render() {
     const { errors } = this.state;
-    const { isDarkTheme } = this.props.utils;
     const { isAuthenticated, history, match } = this.props;
 
     if (isAuthenticated) return <Redirect to="/dashboard" />;
@@ -221,7 +220,7 @@ class LoginActivate extends Component {
                   : `${styles.submitButton}`
               }>
               {this.state.isSubmitting ? (
-                <Spinner isDarkTheme={isDarkTheme} isStripped={true} />
+                <Spinner isInButton={true} />
               ) : (
                 <div className={styles.contents}>Login</div>
               )}
@@ -369,7 +368,7 @@ class LoginActivate extends Component {
                   : `${styles.submitButton}`
               }>
               {this.state.isSubmitting ? (
-                <Spinner isDarkTheme={isDarkTheme} isStripped={true} />
+                <Spinner isInButton={true} />
               ) : (
                 <div className={styles.contents}>Activate</div>
               )}
@@ -399,14 +398,8 @@ class LoginActivate extends Component {
       );
     }
 
-    let rootStyles = [];
-    rootStyles.push(styles.root);
-    if (!isDarkTheme) {
-      rootStyles.push(styles.lightTheme);
-    }
-
     return (
-      <div className={rootStyles.join(' ')}>
+      <div className={styles.root}>
         <div className={styles.app}>
           <div className={styles.dummy}>
             <div className={styles.banner}>
@@ -415,11 +408,7 @@ class LoginActivate extends Component {
               </div>
               {toRender}
             </div>
-            <Footer
-              textColor="hsla(0, 0%, 100%, 0.75)"
-              lightTextColor="#4f545c"
-              isDarkTheme={isDarkTheme}
-            />
+            <Footer altStyle={true} />
           </div>
         </div>
       </div>

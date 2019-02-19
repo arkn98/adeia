@@ -25,6 +25,10 @@
         top: 0;
         left: 0;
         z-index: 999;
+        background-color: #2f3136;
+      }
+
+      #spinnerContainer.lightTheme {
         background-color: #fff;
       }
 
@@ -50,13 +54,17 @@
 
       .pulsingEllipsisItem {
         animation: spinner-pulsing-ellipsis 1.4s infinite ease-in-out;
-        background-color: #7289da;
+        background-color: #fff;
         border-radius: 3px;
         display: inline-block;
         height: 6px;
         margin-right: 2px;
         opacity: 0.3;
         width: 6px;
+      }
+
+      .lightTheme .pulsingEllipsisItem {
+        background-color: #7289da;
       }
 
       .pulsingEllipsisItem:nth-of-type(2) {
@@ -116,5 +124,13 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      if (localStorage.themePreferences) {
+        if (localStorage.themePreferences === 'light') {
+          let element = document.getElementById('spinnerContainer');
+          element.classList.add('lightTheme');
+        }
+      }
+    </script>
   </body>
 </html>

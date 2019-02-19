@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { logoutUser } from '../actions/authActions';
 import App from '../App';
 
 const mapStateToProps = state => ({
@@ -10,7 +11,7 @@ const mapStateToProps = state => ({
 
 const appContainer = connect(
   mapStateToProps,
-  {}
+  { logoutUser }
 )(App);
 
 export default withRouter(appContainer);
