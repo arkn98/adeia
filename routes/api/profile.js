@@ -51,6 +51,31 @@ router.post('/', (req, res) => {
         //9 - casual leave - 20 days - 20
         //10- casual leave - 6 days - 6
 
+        //leave type
+        //1 -- Casual Leave -- cl -
+        //2 -- Compensation Leave -- cpl
+        //3 -- Earn Leave -- el
+        //4 -- Medical Leave -- ml
+        //5 -- On Duty -- od
+        //6 -- Restricted Holiday -- rh
+        //7 -- Special Casual Leave -- scl
+        //8 -- Casual Leave - 30 Days -- cl30
+        //9 -- Casual Leave - 20 Days -- cl20
+        //10 - Casual Leave - 6 Days -- cl6
+
+        /* leaveAllotted = {
+          'cl': 12,
+          'cpl': 365,
+          'el': 365,
+          'ml': 365,
+          'od': 365,
+          'rh': 3,
+          'scl': 15,
+          'cl30': 30,
+          'cl20': 20,
+          'cl6': 6
+        } */
+
         //staff type
         //0 -- regular teaching -- rt -- cl, cpl, el, ml, od, rh, scl
         //1 -- regular non teaching -- rnt -- cl, cpl, el, ml, od, rh, scl
@@ -64,26 +89,64 @@ router.post('/', (req, res) => {
         let leaveAllotted = {};
         let leaveAvailable = {};
         if (user.staffType === 'rt') {
-          leaveAllowed = [0, 1, 2, 3, 4, 5, 6, 7];
-          noOfDays = [0, 12, 365, 365, 365, 365, 3, 15];
+          leaveAllowed = {
+            cl: 12,
+            cpl: 365,
+            el: 365,
+            ml: 365,
+            od: 365,
+            rh: 3,
+            scl: 15
+          };
+          /* leaveAllowed = [0, 1, 2, 3, 4, 5, 6, 7];
+          noOfDays = [0, 12, 365, 365, 365, 365, 3, 15]; */
         } else if (user.staffType === 'rnt') {
-          leaveAllowed = [0, 1, 2, 3, 4, 5, 6, 7];
-          noOfDays = [0, 12, 365, 365, 365, 365, 3, 15];
+          leaveAllowed = {
+            cl: 12,
+            cpl: 365,
+            el: 365,
+            ml: 365,
+            od: 365,
+            rh: 3,
+            scl: 15
+          };
+          /* leaveAllowed = [0, 1, 2, 3, 4, 5, 6, 7];
+          noOfDays = [0, 12, 365, 365, 365, 365, 3, 15]; */
         } else if (user.staffType === 'tf') {
+          leaveAllowed = {
+            cpl: 365,
+            od: 365,
+            cl6: 6
+          }; /* 
           leaveAllowed = [0, 2, 5, 10];
-          noOfDays = [0, 365, 365, 6];
+          noOfDays = [0, 365, 365, 6]; */
         } else if (user.staffType === 'nt') {
+          leaveAllowed = {
+            cpl: 365
+          }; /* 
           leaveAllowed = [0, 2];
-          noOfDays = [0, 365];
+          noOfDays = [0, 365]; */
         } else if (user.staffType === 'rs30') {
+          leaveAllowed = {
+            od: 365,
+            cl30: 30
+          }; /* 
           leaveAllowed = [0, 5, 8];
-          noOfDays = [0, 365, 30];
+          noOfDays = [0, 365, 30]; */
         } else if (user.staffType === 'rs20') {
-          leaveAllowed = [0, 5, 9];
-          noOfDays = [0, 365, 20];
+          leaveAllowed = {
+            od: 365,
+            cl20: 20
+          };
+          /* leaveAllowed = [0, 5, 9];
+          noOfDays = [0, 365, 20]; */
         } else if (user.staffType === 'rso') {
-          leaveAllowed = [0, 5, 8];
-          noOfDays = [0, 365, 6];
+          leaveAllowed = {
+            od: 365,
+            cl6: 6
+          };
+          /* leaveAllowed = [0, 5, 8];
+          noOfDays = [0, 365, 6]; */
         } else if (user.staffType === 'oth') {
           leaveAllowed = [0];
           noOfDays = [0];
@@ -110,10 +173,5 @@ router.post('/', (req, res) => {
     })
     .catch(err => res.status(404).json(err));
 });
-
-// @route   GET   api/profile/test
-// @desc    Tests profile route
-// @access  Public
-router.get('/test', (req, res) => res.json({ msg: 'Profile works' }));
 
 module.exports = router;

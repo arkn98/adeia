@@ -15,7 +15,6 @@
   "author": "Arun Kumar",
   "license": "MIT",
   "dependencies": {
-    "async": "^2.6.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "compression": "^1.7.3",
@@ -26,6 +25,7 @@
     "express": "^4.16.4",
     "express-fileupload": "^1.1.1-alpha.2",
     "jsonwebtoken": "^8.4.0",
+    "moment": "^2.24.0",
     "mongoose": "^5.4.0",
     "node-xlsx": "^0.14.1",
     "nodemailer": "^4.7.0",

@@ -1,0 +1,266 @@
+@import '_variables.scss';
+
+.root {
+  height: 100%;
+  width: 100%;
+  background-color: #2f3136;
+  background: url('assets//misc/boxes-bg-dark.svg');
+  background-position: fixed;
+  background-size: 768px auto;
+  position: absolute;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+:global(.lightTheme) .root {
+  background-color: $color-white;
+  background: url('assets/misc/boxes-bg-white.svg');
+}
+
+.app {
+  height: inherit;
+}
+
+.dummy {
+  /* height: 100%; */ /*important dont uncomment this*/
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  min-height: 100vh;
+}
+
+.banner {
+  position: relative;
+  flex: 1;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 48px;
+}
+
+.authbox {
+  display: flex;
+  background: #36393f;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  color: #72767d;
+  z-index: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  font-size: 18px;
+  padding: 40px;
+  width: 480px;
+  margin-bottom: auto;
+  margin-top: auto;
+  opacity: 0;
+  transform: translateY(-100px) translateZ(-100px);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    opacity 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.authbox.authboxTransitionEnd {
+  opacity: 1;
+  transform: none;
+}
+
+:global(.lightTheme) .authbox {
+  background: $color-white;
+  color: #36393f;
+}
+
+.footer {
+  flex: 0 0 64px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 400;
+  box-sizing: border-box;
+  color: hsla(0, 0%, 0%, 0.75);
+  color: hsla(0, 0%, 100%, 0.25);
+}
+
+:global(.lightTheme) .footer {
+  color: #4f545c;
+}
+
+@media screen and (max-width: 486px) {
+  .root {
+    background: none;
+    overflow-y: hidden;
+  }
+
+  .app {
+    height: 100%;
+  }
+
+  .dummy {
+    height: 100%;
+  }
+
+  .banner {
+    flex: 1 0 auto;
+    margin-bottom: 0;
+  }
+
+  .authbox {
+    height: 100%;
+    min-height: 100% !important;
+    border-radius: 0px;
+    width: 100%;
+    margin: 0;
+    overflow-x: hidden;
+    justify-content: flex-start;
+    opacity: 1;
+    transform: none;
+    background: linear-gradient(to left bottom, #3d4046, #1e1e23);
+  }
+
+  .block {
+    padding-bottom: 54px;
+  }
+
+  .footer {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .authbox {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.footer div {
+  margin-right: 10px;
+}
+
+.footer a {
+  color: hsla(0, 0%, 100%, 0.25);
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s cubic-bezier(0.25, 0.25, 0.315, 1.35),
+    border-bottom 0.2s cubic-bezier(0.25, 0.25, 0.315, 1.35);
+}
+
+:global(.lightTheme) .footer a {
+  color: #4f545c;
+}
+
+.footer a:hover {
+  color: hsla(0, 0%, 100%, 1);
+  border-bottom: 1px solid hsla(0, 0%, 100%, 1);
+}
+
+:global(.lightTheme) .footer a:hover {
+  color: #000;
+  border-bottom: 1px solid hsla(0, 0%, 0%, 1);
+}
+
+.title {
+  text-align: center;
+  font-size: 26px;
+  line-height: 32px;
+  font-weight: 300;
+  margin-bottom: 8px;
+  color: $color-white;
+}
+
+:global(.lightTheme) .title {
+  color: #72767d;
+}
+
+.subTitle {
+  text-align: center;
+  color: #72767d;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 400;
+  outline: 0;
+}
+
+.block {
+  text-align: left;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.marginBottom20 {
+  margin-bottom: 20px;
+}
+
+.marginBottom6 {
+  margin-bottom: 6px;
+}
+
+.marginBottom8 {
+  margin-bottom: 8px;
+}
+
+.marginTop4 {
+  margin-top: 4px;
+}
+
+.needAccount {
+  font-size: 14px;
+  line-height: 16px;
+  color: #72767d;
+}
+
+.logo {
+  flex: 0 0 auto;
+  z-index: 2;
+  font-family: 'UniSans';
+  font-weight: 900;
+  user-select: none;
+  font-size: 36px;
+  color: $color-white;
+  margin-bottom: 20px;
+  margin-top: 32px;
+}
+
+@media screen and (max-width: 486px) {
+  .authbox > .logo {
+    position: relative;
+    display: block;
+    color: $color-white;
+  }
+
+  :global(.lightTheme) .authbox > .logo {
+    color: #72767d;
+  }
+
+  .banner > .logo {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 487px) {
+  .authbox > .logo {
+    display: none;
+  }
+  .banner > .logo {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 1080px) {
+  .logo {
+    margin-right: 80%;
+  }
+}
+
+:global(.lightTheme) .logo {
+  color: #36393f;
+}

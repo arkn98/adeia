@@ -1,19 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import jwt_decode from 'jwt-decode';
-import setAuthToken from './utils/setAuthToken';
-import { setCurrentUser, logoutUser } from './actions/authActions';
-import { setCurrentTheme } from './actions/utilActions';
-import axios from 'axios';
+//import './index.css';
+//import jwt_decode from 'jwt-decode';
+//import setAuthToken from './utils/setAuthToken';
+//import { setCurrentUser, logoutUser } from './actions/authActions';
+//import { setCurrentTheme } from './actions/utilActions';
 //import registerServiceWorker from './registerServiceWorker';
+import './reset.css';
+import './fonts.css';
+import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from './store';
-import { clearCurrentProfile } from './actions/profileActions';
-import AppContainer from './containers/AppContainer';
+import store from './shared/store';
+//import { clearCurrentProfile } from './actions/profileActions';
+//import AppContainer from './containers/AppContainer';
+import App from './screens/App';
 
-//check for user token
+/* //check for user token
 if (localStorage.jwtToken) {
   //set auth token header
   setAuthToken(localStorage.jwtToken);
@@ -53,16 +56,18 @@ let isDarkTheme = false;
 if (localStorage.themePreferences) {
   if (localStorage.themePreferences === 'dark') {
     isDarkTheme = true;
-  } else if (localStorage.themePreferences === 'light') {
+  } else {
     isDarkTheme = false;
   }
-  store.dispatch(setCurrentTheme(isDarkTheme));
+} else {
+  isDarkTheme = false;
 }
+store.dispatch(setCurrentTheme(isDarkTheme)); */
 
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <AppContainer isDarkTheme={isDarkTheme} />
+      <App /* isDarkTheme={isDarkTheme} */ />
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')

@@ -1,0 +1,272 @@
+.modalBg {
+  background-color: rgba(0, 0, 0, 0.75);
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.1s ease;
+  z-index: 1000;
+}
+
+.modalBg.transitionEnd {
+  opacity: 1;
+}
+
+.modal {
+  align-content: center;
+  box-sizing: border-box;
+  height: 100%;
+  left: 0;
+  min-height: 340px;
+  opacity: 0;
+  padding-bottom: 60px;
+  padding-top: 60px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transform: scale(0);
+  transition: transform 0.17s ease, opacity 0.1s ease;
+}
+
+.modal.transitionEnd {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.inner {
+  flex-direction: column;
+  display: flex;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+.modalInner {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  border-radius: 5px;
+  position: relative;
+  background-color: #36393f;
+  box-shadow: 0 0 0 1px rgba(32, 34, 37, 0.6), 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+:global(.lightTheme) .modalInner {
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(185, 187, 190, 0.3),
+    0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.container {
+  word-wrap: break-word;
+}
+
+.small {
+  max-height: 660px;
+  min-height: 200px;
+  width: 440px;
+}
+
+.big {
+  max-height: 660px;
+  min-height: 200px;
+  width: 660px;
+}
+
+@media screen and (max-width: 768px) {
+  .small {
+    width: 300px;
+  }
+
+  .big {
+    width: 300px;
+  }
+}
+
+.flexItem {
+  flex: 0 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  z-index: 1000;
+  position: relative;
+  padding: 20px;
+  overflow-x: hidden;
+  transition: box-shadow 0.1s ease-out;
+  word-wrap: break-word;
+}
+
+.header .title {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  flex: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: #f6f6f7;
+}
+
+:global(.lightTheme) .header .title {
+  color: #4f545c;
+}
+
+.body {
+  z-index: 0;
+  border-radius: 5px 5px 0 0;
+  position: relative;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  padding-bottom: 20px;
+}
+
+.bodyInner {
+  overflow-x: hidden;
+  padding: 0 12px 0 20px;
+}
+
+.contentText {
+  font-size: 16px;
+  line-height: 20px;
+  color: #dcddde;
+}
+
+:global(.lightTheme) .contentText {
+  color: #72767d;
+}
+
+.footer {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  flex-direction: row-reverse;
+  overflow-x: hidden;
+  padding: 20px;
+  position: relative;
+  z-index: 1000;
+  border-radius: 0 0 5px 5px;
+  background-color: #2f3136;
+  box-shadow: inset 0 1px 0 rgba(47, 49, 54, 0.6);
+}
+
+:global(.lightTheme) .footer {
+  background-color: #f6f6f7;
+  box-shadow: inset 0 1px 0 rgba(246, 246, 247, 0.6);
+}
+
+.scrollWrap {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  position: relative;
+  min-height: 0;
+}
+
+.scroller {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.button {
+  cursor: pointer;
+  position: relative;
+  padding: 2px 16px;
+  line-height: 16px;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 14px;
+  display: flex;
+  box-sizing: border-box;
+  border-radius: 3px;
+  border: none;
+  align-items: center;
+  background: none;
+  transition: background-color 0.17s ease, color 0.17s ease;
+  min-width: 96px;
+  min-height: 38px;
+  height: 38px;
+  width: auto;
+  color: #fff;
+}
+
+:global(.lightTheme) .button {
+  color: #747f8d;
+}
+
+.buttonRed {
+  background-color: #f04747;
+  color: #fff !important;
+}
+
+.button.lookFilled.buttonRed:hover {
+  background-color: #d84040;
+}
+
+.contents {
+  margin: 0 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.button.lookLink:hover .contents {
+  background-image: linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    #fff 0,
+    #fff 2px,
+    transparent 0
+  );
+}
+
+:global(.lightTheme) .button.button.lookLink:hover .contents {
+  background-image: linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    #747f8d 0,
+    #747f8d 2px,
+    transparent 0
+  );
+}
+
+.buttonTransparent {
+  border: 1px solid #fff;
+  cursor: pointer;
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 16px;
+  transition: background-color 0.1s ease, border-color 0.1s ease,
+    color 0.1s ease;
+}
+
+.buttonTransparent:hover,
+.buttonTransparent:active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+:global(.lightTheme) .buttonTransparent {
+  border-color: #dcddde;
+  color: #72767d;
+}
+
+:global(.lightTheme) .buttonTransparent:hover,
+:global(.lightTheme) .buttonTransparent:active {
+  background-color: #f6f6f7;
+}

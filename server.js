@@ -19,6 +19,8 @@ const users = require('./routes/api/users');
 const profile = require('./routes/api/profile');
 const admin = require('./routes/api/admin');
 const timetable = require('./routes/api/timetable');
+const utils = require('./routes/api/utils');
+const leave = require('./routes/api/leave');
 
 const app = express();
 
@@ -26,9 +28,9 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'client', 'build')));
-}
+//if (process.env.NODE_ENV === 'production') {
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+//}
 
 app.use(fileUpload());
 
@@ -57,13 +59,11 @@ app.post(
           );
           if (fs.existsSync(toPath)) {
             console.log(`Content of ${toPath}:`);
-            //console.log(fs.readFileSync(toPath).toString());
             const workSheetsFromFile = xlsx.parse(fs.readFileSync(toPath));
             console.log(workSheetsFromFile.SheetNames);
           }
         });
       });
-
       res.json({
         file: `public/${req.files.file.name}`
       });
@@ -76,7 +76,11 @@ const db = require('./config/keys').mongoURI;
 
 //connect to mongodb
 mongoose
-  .connect(db)
+  .connect(db, {
+    autoReconnect: true,
+    reconnectTries: 100,
+    reconnectInterval: 5000
+  })
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
@@ -92,14 +96,15 @@ app.use('/api/users', users);
 app.use('/api/profile', profile);
 app.use('/api/admin', admin);
 app.use('/api/timetable', timetable);
+app.use('/api/utils', utils);
 
 const port = process.env.PORT || 5000;
 
-if (process.env.NODE_ENV === 'production') {
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-  });
-}
+//if (process.env.NODE_ENV === 'production') {
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+});
+//}
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

@@ -8,3 +8,6 @@ const passport = require('passport');
 //load model
 const Class = require('../../models/Class');
 const User = require('../../models/User');
+const Timetable = require('../../models/TestTimetable');
+
+module.exports = router;

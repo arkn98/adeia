@@ -1,0 +1,69 @@
+@import '_variables.scss';
+
+.inputLabel {
+  color: #b9bbbe;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: default;
+  font-weight: 600;
+  line-height: 16px;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+:global(.lightTheme) .inputLabel {
+  color: #72767d;
+}
+
+.errorLabel {
+  color: #f04747 !important;
+}
+
+.errorMessage {
+  font-style: italic;
+  font-weight: 600;
+  font-size: 12px;
+  color: #f04747;
+}
+
+.inputField {
+  font-size: 16px;
+  border-radius: 3px;
+  border-style: solid;
+  border-width: 1px;
+  box-sizing: border-box;
+  transition: background-color 0.15s ease, border 0.15s ease;
+  width: 100%;
+  height: 40px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.3);
+  color: #f6f6f7;
+}
+
+:global(.lightTheme) .inputField {
+  background-color: rgba(79, 84, 92, 0.02);
+  background-color: $color-white;
+  border-color: rgba(79, 84, 92, 0.3);
+  color: #4f545c;
+}
+
+.inputField:hover {
+  border-color: #040405;
+}
+
+.inputField:focus {
+  border-color: $color-primary;
+}
+
+.formInputError {
+  border-color: #f04747 !important;
+}
+
+.formInputError:focus {
+  border-color: #f04747 !important;
+}
+
+.formInputError:hover {
+  border-color: #f04747 !important;
+}

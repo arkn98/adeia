@@ -1,0 +1,9 @@
+@import url('./assets/fonts/stylesheet.css');
+
+body {
+  font-family: 'Whitney', 'Helvetica Neue', helvetica, arial, sans-serif;
+  line-height: 1;
+  text-rendering: optimizeLegibility;
+  font-size: 14px;
+  font-weight: 400;
+}

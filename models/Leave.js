@@ -16,17 +16,16 @@ const Schema = mongoose.Schema;
 //leave status
 //0 -- waiting (just applied / waiting for alterations to be accepted)
 //1 -- accepted
-//2 -- rejected (rejected by HOD or alternating staff)
-//3 -- cancelled (cancelled by the applicant)
+//2 -- rejected by HOD
+//3 -- rejected by alternating staff
+//4 -- cancelled (cancelled by the applicant)
 
-const makeid = () => {
+const makeId = () => {
   var text = '';
   var possible =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
   for (var i = 0; i < 5; i++)
     text += possible.charAt(Math.floor(Math.random() * possible.length));
-
   return text;
 };
 
@@ -34,7 +33,7 @@ const makeid = () => {
 const LeaveSchema = new Schema({
   leaveId: {
     type: String,
-    default: makeid()
+    default: makeId()
   },
   staffId: {
     type: String,
@@ -74,6 +73,11 @@ const LeaveSchema = new Schema({
   status: {
     type: Number,
     default: 0
+  },
+  document: {
+    // path to uploaded document
+    type: String,
+    default: ''
   }
 });
 
