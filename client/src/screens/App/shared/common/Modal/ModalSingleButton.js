@@ -13,7 +13,7 @@ class ModalSingleButton extends Component {
         ...this.state,
         transitionEnd: true
       });
-    }, 50);
+    }, 0);
   };
 
   modalConfirmHandler = event => {
@@ -24,7 +24,7 @@ class ModalSingleButton extends Component {
   toggle = () => {
     this.setState({ ...this.state, transitionEnd: false }, () => {
       setTimeout(() => {
-        this.props.hideModal();
+        this.props.hidePopout();
       }, 100);
     });
   };
@@ -64,7 +64,10 @@ class ModalSingleButton extends Component {
                   styles.scrollWrap
                 }`}>
                 <div className={`${styles.scroller} ${styles.bodyInner}`}>
-                  <div className={styles.contentText}>{message}</div>
+                  <div
+                    className={styles.contentText}
+                    dangerouslySetInnerHTML={{ __html: message }}
+                  />
                 </div>
               </div>
               <div className={`${styles.flexItem} ${styles.footer}`}>

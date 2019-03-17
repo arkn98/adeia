@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from '../../styles/FullPageLanding.module.scss';
 import { ButtonTransparent } from '../../common/Button';
 import { withRouter } from 'react-router-dom';
@@ -13,10 +13,21 @@ const Error = props => {
     showButton = false,
     buttonContent,
     loadingText = false,
-    buttonLocation = '/'
+    buttonLocation = '/',
+    inDashboard = false,
+    updateCurrentRouteTitle = null,
+    pageTitle = ''
   } = props;
+
+  useEffect(() => {
+    if (updateCurrentRouteTitle !== null) {
+      updateCurrentRouteTitle(pageTitle);
+    }
+  });
+
   return (
-    <div className={styles.app}>
+    <div
+      className={`${styles.app} ${inDashboard ? styles.forceFullDash : null}`}>
       <div className={styles.banner}>
         <div className={`${styles.title} ${styles.titleBig}`}>
           {children}

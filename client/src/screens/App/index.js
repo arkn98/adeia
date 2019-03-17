@@ -3,31 +3,28 @@ import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styles from './App.module.scss';
 
-import { checkDB, checkIfLoggedIn } from './shared/utils';
-import { setCurrentTheme, changeTheme } from '../../shared/actions';
+import { checkDB } from './shared/utils';
+import { setCurrentTheme, changeTheme, logoutUser } from '../../shared/actions';
 
 import Home from './Home';
 import Error from './shared/components/Error';
 import LoginActivate from './LoginActivate';
 import ResetPassword from './ResetPassword';
-import { ModalSingleButton } from './shared/common/Modal';
+import Dashboard from './Dashboard';
+//import Dashboard2 from './DashboardContainer';
+import { ModalSingleButton, ModalDoubleButton } from './shared/common/Modal';
+import { Notifications } from './shared/components/Notifications';
+import { PrivateRoute } from './shared/common/PrivateRoute';
 
 class App extends Component {
   state = {
     isDBUp: true,
     isLoading: true,
-    modals: null
-  };
-
-  isDarkTheme = false;
-
-  componentWillMount = () => {
-    this.checkThemeFromLocalStorage();
+    popouts: null
   };
 
   componentDidMount = () => {
     this.checkDB();
-    checkIfLoggedIn();
     this.interval = setInterval(() => {
       this.checkDB();
     }, 10000);
@@ -44,12 +41,12 @@ class App extends Component {
     clearInterval(this.interval);
   }
 
-  showModal = data => {
-    this.setState({ ...this.state, modals: data });
+  showPopout = data => {
+    this.setState({ ...this.state, popouts: data });
   };
 
-  hideModal = () => {
-    this.setState({ ...this.state, modals: null });
+  hidePopout = () => {
+    this.setState({ ...this.state, popouts: null });
   };
 
   checkDB = () => {
@@ -60,58 +57,88 @@ class App extends Component {
     });
   };
 
-  checkThemeFromLocalStorage = () => {
-    let prefs = localStorage.getItem('themePreferences');
-    let isDarkTheme = false;
-    if (prefs !== null) {
-      if (prefs === 'light') isDarkTheme = false;
-      else isDarkTheme = true;
-    } else {
-      isDarkTheme = false;
-    }
-    this.props.setCurrentTheme(isDarkTheme);
-  };
-
   render = () => {
     const { isDarkTheme = false } = this.props;
     if (this.state.isDBUp) {
       let modals = null;
-      if (this.state.modals && this.state.modals.type !== null) {
-        if (this.state.modals.type === 'modalSingleButton') {
+      if (this.state.popouts && this.state.popouts.type !== null) {
+        if (this.state.popouts.type === 'modalSingleButton') {
           modals = (
-            <div className={styles.modals}>
+            <div className={styles.popouts}>
               <ModalSingleButton
-                hideModal={this.hideModal}
-                {...this.state.modals}
+                hidePopout={this.hidePopout}
+                {...this.state.popouts}
+              />
+            </div>
+          );
+        } else if (this.state.popouts.type === 'notifications') {
+          modals = (
+            <Notifications
+              hidePopout={this.hidePopout}
+              {...this.state.popouts}
+            />
+          );
+        } else if (this.state.popouts.type === 'logout') {
+          modals = (
+            <div className={styles.popouts}>
+              <ModalDoubleButton
+                hidePopout={this.hidePopout}
+                {...this.state.popouts}
+                action1={() => this.props.logoutUser()}
               />
             </div>
           );
         }
+      } else {
+        modals = null;
       }
 
       return (
         <div
           style={{ height: '100%' }}
+          id="theme"
           className={!isDarkTheme ? 'lightTheme' : null}>
+          {modals}
           <Switch>
             <Route exact path="/" component={Home} />
             <Route
               exact
               path="/login"
               key="login"
-              render={() => <LoginActivate showModal={this.showModal} />}
+              render={() => <LoginActivate showPopout={this.showPopout} />}
             />
             <Route
               exact
               path="/activate"
               key="activate"
-              render={() => <LoginActivate />}
+              render={() => <LoginActivate showPopout={this.showPopout} />}
             />
             <Route
               exact
               path="/reset-password"
-              render={() => <ResetPassword showModal={this.showModal} />}
+              render={() => <ResetPassword showPopout={this.showPopout} />}
             />
+            <Switch>
+              {/* <Route path="/dashboard2" component={Dashboard2} /> */}
+              <PrivateRoute
+                location={this.props.location}
+                path="/dashboard"
+                component={Dashboard}
+                showPopout={this.showPopout}
+              />
+              <Route
+                render={() => (
+                  <Error
+                    message="We can't find the page that you're looking for :("
+                    footerAltColors={true}
+                    showButton={true}
+                    buttonLocation="back"
+                    buttonContent="Go back">
+                    404
+                  </Error>
+                )}
+              />
+            </Switch>
             <Route
               render={() => (
                 <Error
@@ -125,7 +152,6 @@ class App extends Component {
               )}
             />
           </Switch>
-          {modals}
         </div>
       );
     } else {
@@ -151,7 +177,7 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { setCurrentTheme, changeTheme },
+  { setCurrentTheme, changeTheme, logoutUser },
   null,
   { pure: false }
 )(App);

@@ -27,7 +27,7 @@ const Footer = props => {
           href="https://github.com/arkn98/lms"
           target="_blank"
           rel="noopener noreferrer">
-          View Source Code
+          View source code
         </a>
       </div>
       <div>|</div>

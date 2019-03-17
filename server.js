@@ -97,6 +97,7 @@ app.use('/api/profile', profile);
 app.use('/api/admin', admin);
 app.use('/api/timetable', timetable);
 app.use('/api/utils', utils);
+app.use('/api/leaves', leave);
 
 const port = process.env.PORT || 5000;
 

@@ -81,7 +81,7 @@ class LoginActivate extends Component {
     const state = this.state;
     this.setState({ ...state, isSubmitting: true });
     this.props.sendResetEmail({ email: state.email }).then(() => {
-      this.props.showModal({
+      this.props.showPopout({
         type: 'modalSingleButton',
         title: 'Instructions Sent',
         message:

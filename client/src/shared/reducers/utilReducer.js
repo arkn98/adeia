@@ -11,7 +11,8 @@ import {
 const initialState = {
   isInfoModalVisible: false,
   isLogoutModalVisible: false,
-  isDarkTheme: false
+  isDarkTheme: false,
+  currentPageTitle: 'abcd'
 };
 
 const reducer = (state = initialState, action) => {

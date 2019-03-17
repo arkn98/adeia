@@ -199,3 +199,16 @@
 .buttonModal.lookFilled.buttonModalPrimary:hover {
   background-color: #677bc4;
 }
+
+.disabled {
+  background-color: #7289da;
+  cursor: not-allowed;
+  opacity: 0.5;
+  transition: none;
+}
+
+.disabled.submitButton:hover,
+.disabled.submitButton:focus {
+  background-color: #7289da;
+  opacity: 0.5;
+}

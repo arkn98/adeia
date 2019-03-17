@@ -4,7 +4,7 @@
   width: 100%;
   height: 100%;
   transition: opacity 0.1s ease;
-  z-index: 1000;
+  z-index: 1001;
 }
 
 .modalBg.transitionEnd {
@@ -23,19 +23,18 @@
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1001;
+  z-index: 1002;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   pointer-events: none;
   transform: scale(0);
-  transition: transform 0.17s ease, opacity 0.1s ease;
 }
 
 .modal.transitionEnd {
-  transform: scale(1);
   opacity: 1;
+  transform: none;
 }
 
 .inner {

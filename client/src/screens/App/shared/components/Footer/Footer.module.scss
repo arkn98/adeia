@@ -41,8 +41,7 @@
 .footer a {
   /* color: hsla(0, 0%, 100%, 0.25); */
   border-bottom: 1px solid transparent;
-  transition: color 0.2s cubic-bezier(0.25, 0.25, 0.315, 1.35),
-    border-bottom 0.2s cubic-bezier(0.25, 0.25, 0.315, 1.35);
+  transition: color 0.17s ease, border-bottom 0.17s ease;
 }
 
 :global(.lightTheme) .footer a {

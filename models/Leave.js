@@ -20,30 +20,21 @@ const Schema = mongoose.Schema;
 //3 -- rejected by alternating staff
 //4 -- cancelled (cancelled by the applicant)
 
-const makeId = () => {
-  var text = '';
-  var possible =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  for (var i = 0; i < 5; i++)
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  return text;
-};
-
 //create schema
 const LeaveSchema = new Schema({
   leaveId: {
     type: String,
-    default: makeId()
+    required: true
   },
   staffId: {
     type: String,
     required: true
   },
-  alternatingStaff: [
+  /* alternatingStaff: [
     {
       staffId: { type: Number, required: true }
     }
-  ],
+  ], */
   applyDate: {
     type: Date,
     required: true
@@ -66,6 +57,10 @@ const LeaveSchema = new Schema({
   },
   reason: {
     type: String
+  },
+  isVacation: {
+    type: Boolean,
+    default: false
   },
   address: {
     type: String

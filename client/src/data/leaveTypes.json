@@ -1,0 +1,45 @@
+{
+  "_comment": "Casual Leave, Compensation Leave, Earn Leave, Medical Leave, On Duty, Restricted Holiday, Special Casual Leave, Casual Leave - 30 Days, Casual Leave - 20 Days, Casual Leave - 6 Days",
+  "leaveTypes": [
+    {
+      "label": "Casual Leave",
+      "value": "cl"
+    },
+    {
+      "label": "Compensation Leave",
+      "value": "cpl"
+    },
+    {
+      "label": "Earn Leave",
+      "value": "el"
+    },
+    {
+      "label": "Medical Leave",
+      "value": "ml"
+    },
+    {
+      "label": "On Duty",
+      "value": "od"
+    },
+    {
+      "label": "Restricted Holiday",
+      "value": "rh"
+    },
+    {
+      "label": "Special Casual Leave",
+      "value": "scl"
+    },
+    {
+      "label": "Casual Leave - 30 days",
+      "value": "cl30"
+    },
+    {
+      "label": "Casual Leave - 20 days",
+      "value": "cl20"
+    },
+    {
+      "label": "Casual Leave - 6 days",
+      "value": "cl6"
+    }
+  ]
+}

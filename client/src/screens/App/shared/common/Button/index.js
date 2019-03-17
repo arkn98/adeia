@@ -4,3 +4,4 @@ export { default as ButtonTransparent } from './ButtonTransparent';
 export { default as ButtonSubmit } from './ButtonSubmit';
 export { default as ButtonLink } from './ButtonLink';
 export { default as ButtonModalPrimary } from './ButtonModalPrimary';
+export { default as ButtonSubmitFullHeight } from './ButtonSubmitFullHeight';

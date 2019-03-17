@@ -67,3 +67,298 @@
 .formInputError:hover {
   border-color: #f04747 !important;
 }
+
+.formFieldLabel {
+  color: #fff;
+  text-transform: uppercase;
+  flex: 1;
+  font-weight: 600;
+  width: 95%;
+  line-height: 16px;
+  font-size: 14px;
+  transition: color 0.17s ease;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:global(.lightTheme) .formFieldLabel {
+  color: #72767d;
+}
+
+.marginBottom8 {
+  margin-bottom: 8px;
+}
+
+.disabled {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: #202225;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+:global(.lightTheme) .disabled {
+  background: rgba(0, 0, 0, 0.01);
+}
+
+.disabled.inputField:hover {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+:global(.lightTheme) .disabled.inputField:hover {
+  border-color: rgba(79, 84, 92, 0.3);
+}
+
+select.inputField {
+  border-radius: 3px;
+  font-size: 16px;
+  line-height: 18px;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+  color: hsla(0, 0%, 100%, 1);
+  appearance: none;
+  background: url('assets/misc/arrow-down.svg') 99% / 24px no-repeat
+    rgba(0, 0, 0, 0.1);
+}
+
+:global(.lightTheme) select.inputField {
+  background: url('assets/misc/arrow-down-dark.svg') 99% / 24px no-repeat #fff;
+}
+
+.formSelect {
+  cursor: pointer;
+}
+
+.formSelect option:hover {
+  background-color: #25282d;
+  color: #fff;
+}
+
+.radioItem {
+  flex: 1 1 100%;
+  margin-bottom: 8px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  border-color: #202225;
+  border-radius: 3px;
+  cursor: pointer;
+  border-style: solid;
+  border-width: 1px;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  transition: border-color 0.17s ease, background-color 0.17s ease;
+}
+
+.radioItem:hover {
+  border-color: #040405;
+}
+
+:global(.lightTheme) .radioItem {
+  border-color: rgba(79, 84, 92, 0.3);
+  background-color: #fff;
+}
+
+:global(.lightTheme) .radioItem:hover {
+  border-color: #040405;
+}
+
+.radioItemSelected {
+  background-color: rgb(114, 137, 218);
+  border-color: rgb(114, 137, 218);
+}
+
+.radioItem:hover.radioItemSelected {
+  border-color: rgb(114, 137, 218);
+}
+
+:global(.lightTheme) .radioItemSelected {
+  border-color: rgb(114, 137, 218);
+  background-color: rgb(114, 137, 218);
+}
+
+:global(.lightTheme) .radioItem:hover.radioItemSelected {
+  border-color: rgb(114, 137, 218);
+}
+
+.radioContent {
+  user-select: none;
+  margin: 0 8px;
+  color: #f6f6f7;
+}
+
+:global(.lightTheme) .radioContent {
+  color: #4f545c;
+}
+
+:global(.lightTheme) .radioItemSelected .radioContent {
+  color: #fff;
+}
+
+.checkBoxWrapper {
+  /* height: 24px; */
+  user-select: none;
+  flex: 0 0 auto;
+  position: relative;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.checkBoxCheckmarkOutline {
+  width: 24px;
+  height: 24px;
+  border-color: #72767d;
+  border-style: solid;
+  border-radius: 3px;
+  border-width: 1px;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.checkBoxCheckmarkOutline.checked {
+  background-color: #fff;
+  border-color: rgb(114, 137, 218);
+}
+
+.checkboxCheckmark {
+  display: none;
+}
+
+.checkBoxCheckmarkOutline.checked .checkboxCheckmark {
+  display: block;
+}
+
+.radioContent {
+  margin: 0 8px;
+  color: #f6f6f7;
+}
+
+:global(.lightTheme) .radioContent {
+  color: #4f545c;
+}
+
+:global(.lightTheme) .radioItemSelected .radioContent {
+  color: #fff;
+}
+
+.radioContent .title {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.radioItem .inputField {
+  cursor: pointer;
+  z-index: 1;
+  left: 0;
+  margin: 0;
+  opacity: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+}
+
+.infoText {
+  font-size: 12px;
+  text-transform: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 1%;
+  font-weight: 500;
+  color: hsla(0, 0%, 100%, 0.5);
+}
+
+:global(.lightTheme) .infoText {
+  color: rgba(114, 118, 125, 0.6);
+}
+
+.formTextArea {
+  resize: vertical;
+  min-height: 84px;
+  font-family: 'Whitney', 'Helvetica Neue', helvetica, arial, sans-serif;
+  line-height: 1;
+  text-rendering: optimizeLegibility;
+}
+
+.formItemRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 768px) {
+  .formItemRow {
+    flex-direction: column;
+  }
+
+  .formItemRow.marginBottom8 {
+    margin-bottom: none;
+  }
+}
+
+.formItemRow > div {
+  flex: 1 0 0;
+  margin-left: 16px;
+  width: 100% !important;
+}
+
+.formItemRow > div:first-child {
+  margin-left: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .formItemRow > div {
+    margin-left: 0;
+  }
+}
+
+.tooltipIcon {
+  height: 14px;
+}
+
+.datePickerOverlay {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  background: white;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  border: 1px solid rgba(28, 36, 43, 0.6);
+}
+
+:global(.lightTheme) .datePickerOverlay {
+  border: 1px solid hsla(0, 0%, 74.9%, 0.3);
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 768px) {
+  .datePickerOverlay {
+    position: relative;
+    width: 256px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.relativePosition {
+  position: relative !important;
+}
+
+.datePickerDateSelected {
+  background-color: cyan;
+  width: 12px;
+  height: 12px;
+  border-radius: 0;
+}

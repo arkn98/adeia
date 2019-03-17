@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import styles from './FormInput.module.scss';
 import classNames from 'classnames/bind';
 
@@ -13,20 +13,31 @@ class TextBox extends Component {
     const {
       errors,
       containerStyles = {},
+      infoText = null,
       type = 'text',
       label,
       name,
       inputOnChangeHandler,
-      value
+      value,
+      bigLabel = false,
+      disabled = false
     } = this.props;
     return (
       <div className={containerStyles}>
         <div
           className={cx({
-            inputLabel: true,
+            inputLabel: !bigLabel,
+            formFieldLabel: bigLabel,
+            marginBottom8: bigLabel,
             errorLabel: errors
           })}>
           {label}
+          {infoText !== null ? (
+            <Fragment>
+              {' '}
+              <span className={styles.infoText}>{infoText}</span>
+            </Fragment>
+          ) : null}
           {errors ? (
             <span className={styles.errorMessage}> - {errors}</span>
           ) : null}
@@ -39,9 +50,11 @@ class TextBox extends Component {
           onChange={inputOnChangeHandler}
           value={value}
           type={type}
+          disabled={disabled}
           className={cx({
             inputField: true,
-            formInputError: errors
+            formInputError: errors,
+            disabled: disabled
           })}
         />
       </div>

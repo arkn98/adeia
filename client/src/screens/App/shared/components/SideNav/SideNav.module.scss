@@ -1,0 +1,283 @@
+.sideNavWrapper {
+  width: 100%;
+  height: 100%;
+  /* transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1); */
+  transition: left 0.1s linear;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 768px) {
+  .sideNavWrapper {
+    position: fixed;
+    width: 240px;
+    top: 0;
+    left: -240px;
+    z-index: 999;
+  }
+
+  .sideNavVisible {
+    left: 0;
+  }
+}
+
+.sideNav {
+  background-color: #2f3136;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  transition: background-color 0.17s ease;
+}
+
+:global(.lightTheme) .sideNav {
+  background-color: #f3f3f4;
+}
+
+.topContainer {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.topBar {
+  height: 48px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: transparent;
+  border-radius: 0;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 2px 0 rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+  padding: 12px 0 6px 12px;
+}
+
+.logo {
+  font-family: 'UniSans', sans-serif;
+  font-weight: 900;
+  user-select: none;
+  text-align: left;
+  font-size: 24px;
+  color: #fff;
+  transition: color 0.17s ease;
+}
+
+:global(.lightTheme) .logo {
+  color: #4f545c;
+}
+
+:global(.lightTheme) .topBar {
+  background-color: #f3f3f4;
+}
+
+.version {
+  color: rgba(255, 255, 255, 0.5);
+  padding-right: 12px;
+  padding-left: 4px;
+  font-weight: 600;
+  font-size: 10px;
+  position: relative;
+  top: 3.5px;
+}
+
+:global(.lightTheme) .version {
+  color: #4f545c;
+}
+
+.topBarIcons {
+  margin-left: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.topBarIcon {
+  position: relative;
+  cursor: pointer;
+  fill: #f6f6f7;
+  width: 18px;
+  top: 4px;
+  fill-opacity: 0.3;
+  transition: fill 0.17s ease;
+}
+
+:global(.lightTheme) .topBarIcon {
+  fill: #4f545c;
+  fill-opacity: 0.5;
+}
+
+.topBarIcon:hover {
+  fill-opacity: 0.6;
+}
+
+:global(.lightTheme) .topBarIcon:hover {
+  fill-opacity: 1;
+}
+
+.topBarIconWrapper {
+  flex: 0 0 auto;
+  padding-right: 12px;
+  position: relative;
+  top: -2px;
+}
+
+.topBarIcons .topBarIconWrapper:last-child {
+  padding-right: 17px;
+}
+
+.mobileVisible {
+  display: none !important;
+}
+
+@media screen and (max-width: 768px) {
+  .topBarIcons .topBarIconWrapper {
+    display: none;
+  }
+
+  .mobileVisible {
+    display: block !important;
+  }
+}
+
+.scrollMenuWrapper {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  padding-bottom: 20px;
+  width: 100%;
+  min-height: 1px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.scroller {
+  flex: 1 1 100%;
+  width: 100%;
+  height: 100%;
+  min-height: 1px;
+  overflow-y: auto;
+  padding-right: 17px;
+  padding-top: 20px;
+  z-index: 0;
+}
+
+.userContainer {
+  align-items: center;
+  background-color: rgba(32, 34, 37, 0.3);
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  flex: 0 0 auto;
+  font-size: 14px;
+  font-weight: 400;
+  height: 52px;
+  padding: 0 10px;
+  transition: background-color 0.17s ease;
+}
+
+:global(.lightTheme) .userContainer {
+  background-color: rgba(185, 187, 190, 0.3);
+}
+
+.userContainer .userDetails {
+  margin-right: auto;
+  margin-left: 6px;
+}
+
+:global(.lightTheme) .userContainer .userDetails {
+  color: #4f545c;
+}
+
+.userContainer .userName {
+  display: block;
+  max-width: 128px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.userContainer .userClass {
+  display: block;
+  font-size: 10px;
+  font-weight: 500;
+  margin-top: 4px;
+  opacity: 0.75;
+}
+
+:global(.lightTheme) .userContainer .userClass {
+  opacity: 1;
+}
+
+.userContainer .userSettings {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.userContainer .userSettings .customIcon {
+  font-size: 16px;
+  padding-right: 0px;
+  padding-left: 0px;
+  opacity: 0.75;
+}
+
+.userContainer .userSettings .customIconTest {
+  width: 16px;
+  padding-right: 0px;
+  padding-left: 0px;
+  fill-opacity: 0.75;
+}
+
+:global(.lightTheme) .userContainer .userSettings .customIcon {
+  opacity: 1;
+}
+
+:global(.lightTheme) .userContainer .userSettings .customIconTest {
+  fill-opacity: 1;
+}
+
+.iconSelector {
+  cursor: pointer;
+  position: relative;
+  top: 1px;
+  background: none;
+  padding: 8px 10px;
+  border-radius: 3px;
+}
+
+.iconSelectorHovered,
+.userSettings:hover .iconSelector {
+  background: hsla(0, 0%, 0%, 0.3);
+}
+
+:global(.lightTheme) .iconSelectorHovered,
+:global(.lightTheme) .userSettings:hover .iconSelector {
+  background: rgba(79, 84, 92, 0.1);
+}
+
+.userContainer .customIconTest {
+  fill: #f6f6f7;
+  width: 30px;
+  fill-opacity: 1;
+  top: 2px;
+  padding-left: 2px;
+  position: relative;
+  transition: fill 0.17s ease;
+}
+
+:global(.lightTheme) .userContainer .customIconTest {
+  fill: #4f545c;
+  fill-opacity: 1;
+}

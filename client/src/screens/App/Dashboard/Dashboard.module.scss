@@ -1,0 +1,258 @@
+.dashMount {
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.sideNavWrapper {
+  flex: 0 0 240px;
+  /* width: 240px; */
+}
+
+.backdrop {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  position: fixed;
+  opacity: 0.75;
+  background-color: #000;
+  z-index: 998;
+}
+
+.mainWrapper {
+  flex: 1;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 768px) {
+  .sideNavWrapper {
+    width: 0;
+    flex: none;
+  }
+
+  .sideNavVisible {
+    position: fixed;
+    z-index: 1001;
+    flex: none;
+    width: 240px !important;
+  }
+
+  .mainWrapper {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+}
+
+.main {
+  background-color: #2f3136;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+:global(.lightTheme) .main {
+  color: #4f545c;
+}
+
+.topBarWrapper {
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 100;
+  width: 100%;
+}
+
+.topBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  align-items: center;
+  height: 48px;
+  padding: 0 16px 0 16px;
+  background: #36393f;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 2px 0 rgba(0, 0, 0, 0.06);
+  flex: 0 0 auto;
+  transition: background 0.17s ease;
+  transition: background-color 0.17s ease;
+}
+
+:global(.lightTheme) .topBar {
+  background: #fff;
+}
+
+.topBarLeftTitleFlex {
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (min-width: 769px) {
+  .mobileVisible {
+    display: none !important;
+  }
+}
+
+.topBarIcon {
+  width: 22px;
+  cursor: pointer;
+  fill: #f6f6f7;
+  fill-opacity: 0.75;
+  transition: fill 0.17s ease, fill-opacity 0.17s ease;
+}
+
+.topBarIconMedium {
+  width: 20px;
+}
+
+:global(.lightTheme) .topBarIcon {
+  fill: #4f545c;
+}
+
+.topBarHamburgerWrapper {
+  margin-right: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.topBarIcon:hover {
+  fill-opacity: 1;
+}
+
+.pageTitle {
+  color: #fff;
+  font-weight: 600;
+  /* line-height: 22px; */
+  font-size: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 0.17s ease;
+  padding-top: 6px;
+}
+
+:global(.lightTheme) .pageTitle {
+  color: #4f545c;
+}
+
+.topBarRightIconFlex {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.topBarRightIconFlex div {
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.topBarRightIconFlex div:first-child {
+  margin-left: 0;
+}
+
+.topBarRightIconFlex div:last-child {
+  margin-right: 0;
+}
+
+.searchBarWrapper {
+  margin-left: 8px;
+  margin-right: 4px;
+}
+
+.search {
+  overflow: visible;
+  position: relative;
+  z-index: 100;
+}
+
+.searchBar {
+  align-items: center;
+  background-color: #2f3136;
+  border-radius: 4px;
+  display: flex;
+  flex-shrink: 0;
+}
+
+.topBar .searchBar {
+  align-items: stretch;
+  background-color: hsla(0, 0%, 100%, 0.1);
+  border-radius: 3px;
+  box-shadow: none;
+  box-sizing: border-box;
+  display: flex;
+  height: 28px;
+  transition: width 0.2s ease-in-out 0.1s;
+  width: 144px;
+}
+
+:global(.lightTheme) .topBar .searchBar {
+  background-color: rgba(246, 246, 247, 0.6);
+  color: rgba(79, 84, 92, 0.3);
+}
+
+.topBar .searchBar:focus {
+  width: 244px;
+}
+
+.topBar .seperator {
+  width: 1px;
+  height: 22px;
+  margin: 0 3px;
+  background: hsla(0, 0%, 84.7%, 0.1);
+}
+
+:global(.lightTheme) .topBar .seperator {
+  background-color: rgba(114, 118, 125, 0.3);
+}
+
+.topBarIconWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: baseline;
+  width: 26px;
+  margin: 0 3px;
+  position: relative;
+}
+
+.scrollWrapper {
+  height: 100%;
+  width: 100%;
+  min-height: 1px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.contentWrapper {
+  background-color: #36393f;
+  flex: 0 0 auto;
+  overflow-y: auto;
+  height: 100%;
+  padding: 12px 20px;
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  transition: background-color 0.17s ease;
+}
+
+:global(.lightTheme) .contentWrapper {
+  background-color: #fff;
+  background-color: #f6f6f7;
+}
+
+.body {
+  display: flex;
+  position: relative;
+  /* overflow-y: auto; */
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+  /* max-width: 1280px; */
+  height: 100%;
+}

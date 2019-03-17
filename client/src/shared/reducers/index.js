@@ -3,6 +3,7 @@ import authReducer from './authReducer';
 import errorReducer from './errorReducer';
 import utilReducer from './utilReducer';
 import profileReducer from './profileReducer';
+import leaveReducer from './leaveReducer';
 /*
 import timetableReducer from './timetableReducer';
 import classReducer from './classReducer';
@@ -14,11 +15,12 @@ export default combineReducers({
   auth: authReducer,
   errors: errorReducer,
   utils: utilReducer,
-  profile: profileReducer
+  profile: profileReducer,
+  leave: leaveReducer
   /*
   timetable: timetableReducer,
   classes: classReducer,
   courses: courseReducer,
   staff: staffReducer,
-  leave: leaveReducer */
+  */
 });
