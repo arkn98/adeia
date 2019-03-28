@@ -1,0 +1,164 @@
+.table {
+  border-collapse: separate;
+  border-spacing: 0;
+  vertical-align: middle;
+  overflow-x: auto;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  box-shadow: 0 1px 3px rgba(40, 43, 48, 1);
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 22px;
+  min-width: 768px;
+  overflow-x: auto;
+  width: 100%;
+  word-break: break-all;
+  table-layout: fixed;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+:global(.lightTheme) .table {
+  box-shadow: 0 1px 3px rgba(40, 43, 48, 0.1);
+}
+
+.table thead {
+  background: #35383c;
+  transition: background 0.17s ease;
+}
+
+:global(.lightTheme) .table thead {
+  background: rgba(79, 84, 92, 0.1);
+}
+
+.table tbody tr {
+  background: #2e3136;
+  transition: background 0.17s ease;
+}
+
+:global(.lightTheme) .table tbody tr {
+  background: transparent;
+}
+
+.bgStripeOverride {
+  background: transparent !important;
+  transition: none !important;
+}
+
+:global(.lightTheme) .bgStripeOverride {
+  background: transparent !important;
+}
+
+.table.striped tbody tr:nth-child(2n) {
+  background: #35383c;
+}
+
+:global(.lightTheme) .table.striped tbody tr:nth-child(2n) {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.table th,
+.table td {
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.3);
+  vertical-align: middle;
+}
+
+:global(.lightTheme) .table th,
+:global(.lightTheme) .table td {
+  border-style: solid;
+  border-color: rgba(79, 84, 92, 0.3);
+}
+
+.table th {
+  color: hsla(0, 0%, 100%, 0.5);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  padding: 8px;
+  text-transform: capitalize;
+}
+
+.table td {
+  color: hsla(0, 0%, 100%, 0.8);
+  font-size: 14px;
+  font-weight: 500;
+  max-width: 272px;
+  padding: 8px;
+  height: 36px;
+  /* vertical-align: center;
+  width: 48px; */
+  transition: color 0.17s ease, font-weight 0.17s ease;
+}
+
+:global(.lightTheme) .table th {
+  font-weight: 500;
+}
+
+:global(.lightTheme) .table td,
+:global(.lightTheme) .table th {
+  color: #4f545c;
+}
+
+/*top borders*/
+.table tr:first-child th {
+  border-top-width: 1px;
+}
+
+/*left borders*/
+.table tr th:first-child,
+.table tr td:first-child {
+  border-left-width: 1px;
+}
+
+.table tr th,
+.table tr td {
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+}
+
+.table tr:first-child th:first-child {
+  border-top-left-radius: 6px;
+}
+
+.table tr:first-child th:last-child {
+  border-top-right-radius: 6px;
+}
+
+.table tr:last-child td:first-child {
+  border-bottom-left-radius: 6px;
+}
+
+.table tr:last-child td:last-child {
+  border-bottom-right-radius: 6px;
+}
+
+.hoverable {
+  cursor: pointer;
+  transition: background-color 0.17s ease, color 0.17s ease;
+}
+
+.hoverable:hover {
+  background-color: rgba(79, 84, 92, 1) !important;
+  color: #fff;
+}
+
+:global(.lightTheme) .hoverable:hover {
+  background-color: rgba(79, 84, 92, 0.4) !important;
+  color: #fff;
+}
+
+.focused {
+  background-color: rgba(79, 84, 92, 1) !important;
+  color: #fff !important;
+}
+
+:global(.lightTheme) .focused {
+  background-color: rgba(79, 84, 92, 0.4) !important;
+  color: #fff !important;
+}
+
+.inlineEditorTr {
+  padding: 12px;
+}

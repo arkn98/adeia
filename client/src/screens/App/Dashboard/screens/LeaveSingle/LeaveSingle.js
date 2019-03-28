@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import 'react-table/react-table.css';
-import styles from './LeaveSingle.module.scss';
+//import styles from './LeaveSingle.module.scss';
 /*import leaveTypes from 'data/leaveTypes'; */
 import { FullPageSpinner } from 'screens/App/shared/common/Spinner';
-import dayjs from 'dayjs';
+import Error from 'screens/App/shared/components/Error';
+//import dayjs from 'dayjs';
 
 class LeaveSingle extends Component {
   state = {
@@ -29,13 +30,23 @@ class LeaveSingle extends Component {
           <FullPageSpinner loadingPrimary={true} />
         </Fragment>
       );
-    /* else return null; */ else
-      return (
-        <Fragment>
-          {currentLeave.leaveId}
-          {match.params.leaveId}
-        </Fragment>
-      );
+    else {
+      if (typeof currentLeave === 'undefined')
+        return (
+          <Error
+            updateCurrentRouteTitle={this.props.updateCurrentRouteTitle}
+            pageTitle="Page not found"
+            inDashboard={true}
+            message="We can't find the page that you're looking for :("
+            footerAltColors={false}
+            showButton={true}
+            buttonLocation="back"
+            buttonContent="Go back">
+            404
+          </Error>
+        );
+      else return <Fragment>{currentLeave.leaveId}</Fragment>;
+    }
   };
 }
 

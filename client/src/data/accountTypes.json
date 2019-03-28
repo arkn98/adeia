@@ -1,0 +1,16 @@
+{
+  "accountTypes": [
+    {
+      "label": "Admin",
+      "value": "0"
+    },
+    {
+      "label": "Office",
+      "value": "1"
+    },
+    {
+      "label": "Staff",
+      "value": "2"
+    }
+  ]
+}

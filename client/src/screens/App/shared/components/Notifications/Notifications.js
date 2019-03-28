@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from './Notifications.module.scss';
-import onClickOutside from 'react-onclickoutside';
+import ClickOutside from 'react-click-outside';
 
 class Notifications extends Component {
   state = {
@@ -21,11 +21,6 @@ class Notifications extends Component {
     this.toggle();
   };
 
-  handleClickOutside = event => {
-    event.preventDefault();
-    this.toggle();
-  };
-
   toggle = () => {
     this.setState({ ...this.state, transitionEnd: false }, () => {
       setTimeout(() => {
@@ -36,11 +31,14 @@ class Notifications extends Component {
 
   render = () => {
     return (
-      <div className={`${styles.dashPopouts} ${styles.notificationsContainer}`}>
-        abcd
-      </div>
+      <ClickOutside onClickOutside={() => this.toggle()}>
+        <div
+          className={`${styles.dashPopouts} ${styles.notificationsContainer}`}>
+          abcd
+        </div>
+      </ClickOutside>
     );
   };
 }
 
-export default onClickOutside(Notifications, { excludeScrollbar: true });
+export default Notifications;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from './Dashboard.module.scss';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 import {
   MdMenu,
   MdInformationCircle,
@@ -11,6 +11,10 @@ import Main from './screens/Main';
 import LeaveApplication from './screens/LeaveApplication';
 import LeaveList from './screens/LeaveList';
 import LeaveSingle from './screens/LeaveSingle';
+import Timetable from './screens/Timetable';
+import AddStaff from './screens/AddStaff';
+import AddAdmin from './screens/AddAdmin';
+import AddCourse from './screens/AddCourse';
 import Error from '../shared/components/Error';
 
 class Dashboard extends Component {
@@ -81,6 +85,58 @@ class Dashboard extends Component {
           )}
         />
       );
+      pages.push(
+        <Route
+          key="timetable"
+          path="/dashboard/timetable"
+          exact
+          render={() => (
+            <Timetable
+              pageTitle="Timetable"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
+      pages.push(
+        <Route
+          key="addstaff"
+          path="/dashboard/add-staff"
+          exact
+          render={() => (
+            <AddStaff
+              pageTitle="Add Staff"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
+      pages.push(
+        <Route
+          key="addprivaccount"
+          path="/dashboard/add-priv-account"
+          exact
+          render={() => (
+            <AddAdmin
+              pageTitle="Add Privileged Account"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
+      pages.push(
+        <Route
+          key="addcourse"
+          path="/dashboard/add-course"
+          exact
+          render={() => (
+            <AddCourse
+              pageTitle="Add Course"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
     } else {
       pages.push(
         <Route
@@ -124,7 +180,7 @@ class Dashboard extends Component {
             pageTitle="Page not found"
             inDashboard={true}
             message="We can't find the page that you're looking for :("
-            footerAltColors={true}
+            footerAltColors={false}
             showButton={true}
             buttonLocation="back"
             buttonContent="Go back">
@@ -196,21 +252,13 @@ class Dashboard extends Component {
                     />
                   </div>
                   <div className={styles.topBarIconWrapper}>
-                    <MdInformationCircle
-                      onClick={() => {
-                        this.props.showPopout({
-                          type: 'modalSingleButton',
-                          title: 'Instructions Sent',
-                          message:
-                            'We sent instructions to change your password to please check both your inbox & spam folder.',
-                          buttonPrimary: true,
-                          buttonContent: 'Okay'
-                        });
-                      }}
-                      className={`${styles.topBarIcon} ${
-                        styles.topBarIconMedium
-                      }`}
-                    />
+                    <Link to="/dashboard/info">
+                      <MdInformationCircle
+                        className={`${styles.topBarIcon} ${
+                          styles.topBarIconMedium
+                        }`}
+                      />
+                    </Link>
                   </div>
                 </div>
               </div>

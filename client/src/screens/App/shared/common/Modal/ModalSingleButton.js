@@ -75,14 +75,7 @@ class ModalSingleButton extends Component {
                   <ButtonModalPrimary onClick={this.modalConfirmHandler}>
                     {buttonContent}
                   </ButtonModalPrimary>
-                ) : /* <button
-                    onClick={this.modalConfirmHandler}
-                    className={`${styles.button} ${styles.lookFilled} ${
-                      styles.buttonRed
-                    }`}>
-                    {buttonContent}
-                  </button> */
-                null}
+                ) : null}
                 {buttonDanger ? (
                   <button
                     onClick={this.modalConfirmHandler}

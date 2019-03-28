@@ -37,7 +37,7 @@ class LeaveApplication extends Component {
   };
 
   componentDidMount = () => {
-    this.props.updateCurrentRouteTitle('Leave Application');
+    this.props.updateCurrentRouteTitle(this.props.pageTitle);
   };
 
   inputOnChangeHandler = event => {

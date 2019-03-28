@@ -1,13 +1,11 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const fs = require('fs');
 const compression = require('compression');
 const https = require('https');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
-const xlsx = require('node-xlsx').default;
 
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
@@ -32,44 +30,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 //}
 
-app.use(fileUpload());
-
-app.post(
-  '/upload',
-  /* cors(),*/ (req, res) => {
-    let uploadFile = req.files.file;
-    let fileName = req.files.file.name;
-    let data = req.files.file.data;
-    const toPath = `${__dirname}/uploads/${fileName}`;
-    uploadFile.mv(toPath, err => {
-      if (err) {
-        return res.status(500).send(err);
-      }
-      const stream = fs.createWriteStream(toPath, { encoding: 'utf8' });
-      stream.once('open', () => {
-        stream.write(data, writeErr => {
-          if (writeErr) {
-            return res.status(500).send(err);
-          }
-          stream.close();
-          console.log(
-            `File ${
-              fs.existsSync(toPath) ? 'exists' : 'does NOT exist'
-            } under ${toPath}.`
-          );
-          if (fs.existsSync(toPath)) {
-            console.log(`Content of ${toPath}:`);
-            const workSheetsFromFile = xlsx.parse(fs.readFileSync(toPath));
-            console.log(workSheetsFromFile.SheetNames);
-          }
-        });
-      });
-      res.json({
-        file: `public/${req.files.file.name}`
-      });
-    });
-  }
-);
+app.use(fileUpload({ safeFileNames: true, preserveExtension: true }));
 
 //DB  config
 const db = require('./config/keys').mongoURI;

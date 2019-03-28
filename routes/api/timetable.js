@@ -3,6 +3,9 @@ const router = express.Router();
 const passport = require('passport');
 const mongoose = require('mongoose');
 const moment = require('moment');
+const fs = require('fs');
+const parse = require('csv-parse/lib/sync');
+const xlsx = require('node-xlsx').default;
 
 moment().local();
 
@@ -18,13 +21,9 @@ const validateAddTimetableInput = require('../../validation/addTimetable');
 const {
   getTimetableDayEntries,
   getTimetableEntries,
-  deleteExistingEntries
+  deleteExistingEntries,
+  csvToTimetable
 } = require('../../services/timetable');
-
-// @route   GET   api/timetable/test
-// @desc    Tests admin route
-// @access  Public
-router.get('/test', (req, res) => res.json({ msg: 'Timetable works' }));
 
 router.post(
   '/add-timetable',
@@ -81,6 +80,54 @@ router.post(
             .catch(err => console.log(err));
         })
         .catch(err => console.log(err));
+    } else {
+      return res
+        .status(400)
+        .json({ msg: 'You do not have sufficient permissions' });
+    }
+  }
+);
+
+router.post(
+  '/upload',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    if (req.user.accountType === 0) {
+      let uploadFile = req.files.file;
+      let fileName = uploadFile.name;
+      let data = uploadFile.data;
+      const toPath = `${__dirname}/../../uploads/${Date.now()}-${fileName}`;
+      uploadFile.mv(toPath, err => {
+        if (err) {
+          return res.status(500).send(err);
+        }
+        const stream = fs.createWriteStream(toPath, { encoding: 'utf8' });
+        stream.once('open', () => {
+          stream.write(data, writeErr => {
+            if (writeErr) {
+              return res.status(500).send(err);
+            }
+            stream.close();
+            console.log(
+              `File ${
+                fs.existsSync(toPath) ? 'exists' : 'does NOT exist'
+              } under ${toPath}.`
+            );
+            if (fs.existsSync(toPath)) {
+              console.log(`Content of ${toPath}:`);
+              const fileData = fs.readFileSync(toPath);
+              const records = parse(fileData, {
+                skip_empty_lines: true
+              });
+              /* const workSheetsFromFile = xlsx.parse(fs.readFileSync(toPath)); */
+              const result = csvToTimetable(records);
+              console.log(JSON.stringify(result));
+              return res.json(result);
+            }
+            return res.status(500).json({ msg: 'error' });
+          });
+        });
+      });
     } else {
       return res
         .status(400)
@@ -270,8 +317,8 @@ router.get(
   }
 );
 
-// @route   GET   api/timetable/get-courses
-// @desc    Gets all courses
+// @route   GET   api/timetable/get-staff
+// @desc    Gets all staff
 // @access  Private
 router.get(
   '/get-staff',
@@ -285,7 +332,18 @@ router.get(
           errors.msg = 'No staff found';
           return res.status(404).json();
         } else {
-          res.json(users);
+          let newUsers = users.map((item, index) => {
+            return {
+              _id: item._id,
+              staffId: item.staffId,
+              name: item.name,
+              designation: item.designation,
+              category: item.category,
+              email: item.email,
+              staffType: item.staffType
+            };
+          });
+          res.json(newUsers);
         }
       })
       .catch(err => res.status(404).json(err));

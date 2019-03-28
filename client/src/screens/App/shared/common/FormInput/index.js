@@ -4,3 +4,7 @@ export { default as SelectBox } from './SelectBox';
 export { default as RadioButton } from './RadioButton';
 export { default as TextArea } from './TextArea';
 export { default as FormRow } from './FormRow';
+export { default as LabelWithRightChildren } from './LabelWithRightChildren';
+export { default as SelectSearch } from './SelectSearch';
+export { default as FileUpload } from './FileUpload';
+export { default as RadioButtonGroup } from './RadioButtonGroup';

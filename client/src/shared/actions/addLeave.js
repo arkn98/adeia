@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_ERRORS, GET_LEAVE } from '../actionTypes';
+import { GET_ERRORS } from '../actionTypes';
 import { isEmpty } from '../utils';
 
 const addLeave = data => dispatch => {

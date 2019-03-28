@@ -1,0 +1,167 @@
+.marginBottom20 {
+  margin-bottom: 20px;
+}
+
+.marginBottom8 {
+  margin-bottom: 8px;
+}
+
+.inlineEditorWrapper {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  border-radius: 5px;
+  /* border: 1px solid rgba(0, 0, 0, 0.3); */
+}
+
+:global(.lightTheme) .inlineEditorWrapper {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.customIconTest {
+  width: 16px;
+  fill-opacity: 0.75;
+  fill: #f6f6f7;
+  /* fill-opacity: 1; */
+  top: 1px;
+  position: relative;
+  transition: fill 0.17s ease;
+}
+
+:global(.lightTheme) .customIconTest {
+  fill-opacity: 1;
+  fill: #4f545c;
+}
+
+.iconHoverWrapper {
+  cursor: pointer;
+  position: relative;
+  background: none;
+  padding: 6px 8px;
+  border-radius: 3px;
+}
+
+.iconHoverWrapper:hover {
+  background: hsla(0, 0%, 0%, 0.15);
+}
+
+:global(.lightTheme) .iconHoverWrapper:hover {
+  background: rgba(79, 84, 92, 0.1);
+}
+
+.iconHoverWrapper:active {
+  background: hsla(0, 0%, 0%, 0.3);
+}
+
+:global(.lightTheme) .iconHoverWrapper:active {
+  background: rgba(79, 84, 92, 0.3);
+}
+
+.iconHoverWrapper:active .customIconTest {
+  fill: #fff;
+}
+
+.iconHoverWrapper.danger:hover {
+  background-color: rgba(240, 71, 71, 0.1);
+}
+
+.iconHoverWrapper.danger:active {
+  background-color: rgba(240, 71, 71, 1);
+}
+
+.iconHoverWrapper.danger:hover .customIconTest {
+  fill: rgb(240, 71, 71);
+}
+
+.iconHoverWrapper.danger:active .customIconTest {
+  fill: #fff;
+}
+
+.editorInner {
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  padding: 12px;
+}
+
+:global(.lightTheme) .editorInner {
+  border-color: rgba(79, 84, 92, 0.3);
+}
+
+@media screen and (min-width: 769px) {
+  .mobileVisible {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mobileInvisible {
+    display: none;
+  }
+}
+
+.infoBox {
+  font-size: 14px;
+  cursor: default;
+  box-sizing: border-box;
+  color: #72767d;
+  transition: color 0.17s ease;
+}
+
+:global(.lightTheme) .infoBox {
+  color: rgba(114, 118, 125, 1);
+}
+
+.smallLinkButton {
+  cursor: pointer;
+  color: hsla(0, 0%, 100%, 1);
+}
+
+:global(.lightTheme) .smallLinkButton {
+  color: #72767d;
+}
+
+.smallLinkButton:hover {
+  color: hsla(0, 0%, 100%, 1);
+  text-decoration: underline;
+}
+
+:global(.lightTheme) .smallLinkButton:hover {
+  color: #72767d;
+  text-decoration: underline;
+}
+
+.hoverable {
+  cursor: pointer;
+  transition: background-color 0.17s ease, color 0.17s ease;
+}
+
+.hoverable:hover {
+  background-color: rgba(79, 84, 92, 1) !important;
+  color: #fff;
+}
+
+:global(.lightTheme) .hoverable:hover {
+  background-color: rgba(79, 84, 92, 0.4) !important;
+  color: #fff;
+}
+
+.focused {
+  background-color: rgba(79, 84, 92, 1) !important;
+  color: #fff !important;
+}
+
+:global(.lightTheme) .focused {
+  background-color: rgba(79, 84, 92, 0.4) !important;
+  color: #fff !important;
+}
+
+.editorInnerRowTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}

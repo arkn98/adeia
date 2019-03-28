@@ -1,0 +1,11 @@
+.ReactTable .rt-tr {
+  cursor: pointer;
+}
+
+.ReactTable .rt-tr:hover .rt-td {
+  background: rgba(79, 84, 92, 0.1);
+}
+
+.ReactTable .rt-tr .rt-td {
+  font-variant: tabular-nums;
+}

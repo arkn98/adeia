@@ -1,0 +1,37 @@
+{
+  "_comment": "Casual Leave, Compensation Leave, Earn Leave, Medical Leave, On Duty, Restricted Holiday, Special Casual Leave, Casual Leave - 30 Days, Casual Leave - 20 Days, Casual Leave - 6 Days",
+  "staffTypes": [
+    {
+      "label": "Regular Teaching Staff",
+      "value": "rt"
+    },
+    {
+      "label": "Regular Non-Teaching Staff",
+      "value": "rnt"
+    },
+    {
+      "label": "Teaching Fellows",
+      "value": "tf"
+    },
+    {
+      "label": "Non-Teaching - No Leave",
+      "value": "nt"
+    },
+    {
+      "label": "Research Scholars - 30",
+      "value": "rs30"
+    },
+    {
+      "label": "Research Scholars - 20",
+      "value": "rs20"
+    },
+    {
+      "label": "Research Scholars - Others",
+      "value": "rso"
+    },
+    {
+      "label": "Others",
+      "value": "oth"
+    }
+  ]
+}

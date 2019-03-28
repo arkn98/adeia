@@ -1,0 +1,36 @@
+.flex {
+  display: flex;
+}
+
+.col {
+  flex-direction: column;
+}
+
+.flexMainAxisCenter {
+  justify-content: center;
+}
+
+.flexCrossAxisCenter {
+  align-items: center;
+}
+
+.courseContainer {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+  padding: 4px 6px;
+  margin-bottom: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+:global(.lightTheme) .courseContainer {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.courseContainer:last-child {
+  margin-bottom: 0;
+}
+
+:global(.hoverable) :global(.lightTheme) .courseContainer {
+  background: rgba(255, 255, 255, 0.05);
+}

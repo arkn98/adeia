@@ -1,38 +1,28 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import styles from './SideNav.module.scss';
 import { MdSettings, LogoGithub, MdBack, MdContact } from 'assets/icons';
-import onClickOutside from 'react-onclickoutside';
 import { SettingsMenuSideNav as SettingsMenu } from '../../common/SettingsMenu';
+import ClickOutside from 'react-click-outside';
 
 const SettingsMenuWithIcon = props => {
-  SettingsMenuWithIcon.handleClickOutside = () => {
-    props.settingsMenuHide();
-  };
-
   return (
-    <div className={styles.userSettings}>
-      <SettingsMenu {...props} />
-      <div
-        className={`${styles.iconSelector} ${
-          props.isSettingsMenuVisible ? styles.iconSelectorHovered : null
-        }`}
-        onClick={() => props.settingsMenuToggle()}>
-        <MdSettings className={styles.customIconTest} />
+    <ClickOutside onClickOutside={() => props.settingsMenuHide()}>
+      <div className={styles.userSettings}>
+        <SettingsMenu {...props} />
+        <div
+          className={`${styles.iconSelector} ${
+            props.isSettingsMenuVisible ? styles.iconSelectorHovered : null
+          }`}
+          onClick={() => props.settingsMenuToggle()}>
+          <MdSettings className={styles.customIconTest} />
+        </div>
       </div>
-    </div>
+    </ClickOutside>
   );
 };
 
-const clickOutsideConfig = {
-  handleClickOutside: () => SettingsMenuWithIcon.handleClickOutside,
-  excludeScrollbar: true
-};
-
-const WrappedSettingsMenu = onClickOutside(
-  SettingsMenuWithIcon,
-  clickOutsideConfig
-);
+const WrappedSettingsMenu = SettingsMenuWithIcon;
 
 class SideNav extends Component {
   state = {
@@ -51,6 +41,7 @@ class SideNav extends Component {
 
   logoutHandler = () => {
     this.props.settingsMenuHide();
+    this.props.sideNavHide();
     this.props.showPopout({
       type: 'logout',
       title: 'Log Out?',
@@ -138,4 +129,4 @@ class SideNav extends Component {
   };
 }
 
-export default SideNav;
+export default withRouter(SideNav);

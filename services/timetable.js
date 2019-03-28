@@ -83,6 +83,81 @@ const getTimetableDayEntries = (classId, day) => {
   });
 };
 
+const csvTextToRecords = (data, day) => {
+  let newRecords = [];
+  data.forEach(entry => {
+    let csvDay = entry[1];
+    if (parseInt(csvDay) === day) {
+      let hour = entry[2];
+      let duration = entry[3];
+      let courseCode = entry[4];
+      let staffId = entry[5];
+      let additionalStaff = entry[6].split(',');
+      //check if hour already exists in newRecords
+      let index = newRecords.findIndex(
+        x => x.start === parseInt(hour) && x.duration === parseInt(duration)
+      );
+      if (index === -1) {
+        let newHour = {
+          start: parseInt(hour),
+          duration: parseInt(duration),
+          course: []
+        };
+        let courseObj = {
+          courseCode,
+          handlingStaff: staffId,
+          additionalStaff: []
+        };
+        newHour.course.push(courseObj);
+        newRecords.push(newHour);
+      } else {
+        let isCourseFound = newRecords[index].course.findIndex(
+          x => x.courseCode === courseCode
+        );
+        if (isCourseFound === -1) {
+          let courseObj = {
+            courseCode,
+            handlingStaff: staffId,
+            additionalStaff
+          };
+          newRecords[index].course.push(courseObj);
+        } else {
+          newRecords[index].course[isCourseFound].handlingStaff = staffId;
+          newRecords[index].course[
+            isCourseFound
+          ].additionalStaff = additionalStaff;
+        }
+      }
+    }
+  });
+  return newRecords;
+};
+
+const csvToTimetable = data => {
+  let result = [];
+
+  const compare = (a, b) => {
+    let aDay = a[1];
+    let bDay = b[1];
+    let aHour = a[2];
+    let bHour = b[2];
+    if (aDay === bDay) {
+      return aHour < bHour ? -1 : aHour > bHour ? 1 : 0;
+    } else {
+      return aDay < bDay ? -1 : 1;
+    }
+  };
+
+  // remove header from csv data
+  //data = data.splice(0, 1);
+  const sorted = data.sort(compare);
+
+  for (let i = 1; i <= 5; i = i + 1) {
+    result.push(csvTextToRecords(sorted, i));
+  }
+  return result;
+};
+
 const getTimetableEntries = async classId => {
   let result = [];
   for (let i = 1; i <= 5; i++) {
@@ -95,5 +170,6 @@ const getTimetableEntries = async classId => {
 module.exports = {
   getTimetableDayEntries,
   getTimetableEntries,
-  deleteExistingEntries
+  deleteExistingEntries,
+  csvToTimetable
 };

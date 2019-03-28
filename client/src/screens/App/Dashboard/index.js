@@ -7,8 +7,6 @@ import {
   getAllCourses,
   getAllStaff,
   changeTheme,
-  /* showLogoutPopup,
-  hideLogoutPopup, */
   updateCurrentRouteTitle
 } from '../../../shared/actions';
 import Dashboard from './Dashboard';

@@ -55,7 +55,9 @@ class SelectBox extends Component {
             formInputError: errors,
             disabled: disabled
           })}>
-          <option value="">Select an option</option>
+          <option disabled selected value="">
+            Select an option
+          </option>
           {optList.map((item, index) => {
             return (
               <option

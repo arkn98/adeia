@@ -1,0 +1,3 @@
+id,day,hour,duration,courseCode,handlingStaff,additionalStaff
+1,1,1,3,CS7452,10001,""
+1,1,1,3,CS7351,10002,"12345,10003"

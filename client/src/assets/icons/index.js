@@ -12,3 +12,5 @@ export { ReactComponent as MdMoon } from './md-moon.svg';
 export { ReactComponent as MdCloseCircle } from './md-close-circle.svg';
 export { ReactComponent as MdSunny } from './md-sunny.svg';
 export { ReactComponent as MdHelpCircle } from './md-help-circle.svg';
+export { ReactComponent as MdTrash } from './md-trash.svg';
+export { ReactComponent as MdClose } from './md-close.svg';
