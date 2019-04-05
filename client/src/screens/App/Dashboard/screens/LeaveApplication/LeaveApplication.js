@@ -5,12 +5,13 @@ import {
   RadioButton,
   TextArea,
   FormRow,
-  DateBox
+  DateBox,
+  Form
 } from 'screens/App/shared/common/FormInput';
 import { withRouter } from 'react-router-dom';
 import { ButtonSubmit } from 'screens/App/shared/common/Button';
 import styles from './LeaveApplication.module.scss';
-import leaveTypes from 'data/leaveTypes';
+import { leaveTypeSelectOptions } from 'data';
 import dayjs from 'dayjs';
 
 class LeaveApplication extends Component {
@@ -119,7 +120,7 @@ class LeaveApplication extends Component {
 
     return (
       <Fragment>
-        <form onSubmit={this.formSubmitHandler}>
+        <Form onSubmit={this.formSubmitHandler} showBottomSpace={true}>
           <TextBox
             name="staffId"
             label="Staff ID"
@@ -161,7 +162,7 @@ class LeaveApplication extends Component {
             inputOnChangeHandler={this.inputOnChangeHandler}
             errors={errors.leaveType}
             containerStyles={styles.marginBottom20}
-            optList={leaveTypes.leaveTypes}
+            optList={leaveTypeSelectOptions}
           />
           {this.state.leaveType !== '' ? (
             <Fragment>
@@ -240,13 +241,14 @@ class LeaveApplication extends Component {
                 containerStyles={styles.marginBottom20}
               />
               <ButtonSubmit
+                sizeSmall={true}
                 className={styles.marginBottom20}
                 isLoading={this.state.isSubmitting}>
                 Submit Application
               </ButtonSubmit>
             </Fragment>
           ) : null}
-        </form>
+        </Form>
       </Fragment>
     );
   };

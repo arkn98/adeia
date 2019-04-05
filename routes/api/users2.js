@@ -4,12 +4,14 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const passport = require('passport');
+const { body, validationResult } = require('express-validator/check');
 const {
   sendPasswordChangedMail,
   sendPasswordResetMail
 } = require('../../utils/email');
 const crypto = require('crypto');
 let parser = require('ua-parser-js');
+//const errorFormatter = require('../../utils');
 
 //load input validation
 const validateRegisterInput = require('../../validation/register');
@@ -21,7 +23,33 @@ const validateResetPasswordInput = require('../../validation/resetPassword');
 
 //load user model
 const User = require('../../models/User');
+const { accountTypes, staffTypes } = require('../../models/User');
 const Profile = require('../../models/Profile');
+
+router.get(
+  '/get-current-user',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    const id = req.query.id;
+    User.findOne({ _id: id })
+      .then(user => {
+        if (user) {
+          const newUser = {};
+          newUser.staffId = user.staffId;
+          newUser.name = user.name;
+          newUser.email = user.email;
+          newUser.staffType = user.staffType;
+          newUser.designation = user.designation;
+          newUser.category = user.category;
+          newUser.accountType = user.accountType;
+          return res.status(200).json({ user: newUser });
+        } else {
+          return res.status(404).json({ msg: 'User not found' });
+        }
+      })
+      .catch(err => console.log(err));
+  }
+);
 
 // @route   POST  api/users/add-account
 // @desc    Add admin/office accounts
@@ -29,12 +57,42 @@ const Profile = require('../../models/Profile');
 router.post(
   '/add-account',
   passport.authenticate('jwt', { session: false }),
+  [
+    body('email')
+      .exists()
+      .not()
+      .isEmpty()
+      .withMessage('Email cannot be empty')
+      .isEmail()
+      .withMessage('Enter a valid email address'),
+    body('name')
+      .exists()
+      .not()
+      .isEmpty()
+      .withMessage('Name cannot be empty')
+      .isLength({ min: 2, max: 50 })
+      .withMessage('Name must be between 2 and 50 characters'),
+    body('password')
+      .not()
+      .isEmpty()
+      .withMessage('Password cannot be empty'),
+    body('category')
+      .not()
+      .isEmpty()
+      .withMessage('Category cannot be empty'),
+    body('designation')
+      .not()
+      .isEmpty()
+      .withMessage('Designation cannot be empty'),
+    body('password')
+      .isLength({ min: 8 })
+      .withMessage('Password must be atleast 8 characters long')
+  ],
   (req, res) => {
-    if (req.user.accountType === 0) {
-      const { errors, isValid } = validateAddAccountInput(req.body);
-      //check validation
-      if (!isValid) {
-        return res.status(400).json(errors);
+    if (req.user.accountType === accountTypes.ADMIN) {
+      const errors = validationResult(req).formatWith(({ msg }) => msg);
+      if (!errors.isEmpty()) {
+        return res.status(400).json(errors.mapped());
       }
       User.findOne({ staffId: req.body.staffId, email: req.body.email })
         .then(user => {

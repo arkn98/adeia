@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const { leaveTypes, leaveStatuses } = require('../data');
 
 //leave type
 //1 -- Casual Leave -- cl -
@@ -49,6 +50,7 @@ const LeaveSchema = new Schema({
   },
   leaveType: {
     type: String,
+    enum: Object.values(leaveTypes),
     required: true
   },
   noOfDays: {
@@ -63,11 +65,12 @@ const LeaveSchema = new Schema({
     default: false
   },
   address: {
-    type: String
+    type: String,
+    default: ''
   },
   status: {
-    type: Number,
-    default: 0
+    type: String,
+    enum: Object.values(leaveStatuses)
   },
   document: {
     // path to uploaded document
@@ -75,5 +78,7 @@ const LeaveSchema = new Schema({
     default: ''
   }
 });
+
+Object.assign(LeaveSchema.statics, { leaveTypes, leaveStatuses });
 
 module.exports = Leave = mongoose.model('leaves', LeaveSchema);

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import styles from './Spinner.module.scss';
 
 const Spinner = props => {
-  const { loadingPrimary } = props;
+  const { loadingPrimary = false } = props;
   return (
     <Fragment>
       <span className={styles.spinnerAbsolute}>

@@ -5,7 +5,7 @@ import { isEmpty } from '../utils';
 const registerStaff = (userData, profileData) => dispatch => {
   return new Promise((resolve, reject) => {
     axios
-      .post('/api/users/register', userData)
+      .post('/api/admin/add-staff', userData)
       .then(res => {
         axios
           .post('/api/profile', profileData)

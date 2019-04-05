@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import styles from './FormInput.module.scss';
 import classNames from 'classnames/bind';
-import { RadioButton } from '.';
+import { RadioButton, Description } from '.';
 
 const cx = classNames.bind({ ...styles });
 
@@ -16,6 +16,8 @@ class RadioButtonGroup extends Component {
     const {
       errors,
       optlist = [],
+      description = '',
+      descriptionStyles = {},
       containerStyles = {},
       infoText = null,
       label,
@@ -48,6 +50,11 @@ class RadioButtonGroup extends Component {
             <span className={styles.errorMessage}> - {errors}</span>
           ) : null}
         </div>
+        {description !== '' ? (
+          <Description containerStyles={descriptionStyles}>
+            {description}
+          </Description>
+        ) : null}
         <div>
           {optlist.map((option, index) => {
             return (

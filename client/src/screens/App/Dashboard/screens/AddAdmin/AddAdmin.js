@@ -3,24 +3,32 @@ import styles from './AddAdmin.module.scss';
 import {
   TextBox,
   SelectBox,
-  RadioButtonGroup
+  RadioButtonGroup,
+  Form,
+  Divider,
+  SectionLabel,
+  Description
 } from 'screens/App/shared/common/FormInput';
 import { ButtonSubmit } from 'screens/App/shared/common/Button';
-import staffTypes from 'data/staffTypes';
-import accountTypes from 'data/accountTypes';
+import {
+  accountTypeSelectOptions,
+  accountTypes,
+  staffTypes,
+  staffTypeSelectOptions
+} from 'data';
 
 class AddAdmin extends Component {
   state = {
     isSubmitting: false,
     errors: {},
     staffId: '',
-    accountType: '0',
+    accountType: accountTypes.ADMIN,
     name: '',
     email: '',
     password: '',
     password2: '',
     designation: '',
-    category: 'rt'
+    category: staffTypes.RT
   };
 
   componentWillReceiveProps = nextProps => {
@@ -50,7 +58,7 @@ class AddAdmin extends Component {
     this.setState({ ...this.state, isSubmitting: true });
 
     const newUser = {
-      accountType: parseInt(this.state.accountType),
+      accountType: this.state.accountType,
       email: this.state.email,
       password: this.state.password,
       password2: this.state.password2,
@@ -59,7 +67,7 @@ class AddAdmin extends Component {
       designation: this.state.designation,
       category:
         this.state.category !== ''
-          ? staffTypes.staffTypes.find(x => x.value === this.state.category)
+          ? staffTypeSelectOptions.find(x => x.value === this.state.category)
               .label
           : '',
       staffType: this.state.category
@@ -79,13 +87,11 @@ class AddAdmin extends Component {
           isSubmitting: false,
           errors: {},
           staffId: '',
-          accountType: '0',
           name: '',
           email: '',
           password: '',
           password2: '',
-          designation: '',
-          category: 'rt'
+          designation: ''
         },
         () => {
           this.props.showPopout({
@@ -105,45 +111,39 @@ class AddAdmin extends Component {
 
     return (
       <Fragment>
-        <form onSubmit={this.formSubmitHandler}>
+        <Form onSubmit={this.formSubmitHandler} showBottomSpace={true}>
+          <SectionLabel
+            containerStyles={styles.marginBottom20}
+            label="Account Details"
+          />
           <RadioButtonGroup
             name="accountType"
             label="Account Type"
-            bigLabel={true}
             containerStyles={styles.marginBottom20}
             radioClickHandler={this.radioClickHandler}
-            optlist={accountTypes.accountTypes.map((item, index) => {
-              return {
-                isChecked: this.state.accountType === item.value,
-                value: item.value,
-                label: item.label
-              };
-            })}
+            optlist={accountTypeSelectOptions
+              .filter(item => item.value !== accountTypes.STAFF)
+              .map((item, index) => {
+                return {
+                  isChecked: this.state.accountType === item.value,
+                  value: item.value,
+                  label: item.label
+                };
+              })}
           />
           <TextBox
             name="staffId"
             label="Staff ID"
-            bigLabel={true}
             type="text"
+            description="Primary identifier used throughout the system. Make sure this stays constant."
             value={this.state.staffId}
             inputOnChangeHandler={this.inputOnChangeHandler}
             errors={errors.staffId}
             containerStyles={styles.marginBottom20}
           />
           <TextBox
-            name="email"
-            label="Email"
-            bigLabel={true}
-            type="email"
-            value={this.state.email}
-            inputOnChangeHandler={this.inputOnChangeHandler}
-            errors={errors.email}
-            containerStyles={styles.marginBottom20}
-          />
-          <TextBox
             name="name"
             label="Name"
-            bigLabel={true}
             type="text"
             value={this.state.name}
             inputOnChangeHandler={this.inputOnChangeHandler}
@@ -153,17 +153,41 @@ class AddAdmin extends Component {
           <TextBox
             name="designation"
             label="Designation"
-            bigLabel={true}
             type="text"
             value={this.state.designation}
             inputOnChangeHandler={this.inputOnChangeHandler}
             errors={errors.designation}
             containerStyles={styles.marginBottom20}
           />
+          <SelectBox
+            name="category"
+            label="Category"
+            value={this.state.category}
+            inputOnChangeHandler={this.inputOnChangeHandler}
+            errors={errors.category}
+            containerStyles={styles.marginBottom20}
+            optList={staffTypeSelectOptions}
+          />
+          <Divider />
+          <SectionLabel
+            containerStyles={styles.marginBottom8}
+            label="Credentials"
+          />
+          <Description containerStyles={styles.marginBottom20}>
+            These are the actual credentials used to login to the account.
+          </Description>
+          <TextBox
+            name="email"
+            label="Email"
+            type="text"
+            value={this.state.email}
+            inputOnChangeHandler={this.inputOnChangeHandler}
+            errors={errors.email}
+            containerStyles={styles.marginBottom20}
+          />
           <TextBox
             name="password"
             label="Password"
-            bigLabel={true}
             type="password"
             value={this.state.password}
             inputOnChangeHandler={this.inputOnChangeHandler}
@@ -173,29 +197,19 @@ class AddAdmin extends Component {
           <TextBox
             name="password2"
             label="Re-enter Password"
-            bigLabel={true}
             type="password"
             value={this.state.password2}
             inputOnChangeHandler={this.inputOnChangeHandler}
             errors={errors.password2}
             containerStyles={styles.marginBottom20}
           />
-          <SelectBox
-            name="category"
-            label="Category"
-            bigLabel={true}
-            value={this.state.category}
-            inputOnChangeHandler={this.inputOnChangeHandler}
-            errors={errors.category}
-            containerStyles={styles.marginBottom20}
-            optList={staffTypes.staffTypes}
-          />
           <ButtonSubmit
+            sizeSmall={true}
             className={styles.marginBottom20}
             isLoading={this.state.isSubmitting}>
             Add Privileged Account
           </ButtonSubmit>
-        </form>
+        </Form>
       </Fragment>
     );
   };

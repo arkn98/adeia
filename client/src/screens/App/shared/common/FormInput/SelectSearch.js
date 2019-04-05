@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import styles from './FormInput.module.scss';
 import classNames from 'classnames/bind';
 import Select, { createFilter } from 'react-select';
+import { Description } from '.';
 
 const cx = classNames.bind({ ...styles });
 
@@ -23,6 +24,8 @@ class SelectSearch extends Component {
     const {
       errors,
       containerStyles = {},
+      descriptionStyles = {},
+      description = '',
       infoText = null,
       isLoading = false,
       isSearchable = true,
@@ -143,6 +146,11 @@ class SelectSearch extends Component {
             <span className={styles.errorMessage}> - {errors}</span>
           ) : null}
         </div>
+        {description !== '' ? (
+          <Description containerStyles={descriptionStyles}>
+            {description}
+          </Description>
+        ) : null}
         <Select
           name={name}
           options={optList}

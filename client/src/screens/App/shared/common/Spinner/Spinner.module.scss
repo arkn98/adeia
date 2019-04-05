@@ -20,6 +20,23 @@
   top: 0;
   width: 100%;
   align-items: center;
+  background-color: #2f3136;
+}
+
+:global(.lightTheme) .spinnerAbsolute {
+  background-color: $color-white;
+}
+
+.spinnerAbsoluteButton {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  align-items: center;
 }
 
 .spinnerRelative {
@@ -53,7 +70,11 @@
   width: 6px;
 }
 
-.loadingPrimary .pulsingEllipsisItem {
+.spinnerAbsoluteButton .pulsingEllipsisItem {
+  background-color: $color-white !important;
+}
+
+:global(.lightTheme) .pulsingEllipsisItem {
   background-color: $color-primary;
 }
 

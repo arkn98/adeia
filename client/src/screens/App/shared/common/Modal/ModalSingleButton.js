@@ -8,12 +8,20 @@ class ModalSingleButton extends Component {
   };
 
   componentDidMount = () => {
+    if (typeof this.button !== 'undefined')
+      setTimeout(() => {
+        this.button.focus();
+      }, 100);
     setTimeout(() => {
       this.setState({
         ...this.state,
         transitionEnd: true
       });
     }, 0);
+  };
+
+  setRef = element => {
+    this.button = element;
   };
 
   modalConfirmHandler = event => {
@@ -72,12 +80,17 @@ class ModalSingleButton extends Component {
               </div>
               <div className={`${styles.flexItem} ${styles.footer}`}>
                 {buttonPrimary ? (
-                  <ButtonModalPrimary onClick={this.modalConfirmHandler}>
+                  <ButtonModalPrimary
+                    setRef={this.setRef}
+                    onClick={this.modalConfirmHandler}>
                     {buttonContent}
                   </ButtonModalPrimary>
                 ) : null}
                 {buttonDanger ? (
                   <button
+                    ref={input => {
+                      this.button = input;
+                    }}
                     onClick={this.modalConfirmHandler}
                     className={`${styles.button} ${styles.lookFilled} ${
                       styles.buttonRed
@@ -87,6 +100,9 @@ class ModalSingleButton extends Component {
                 ) : null}
                 {buttonLink ? (
                   <button
+                    ref={input => {
+                      this.button = input;
+                    }}
                     onClick={this.modalConfirmHandler}
                     className={`${styles.button} ${styles.lookLink}`}>
                     <div className={styles.contents}>Cancel</div>

@@ -8,12 +8,20 @@ class ModalDoubleButton extends Component {
   };
 
   componentDidMount = () => {
+    if (typeof this.button !== 'undefined')
+      setTimeout(() => {
+        this.button.focus();
+      }, 100);
     setTimeout(() => {
       this.setState({
         ...this.state,
         transitionEnd: true
       });
     }, 0);
+  };
+
+  setRef = element => {
+    this.button = element;
   };
 
   modalConfirmHandler = event => {
@@ -83,6 +91,8 @@ class ModalDoubleButton extends Component {
                   if (item === 'primary') {
                     return (
                       <ButtonModalPrimary
+                        tabIndex={1}
+                        setRef={this.setRef}
                         key={index}
                         onClick={
                           buttonAction[index] === 'dismiss'
@@ -100,6 +110,7 @@ class ModalDoubleButton extends Component {
                     return (
                       <button
                         key={index}
+                        tabIndex={2}
                         onClick={
                           buttonAction[index] === 'dismiss'
                             ? this.modalConfirmHandler
@@ -119,6 +130,10 @@ class ModalDoubleButton extends Component {
                     return (
                       <button
                         key={index}
+                        tabIndex={1}
+                        ref={input => {
+                          this.button = input;
+                        }}
                         onClick={
                           buttonAction[index] === 'dismiss'
                             ? this.modalConfirmHandler
@@ -137,6 +152,10 @@ class ModalDoubleButton extends Component {
                     return (
                       <button
                         key={index}
+                        tabIndex={1}
+                        ref={input => {
+                          this.button = input;
+                        }}
                         onClick={
                           buttonAction[index] === 'dismiss'
                             ? this.modalConfirmHandler

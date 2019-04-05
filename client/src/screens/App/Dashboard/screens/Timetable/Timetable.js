@@ -907,13 +907,15 @@ class Timetable extends Component {
                               justifyContent: 'flex-end',
                               alignItems: 'center',
                               position: 'relative',
-                              bottom: '-6px'
+                              bottom: '6px'
                             }}>
                             {this.state.entryContent.entry.length ===
                             index + 1 ? (
                               <ButtonSubmit
+                                sizeSmall={true}
                                 containerStyles={styles.noMarginBottom}
-                                onClick={this.newEntrySubmitHandler}>
+                                onClick={this.newEntrySubmitHandler}
+                                style={{ width: '100%' }}>
                                 {this.state.isEditEntry ? `Update` : `Add`}
                               </ButtonSubmit>
                             ) : (
@@ -957,6 +959,7 @@ class Timetable extends Component {
                       alignItems: 'center'
                     }}>
                     <ButtonSubmit
+                      sizeSmall={true}
                       containerStyles={styles.noMarginBottom}
                       onClick={this.sendFile}>
                       Load data
@@ -977,7 +980,9 @@ class Timetable extends Component {
                   {slots}
                 </Table>
                 <div className={styles.marginBottom20}>
-                  <ButtonSubmit isLoading={this.state.isSubmitting}>
+                  <ButtonSubmit
+                    sizeSmall={true}
+                    isLoading={this.state.isSubmitting}>
                     Update Timetable
                   </ButtonSubmit>
                 </div>

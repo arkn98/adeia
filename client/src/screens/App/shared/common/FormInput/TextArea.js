@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import styles from './FormInput.module.scss';
+import { Description } from '.';
 import classNames from 'classnames/bind';
 
 const cx = classNames.bind({ ...styles });
@@ -18,6 +19,8 @@ class TextArea extends Component {
       name,
       inputOnChangeHandler,
       value,
+      description = '',
+      descriptionStyles = {},
       bigLabel = false,
       disabled = false
     } = this.props;
@@ -44,6 +47,11 @@ class TextArea extends Component {
             <span className={styles.errorMessage}> - {errors}</span>
           ) : null}
         </div>
+        {description !== '' ? (
+          <Description containerStyles={descriptionStyles}>
+            {description}
+          </Description>
+        ) : null}
         <textarea
           name={name}
           ref={input => {

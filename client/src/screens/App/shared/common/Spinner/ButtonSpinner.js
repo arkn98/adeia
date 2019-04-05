@@ -5,7 +5,7 @@ const ButtonSpinner = props => {
   const { loadingPrimary } = props;
   return (
     <Fragment>
-      <span className={styles.spinnerAbsolute}>
+      <span className={styles.spinnerAbsoluteButton}>
         <span
           className={`${styles.spinnerInner} ${
             loadingPrimary ? styles.loadingPrimary : null

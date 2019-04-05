@@ -3,9 +3,8 @@ import { withRouter, Link } from 'react-router-dom';
 import ReactTable, { ReactTableDefaults } from 'react-table';
 import 'react-table/react-table.css';
 import { ButtonSubmitFullHeight } from 'screens/App/shared/common/Button';
-import leaveTypes from 'data/leaveTypes';
+import { leaveStatuses, leaveTypeSelectOptions } from 'data';
 import './TableStyles.css';
-import leaveStatus from 'data/leaveStatus';
 import dayjs from 'dayjs';
 
 const MyTrComponent = props => {
@@ -42,35 +41,35 @@ class LeaveList extends Component {
         Header: () => <div style={{ textAlign: 'left' }}>Leave ID</div>,
         accessor: 'leaveId',
         id: 'leaveId',
-        width: 96
+        width: 128
       },
       {
         Header: () => <div style={{ textAlign: 'left' }}>Applied Date</div>,
         accessor: 'applyDate',
         sortable: true,
-        Cell: ({ row }) => dayjs(row.applyDate).format('DD-MMM-YYYY'),
-        width: 128
+        Cell: ({ row }) =>
+          dayjs(row.applyDate).format('DD-MMM-YYYY hh:mm:ss A'),
+        width: 208
       },
       {
         Header: () => <div style={{ textAlign: 'left' }}>From</div>,
         id: 'from',
         accessor: 'from',
-        Cell: ({ row }) => dayjs(row.from).format('DD-MMM-YYYY'),
-        width: 128
+        Cell: ({ row }) => dayjs(row.from).format('DD-MMM-YYYY')
       },
       {
         Header: () => <div style={{ textAlign: 'left' }}>To</div>,
         id: 'to',
         accessor: 'to',
-        Cell: ({ row }) => dayjs(row.to).format('DD-MMM-YYYY'),
-        width: 128
+        Cell: ({ row }) => dayjs(row.to).format('DD-MMM-YYYY')
       },
       {
         Header: () => <div style={{ textAlign: 'left' }}>Leave type</div>,
         accessor: 'leaveType',
         id: 'leaveType',
         Cell: ({ row }) =>
-          leaveTypes.leaveTypes.find(x => x.value === row.leaveType).label
+          leaveTypeSelectOptions.find(x => x.value === row.leaveType).label,
+        width: 208
       },
       {
         Header: () => <div style={{ textAlign: 'right' }}>No. of Days</div>,
@@ -78,21 +77,19 @@ class LeaveList extends Component {
         id: 'noOfDays',
         Cell: ({ row }) => (
           <div style={{ textAlign: 'right' }}>{row.noOfDays}</div>
-        ),
-        width: 80
+        )
       },
-      {
+      /* {
         Header: () => <div style={{ textAlign: 'left' }}>Reason</div>,
         accessor: 'reason',
         id: 'reason',
         Cell: ({ row }) => <div style={{ textAlign: 'left' }}>{row.reason}</div>
-      },
+      }, */
       {
         Header: () => <div style={{ textAlign: 'left' }}>Status</div>,
         accessor: 'status',
         id: 'status',
-        Cell: ({ row }) =>
-          leaveStatus.statuses.find(x => parseInt(x.code) === row.status).name
+        Cell: ({ row }) => leaveStatuses.find(x => row.status === x.value).label
       }
     ];
 

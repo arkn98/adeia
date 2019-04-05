@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import styles from './Dashboard.module.scss';
 import { Switch, Route, Link } from 'react-router-dom';
 import {
@@ -13,14 +13,28 @@ import LeaveList from './screens/LeaveList';
 import LeaveSingle from './screens/LeaveSingle';
 import Timetable from './screens/Timetable';
 import AddStaff from './screens/AddStaff';
+import EditStaff from './screens/EditStaff';
 import AddAdmin from './screens/AddAdmin';
-import AddCourse from './screens/AddCourse';
+import AddUpdateCourse from './screens/AddUpdateCourse';
+import AddUpdateClass from './screens/AddUpdateClass';
+import Settings from './screens/Settings';
 import Error from '../shared/components/Error';
+import { FullPageSpinner } from 'screens/App/shared/common/Spinner';
+import { accountTypes } from 'data';
 
 class Dashboard extends Component {
   state = {
     isSideNavVisible: false,
-    isSettingsMenuVisible: false
+    isSettingsMenuVisible: false,
+    isLoading: !this.props.auth.isLoaded
+  };
+
+  componentDidMount = () => {
+    if (!this.props.auth.isLoaded) {
+      this.props.getCurrentUser(this.props.auth.user.id).then(res => {
+        this.setState({ ...this.state, isLoading: false });
+      });
+    }
   };
 
   sideNavToggle = () => {
@@ -71,10 +85,9 @@ class Dashboard extends Component {
   render = () => {
     const props = this.props;
     let pages = [];
-    if (props.auth.user.accountType === 0) {
+    if (props.auth.user.accountType === accountTypes.ADMIN) {
       pages.push(
         <Route
-          key="leavelist"
           path="/dashboard/leave/list"
           exact
           render={() => (
@@ -87,7 +100,6 @@ class Dashboard extends Component {
       );
       pages.push(
         <Route
-          key="timetable"
           path="/dashboard/timetable"
           exact
           render={() => (
@@ -100,8 +112,7 @@ class Dashboard extends Component {
       );
       pages.push(
         <Route
-          key="addstaff"
-          path="/dashboard/add-staff"
+          path="/dashboard/staff/add"
           exact
           render={() => (
             <AddStaff
@@ -113,8 +124,19 @@ class Dashboard extends Component {
       );
       pages.push(
         <Route
-          key="addprivaccount"
-          path="/dashboard/add-priv-account"
+          path="/dashboard/staff/edit"
+          exact
+          render={() => (
+            <EditStaff
+              pageTitle="Edit Staff"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
+      pages.push(
+        <Route
+          path="/dashboard/priv-account/add"
           exact
           render={() => (
             <AddAdmin
@@ -126,12 +148,23 @@ class Dashboard extends Component {
       );
       pages.push(
         <Route
-          key="addcourse"
-          path="/dashboard/add-course"
+          path="/dashboard/course"
           exact
           render={() => (
-            <AddCourse
-              pageTitle="Add Course"
+            <AddUpdateCourse
+              pageTitle="Course Settings"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
+      pages.push(
+        <Route
+          path="/dashboard/class"
+          exact
+          render={() => (
+            <AddUpdateClass
+              pageTitle="Class Settings"
               showPopout={this.props.showPopout}
             />
           )}
@@ -140,15 +173,18 @@ class Dashboard extends Component {
     } else {
       pages.push(
         <Route
-          key="leaveapplication"
           path="/dashboard/leave/apply"
           exact
-          render={() => <LeaveApplication showPopout={this.props.showPopout} />}
+          render={() => (
+            <LeaveApplication
+              pageTitle="Apply for leave"
+              showPopout={this.props.showPopout}
+            />
+          )}
         />
       );
       pages.push(
         <Route
-          key="leavelist"
           path="/dashboard/leave/list"
           exact
           render={() => (
@@ -162,7 +198,6 @@ class Dashboard extends Component {
     }
     pages.push(
       <Route
-        key="leave"
         path="/dashboard/leave/view/:leaveId"
         exact
         render={() => (
@@ -170,10 +205,21 @@ class Dashboard extends Component {
         )}
       />
     );
-    pages.push(<Route key="main" path="/dashboard" exact component={Main} />);
     pages.push(
       <Route
-        key="404"
+        path="/dashboard/settings"
+        exact
+        render={() => (
+          <Settings
+            pageTitle="Account Settings"
+            showPopout={this.props.showPopout}
+          />
+        )}
+      />
+    );
+    pages.push(<Route path="/dashboard" exact component={Main} />);
+    pages.push(
+      <Route
         render={() => (
           <Error
             updateCurrentRouteTitle={this.props.updateCurrentRouteTitle}
@@ -189,91 +235,98 @@ class Dashboard extends Component {
         )}
       />
     );
-
-    return (
-      <div className={styles.dashMount}>
-        <div
-          className={`${styles.sideNavWrapper} ${
-            this.state.isSideNavVisible ? styles.sideNavVisible : null
-          }`}>
-          {this.state.isSideNavVisible ? (
-            <div
-              onClick={event => this.sideNavHide()}
-              className={styles.backdrop}
+    if (this.state.isLoading) {
+      return (
+        <Fragment>
+          <FullPageSpinner />
+        </Fragment>
+      );
+    } else {
+      return (
+        <div className={styles.dashMount}>
+          <div
+            className={`${styles.sideNavWrapper} ${
+              this.state.isSideNavVisible ? styles.sideNavVisible : null
+            }`}>
+            {this.state.isSideNavVisible ? (
+              <div
+                onClick={event => this.sideNavHide()}
+                className={styles.backdrop}
+              />
+            ) : null}
+            <SideNav
+              auth={this.props.auth}
+              showPopout={this.props.showPopout}
+              isSideNavVisible={this.state.isSideNavVisible}
+              isSettingsMenuVisible={this.state.isSettingsMenuVisible}
+              sideNavHide={this.sideNavHide}
+              settingsMenuShow={this.settingsMenuShow}
+              settingsMenuHide={this.settingsMenuHide}
+              settingsMenuToggle={this.settingsMenuToggle}
             />
-          ) : null}
-          <SideNav
-            auth={this.props.auth}
-            showPopout={this.props.showPopout}
-            isSideNavVisible={this.state.isSideNavVisible}
-            isSettingsMenuVisible={this.state.isSettingsMenuVisible}
-            sideNavHide={this.sideNavHide}
-            settingsMenuShow={this.settingsMenuShow}
-            settingsMenuHide={this.settingsMenuHide}
-            settingsMenuToggle={this.settingsMenuToggle}
-          />
-        </div>
-        <div className={styles.mainWrapper}>
-          <div className={styles.main}>
-            <div className={styles.topBarWrapper}>
-              <div className={styles.topBar}>
-                <div className={styles.topBarLeftTitleFlex}>
-                  <div
-                    className={`${styles.topBarHamburgerWrapper} ${
-                      styles.mobileVisible
-                    }`}>
-                    <MdMenu
-                      onClick={this.sideNavToggle}
-                      className={styles.topBarIcon}
-                    />
-                  </div>
-                  <div className={styles.pageTitle}>
-                    {props.utils.currentPageTitle}
-                  </div>
-                </div>
-                <div className={styles.topBarRightIconFlex}>
-                  {/* <div className={styles.searchBarWrapper}>
-                    <div className={styles.search}>
-                      <div className={styles.searchBar}>Search</div>
+          </div>
+          <div className={styles.mainWrapper}>
+            <div className={styles.main}>
+              <div className={styles.topBarWrapper}>
+                <div className={styles.topBar}>
+                  <div className={styles.topBarLeftTitleFlex}>
+                    <div
+                      className={`${styles.topBarHamburgerWrapper} ${
+                        styles.mobileVisible
+                      }`}>
+                      <MdMenu
+                        onClick={this.sideNavToggle}
+                        className={styles.topBarIcon}
+                      />
                     </div>
-                  </div> 
-                  <div>search</div>
-                  <div className={styles.seperator} /> */}
-                  <div className={styles.topBarIconWrapper}>
-                    <MdNotifications
-                      onClick={() => {
-                        this.props.showPopout({
-                          type: 'notifications'
-                        });
-                      }}
-                      className={`${styles.topBarIcon} ${
-                        styles.topBarIconMedium
-                      }`}
-                    />
+                    <div className={styles.pageTitle}>
+                      {props.utils.currentPageTitle}
+                    </div>
                   </div>
-                  <div className={styles.topBarIconWrapper}>
-                    <Link to="/dashboard/info">
-                      <MdInformationCircle
+                  <div className={styles.topBarRightIconFlex}>
+                    {/* <div className={styles.searchBarWrapper}>
+                  <div className={styles.search}>
+                    <div className={styles.searchBar}>Search</div>
+                  </div>
+                </div> 
+                <div>search</div>
+                <div className={styles.seperator} /> */}
+                    <div className={styles.topBarIconWrapper}>
+                      <MdNotifications
+                        onClick={() => {
+                          this.props.showPopout({
+                            type: 'notifications'
+                          });
+                        }}
                         className={`${styles.topBarIcon} ${
                           styles.topBarIconMedium
                         }`}
                       />
-                    </Link>
+                    </div>
+                    <div className={styles.topBarIconWrapper}>
+                      <Link to="/dashboard/info">
+                        <MdInformationCircle
+                          className={`${styles.topBarIcon} ${
+                            styles.topBarIconMedium
+                          }`}
+                        />
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className={styles.scrollWrapper}>
-              <div className={styles.contentWrapper}>
-                <div className={styles.body}>
-                  <Switch>{pages}</Switch>
+              <div className={styles.scrollWrapper}>
+                <div className={styles.contentWrapper}>
+                  <div className={styles.body}>
+                    <Switch>{pages}</Switch>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
   };
 }
 

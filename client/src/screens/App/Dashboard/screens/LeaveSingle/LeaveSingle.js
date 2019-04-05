@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import 'react-table/react-table.css';
 //import styles from './LeaveSingle.module.scss';
-/*import leaveTypes from 'data/leaveTypes'; */
 import { FullPageSpinner } from 'screens/App/shared/common/Spinner';
 import Error from 'screens/App/shared/components/Error';
 //import dayjs from 'dayjs';

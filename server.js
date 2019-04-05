@@ -13,7 +13,7 @@ const cors = require('cors');
 mongoose.set('useCreateIndex', true);
 mongoose.set('useNewUrlParser', true);
 
-const users = require('./routes/api/users');
+const users = require('./routes/api/users2');
 const profile = require('./routes/api/profile');
 const admin = require('./routes/api/admin');
 const timetable = require('./routes/api/timetable');

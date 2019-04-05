@@ -7,7 +7,8 @@ import {
   getAllCourses,
   getAllStaff,
   changeTheme,
-  updateCurrentRouteTitle
+  updateCurrentRouteTitle,
+  getCurrentUser
 } from '../../../shared/actions';
 import Dashboard from './Dashboard';
 import { connect } from 'react-redux';
@@ -84,12 +85,11 @@ const Container = connect(
   mapStateToProps,
   {
     getCurrentProfile,
-    /* hideLogoutPopup, */
     clearCurrentProfile,
     logoutUser,
     changeTheme,
-    /* showLogoutPopup, */
     getAllClasses,
+    getCurrentUser,
     getAllCourses,
     getAllStaff,
     updateCurrentRouteTitle

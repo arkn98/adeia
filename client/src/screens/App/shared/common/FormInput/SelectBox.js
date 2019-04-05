@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import styles from './FormInput.module.scss';
+import { Description } from '.';
 import classNames from 'classnames/bind';
 
 const cx = classNames.bind({ ...styles });
@@ -13,6 +14,8 @@ class SelectBox extends Component {
     const {
       errors,
       containerStyles = {},
+      descriptionStyles = {},
+      description = '',
       infoText = null,
       label,
       name,
@@ -20,7 +23,8 @@ class SelectBox extends Component {
       value,
       bigLabel = false,
       disabled = false,
-      optList = []
+      optList = [],
+      makePlaceholderOptionDisabled = true
     } = this.props;
     return (
       <div className={containerStyles}>
@@ -42,6 +46,11 @@ class SelectBox extends Component {
             <span className={styles.errorMessage}> - {errors}</span>
           ) : null}
         </div>
+        {description !== '' ? (
+          <Description containerStyles={descriptionStyles}>
+            {description}
+          </Description>
+        ) : null}
         <select
           name={name}
           ref={input => {
@@ -55,7 +64,7 @@ class SelectBox extends Component {
             formInputError: errors,
             disabled: disabled
           })}>
-          <option disabled selected value="">
+          <option disabled={makePlaceholderOptionDisabled} selected value="">
             Select an option
           </option>
           {optList.map((item, index) => {

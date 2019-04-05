@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const { accountTypes, staffTypes } = require('../data');
 
 //account type
 //0 -- admin
@@ -51,17 +52,18 @@ const UserSchema = new Schema(
       required: true
     },
     accountType: {
-      type: Number,
-      default: 2,
-      required: true
+      type: String,
+      enum: Object.values(accountTypes),
+      default: accountTypes.STAFF
     },
     activated: {
-      type: Number,
-      default: 0,
+      type: Boolean,
+      default: false,
       required: true
     },
     staffType: {
-      type: String
+      type: String,
+      enum: Object.values(staffTypes)
     },
     resetPasswordToken: {
       type: String,
@@ -78,5 +80,7 @@ const UserSchema = new Schema(
   },
   { minimize: false }
 );
+
+Object.assign(UserSchema.statics, { accountTypes, staffTypes });
 
 module.exports = User = mongoose.model('users', UserSchema);

@@ -5,7 +5,7 @@ import { GET_COURSES } from '../actionTypes';
 const getAllCourses = () => dispatch => {
   return new Promise((resolve, reject) => {
     axios
-      .get('/api/timetable/get-courses')
+      .get('/api/admin/get-courses')
       .then(res => {
         dispatch({
           type: GET_COURSES,
@@ -16,7 +16,7 @@ const getAllCourses = () => dispatch => {
       .catch(err => {
         dispatch({
           type: GET_COURSES,
-          payload: {}
+          payload: []
         });
         reject(false);
       });

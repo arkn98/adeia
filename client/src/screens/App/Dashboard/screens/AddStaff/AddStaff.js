@@ -1,8 +1,13 @@
 import React, { Fragment, Component } from 'react';
 import styles from './AddStaff.module.scss';
-import { TextBox, SelectBox } from 'screens/App/shared/common/FormInput';
+import {
+  TextBox,
+  Form,
+  SelectBox,
+  SectionLabel
+} from 'screens/App/shared/common/FormInput';
 import { ButtonSubmit } from 'screens/App/shared/common/Button';
-import staffTypes from 'data/staffTypes';
+import { staffTypes, staffTypeSelectOptions } from 'data';
 
 class AddStaff extends Component {
   state = {
@@ -11,7 +16,7 @@ class AddStaff extends Component {
     staffId: '',
     name: '',
     designation: '',
-    category: 'rt'
+    category: staffTypes.RT
   };
 
   componentWillReceiveProps = nextProps => {
@@ -36,31 +41,13 @@ class AddStaff extends Component {
     event.preventDefault();
     this.setState({ ...this.state, isSubmitting: true });
 
-    /*
-    let staffType = this.state.category;
-    
-    if (this.state.category === 'Regular Teaching Staff') staffType = 'rt';
-    else if (this.state.category === 'Regular Non-Teaching Staff')
-      staffType = 'rnt';
-    else if (this.state.category === 'Teaching Fellows') staffType = 'tf';
-    else if (this.state.category === 'Non-Teaching - No Leave')
-      staffType = 'nt';
-    else if (this.state.category === 'Research Scholars - 30')
-      staffType = 'rs30';
-    else if (this.state.category === 'Research Scholars - 20')
-      staffType = 'rs20';
-    else if (this.state.category === 'Research Scholars - Others')
-      staffType = 'rso';
-    else if (this.state.category === 'Others') staffType = 'oth';
-    else staffType = null; */
-
     const newUser = {
       staffId: this.state.staffId,
       name: this.state.name,
       designation: this.state.designation,
       category:
         this.state.category !== ''
-          ? staffTypes.staffTypes.find(x => x.value === this.state.category)
+          ? staffTypeSelectOptions.find(x => x.value === this.state.category)
               .label
           : '',
       staffType: this.state.category
@@ -82,7 +69,7 @@ class AddStaff extends Component {
           staffId: '',
           name: '',
           designation: '',
-          category: 'rt'
+          category: staffTypes.RT
         },
         () => {
           this.props.showPopout({
@@ -102,11 +89,14 @@ class AddStaff extends Component {
 
     return (
       <Fragment>
-        <form onSubmit={this.formSubmitHandler}>
+        <Form onSubmit={this.formSubmitHandler} showBottomSpace={true}>
+          <SectionLabel
+            containerStyles={styles.marginBottom20}
+            label="Account Details"
+          />
           <TextBox
             name="staffId"
             label="Staff ID"
-            bigLabel={true}
             type="text"
             value={this.state.staffId}
             inputOnChangeHandler={this.inputOnChangeHandler}
@@ -116,7 +106,6 @@ class AddStaff extends Component {
           <TextBox
             name="name"
             label="Name"
-            bigLabel={true}
             type="text"
             value={this.state.name}
             inputOnChangeHandler={this.inputOnChangeHandler}
@@ -126,7 +115,6 @@ class AddStaff extends Component {
           <TextBox
             name="designation"
             label="Designation"
-            bigLabel={true}
             type="text"
             value={this.state.designation}
             inputOnChangeHandler={this.inputOnChangeHandler}
@@ -136,19 +124,19 @@ class AddStaff extends Component {
           <SelectBox
             name="category"
             label="Category"
-            bigLabel={true}
             value={this.state.category}
             inputOnChangeHandler={this.inputOnChangeHandler}
             errors={errors.category}
             containerStyles={styles.marginBottom20}
-            optList={staffTypes.staffTypes}
+            optList={staffTypeSelectOptions}
           />
           <ButtonSubmit
+            sizeSmall={true}
             className={styles.marginBottom20}
             isLoading={this.state.isSubmitting}>
             Add Staff
           </ButtonSubmit>
-        </form>
+        </Form>
       </Fragment>
     );
   };

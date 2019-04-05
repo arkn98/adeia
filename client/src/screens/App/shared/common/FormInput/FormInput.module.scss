@@ -377,3 +377,60 @@ select.inputField {
 .formItemRowCenter {
   align-items: center;
 }
+
+.form {
+  max-width: 740px !important;
+  box-sizing: border-box;
+}
+
+.formFullWidth {
+  max-width: 100% !important;
+}
+
+.paddingBottom80 {
+  padding-bottom: 80px;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  box-sizing: border-box;
+  background-color: rgba(114, 118, 125, 0.3);
+}
+
+.dividerDefault {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+:global(.lightTheme) .dividerDefault {
+  background-color: rgba(185, 187, 190, 0.3);
+}
+
+.sectionLabel {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  cursor: default;
+  flex: 1;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  color: #f6f6f7;
+}
+
+:global(.lightTheme) .sectionLabel {
+  color: #4f545c;
+}
+
+.description {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  cursor: default;
+  box-sizing: border-box;
+  color: #72767d;
+}
+
+:global(.lightTheme) .description {
+  color: rgba(114, 118, 125, 0.6);
+}

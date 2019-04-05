@@ -1,5 +1,6 @@
 export { default as logoutUser } from './logoutUser';
 export { default as setCurrentUser } from './setCurrentUser';
+export { default as getCurrentUser } from './getCurrentUser';
 export { default as activateUser } from './activateUser';
 export { default as clearErrors } from './clearErrors';
 export { default as loginUser } from './loginUser';
@@ -24,3 +25,7 @@ export { default as uploadTimetable } from './uploadTimetable';
 export { default as registerStaff } from './registerStaff';
 export { default as registerUser } from './registerUser';
 export { default as addCourse } from './addCourse';
+export { default as addClass } from './addClass';
+export { default as updateClass } from './updateClass';
+export { default as updateCourse } from './updateCourse';
+export { default as updateStaff } from './updateStaff';

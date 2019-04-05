@@ -5,6 +5,7 @@ import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { Description } from '.';
 
 dayjs.extend(customParseFormat);
 
@@ -37,6 +38,8 @@ class DateBox extends Component {
     const {
       errors,
       containerStyles = {},
+      descriptionStyles = {},
+      description = '',
       infoText = null,
       label,
       name,
@@ -71,10 +74,12 @@ class DateBox extends Component {
           {errors ? (
             <span className={styles.errorMessage}> - {errors}</span>
           ) : null}
-          {errors ? (
-            <span className={styles.errorMessage}> - {errors}</span>
-          ) : null}
         </div>
+        {description !== '' ? (
+          <Description containerStyles={descriptionStyles}>
+            {description}
+          </Description>
+        ) : null}
         <DayPickerInput
           name={name}
           onDayChange={date => inputOnChangeHandler(name, date)}

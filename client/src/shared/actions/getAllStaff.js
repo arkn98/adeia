@@ -7,7 +7,7 @@ const getAllStaff = () => dispatch => {
   /* dispatch(setStaffLoading()); */
   return new Promise((resolve, reject) => {
     axios
-      .get('/api/timetable/get-staff')
+      .get('/api/admin/get-staff')
       .then(res => {
         dispatch({
           type: GET_STAFF,
@@ -18,7 +18,7 @@ const getAllStaff = () => dispatch => {
       .catch(err => {
         dispatch({
           type: GET_STAFF,
-          payload: {}
+          payload: []
         });
         reject(false);
       });

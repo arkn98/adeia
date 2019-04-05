@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import styles from './FormInput.module.scss';
 import classNames from 'classnames/bind';
+import { Description } from '.';
 
 const cx = classNames.bind({ ...styles });
 
@@ -13,6 +14,8 @@ class FileUpload extends Component {
     const {
       errors,
       containerStyles = {},
+      descriptionStyles = {},
+      description = '',
       infoText = null,
       type = 'file',
       label,
@@ -42,6 +45,11 @@ class FileUpload extends Component {
             <span className={styles.errorMessage}> - {errors}</span>
           ) : null}
         </div>
+        {description !== '' ? (
+          <Description containerStyles={descriptionStyles}>
+            {description}
+          </Description>
+        ) : null}
         <input
           name={name}
           ref={input => {

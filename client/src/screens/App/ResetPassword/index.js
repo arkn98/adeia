@@ -18,32 +18,30 @@ class ResetPasswordContainer extends Component {
   componentWillMount = () => {
     const parsed = queryString.parse(this.props.location.search);
     const token = typeof parsed.token !== 'undefined' ? parsed.token : '';
-    setTimeout(() => {
-      axios
-        .get('/api/users/check-reset-token', {
-          params: {
-            token: token
-          }
-        })
-        .then(res => {
-          this.setState({
-            ...this.state,
-            shouldDisplay: res.data.status,
-            isLoading: false,
-            user: res.data.status ? res.data.user : {},
-            token
-          });
-        })
-        .catch(err => {
-          this.setState({
-            ...this.state,
-            isLoading: false,
-            shouldDisplay: false,
-            token: ''
-          });
-          console.log(err);
+    axios
+      .get('/api/users/check-reset-token', {
+        params: {
+          token: token
+        }
+      })
+      .then(res => {
+        this.setState({
+          ...this.state,
+          shouldDisplay: res.data.status,
+          isLoading: false,
+          user: res.data.status ? res.data.user : {},
+          token
         });
-    }, 1000);
+      })
+      .catch(err => {
+        this.setState({
+          ...this.state,
+          isLoading: false,
+          shouldDisplay: false,
+          token: ''
+        });
+        console.log(err);
+      });
   };
 
   render = () => {

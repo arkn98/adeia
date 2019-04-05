@@ -30,15 +30,9 @@ router.post(
         return res.status(400).json(errors);
       }
       Class.findOne({
-        classCode: req.body.classCode,
-        nameOfClass: req.body.nameOfClass
+        classCode: req.body.classCode
       }).then(classObj => {
         if (classObj) {
-          /* classObj.set({ nameOfClass: req.body.nameOfClass });
-          classObj
-            .save()
-            .then(classObj => res.json(classObj))
-            .catch(err => console.log(err)); */
           errors.classCode = 'Class already exists';
           return res.status(400).json(errors);
         } else {
@@ -73,9 +67,8 @@ router.post(
       if (!isValid) {
         return res.status(400).json(errors);
       }
-      Class.findOne({
-        courseCode: req.body.courseCode,
-        nameOfCource: req.body.nameOfCource
+      Course.findOne({
+        courseCode: req.body.courseCode
       }).then(courseObj => {
         if (courseObj) {
           /* courseObj.set({ nameOfCourse: req.body.nameOfCourse });
