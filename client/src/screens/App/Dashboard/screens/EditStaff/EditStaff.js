@@ -86,6 +86,7 @@ class EditStaff extends Component {
     };
 
     this.props.updateStaff(data).then(res => {
+      console.log(res);
       this.props.getAllStaff().then(response => {
         this.setState(
           {

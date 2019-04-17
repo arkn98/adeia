@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styles from './App.module.scss';
 
-import { checkDB } from './shared/utils';
+import { checkDB as checkDBAction } from './shared/utils';
 import { setCurrentTheme, changeTheme, logoutUser } from '../../shared/actions';
 
 import Home from './Home';
@@ -50,7 +50,7 @@ class App extends Component {
   };
 
   checkDB = () => {
-    checkDB().then(isDBUp => {
+    checkDBAction().then(isDBUp => {
       if (this.state.isDBUp !== isDBUp || this.state.isLoading === true) {
         this.setState({ ...this.state, isDBUp, isLoading: false });
       }
@@ -160,7 +160,7 @@ class App extends Component {
           style={{ height: '100%' }}
           className={!isDarkTheme ? 'lightTheme' : null}>
           <Error
-            message="Please try after sometime or contact administrator."
+            message="Please check back after sometime or contact the administrator."
             footerAltColors={true}
             showButton={false}>
             DB Down

@@ -4,9 +4,9 @@ import { SET_CURRENT_USER_MERGE } from '../actionTypes';
 const getCurrentUser = id => dispatch => {
   return new Promise((resolve, reject) => {
     axios
-      .get('/api/users/get-current-user', {
+      .get('/api/account/get-current', {
         params: {
-          id: id
+          id
         }
       })
       .then(res => {

@@ -7,7 +7,8 @@ const SettingsMenuSideNav = ({
   isDarkTheme,
   isSettingsMenuVisible,
   themeChangeHandler,
-  logoutHandler
+  logoutHandler,
+  settingsMenuHide
 }) => {
   return (
     <div
@@ -27,7 +28,10 @@ const SettingsMenuSideNav = ({
           </Fragment>
         )}
       </div>
-      <Link to="/dashboard/settings" className={styles.item}>
+      <Link
+        to="/dashboard/settings"
+        className={styles.item}
+        onClick={settingsMenuHide}>
         <MdBuild className={styles.menuIconTest} />
         Account Settings
       </Link>

@@ -11,17 +11,28 @@ import { ButtonSubmit } from 'screens/App/shared/common/Button';
 class Settings extends Component {
   state = {
     isSubmitting: false,
+    isChangePasswordSubmitting: false,
     errors: {},
     name: this.props.auth.user.name,
     designation: this.props.auth.user.designation,
     email: this.props.auth.user.email,
     currentpassword: '',
-    newpassword: '',
-    isChangePassword: false
+    newpassword: ''
   };
 
   componentDidMount = () => {
     this.props.updateCurrentRouteTitle(this.props.pageTitle);
+  };
+
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.errors) {
+      this.setState({
+        ...this.state,
+        errors: nextProps.errors,
+        isSubmitting: false,
+        isChangePasswordSubmitting: false
+      });
+    }
   };
 
   inputOnChangeHandler = event => {
@@ -38,21 +49,41 @@ class Settings extends Component {
       email: this.state.email
     };
 
-    this.props.updateAccount(data).then(res => {
+    this.props.selfUpdateAccount(data).then(res => {
       this.setState({ ...this.state, isSubmitting: false }, () => {
-        this.props.showPopout({});
+        this.props.getCurrentUser(this.props.auth.user.id).then(result => {
+          this.props.showPopout({
+            type: 'modalSingleButton',
+            title: 'Action successful',
+            message: 'Profile successfully updated.',
+            buttonPrimary: true,
+            buttonContent: 'Okay'
+          });
+        });
       });
     });
   };
 
   changePassFormSubmitHandler = event => {
     event.preventDefault();
-    this.setState({ ...this.state, isSubmitting: true });
-  };
+    this.setState({ ...this.state, isChangePasswordSubmitting: true });
 
-  showPasswordChange = event => {
-    event.preventDefault();
-    this.setState({ ...this.state, isChangePassword: true });
+    const data = {
+      currentpassword: this.state.currentpassword,
+      newpassword: this.state.newpassword
+    };
+
+    this.props.selfUpdatePassword(data).then(res => {
+      this.setState({ ...this.state, isSubmitting: false }, () => {
+        this.props.showPopout({
+          type: 'modalSingleButton',
+          title: 'Action successful',
+          message: 'Password successfully changed.',
+          buttonPrimary: true,
+          buttonContent: 'Okay'
+        });
+      });
+    });
   };
 
   render = () => {
@@ -116,14 +147,15 @@ class Settings extends Component {
           <TextBox
             name="newpassword"
             label="New Password"
-            /* bigLabel={true} */
             type="password"
             value={this.state.newpassword}
             inputOnChangeHandler={this.inputOnChangeHandler}
             errors={errors.newpassword}
             containerStyles={styles.marginBottom20}
           />
-          <ButtonSubmit sizeSmall={true} isLoading={this.state.isSubmitting}>
+          <ButtonSubmit
+            sizeSmall={true}
+            isLoading={this.state.isChangePasswordSubmitting}>
             Update Password
           </ButtonSubmit>
         </Form>

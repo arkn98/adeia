@@ -79,17 +79,11 @@ class LeaveList extends Component {
           <div style={{ textAlign: 'right' }}>{row.noOfDays}</div>
         )
       },
-      /* {
-        Header: () => <div style={{ textAlign: 'left' }}>Reason</div>,
-        accessor: 'reason',
-        id: 'reason',
-        Cell: ({ row }) => <div style={{ textAlign: 'left' }}>{row.reason}</div>
-      }, */
       {
         Header: () => <div style={{ textAlign: 'left' }}>Status</div>,
         accessor: 'status',
         id: 'status',
-        Cell: ({ row }) => leaveStatuses.find(x => row.status === x.value).label
+        Cell: ({ row }) => leaveStatuses[row.status]
       }
     ];
 

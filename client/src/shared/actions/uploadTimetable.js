@@ -1,14 +1,13 @@
 import axios from 'axios';
 
 const uploadTimetable = data => dispatch => {
-  const config = {
-    headers: {
-      'content-type': 'multipart/form-data'
-    }
-  };
   return new Promise((resolve, reject) => {
     axios
-      .post('/api/timetable/upload', data, config)
+      .post('/api/timetable-new/upload', data, {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+      })
       .then(res => {
         resolve(res.data);
       })

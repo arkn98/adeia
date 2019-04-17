@@ -8,7 +8,7 @@ import { GET_ERRORS, CLEAR_ERRORS } from '../actionTypes';
 //Login user - get user token
 const loginUser = (userData, history, destination = '') => dispatch => {
   axios
-    .post('api/users/login', userData)
+    .post('api/account/login', userData)
     .then(res => {
       //Save to local storage
       const { token } = res.data;

@@ -5,7 +5,7 @@ import { GET_CLASSES } from '../actionTypes';
 const getAllClasses = () => dispatch => {
   return new Promise((resolve, reject) => {
     axios
-      .get('/api/admin/get-classes')
+      .get('/api/class/get-all')
       .then(res => {
         dispatch({
           type: GET_CLASSES,
@@ -18,7 +18,7 @@ const getAllClasses = () => dispatch => {
           type: GET_CLASSES,
           payload: []
         });
-        reject(err);
+        reject(false);
       });
   });
 };

@@ -107,24 +107,26 @@ class AddUpdateClass extends Component {
     };
 
     this.props.addClass(data).then(res => {
-      this.setState(
-        {
-          ...this.state,
-          isSubmitting: false,
-          errors: {},
-          classCode: '',
-          nameOfClass: ''
-        },
-        () => {
-          this.props.showPopout({
-            type: 'modalSingleButton',
-            title: 'Action successful',
-            message: 'Class successfully added.',
-            buttonPrimary: true,
-            buttonContent: 'Okay'
-          });
-        }
-      );
+      this.props.getAllClasses().then(response => {
+        this.setState(
+          {
+            ...this.state,
+            isSubmitting: false,
+            errors: {},
+            classCode: '',
+            nameOfClass: ''
+          },
+          () => {
+            this.props.showPopout({
+              type: 'modalSingleButton',
+              title: 'Action successful',
+              message: 'Class successfully added.',
+              buttonPrimary: true,
+              buttonContent: 'Okay'
+            });
+          }
+        );
+      });
     });
   };
 

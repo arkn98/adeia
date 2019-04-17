@@ -107,24 +107,26 @@ class AddUpdateCourse extends Component {
     };
 
     this.props.addCourse(data, this.props.history).then(res => {
-      this.setState(
-        {
-          ...this.state,
-          isSubmitting: false,
-          errors: {},
-          courseCode: '',
-          nameOfCourse: ''
-        },
-        () => {
-          this.props.showPopout({
-            type: 'modalSingleButton',
-            title: 'Action successful',
-            message: 'Course successfully added.',
-            buttonPrimary: true,
-            buttonContent: 'Okay'
-          });
-        }
-      );
+      this.props.getAllCourses().then(response => {
+        this.setState(
+          {
+            ...this.state,
+            isSubmitting: false,
+            errors: {},
+            courseCode: '',
+            nameOfCourse: ''
+          },
+          () => {
+            this.props.showPopout({
+              type: 'modalSingleButton',
+              title: 'Action successful',
+              message: 'Course successfully added.',
+              buttonPrimary: true,
+              buttonContent: 'Okay'
+            });
+          }
+        );
+      });
     });
   };
 

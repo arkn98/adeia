@@ -1,13 +1,11 @@
 import axios from 'axios';
 import { GET_STAFF } from '../actionTypes';
-//import { setStaffLoading } from '.';
 
 // retrieve all staff
 const getAllStaff = () => dispatch => {
-  /* dispatch(setStaffLoading()); */
   return new Promise((resolve, reject) => {
     axios
-      .get('/api/admin/get-staff')
+      .get('/api/staff/get-all')
       .then(res => {
         dispatch({
           type: GET_STAFF,

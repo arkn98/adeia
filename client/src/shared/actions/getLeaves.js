@@ -4,7 +4,7 @@ import { GET_LEAVES } from '../actionTypes';
 const getLeaves = () => dispatch => {
   return new Promise((resolve, reject) => {
     axios
-      .get('/api/leaves/get-leaves')
+      .get('/api/leave/get-leaves')
       .then(res => {
         dispatch({ type: GET_LEAVES, payload: res.data });
         resolve();

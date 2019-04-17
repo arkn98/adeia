@@ -4,7 +4,7 @@ import { GET_ERRORS, CLEAR_ERRORS } from '../actionTypes';
 const updateClass = data => dispatch => {
   return new Promise((resolve, reject) => {
     axios
-      .patch('/api/admin/edit-class', data)
+      .patch('/api/class/edit', data)
       .then(res => {
         dispatch({ type: CLEAR_ERRORS, payload: {} });
         resolve(true);

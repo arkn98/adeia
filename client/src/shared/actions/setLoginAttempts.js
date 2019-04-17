@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { SET_LOGIN_ATTEMPT_DETAILS } from '../actionTypes';
 import moment from 'moment';
 
 moment().local();
@@ -22,9 +21,7 @@ const setLoginAttempts = (email, status) => dispatch => {
         };
         axios
           .post('/api/users/set-login-attempts', newObj)
-          .then(data => {
-            dispatch({ type: SET_LOGIN_ATTEMPT_DETAILS });
-          })
+          .then(data => {})
           .catch(err => console.log(err));
       }
     })

@@ -14,11 +14,17 @@ mongoose.set('useCreateIndex', true);
 mongoose.set('useNewUrlParser', true);
 
 const users = require('./routes/api/users2');
+const accountRoutes = require('./routes/api/account');
+const classRoutes = require('./routes/api/class');
+const courseRoutes = require('./routes/api/course');
+const leaveRoutes = require('./routes/api/leave');
+const staffRoutes = require('./routes/api/staff');
+const timetableRoutes = require('./routes/api/timetable');
 const profile = require('./routes/api/profile');
 const admin = require('./routes/api/admin');
-const timetable = require('./routes/api/timetable');
+const timetable = require('./routes/api/timetable2');
 const utils = require('./routes/api/utils');
-const leave = require('./routes/api/leave');
+const leave = require('./routes/api/leave2');
 
 const app = express();
 
@@ -54,9 +60,15 @@ require('./config/passport.js')(passport);
 
 //use routes
 app.use('/api/users', users);
+app.use('/api/class', classRoutes);
+app.use('/api/course', courseRoutes);
+app.use('/api/account', accountRoutes);
+app.use('/api/timetable', timetableRoutes);
+app.use('/api/leave', leaveRoutes);
+app.use('/api/staff', staffRoutes);
 app.use('/api/profile', profile);
 app.use('/api/admin', admin);
-app.use('/api/timetable', timetable);
+//app.use('/api/timetable', timetable);
 app.use('/api/utils', utils);
 app.use('/api/leaves', leave);
 

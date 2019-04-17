@@ -73,7 +73,28 @@ class LoginActivate extends Component {
       leaveAllotted: {}
     };
 
-    this.props.activateUser(newUser, newProfile, this.props.history);
+    this.props.activateUser(newUser, newProfile).then(() => {
+      this.setState(
+        {
+          ...this.state,
+          staffId: '',
+          email: '',
+          password: '',
+          password2: '',
+          errors: {},
+          isSubmitting: false
+        },
+        () => {
+          this.props.showPopout({
+            type: 'modalSingleButton',
+            title: 'Action successful',
+            message: 'Account successfully activated.',
+            buttonPrimary: true,
+            buttonContent: 'Okay'
+          });
+        }
+      );
+    });
   };
 
   forgotPasswordHandler = event => {
@@ -246,6 +267,7 @@ class LoginActivate extends Component {
               containerStyles={styles.marginBottom20}
             />
             <ButtonSubmit
+              className={styles.marginBottom8}
               isLoading={this.state.isSubmitting}
               style={{ width: '100%' }}>
               Activate

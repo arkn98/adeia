@@ -1,8 +1,4 @@
-import {
-  SET_CURRENT_USER,
-  SET_LOGIN_ATTEMPT_DETAILS,
-  SET_CURRENT_USER_MERGE
-} from '../actionTypes';
+import { SET_CURRENT_USER, SET_CURRENT_USER_MERGE } from '../actionTypes';
 import { isEmpty } from '../utils';
 
 const initialState = {
@@ -13,8 +9,6 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_LOGIN_ATTEMPT_DETAILS:
-      return { ...state };
     case SET_CURRENT_USER:
       return {
         ...state,

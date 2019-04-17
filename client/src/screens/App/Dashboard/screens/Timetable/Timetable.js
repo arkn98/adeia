@@ -6,7 +6,8 @@ import {
   LabelWithRightChildren,
   FormRow,
   SelectSearch,
-  FileUpload
+  FileUpload,
+  Divider
 } from 'screens/App/shared/common/FormInput';
 import { MdTrash, MdClose } from 'assets/icons';
 import { Slot } from 'screens/App/shared/common/Slot';
@@ -79,11 +80,13 @@ class Timetable extends Component {
             x => x.staffId === courseObj.handlingStaff
           )._id;
           if (Array.isArray(courseObj.additionalStaff)) {
-            newCourse.additionalStaff = courseObj.additionalStaff.map(
-              addtlstaff =>
-                this.props.staff.staffList.find(x => x.staffId === addtlstaff)
-                  ._id
-            );
+            newCourse.additionalStaff = courseObj.additionalStaff
+              .filter(x => x !== '')
+              .map(
+                addtlstaff =>
+                  this.props.staff.staffList.find(x => x.staffId === addtlstaff)
+                    ._id
+              );
           } else if (typeof courseObj.additionalStaff === 'string') {
             newCourse.additionalStaff.push(
               this.props.staff.staffList.find(
@@ -103,7 +106,7 @@ class Timetable extends Component {
       )._id
     };
     this.props
-      .updateTimetable(temp)
+      .addUpdateTimetable(temp)
       .then(res => {
         this.setState(
           { ...this.state, isSubmitting: false, isSaved: true },
@@ -265,7 +268,7 @@ class Timetable extends Component {
           .then(result => {
             this.setState({
               ...this.state,
-              timetable: result,
+              timetable: Array.isArray(result) ? result : [],
               isTableLoaded: true,
               isSaved: true,
               isEntryVisible: false,
@@ -277,7 +280,6 @@ class Timetable extends Component {
               ...this.state,
               isTableLoaded: true
             });
-            console.log(err);
           });
       }
     }
@@ -620,11 +622,13 @@ class Timetable extends Component {
                     x => x.staffId === courseItem.handlingStaff
                   ).name,
                   additionalStaff: Array.isArray(courseItem.additionalStaff)
-                    ? courseItem.additionalStaff.map(x => {
-                        return this.props.staff.staffList.find(
-                          x2 => x2.staffId === x
-                        ).name;
-                      })
+                    ? courseItem.additionalStaff
+                        .filter(x => x !== '')
+                        .map(x => {
+                          return this.props.staff.staffList.find(
+                            x2 => x2.staffId === x
+                          ).name;
+                        })
                     : typeof courseItem.additionalStaff === 'string' &&
                       courseItem.additionalStaff.length !== 0
                     ? this.props.staff.staffList.find(
@@ -694,6 +698,29 @@ class Timetable extends Component {
                 };
               })}
             />
+            {!isTableLoaded ? null : (
+              <Fragment>
+                <div className={styles.infoBox}>
+                  Upload CSV/Excel sheet to load data
+                </div>
+                <FormRow containerStyles={styles.marginBottom8}>
+                  <FileUpload
+                    name="timetableCSV"
+                    bigLabel={true}
+                    inputOnChangeHandler={this.fileOnChangeHandler}
+                  />
+                  <div style={{ flex: '0 1 0' }}>
+                    <ButtonSubmit
+                      sizeSmall={true}
+                      containerStyles={styles.noMarginBottom}
+                      onClick={this.sendFile}>
+                      Load data
+                    </ButtonSubmit>
+                  </div>
+                </FormRow>
+                <Divider />
+              </Fragment>
+            )}
             {this.state.isEntryVisible ? (
               <Fragment>
                 <div
@@ -858,16 +885,18 @@ class Timetable extends Component {
                             index={index}
                             value={this.state.entryContent.entry[
                               index
-                            ].additionalStaff.map(addtlstaff => {
-                              return {
-                                value: addtlstaff,
-                                label: `${addtlstaff} - ${
-                                  this.props.staff.staffList.find(
-                                    x => x.staffId === addtlstaff
-                                  ).name
-                                }`
-                              };
-                            })}
+                            ].additionalStaff
+                              .filter(x => x !== '')
+                              .map(addtlstaff => {
+                                return {
+                                  value: addtlstaff,
+                                  label: `${addtlstaff} - ${
+                                    this.props.staff.staffList.find(
+                                      x => x.staffId === addtlstaff
+                                    ).name
+                                  }`
+                                };
+                              })}
                             inputOnChangeHandler={
                               this.entryMultiSelectOnChangeHandler
                             }
@@ -941,31 +970,6 @@ class Timetable extends Component {
             ) : null}
             {!isTableLoaded ? null : (
               <Fragment>
-                <div className={styles.infoBox}>
-                  Upload CSV/Excel sheet to load data
-                </div>
-                <FormRow containerStyles={styles.marginBottom8}>
-                  <FileUpload
-                    name="timetableCSV"
-                    bigLabel={true}
-                    inputOnChangeHandler={this.fileOnChangeHandler}
-                  />
-                  <div
-                    style={{
-                      flex: '0 1 20%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}>
-                    <ButtonSubmit
-                      sizeSmall={true}
-                      containerStyles={styles.noMarginBottom}
-                      onClick={this.sendFile}>
-                      Load data
-                    </ButtonSubmit>
-                  </div>
-                </FormRow>
                 <div className={`${styles.infoBox} ${styles.marginBottom8}`}>
                   or click on the cells to add/update slots manually.
                 </div>

@@ -7,7 +7,7 @@ import {
   getAllClasses,
   getAllStaff,
   getAllCourses,
-  updateTimetable,
+  addUpdateTimetable,
   uploadTimetable
 } from 'shared/actions';
 
@@ -30,7 +30,7 @@ const Container = connect(
     getAllClasses,
     getAllStaff,
     getAllCourses,
-    updateTimetable,
+    addUpdateTimetable,
     uploadTimetable
   }
 )(withRouter(Timetable));

@@ -5,7 +5,7 @@ import { isEmpty } from '../utils';
 const addCourse = data => dispatch => {
   return new Promise((resolve, reject) => {
     axios
-      .post('/api/admin/add-course', data)
+      .post('/api/course/add', data)
       .then(res => resolve(true))
       .catch(err => {
         if (!isEmpty(err.response)) {

@@ -103,7 +103,7 @@ class LeaveApplication extends Component {
             title: 'Leave Application successful',
             message:
               'Your leave application has been successfully submitted. Leave ID: <span style="font-weight: 600;">' +
-              res.data.leaveId +
+              res.leaveId +
               '</span>',
             buttonPrimary: true,
             buttonContent: 'Okay'

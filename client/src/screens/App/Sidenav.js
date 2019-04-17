@@ -3,7 +3,7 @@ import styles from './Sidenav.module.css';
 import { Link, NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { logoutUser, clearCurrentProfile } from '../../shared/actions';
+import { logoutUser } from '../../shared/actions';
 //import { showLogoutPopup } from '../../actions/utilActions';
 /* import { ReactComponent as MdEasel } from '../../assets/icons/md-easel.svg';
 import { ReactComponent as MdAdd } from '../../assets/icons/md-add.svg';
@@ -490,9 +490,7 @@ class Sidenav extends Component {
 
 Sidenav.propTypes = {
   logoutUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  clearCurrentProfile: PropTypes.func.isRequired,
-  showLogoutPopup: PropTypes.func.isRequired
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -501,7 +499,7 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logoutUser, clearCurrentProfile /* showLogoutPopup */ },
+  { logoutUser },
   null,
   {
     pure: false

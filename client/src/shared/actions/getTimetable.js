@@ -3,7 +3,7 @@ import axios from 'axios';
 const getTimetable = classId => dispatch => {
   return new Promise((resolve, reject) => {
     axios
-      .get('/api/timetable/get-timetable', {
+      .get('/api/timetable/get', {
         params: {
           classId
         }

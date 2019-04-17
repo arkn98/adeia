@@ -70,7 +70,8 @@ const LeaveSchema = new Schema({
   },
   status: {
     type: String,
-    enum: Object.values(leaveStatuses)
+    enum: Object.values(leaveStatuses),
+    default: leaveStatuses.WAITING
   },
   document: {
     // path to uploaded document
