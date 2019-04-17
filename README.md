@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-   <img width=40% src="./docs/logo.svg" alt="LMS Logo" title="LMS Logo" />
+   <img width=30% src="./docs/logo.svg" alt="LMS Logo" title="LMS Logo" />
   <br>
   Leave Management System
   <br>
