@@ -1,7 +1,6 @@
 import { GET_STAFF } from '../actionTypes';
 
 const initialState = {
-  loading: false,
   staffList: []
 };
 

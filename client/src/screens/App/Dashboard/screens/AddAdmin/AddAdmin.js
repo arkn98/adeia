@@ -73,37 +73,32 @@ class AddAdmin extends Component {
       staffType: this.state.category
     };
 
-    const newProfile = {
-      staffId: this.state.staffId,
-      prevLogins: {},
-      cplCredits: 0,
-      leaveAllotted: {}
-    };
-
-    this.props.registerUser(newUser, newProfile).then(res => {
-      this.setState(
-        {
-          ...this.state,
-          isSubmitting: false,
-          errors: {},
-          staffId: '',
-          name: '',
-          email: '',
-          password: '',
-          password2: '',
-          designation: ''
-        },
-        () => {
-          this.props.showPopout({
-            type: 'modalSingleButton',
-            title: 'Action successful',
-            message: 'Privileged account successfully added.',
-            buttonPrimary: true,
-            buttonContent: 'Okay'
-          });
-        }
-      );
-    });
+    this.props
+      .registerUser(newUser, { staffId: this.state.staffId })
+      .then(res => {
+        this.setState(
+          {
+            ...this.state,
+            isSubmitting: false,
+            errors: {},
+            staffId: '',
+            name: '',
+            email: '',
+            password: '',
+            password2: '',
+            designation: ''
+          },
+          () => {
+            this.props.showPopout({
+              type: 'modalSingleButton',
+              title: 'Action successful',
+              message: 'Privileged account successfully added.',
+              buttonPrimary: true,
+              buttonContent: 'Okay'
+            });
+          }
+        );
+      });
   };
 
   render = () => {

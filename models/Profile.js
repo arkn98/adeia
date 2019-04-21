@@ -1,16 +1,18 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const { leaveTypes } = require('../data');
+
 //create schema
 const ProfileSchema = new Schema(
   {
-    staffId: {
-      type: String,
-      required: true
-    },
     user: {
       type: Schema.Types.ObjectId,
       ref: 'users'
+    },
+    staffId: {
+      type: String,
+      required: true
     },
     prevLogins: {
       type: [
@@ -30,13 +32,27 @@ const ProfileSchema = new Schema(
       type: Number,
       default: 0
     },
-    leaveAllotted: {
-      type: Schema.Types.Mixed,
-      default: {}
+    leaveAllocation: {
+      type: Schema.Types.ObjectId,
+      ref: 'leaveAllocation',
+      require: true
     },
-    leaveAvailable: {
-      type: Schema.Types.Mixed,
-      default: {}
+    leaveAvailed: {
+      type: [
+        {
+          leaveType: {
+            type: String,
+            enum: Object.values(leaveTypes),
+            required: true,
+            unique: true
+          },
+          noOfDays: {
+            type: Number,
+            required: true,
+            default: 0
+          }
+        }
+      ]
     }
   },
   { minimize: false }

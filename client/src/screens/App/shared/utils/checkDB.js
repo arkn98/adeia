@@ -3,9 +3,9 @@ import axios from 'axios';
 const checkDB = () => {
   return new Promise((resolve, reject) => {
     axios
-      .get('/api/utils/check-db')
+      .get('/api/helpers/check-db')
       .then(res => {
-        if (res.data.status === 1) resolve(true);
+        if (res.data.status) resolve(true);
         else resolve(false);
       })
       .then(err => reject(false));

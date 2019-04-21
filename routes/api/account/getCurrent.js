@@ -18,7 +18,10 @@ const getCurrent = (req, res) => {
         return res.status(404).json({ msg: 'User not found' });
       }
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 };
 
 module.exports = getCurrent;

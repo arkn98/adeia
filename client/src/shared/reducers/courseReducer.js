@@ -1,8 +1,7 @@
 import { GET_COURSES } from '../actionTypes';
 
 const initialState = {
-  courseList: [],
-  loading: false
+  courseList: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -10,8 +9,7 @@ const reducer = (state = initialState, action) => {
     case GET_COURSES: {
       return {
         ...state,
-        courseList: action.payload,
-        loading: false
+        courseList: action.payload
       };
     }
     default:

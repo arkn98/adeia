@@ -28,6 +28,7 @@ const ButtonSubmit = props => {
           ? styles.buttonWhite
           : null
       }`}
+      disabled={isLoading || disabled}
       {...rest}>
       {isLoading ? <ButtonSpinner loadingPrimary={false} /> : null}
       <div

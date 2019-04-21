@@ -53,35 +53,30 @@ class AddStaff extends Component {
       staffType: this.state.category
     };
 
-    const newProfile = {
-      staffId: this.state.staffId,
-      prevLogins: {},
-      cplCredits: 0,
-      leaveAllotted: {}
-    };
-
-    this.props.registerStaff(newUser, newProfile).then(res => {
-      this.setState(
-        {
-          ...this.state,
-          isSubmitting: false,
-          errors: {},
-          staffId: '',
-          name: '',
-          designation: '',
-          category: staffTypes.RT
-        },
-        () => {
-          this.props.showPopout({
-            type: 'modalSingleButton',
-            title: 'Action successful',
-            message: 'Staff account successfully added.',
-            buttonPrimary: true,
-            buttonContent: 'Okay'
-          });
-        }
-      );
-    });
+    this.props
+      .registerStaff(newUser, { staffId: this.state.staffId })
+      .then(res => {
+        this.setState(
+          {
+            ...this.state,
+            isSubmitting: false,
+            errors: {},
+            staffId: '',
+            name: '',
+            designation: '',
+            category: staffTypes.RT
+          },
+          () => {
+            this.props.showPopout({
+              type: 'modalSingleButton',
+              title: 'Action successful',
+              message: 'Staff account successfully added.',
+              buttonPrimary: true,
+              buttonContent: 'Okay'
+            });
+          }
+        );
+      });
   };
 
   render = () => {

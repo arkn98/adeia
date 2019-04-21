@@ -1,9 +1,24 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter, NavLink } from 'react-router-dom';
 import styles from './SideNav.module.scss';
-import { MdSettings, LogoGithub, MdBack, MdContact } from 'assets/icons';
+import {
+  MdSettings,
+  LogoGithub,
+  MdBack,
+  MdContact,
+  MdEasel,
+  MdPersonAdd,
+  MdKey,
+  MdCreate,
+  MdSchool,
+  MdCube,
+  MdList,
+  MdPartlySunny,
+  MdCalendar
+} from 'assets/icons';
 import { SettingsMenuSideNav as SettingsMenu } from '../../common/SettingsMenu';
 import ClickOutside from 'react-click-outside';
+import { accountTypes } from 'data';
 
 const SettingsMenuWithIcon = props => {
   return (
@@ -63,6 +78,170 @@ class SideNav extends Component {
       settingsMenuStyles.push(styles.settingsMenuVisible);
     }
 
+    let links = [];
+    links.push(
+      <NavLink
+        exact
+        to="/dashboard"
+        className={styles.menuItem}
+        activeClassName={styles.menuItemActive}>
+        <MdEasel className={styles.customIconTest} />{' '}
+        <div className={styles.menuText}>Dashboard</div>
+      </NavLink>
+    );
+    if (this.props.auth.user.accountType === accountTypes.ADMIN) {
+      links.push(<div className={styles.seperator} />);
+      links.push(<div className={styles.menuHeader}>Leave Settings</div>);
+      links.push(
+        <NavLink
+          exact
+          to="/dashboard/leave/list"
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdList className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Leave List</div>
+        </NavLink>
+      );
+      links.push(
+        <NavLink
+          exact
+          to="/dashboard/leave-allocation"
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdPersonAdd className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Leave Allocation</div>
+        </NavLink>
+      );
+      links.push(
+        <NavLink
+          exact
+          to="/dashboard/leave-type"
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdPersonAdd className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Manage Leave Types</div>
+        </NavLink>
+      );
+      links.push(
+        <NavLink
+          exact
+          to="/dashboard/leave/list"
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdPartlySunny className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Public Holidays</div>
+        </NavLink>
+      );
+      links.push(
+        <NavLink
+          exact
+          to="/dashboard/leave/list"
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdCalendar className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Restricted Holidays</div>
+        </NavLink>
+      );
+      links.push(<div className={styles.seperator} />);
+      links.push(<div className={styles.menuHeader}>Account Settings</div>);
+      links.push(
+        <NavLink
+          exact
+          to="/dashboard/staff/add"
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdPersonAdd className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Add Staff Account</div>
+        </NavLink>
+      );
+      links.push(
+        <NavLink
+          exact
+          to="/dashboard/staff/edit"
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdCreate className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Edit Staff Account</div>
+        </NavLink>
+      );
+      links.push(
+        <NavLink
+          exact
+          to="/dashboard/priv-account/add"
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdKey className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Add Privileged Account</div>
+        </NavLink>
+      );
+      links.push(
+        <NavLink
+          exact
+          to="/dashboard/priv-account/edit"
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdCreate className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Edit Privileged Account</div>
+        </NavLink>
+      );
+      links.push(<div className={styles.seperator} />);
+      links.push(<div className={styles.menuHeader}>Timetable Settings</div>);
+      links.push(
+        <NavLink
+          exact
+          to="/dashboard/timetable"
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdList className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Timetable</div>
+        </NavLink>
+      );
+      links.push(
+        <NavLink
+          exact
+          to="/dashboard/class"
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdCube className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Class Settings</div>
+        </NavLink>
+      );
+      links.push(
+        <NavLink
+          exact
+          to="/dashboard/course"
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdSchool className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Course Settings</div>
+        </NavLink>
+      );
+    } else if (this.props.auth.user.accountType === accountTypes.OFFICE) {
+    } else {
+      links.push(<div className={styles.seperator} />);
+      links.push(<div className={styles.menuHeader}>Manage Leaves</div>);
+      links.push(
+        <NavLink
+          exact
+          to="/dashboard/leave/apply"
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdList className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Leave Application</div>
+        </NavLink>
+      );
+      links.push(
+        <NavLink
+          exact
+          to="/dashboard/leave/list"
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdList className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Leave List</div>
+        </NavLink>
+      );
+    }
+
     return (
       <div
         className={`${styles.sideNavWrapper} ${
@@ -99,7 +278,9 @@ class SideNav extends Component {
               </div>
             </div>
             <div className={styles.scrollMenuWrapper}>
-              <div className={styles.scroller}>{/*links*/}abcd</div>
+              <div className={styles.scroller}>
+                <span>{links}</span>
+              </div>
             </div>
           </div>
           <div className={styles.userContainer}>

@@ -1,33 +1,24 @@
-import {
-  /* GET_PROFILE,
-  PROFILE_LOADING, */
-  CLEAR_CURRENT_PROFILE
-} from '../actionTypes';
+import { GET_PROFILE, CLEAR_CURRENT_PROFILE } from '../actionTypes';
 
 const initialState = {
-  profile: null,
-  loading: false
+  profile: {},
+  isLoaded: false
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    /* case PROFILE_LOADING: {
-      return {
-        ...state,
-        loading: true
-      };
-    }
     case GET_PROFILE: {
       return {
         ...state,
         profile: action.payload,
-        loading: false
+        isLoaded: true
       };
-    } */
+    }
     case CLEAR_CURRENT_PROFILE: {
       return {
         ...state,
-        profile: null
+        profile: {},
+        isLoaded: false
       };
     }
     default:

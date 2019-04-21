@@ -9,7 +9,7 @@
   position: absolute;
   display: inline-block;
   overflow: hidden;
-  left: -184px;
+  left: -188px;
   top: -128px;
   height: 114px;
   width: 216px;
@@ -27,7 +27,6 @@
   box-sizing: border-box;
   color: hsla(0, 0%, 100%, 0.6);
   fill: hsla(0, 0%, 100%, 0.6);
-  /* transition: color 0.17s ease, fill 0.17s ease; */
 }
 
 :global(.lightTheme) .item {
@@ -41,6 +40,7 @@
   width: 216px;
   display: none;
   background: #282b30;
+  background: #1d1f22;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.82), 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 

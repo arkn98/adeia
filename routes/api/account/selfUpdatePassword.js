@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator/check');
 const bcrypt = require('bcryptjs');
 const User = require('../../../models/User');
-const { sendPasswordChangedMail } = require('../../../utils/email');
+const { sendEmail } = require('../../utils');
 
 const selfUpdatePassword = (req, res) => {
   const errors = validationResult(req).formatWith(({ msg }) => msg);
@@ -27,7 +27,12 @@ const selfUpdatePassword = (req, res) => {
               user
                 .save()
                 .then(result => {
-                  sendPasswordChangedMail(user.email);
+                  sendEmail({
+                    to: user.email,
+                    subject: 'Your password has changed',
+                    body:
+                      'This is to inform you that your account password has changed recently.'
+                  });
                   return res.status(200).json('success');
                 })
                 .catch(err => console.log(err));

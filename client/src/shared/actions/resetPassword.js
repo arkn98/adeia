@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { CLEAR_ERRORS, GET_ERRORS } from '../actionTypes';
-import { logoutUser } from './';
+import { logoutUser } from '.';
 
 // reset password
 const resetPassword = data => dispatch => {
   return new Promise((resolve, reject) => {
     axios
-      .post('/api/users/reset-password', data)
+      .post('/api/account/reset-password', data)
       .then(res => {
         dispatch({ type: CLEAR_ERRORS, payload: {} });
         dispatch(logoutUser());

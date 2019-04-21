@@ -33,6 +33,7 @@ class SelectSearch extends Component {
       name,
       inputOnChangeHandler,
       value,
+      index = undefined,
       bigLabel = false,
       disabled = false,
       optList = [],
@@ -57,12 +58,19 @@ class SelectSearch extends Component {
           ? 'hsla(0, 0%, 100%, 0.1)'
           : provided.backgroundColor
       }),
+      multiValueRemove: provided => ({
+        ...provided,
+        color: !isDarkTheme ? '#4f545c' : provided.color
+      }),
       multiValueLabel: provided => ({
         ...provided,
         color: isDarkTheme ? '#fff' : '#4f545c'
       }),
       option: (provided, state) => ({
-        backgroundColor: 'transparent',
+        ...provided,
+        backgroundColor: state.isFocused
+          ? 'rgba(79, 84, 92, 0.1)'
+          : 'transparent',
         cursor: 'default',
         display: 'block',
         fontSize: 'inherit',
@@ -71,10 +79,6 @@ class SelectSearch extends Component {
         boxSizing: 'border-box',
         overflowX: 'none',
         userSelect: 'none',
-        WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
-        '&:hover': {
-          backgroundColor: 'rgba(79, 84, 92, 0.1)'
-        },
         color: '#4f545c'
       }),
       control: (provided, state) => ({
@@ -87,6 +91,8 @@ class SelectSearch extends Component {
         cursor: state.isDisabled ? 'not-allowed' : 'pointer',
         backgroundColor: isDarkTheme ? 'rgba(0, 0, 0, 0.1)' : '#fff',
         color: '#fff',
+        fontSize: '16px',
+        lineHeight: '18px',
         borderColor: state.isFocused ? '#7289da' : 'rgba(0, 0, 0, 0.3)',
         '&:hover': {
           borderColor: state.isFocused ? '#7289da' : '#040405'
@@ -122,6 +128,7 @@ class SelectSearch extends Component {
       }),
       valueContainer: (provided, state) => ({
         ...provided,
+        padding: '8px',
         width: '50px'
       })
     };
@@ -159,7 +166,7 @@ class SelectSearch extends Component {
           isSearchable={isSearchable}
           isMulti={isMultiSelect}
           value={value}
-          onChange={val => inputOnChangeHandler(val, this.props.index, name)}
+          onChange={val => inputOnChangeHandler(val, index, name)}
           placeholder="Select an option"
           styles={customStyles}
           className={styles.multiSelectContainer}

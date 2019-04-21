@@ -6,7 +6,7 @@ const moment = require('moment');
 moment().local();
 
 //load model
-const Timetable = require('../../models/TestTimetable');
+const Timetable = require('../../models/Timetable');
 
 // @route   GET   api/timetable/get-courses
 // @desc    Gets all courses

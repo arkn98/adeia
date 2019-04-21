@@ -1,8 +1,7 @@
 import { GET_TIMETABLE } from '../actionTypes';
 
 const initialState = {
-  timetable: [],
-  loading: false
+  timetable: []
 };
 
 const reducer = (state = initialState, action) => {

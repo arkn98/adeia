@@ -19,7 +19,7 @@ class ResetPasswordContainer extends Component {
     const parsed = queryString.parse(this.props.location.search);
     const token = typeof parsed.token !== 'undefined' ? parsed.token : '';
     axios
-      .get('/api/users/check-reset-token', {
+      .get('/api/account/check-reset-token', {
         params: {
           token: token
         }
@@ -55,11 +55,11 @@ class ResetPasswordContainer extends Component {
       if (this.state.shouldDisplay) {
         return (
           <ResetPassword
+            {...this.props}
             clearResetToken={this.props.clearResetToken}
             resetPassword={this.props.resetPassword}
             errors={this.props.errors}
             user={this.state.user}
-            {...this.props}
           />
         );
       } else {

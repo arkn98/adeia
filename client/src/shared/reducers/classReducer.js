@@ -1,7 +1,6 @@
 import { GET_CLASSES } from '../actionTypes';
 
 const initialState = {
-  loading: false,
   classList: []
 };
 

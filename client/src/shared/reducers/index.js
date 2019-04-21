@@ -8,8 +8,8 @@ import timetableReducer from './timetableReducer';
 import classReducer from './classReducer';
 import staffReducer from './staffReducer';
 import courseReducer from './courseReducer';
-/*
-import leaveReducer from './leaveReducer'; */
+import leaveTypeReducer from './leaveTypeReducer';
+import leaveAllocationReducer from './leaveAllocationReducer';
 
 export default combineReducers({
   auth: authReducer,
@@ -20,9 +20,7 @@ export default combineReducers({
   timetable: timetableReducer,
   classes: classReducer,
   staff: staffReducer,
-  courses: courseReducer
-  /*
-  timetable: timetableReducer,
-  staff: staffReducer,
-  */
+  courses: courseReducer,
+  leaveTypes: leaveTypeReducer,
+  leaveAllocations: leaveAllocationReducer
 });

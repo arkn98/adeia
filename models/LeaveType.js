@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-//create schema
+const { leaveTypes } = require('../data');
+
 const LeaveTypeSchema = new Schema({
   leaveType: {
     type: String,
+    enum: Object.values(leaveTypes),
     required: true,
     unique: true
   },
@@ -14,4 +16,4 @@ const LeaveTypeSchema = new Schema({
   }
 });
 
-module.exports = LeaveType = mongoose.model('leave_type', LeaveTypeSchema);
+module.exports = LeaveType = mongoose.model('leaveTypes', LeaveTypeSchema);

@@ -6,6 +6,7 @@ import {
   LabelWithRightChildren,
   FormRow,
   SelectSearch,
+  Form,
   FileUpload,
   Divider
 } from 'screens/App/shared/common/FormInput';
@@ -268,7 +269,9 @@ class Timetable extends Component {
           .then(result => {
             this.setState({
               ...this.state,
-              timetable: Array.isArray(result) ? result : [],
+              timetable: Array.isArray(this.props.timetable.timetable)
+                ? this.props.timetable.timetable
+                : [],
               isTableLoaded: true,
               isSaved: true,
               isEntryVisible: false,
@@ -682,7 +685,10 @@ class Timetable extends Component {
             when={!this.state.isSaved}
             message={'You have unsaved changes. Do you want to navigate away?'}
           />
-          <form onSubmit={this.formSubmitHandler}>
+          <Form
+            fullWidth={true}
+            onSubmit={this.formSubmitHandler}
+            showBottomSpace={true}>
             <SelectBox
               name="classCode"
               label="Class"
@@ -992,7 +998,7 @@ class Timetable extends Component {
                 </div>
               </Fragment>
             )}
-          </form>
+          </Form>
         </Fragment>
       );
   }

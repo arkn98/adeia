@@ -5,10 +5,10 @@ import { isEmpty } from '../utils';
 const registerUser = (userData, profileData) => dispatch => {
   return new Promise((resolve, reject) => {
     axios
-      .post('/api/admin/add-account', userData)
+      .post('/api/account/add-account', userData)
       .then(res => {
         axios
-          .post('/api/profile', profileData)
+          .post('/api/profile/add', profileData)
           .then(res => {
             dispatch({ type: CLEAR_ERRORS, payload: {} });
             resolve(true);

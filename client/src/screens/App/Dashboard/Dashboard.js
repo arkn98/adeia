@@ -17,6 +17,8 @@ import EditStaff from './screens/EditStaff';
 import AddAdmin from './screens/AddAdmin';
 import AddUpdateCourse from './screens/AddUpdateCourse';
 import AddUpdateClass from './screens/AddUpdateClass';
+import AddUpdateLeaveType from './screens/AddUpdateLeaveType';
+import AddUpdateLeaveAllocation from './screens/AddUpdateLeaveAllocation';
 import Settings from './screens/Settings';
 import Error from '../shared/components/Error';
 import { FullPageSpinner } from 'screens/App/shared/common/Spinner';
@@ -34,6 +36,9 @@ class Dashboard extends Component {
       this.props.getCurrentUser(this.props.auth.user.id).then(res => {
         this.setState({ ...this.state, isLoading: false });
       });
+    }
+    if (!this.props.profile.isLoaded) {
+      this.props.getCurrentProfile();
     }
   };
 
@@ -165,6 +170,30 @@ class Dashboard extends Component {
           render={() => (
             <AddUpdateClass
               pageTitle="Class Settings"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
+      pages.push(
+        <Route
+          path="/dashboard/leave-type"
+          exact
+          render={() => (
+            <AddUpdateLeaveType
+              pageTitle="Leave Type Settings"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
+      pages.push(
+        <Route
+          path="/dashboard/leave-allocation"
+          exact
+          render={() => (
+            <AddUpdateLeaveAllocation
+              pageTitle="Leave Allocation Settings"
               showPopout={this.props.showPopout}
             />
           )}

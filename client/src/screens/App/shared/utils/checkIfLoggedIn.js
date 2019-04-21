@@ -19,7 +19,7 @@ const checkIfLoggedIn = () => {
 
     let pwdResetTime;
     axios
-      .get('/api/users/get-pwd-reset-time', {
+      .get('/api/account/get-password-reset-time', {
         params: {
           staffId: decoded.staffId
         }

@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator/check');
+
 const User = require('../../../models/User');
 
 const clearResetToken = (req, res) => {
@@ -19,11 +20,17 @@ const clearResetToken = (req, res) => {
         user
           .save()
           .then(res => res.status(200).json('Clear token success'))
-          .catch(err => console.log(err));
+          .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+          });
+      } else {
+        return res.status(400).json('user not found');
       }
     })
     .catch(err => {
-      return res.status(400).json(err);
+      console.log(err);
+      res.status(500).json(err);
     });
 };
 

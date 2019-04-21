@@ -57,8 +57,8 @@ class ResetPassword extends Component {
       password2: this.state.password2
     };
 
-    this.props.resetPassword(newObj).then(() => {
-      this.props.showModal({
+    this.props.resetPassword(newObj).then(res => {
+      this.props.showPopout({
         type: 'modalSingleButton',
         title: 'Password Changed',
         message: 'Your password was successfully changed.',

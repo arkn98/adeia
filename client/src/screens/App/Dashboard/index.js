@@ -7,7 +7,8 @@ import {
   getAllStaff,
   changeTheme,
   updateCurrentRouteTitle,
-  getCurrentUser
+  getCurrentUser,
+  getCurrentProfile
 } from '../../../shared/actions';
 import Dashboard from './Dashboard';
 import { connect } from 'react-redux';
@@ -34,7 +35,8 @@ const Container = connect(
     getCurrentUser,
     getAllCourses,
     getAllStaff,
-    updateCurrentRouteTitle
+    updateCurrentRouteTitle,
+    getCurrentProfile
   }
 )(withRouter(Dashboard));
 

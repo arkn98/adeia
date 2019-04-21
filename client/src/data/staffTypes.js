@@ -23,7 +23,7 @@ const labels = {
 export const staffTypeSelectOptions = Object.keys(staffTypes).map(
   (key, index) => {
     return {
-      label: labels[key],
+      label: `${staffTypes[key]} - ${labels[key]}`,
       value: staffTypes[key]
     };
   }

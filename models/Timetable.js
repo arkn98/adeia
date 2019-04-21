@@ -1,4 +1,4 @@
-/* const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 //create schema
@@ -6,40 +6,36 @@ const TimetableSchema = new Schema({
   class: {
     type: Schema.Types.ObjectId,
     ref: 'classes',
-    unique: true,
     required: true
   },
-  classCode: {
+  day: {
+    type: Number,
+    required: true
+  },
+  hour: {
+    type: Number,
+    required: true
+  },
+  duration: {
+    type: Number,
+    required: true,
+    default: 1
+  },
+  course: {
+    type: Schema.Types.ObjectId,
+    ref: 'courses',
+    required: true
+  },
+  staff: {
+    type: Schema.Types.ObjectId,
+    ref: 'users',
+    required: true
+  },
+  staffRole: {
     type: String,
-    required: true
-  },
-  timetable: [
-    [
-      {
-        start: { type: Number, required: true },
-        duration: { type: Number, required: true },
-        course: [
-          {
-            courseCode: {
-              type: Schema.Types.ObjectId,
-              ref: 'courses'
-            },
-            handlingStaff: {
-              type: Schema.Types.ObjectId,
-              ref: 'users'
-            },
-            additionalStaff: [
-              {
-                type: Schema.Types.ObjectId,
-                ref: 'users'
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  ]
+    enum: ['MAIN', 'ADDITIONAL'],
+    default: 'MAIN'
+  }
 });
 
 module.exports = Timetable = mongoose.model('timetables', TimetableSchema);
- */

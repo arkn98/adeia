@@ -1,4 +1,4 @@
-const Timetable = require('../../models/TestTimetable');
+const Timetable = require('../../models/Timetable');
 
 const getTimetableDayEntries = (classId, day) => {
   return new Promise(resolve => {

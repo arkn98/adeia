@@ -5,7 +5,7 @@ import { CLEAR_ERRORS, GET_ERRORS } from '../actionTypes';
 const sendResetEmail = data => dispatch => {
   return new Promise((resolve, reject) => {
     axios
-      .post('/api/users/reset-password-request', data)
+      .post('/api/account/reset-password-request', data)
       .then(res => {
         dispatch({ type: CLEAR_ERRORS, payload: {} });
         resolve(true);

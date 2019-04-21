@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { GET_TIMETABLE } from '../actionTypes';
 
 const getTimetable = classId => dispatch => {
   return new Promise((resolve, reject) => {
@@ -9,7 +10,8 @@ const getTimetable = classId => dispatch => {
         }
       })
       .then(res => {
-        resolve(res.data);
+        dispatch({ type: GET_TIMETABLE, payload: res.data });
+        resolve(true);
       })
       .catch(err => {
         reject(false);

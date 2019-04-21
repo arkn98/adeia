@@ -1,5 +1,5 @@
 import { setAuthToken } from '../utils';
-import { setCurrentUser } from './';
+import { setCurrentUser } from '.';
 
 //logout user
 const logoutUser = () => dispatch => {
