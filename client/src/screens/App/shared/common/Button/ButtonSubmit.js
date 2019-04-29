@@ -11,14 +11,17 @@ const ButtonSubmit = props => {
     className = null,
     disabled = false,
     sizeSmall = false,
+    sizeMini = false,
     ...rest
   } = props;
   return (
     <button
-      onClick={onClick}
+      onClick={isLoading || disabled ? null : onClick}
       style={{ ...style }}
-      className={`${styles.submitButton} ${disabled ? styles.disabled : null} ${
-        sizeSmall ? styles.sizeSmall : null
+      className={`${styles.submitButton} ${
+        isLoading || disabled ? styles.disabled : null
+      } ${sizeSmall ? styles.sizeSmall : null} ${
+        sizeMini ? styles.sizeMini : null
       } ${className} ${
         type === 'primary'
           ? styles.buttonPrimary

@@ -7,9 +7,10 @@ const cx = classNames.bind({ ...styles });
 
 class RadioButtonGroup extends Component {
   radioClickHandler = event => {
+    const { name, index = undefined } = this.props;
     const element = event.target;
     const data = element.getAttribute('data');
-    this.props.radioClickHandler(this.props.name, data);
+    this.props.radioClickHandler(name, data, index);
   };
 
   render = () => {
@@ -20,9 +21,10 @@ class RadioButtonGroup extends Component {
       descriptionStyles = {},
       containerStyles = {},
       infoText = null,
-      label,
+      label = null,
       name,
       bigLabel = false,
+      sizeSmall = false,
       disabled = false
     } = this.props;
 
@@ -32,24 +34,26 @@ class RadioButtonGroup extends Component {
 
     return (
       <div className={containerStyles}>
-        <div
-          className={cx({
-            inputLabel: !bigLabel,
-            formFieldLabel: bigLabel,
-            marginBottom8: bigLabel,
-            errorLabel: errors
-          })}>
-          {label}
-          {infoText !== null ? (
-            <Fragment>
-              {' '}
-              <span className={styles.infoText}>{infoText}</span>
-            </Fragment>
-          ) : null}
-          {errors ? (
-            <span className={styles.errorMessage}> - {errors}</span>
-          ) : null}
-        </div>
+        {label !== null ? (
+          <div
+            className={cx({
+              inputLabel: !bigLabel,
+              formFieldLabel: bigLabel,
+              marginBottom8: bigLabel || description === '',
+              errorLabel: errors
+            })}>
+            {label}
+            {infoText !== null ? (
+              <Fragment>
+                {' '}
+                <span className={styles.infoText}>{infoText}</span>
+              </Fragment>
+            ) : null}
+            {errors ? (
+              <span className={styles.errorMessage}> - {errors}</span>
+            ) : null}
+          </div>
+        ) : null}
         {description !== '' ? (
           <Description containerStyles={descriptionStyles}>
             {description}
@@ -60,6 +64,7 @@ class RadioButtonGroup extends Component {
             return (
               <RadioButton
                 name={name}
+                sizeSmall={sizeSmall}
                 data={option.value}
                 content={option.label}
                 value={noIsCheckSet ? index === 0 : option.isChecked}

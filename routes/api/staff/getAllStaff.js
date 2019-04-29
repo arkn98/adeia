@@ -3,6 +3,7 @@ const User = require('../../../models/User');
 
 const getAllStaff = (req, res) => {
   User.find({ accountType: accountTypes.STAFF })
+    .sort({ staffId: 1 })
     .lean()
     .then(users => {
       if (!users) {

@@ -16,6 +16,11 @@
   </sub>
 </div>
 
+### Demo
+
+Live demo (still buggy though): https://lms-build.herokuapp.com<br>
+Use dummy credentials to login: (email) admin@admin.com (password) admin1234
+
 #### Note:
 
 The UI for this application is ~~shamelessly copied~~ heavily inspired from [Discord](https://discordapp.com) and in no way does this project mimic or impersonate the service. This project is used for a completely free purpose and does not have any commerciality involved.

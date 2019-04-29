@@ -10,6 +10,8 @@ import staffReducer from './staffReducer';
 import courseReducer from './courseReducer';
 import leaveTypeReducer from './leaveTypeReducer';
 import leaveAllocationReducer from './leaveAllocationReducer';
+import holidayReducer from './holidayReducer';
+import classGroupReducer from './classGroupReducer';
 
 export default combineReducers({
   auth: authReducer,
@@ -22,5 +24,7 @@ export default combineReducers({
   staff: staffReducer,
   courses: courseReducer,
   leaveTypes: leaveTypeReducer,
-  leaveAllocations: leaveAllocationReducer
+  leaveAllocations: leaveAllocationReducer,
+  holidays: holidayReducer,
+  classGroups: classGroupReducer
 });

@@ -17,34 +17,39 @@ class TextBox extends Component {
       descriptionStyles = {},
       infoText = null,
       type = 'text',
-      label,
+      label = null,
       name,
       inputOnChangeHandler,
+      indexedInputChangeHandler = null,
+      index = undefined,
       description = '',
       value,
       bigLabel = false,
-      disabled = false
+      disabled = false,
+      ...rest
     } = this.props;
     return (
       <div className={containerStyles}>
-        <div
-          className={cx({
-            inputLabel: !bigLabel,
-            formFieldLabel: bigLabel,
-            marginBottom8: bigLabel,
-            errorLabel: errors
-          })}>
-          {label}
-          {infoText !== null ? (
-            <Fragment>
-              {' '}
-              <span className={styles.infoText}>{infoText}</span>
-            </Fragment>
-          ) : null}
-          {errors ? (
-            <span className={styles.errorMessage}> - {errors}</span>
-          ) : null}
-        </div>
+        {label !== null ? (
+          <div
+            className={cx({
+              inputLabel: !bigLabel,
+              formFieldLabel: bigLabel,
+              marginBottom8: bigLabel || description === '',
+              errorLabel: errors
+            })}>
+            {label}
+            {infoText !== null ? (
+              <Fragment>
+                {' '}
+                <span className={styles.infoText}>{infoText}</span>
+              </Fragment>
+            ) : null}
+            {errors ? (
+              <span className={styles.errorMessage}> - {errors}</span>
+            ) : null}
+          </div>
+        ) : null}
         {description !== '' ? (
           <Description containerStyles={descriptionStyles}>
             {description}
@@ -55,7 +60,16 @@ class TextBox extends Component {
           ref={input => {
             this.textBox = input;
           }}
-          onChange={inputOnChangeHandler}
+          onChange={
+            indexedInputChangeHandler === null
+              ? inputOnChangeHandler
+              : event =>
+                  indexedInputChangeHandler(
+                    event.target.name,
+                    event.target.value,
+                    index
+                  )
+          }
           value={value}
           type={type}
           disabled={disabled}
@@ -64,6 +78,7 @@ class TextBox extends Component {
             formInputError: errors,
             disabled: disabled
           })}
+          {...rest}
         />
       </div>
     );

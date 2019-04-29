@@ -11,7 +11,6 @@ import Error from './shared/components/Error';
 import LoginActivate from './LoginActivate';
 import ResetPassword from './ResetPassword';
 import Dashboard from './Dashboard';
-//import Dashboard2 from './DashboardContainer';
 import { ModalSingleButton, ModalDoubleButton } from './shared/common/Modal';
 import { Notifications } from './shared/components/Notifications';
 import { PrivateRoute } from './shared/common/PrivateRoute';
@@ -132,6 +131,7 @@ class App extends Component {
                     message="We can't find the page that you're looking for :("
                     footerAltColors={true}
                     showButton={true}
+                    showIllustration="not-found"
                     buttonLocation="back"
                     buttonContent="Go back">
                     404
@@ -145,6 +145,7 @@ class App extends Component {
                   message="We can't find the page that you're looking for :("
                   footerAltColors={true}
                   showButton={true}
+                  showIllustration="not-found"
                   buttonLocation="back"
                   buttonContent="Go back">
                   404
@@ -162,6 +163,7 @@ class App extends Component {
           <Error
             message="Please check back after sometime or contact the administrator."
             footerAltColors={true}
+            showIllustration="server-down"
             showButton={false}>
             DB Down
           </Error>

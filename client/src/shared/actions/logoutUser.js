@@ -1,5 +1,5 @@
 import { setAuthToken } from '../utils';
-import { setCurrentUser } from '.';
+import { setCurrentUser, clearCurrentProfile } from '.';
 
 //logout user
 const logoutUser = () => dispatch => {
@@ -8,6 +8,7 @@ const logoutUser = () => dispatch => {
   //remove auth header for future requests
   setAuthToken(false);
   //set current user to empty object and set isAuthenticated to false
+  dispatch(clearCurrentProfile());
   dispatch(setCurrentUser({}));
 };
 

@@ -5,6 +5,10 @@ const getCurrent = (req, res) => {
   Profile.findOne({
     user: req.user.id
   })
+    .populate({
+      path: 'leaveAllocation',
+      populate: { path: 'leaveTypesAllowed' }
+    })
     .then(profile => {
       if (!profile) {
         errors.noprofile = 'No profile found';

@@ -15,8 +15,7 @@ const checkThemeFromLocalStorage = () => {
   let prefs = localStorage.getItem('themePreferences');
   let isDarkTheme = false;
   if (prefs !== null) {
-    if (prefs === 'light') isDarkTheme = false;
-    else isDarkTheme = true;
+    isDarkTheme = prefs !== 'light';
   } else {
     isDarkTheme = false;
   }

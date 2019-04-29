@@ -13,13 +13,19 @@ const login = (req, res) => {
 
   const email = req.body.email;
   const password = req.body.password;
+  if (email === 'example@example.com') {
+    errors.email = 'Wrong credentials';
+    errors.password = 'Wrong credentials';
+    return res.status(400).json(errors);
+  }
+
   //find user by email
   User.findOne({ email }).then(user => {
     //check for user
     if (!user) {
       errors.email = 'Wrong credentials';
       errors.password = 'Wrong credentials';
-      return res.status(404).json(errors);
+      return res.status(400).json(errors);
     }
     //check password
     bcrypt.compare(password, user.password).then(isMatch => {

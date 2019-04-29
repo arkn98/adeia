@@ -7,7 +7,6 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
 
-const fileUpload = require('express-fileupload');
 const cors = require('cors');
 
 mongoose.set('useCreateIndex', true);
@@ -23,6 +22,8 @@ const profileRoutes = require('./routes/api/profile');
 const leaveTypeRoutes = require('./routes/api/leavetype');
 const leaveAllocationRoutes = require('./routes/api/leaveallocation');
 const helperRoutes = require('./routes/api/helpers');
+const holidayRoutes = require('./routes/api/holiday');
+const classGroupRoutes = require('./routes/api/classgroup');
 
 const app = express();
 
@@ -33,8 +34,6 @@ app.use(bodyParser.json());
 //if (process.env.NODE_ENV === 'production') {
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 //}
-
-app.use(fileUpload({ safeFileNames: true, preserveExtension: true }));
 
 //DB  config
 const db = require('./config/keys').mongoURI;
@@ -58,6 +57,7 @@ require('./config/passport.js')(passport);
 
 //use routes
 app.use('/api/class', classRoutes);
+app.use('/api/class-group', classGroupRoutes);
 app.use('/api/course', courseRoutes);
 app.use('/api/account', accountRoutes);
 app.use('/api/timetable', timetableRoutes);
@@ -67,6 +67,7 @@ app.use('/api/leave', leaveRoutes);
 app.use('/api/staff', staffRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/helpers', helperRoutes);
+app.use('/api/holiday', holidayRoutes);
 
 const port = process.env.PORT || 5000;
 

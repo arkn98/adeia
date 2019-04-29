@@ -2,6 +2,7 @@ const Class = require('../../../models/Class');
 
 const getAllClasses = (req, res) => {
   Class.find({})
+    .populate('classGroup')
     .lean()
     .then(classes => {
       if (!classes) {

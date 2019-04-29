@@ -17,8 +17,9 @@ class SelectBox extends Component {
       descriptionStyles = {},
       description = '',
       infoText = null,
-      label,
+      label = null,
       name,
+      index = undefined,
       inputOnChangeHandler,
       value,
       bigLabel = false,
@@ -28,24 +29,26 @@ class SelectBox extends Component {
     } = this.props;
     return (
       <div className={containerStyles}>
-        <div
-          className={cx({
-            inputLabel: !bigLabel,
-            formFieldLabel: bigLabel,
-            marginBottom8: bigLabel,
-            errorLabel: errors
-          })}>
-          {label}
-          {infoText !== null ? (
-            <Fragment>
-              {' '}
-              <span className={styles.infoText}>{infoText}</span>
-            </Fragment>
-          ) : null}
-          {errors ? (
-            <span className={styles.errorMessage}> - {errors}</span>
-          ) : null}
-        </div>
+        {label !== null ? (
+          <div
+            className={cx({
+              inputLabel: !bigLabel,
+              formFieldLabel: bigLabel,
+              marginBottom8: bigLabel || description === '',
+              errorLabel: errors
+            })}>
+            {label}
+            {infoText !== null ? (
+              <Fragment>
+                {' '}
+                <span className={styles.infoText}>{infoText}</span>
+              </Fragment>
+            ) : null}
+            {errors ? (
+              <span className={styles.errorMessage}> - {errors}</span>
+            ) : null}
+          </div>
+        ) : null}
         {description !== '' ? (
           <Description containerStyles={descriptionStyles}>
             {description}
@@ -56,7 +59,7 @@ class SelectBox extends Component {
           ref={input => {
             this.selectBox = input;
           }}
-          onChange={inputOnChangeHandler}
+          onChange={event => inputOnChangeHandler(event, index)}
           disabled={disabled}
           className={cx({
             inputField: true,

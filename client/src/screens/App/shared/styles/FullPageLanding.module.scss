@@ -206,3 +206,14 @@
   height: 100%;
   background: transparent !important;
 }
+
+.errorIllustration {
+  width: 350px;
+  margin-bottom: 32px;
+}
+
+@media screen and (max-width: 486px) {
+  .errorIllustration {
+    width: 256px;
+  }
+}

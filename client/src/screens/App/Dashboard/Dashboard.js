@@ -17,12 +17,15 @@ import EditStaff from './screens/EditStaff';
 import AddAdmin from './screens/AddAdmin';
 import AddUpdateCourse from './screens/AddUpdateCourse';
 import AddUpdateClass from './screens/AddUpdateClass';
+import AddUpdateClassGroup from './screens/AddUpdateClassGroup';
 import AddUpdateLeaveType from './screens/AddUpdateLeaveType';
 import AddUpdateLeaveAllocation from './screens/AddUpdateLeaveAllocation';
+import AddUpdateHoliday from './screens/AddUpdateHoliday';
+import ViewHolidays from './screens/ViewHolidays';
 import Settings from './screens/Settings';
 import Error from '../shared/components/Error';
 import { FullPageSpinner } from 'screens/App/shared/common/Spinner';
-import { accountTypes } from 'data';
+import { accountTypes, holidayTypes } from 'data';
 
 class Dashboard extends Component {
   state = {
@@ -165,11 +168,35 @@ class Dashboard extends Component {
       );
       pages.push(
         <Route
+          path="/dashboard/holiday"
+          exact
+          render={() => (
+            <AddUpdateHoliday
+              pageTitle="Holiday Settings"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
+      pages.push(
+        <Route
           path="/dashboard/class"
           exact
           render={() => (
             <AddUpdateClass
               pageTitle="Class Settings"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
+      pages.push(
+        <Route
+          path="/dashboard/class-group"
+          exact
+          render={() => (
+            <AddUpdateClassGroup
+              pageTitle="Class Group Settings"
               showPopout={this.props.showPopout}
             />
           )}
@@ -207,6 +234,36 @@ class Dashboard extends Component {
           render={() => (
             <LeaveApplication
               pageTitle="Apply for leave"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
+      pages.push(
+        <Route
+          path="/dashboard/holiday/public"
+          exact
+          render={() => (
+            <ViewHolidays
+              key="publicholidays"
+              pageTitle="View Public holidays"
+              holidayTypeLabel="Public Holidays"
+              holidayType={holidayTypes.PUBLIC_HOLIDAY}
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
+      pages.push(
+        <Route
+          path="/dashboard/holiday/restricted"
+          exact
+          render={() => (
+            <ViewHolidays
+              key="restrictedholidays"
+              pageTitle="View Restricted holidays"
+              holidayTypeLabel="Restricted Holidays"
+              holidayType={holidayTypes.RESTRICTED_HOLIDAY}
               showPopout={this.props.showPopout}
             />
           )}
@@ -256,6 +313,7 @@ class Dashboard extends Component {
             inDashboard={true}
             message="We can't find the page that you're looking for :("
             footerAltColors={false}
+            showIllustration="not-found"
             showButton={true}
             buttonLocation="back"
             buttonContent="Go back">

@@ -10,14 +10,19 @@ let transporter = nodemailer.createTransport({
 });
 
 const sendEmail = data => {
-  let mailOptions = {
-    from: keys.emailID,
-    to: data.to,
-    subject: data.subject,
-    html: data.body
-  };
-  transporter.sendMail(mailOptions, (err, info) => {
-    if (err) console.log(err);
+  return new Promise((resolve, reject) => {
+    console.log('mail data', JSON.stringify(data, null, 2));
+    let mailOptions = {
+      from: keys.emailID,
+      to: data.to,
+      subject: data.subject,
+      html: data.body
+    };
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) console.log(err);
+      console.log(info);
+      resolve();
+    });
   });
 };
 

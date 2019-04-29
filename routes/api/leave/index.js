@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const { body } = require('express-validator/check');
+const multer = require('multer');
 
 const { accountTypes } = require('../../../models/User');
 const { leaveTypes } = require('../../../models/Leave');
@@ -9,10 +10,22 @@ const addLeave = require('./addLeave');
 const getLeaves = require('./getLeaves');
 const { checkRole: permit } = require('../../utils');
 
+let storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, `/home/arun/code/js-projects/lms/uploads/`);
+  },
+  filename: function(req, file, cb) {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
+
+const upload = multer({ storage: storage });
+
 router.post(
   '/add',
   passport.authenticate('jwt', { session: false }),
   permit(accountTypes.STAFF),
+  upload.single('document'),
   [
     body('staffId')
       .exists()
@@ -24,22 +37,6 @@ router.post(
       .withMessage('Staff ID must be atleast 1 character long')
       .isNumeric()
       .withMessage('Staff ID can only contain numbers'),
-    body('from')
-      .exists()
-      .withMessage('From Date cannot be empty')
-      .not()
-      .isEmpty()
-      .withMessage('From Date cannot be empty')
-      .isISO8601()
-      .withMessage('Invalid Date'),
-    body('to')
-      .exists()
-      .withMessage('To Date cannot be empty')
-      .not()
-      .isEmpty()
-      .withMessage('To Date cannot be empty')
-      .isISO8601()
-      .withMessage('Invalid Date'),
     body('leaveType')
       .exists()
       .withMessage('Leave type cannot be empty')
@@ -69,14 +66,14 @@ router.post(
       .isEmpty()
       .withMessage('Is Vacation cannot be empty')
       .isBoolean()
-      .withMessage('Invalid value'),
-    body('reason')
-      .optional({ nullable: true })
+      .withMessage('Invalid value')
+    /* body('address')
+      .optional({ nullable: true,  })
       .exists()
-      .withMessage('Reason cannot be empty')
+      .withMessage('Address cannot be empty')
       .not()
       .isEmpty()
-      .withMessage('Reason cannot be empty')
+      .withMessage('Address cannot be empty') */
   ],
   addLeave
 );

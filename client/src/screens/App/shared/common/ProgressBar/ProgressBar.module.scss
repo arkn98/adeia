@@ -1,0 +1,26 @@
+.container {
+  width: 100%;
+  background: rgba(32, 34, 37, 0.6);
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: background 0.17s ease;
+  overflow: hidden;
+}
+
+:global(.lightTheme) .container {
+  background: #dcddde;
+}
+
+.inner {
+  width: 0%;
+  min-height: 6px;
+  border-radius: 6px;
+  background-color: #7289da;
+  transform: translateX(-100%);
+  transition: transform 0.17s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.17s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.inner.innerTransitionEnd {
+  transform: translateX(0) !important;
+}

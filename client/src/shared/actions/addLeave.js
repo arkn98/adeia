@@ -4,8 +4,16 @@ import { isEmpty } from '../utils';
 
 const addLeave = data => dispatch => {
   return new Promise((resolve, reject) => {
+    const form = new FormData();
+    Object.keys(data).forEach(key => {
+      if (key === 'slotsToAlternate') {
+        form.append(key, JSON.stringify(data[key]));
+      } else {
+        form.append(key, data[key]);
+      }
+    });
     axios
-      .post('/api/leave/add', data)
+      .post('/api/leave/add', form)
       .then(res => {
         resolve(res.data);
       })

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import styles from '../../styles/FullPageLanding.module.scss';
+import { NotFound, ServerDown } from 'assets/illustrations';
 import { ButtonTransparent } from '../../common/Button';
 import { withRouter } from 'react-router-dom';
 import { Footer } from '../Footer';
@@ -12,6 +13,7 @@ const Error = props => {
     footerAltColors = true,
     showButton = false,
     buttonContent,
+    showIllustration = '',
     loadingText = false,
     buttonLocation = '/',
     inDashboard = false,
@@ -29,6 +31,11 @@ const Error = props => {
     <div
       className={`${styles.app} ${inDashboard ? styles.forceFullDash : null}`}>
       <div className={styles.banner}>
+        {showIllustration === 'not-found' ? (
+          <NotFound className={styles.errorIllustration} />
+        ) : showIllustration === 'server-down' ? (
+          <ServerDown className={styles.errorIllustration} />
+        ) : null}
         <div className={`${styles.title} ${styles.titleBig}`}>
           {children}
           {loadingText ? <span className={styles.loadingEllipsis} /> : null}

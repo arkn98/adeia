@@ -18,6 +18,8 @@ const LeaveAllocationSchema = new Schema({
   ]
 });
 
+Object.assign(LeaveAllocationSchema.statics, { staffTypes });
+
 module.exports = LeaveAllocation = mongoose.model(
   'leaveallocations',
   LeaveAllocationSchema

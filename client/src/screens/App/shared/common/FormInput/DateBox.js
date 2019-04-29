@@ -41,7 +41,8 @@ class DateBox extends Component {
       descriptionStyles = {},
       description = '',
       infoText = null,
-      label,
+      label = null,
+      index = undefined,
       name,
       inputOnChangeHandler,
       value,
@@ -57,24 +58,26 @@ class DateBox extends Component {
 
     return (
       <div className={containerStyles}>
-        <div
-          className={cx({
-            inputLabel: !bigLabel,
-            formFieldLabel: bigLabel,
-            marginBottom8: bigLabel,
-            errorLabel: errors
-          })}>
-          {label}
-          {infoText !== null ? (
-            <Fragment>
-              {' '}
-              <span className={styles.infoText}>{infoText}</span>
-            </Fragment>
-          ) : null}
-          {errors ? (
-            <span className={styles.errorMessage}> - {errors}</span>
-          ) : null}
-        </div>
+        {label !== null ? (
+          <div
+            className={cx({
+              inputLabel: !bigLabel,
+              formFieldLabel: bigLabel,
+              marginBottom8: bigLabel || description === '',
+              errorLabel: errors
+            })}>
+            {label}
+            {infoText !== null ? (
+              <Fragment>
+                {' '}
+                <span className={styles.infoText}>{infoText}</span>
+              </Fragment>
+            ) : null}
+            {errors ? (
+              <span className={styles.errorMessage}> - {errors}</span>
+            ) : null}
+          </div>
+        ) : null}
         {description !== '' ? (
           <Description containerStyles={descriptionStyles}>
             {description}
@@ -82,24 +85,32 @@ class DateBox extends Component {
         ) : null}
         <DayPickerInput
           name={name}
-          onDayChange={date => inputOnChangeHandler(name, date)}
+          onDayChange={date => inputOnChangeHandler(name, date, index)}
           format={this.FORMAT}
           formatDate={this.formatDate}
           parseDate={this.parseDate}
           value={value}
           overlayComponent={DatePickerOverlay}
           dayPickerProps={{
+            className: cx({ noTextColorChange: true }),
+            showOutsideDays: true,
             selectedDays: value,
             disabledDays: [
               ...disabledDays,
-              { daysOfWeek: [0], before: minDate, after: maxDate }
+              { daysOfWeek: [0] /* before: minDate, after: maxDate */ }
             ],
+            modifiersStyles: {
+              selected: {
+                backgroundColor: '#7289da'
+              }
+            },
             fromMonth,
             toMonth
           }}
           placeholder={placeholder}
           style={{ width: '100%' }}
           inputProps={{
+            readOnly: true,
             className: cx({
               inputField: true,
               formInputError: errors,

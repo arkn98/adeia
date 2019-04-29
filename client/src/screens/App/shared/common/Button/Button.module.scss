@@ -91,12 +91,9 @@
   min-height: 44px;
   height: 44px;
   width: 100%;
-  /* background-color: $color-primary; */
-  /* margin-bottom: 8px; */
   font-size: 16px;
   line-height: 24px;
   font-weight: 500;
-  /* color: $color-white; */
 }
 
 .submitting {
@@ -106,10 +103,18 @@
 .submitButton.sizeSmall {
   height: 32px;
   min-height: 32px;
-  min-width: 60px;
-  width: 60px;
   width: auto;
   min-width: 130px;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.submitButton.sizeMini {
+  height: 32px;
+  min-height: 32px;
+  width: auto;
+  padding: 2px 12px;
+  min-width: 32px;
   font-size: 14px;
   line-height: 16px;
 }
@@ -236,17 +241,11 @@
   background-color: #677bc4;
 }
 
-.disabled {
-  background-color: #7289da;
+.disabled.submitButton {
+  background-color: #677bc4 !important;
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: 1 !important;
   transition: none;
-}
-
-.disabled.submitButton:hover,
-.disabled.submitButton:focus {
-  background-color: #7289da;
-  opacity: 0.5;
 }
 
 .noMarginBottom {
@@ -258,4 +257,77 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.iconHoverWrapper {
+  cursor: pointer;
+  position: relative;
+  background: none;
+  padding: 6px 8px;
+  border-radius: 3px;
+}
+
+.disabled.iconHoverWrapper {
+  cursor: not-allowed;
+  background: transparent !important;
+}
+
+.iconHoverWrapper:hover {
+  background: hsla(0, 0%, 0%, 0.15);
+}
+
+:global(.lightTheme) .iconHoverWrapper:hover {
+  background: rgba(79, 84, 92, 0.1);
+}
+
+.iconHoverWrapper:active {
+  background: hsla(0, 0%, 0%, 0.3);
+}
+
+:global(.lightTheme) .iconHoverWrapper:active {
+  background: rgba(79, 84, 92, 0.3);
+}
+
+.iconHoverWrapper:active .customIconTest {
+  fill: #fff;
+}
+
+.iconHoverWrapper.danger:hover {
+  background-color: rgba(240, 71, 71, 0.1);
+}
+
+.iconHoverWrapper.danger:active {
+  background-color: rgba(240, 71, 71, 1);
+}
+
+.iconHoverWrapper.danger:hover .customIconTest {
+  fill: rgb(240, 71, 71);
+}
+
+.iconHoverWrapper.danger:active .customIconTest {
+  fill: #fff;
+}
+
+.customIconTest {
+  width: 16px;
+  fill-opacity: 0.75;
+  fill: #f6f6f7;
+  /* fill-opacity: 1; */
+  top: 1px;
+  position: relative;
+}
+
+:global(.lightTheme) .customIconTest {
+  fill-opacity: 1;
+  fill: #4f545c;
+}
+
+.disabled.iconHoverWrapper .customIconTest {
+  fill-opacity: 0.75 !important;
+  fill: #f6f6f7 !important;
+}
+
+:global(.lightTheme) .disabled.iconHoverWrapper .customIconTest {
+  fill-opacity: 1 !important;
+  fill: #4f545c !important;
 }

@@ -11,6 +11,7 @@ class RadioButton extends Component {
       containerStyles = {},
       onClick,
       value,
+      sizeSmall = false,
       content = '',
       data = ''
     } = this.props;
@@ -28,7 +29,8 @@ class RadioButton extends Component {
           data={data}
           className={cx({
             radioItem: true,
-            radioItemSelected: value
+            radioItemSelected: value,
+            sizeSmall: sizeSmall
           })}>
           <label name={name} data={data} className={styles.checkBoxWrapper}>
             <input

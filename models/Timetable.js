@@ -8,6 +8,11 @@ const TimetableSchema = new Schema({
     ref: 'classes',
     required: true
   },
+  classGroup: {
+    type: Schema.Types.ObjectId,
+    ref: 'classgroups',
+    required: true
+  },
   day: {
     type: Number,
     required: true

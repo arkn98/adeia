@@ -29,7 +29,7 @@ class SelectSearch extends Component {
       infoText = null,
       isLoading = false,
       isSearchable = true,
-      label,
+      label = null,
       name,
       inputOnChangeHandler,
       value,
@@ -135,24 +135,26 @@ class SelectSearch extends Component {
 
     return (
       <div className={containerStyles} style={propStyles}>
-        <div
-          className={cx({
-            inputLabel: !bigLabel,
-            formFieldLabel: bigLabel,
-            marginBottom8: bigLabel,
-            errorLabel: errors
-          })}>
-          {label}
-          {infoText !== null ? (
-            <Fragment>
-              {' '}
-              <span className={styles.infoText}>{infoText}</span>
-            </Fragment>
-          ) : null}
-          {errors ? (
-            <span className={styles.errorMessage}> - {errors}</span>
-          ) : null}
-        </div>
+        {label !== null ? (
+          <div
+            className={cx({
+              inputLabel: !bigLabel,
+              formFieldLabel: bigLabel,
+              marginBottom8: bigLabel || description === '',
+              errorLabel: errors
+            })}>
+            {label}
+            {infoText !== null ? (
+              <Fragment>
+                {' '}
+                <span className={styles.infoText}>{infoText}</span>
+              </Fragment>
+            ) : null}
+            {errors ? (
+              <span className={styles.errorMessage}> - {errors}</span>
+            ) : null}
+          </div>
+        ) : null}
         {description !== '' ? (
           <Description containerStyles={descriptionStyles}>
             {description}

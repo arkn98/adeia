@@ -8,7 +8,6 @@
   font-weight: 600;
   line-height: 16px;
   font-size: 12px;
-  margin-bottom: 8px;
 }
 
 :global(.lightTheme) .inputLabel {
@@ -39,6 +38,18 @@
   background-color: rgba(0, 0, 0, 0.1);
   border-color: rgba(0, 0, 0, 0.3);
   color: #f6f6f7;
+}
+
+.fileUpload {
+  color: #f6f6f7;
+}
+
+:global(.lightTheme) .fileUpload {
+  color: #4f545c;
+}
+
+.noTextColorChange {
+  color: #4f545c !important;
 }
 
 :global(.lightTheme) .inputField {
@@ -155,6 +166,11 @@ select.inputField {
   transition: border-color 0.08s ease, background-color 0.08s ease;
 }
 
+.radioItem.sizeSmall {
+  padding: 4px;
+  margin-bottom: 4px;
+}
+
 .radioItem:hover {
   border-color: #040405;
 }
@@ -192,6 +208,10 @@ select.inputField {
   color: #f6f6f7;
 }
 
+.sizeSmall .radioContent {
+  margin: 0 2px;
+}
+
 :global(.lightTheme) .radioContent {
   color: #4f545c;
 }
@@ -210,6 +230,10 @@ select.inputField {
   align-items: center;
 }
 
+.sizeSmall .checkBoxWrapper {
+  font-size: 12px;
+}
+
 .checkBoxCheckmarkOutline {
   width: 24px;
   height: 24px;
@@ -221,6 +245,11 @@ select.inputField {
   justify-content: center;
   align-items: center;
   display: flex;
+}
+
+.sizeSmall .checkBoxCheckmarkOutline {
+  width: 18px;
+  height: 18px;
 }
 
 .checkBoxCheckmarkOutline.checked {
@@ -236,23 +265,17 @@ select.inputField {
   display: block;
 }
 
-.radioContent {
-  margin: 0 8px;
-  color: #f6f6f7;
-}
-
-:global(.lightTheme) .radioContent {
-  color: #4f545c;
-}
-
-:global(.lightTheme) .radioItemSelected .radioContent {
-  color: #fff;
-}
-
 .radioContent .title {
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
+}
+
+.sizeSmall .radioContent .title {
+  margin-left: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
 }
 
 .radioItem .inputField {
@@ -433,4 +456,12 @@ select.inputField {
 
 :global(.lightTheme) .description {
   color: rgba(114, 118, 125, 0.6);
+}
+
+.dateBoxCaption {
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  line-height: 16px;
+  font-size: 12px;
 }

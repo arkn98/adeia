@@ -39,6 +39,7 @@ class LeaveSingle extends Component {
             message="We can't find the page that you're looking for :("
             footerAltColors={false}
             showButton={true}
+            showIllustration="not-found"
             buttonLocation="back"
             buttonContent="Go back">
             404

@@ -11,7 +11,7 @@
   font-size: 14px;
   font-weight: 300;
   line-height: 22px;
-  min-width: 768px;
+  min-width: 486px;
   overflow-x: auto;
   width: 100%;
   word-break: break-all;
@@ -161,4 +161,113 @@
 
 .inlineEditorTr {
   padding: 12px;
+}
+
+.altTableContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.altTable {
+  box-sizing: border-box;
+  /* position: relative;
+  display: flex;
+  flex-direction: column; */
+  overflow-x: auto;
+}
+
+.thead {
+  min-width: 486px;
+}
+
+.tbody {
+  min-width: 486px;
+  flex: 99999 1 auto;
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden;
+}
+
+.adaptForFullWidth {
+  min-width: 944px;
+}
+
+.headerRow {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  padding: 8px 0px;
+  align-items: center;
+  border-bottom: 1px solid rgba(114, 118, 125, 0.3);
+}
+
+.columnTitle {
+  color: hsla(0, 0%, 100%, 0.3);
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  flex: 0 0 auto;
+  display: inline-block;
+}
+
+:global(.lightTheme) .columnTitle {
+  color: #99aab5;
+}
+
+.columnSeperator {
+  content: ' ';
+  display: inline-block;
+  flex-shrink: 0;
+  height: 18px;
+  margin: 0 20px;
+  width: 1px;
+  background-color: rgba(114, 118, 125, 0.3);
+}
+
+.invisibleSeperator {
+  background-color: transparent;
+}
+
+.columnData {
+  color: hsla(0, 0%, 100%, 0.8);
+  flex: 0 0 auto;
+  display: inline-block;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.columnData:last-child {
+  margin-right: 20px;
+}
+
+:global(.lightTheme) .columnData {
+  color: #4f545c;
+}
+
+.row {
+  overflow-x: auto;
+  min-height: 32px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  padding: 8px 0px;
+  align-items: center;
+  border-bottom: 1px solid rgba(114, 118, 125, 0.3);
+}
+
+.row.striped:nth-child(2n) {
+  background: #35383c;
+}
+
+:global(.lightTheme) .row.striped:nth-child(2n) {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.inputRow {
+  min-height: 56px;
 }

@@ -18,7 +18,7 @@ class FileUpload extends Component {
       description = '',
       infoText = null,
       type = 'file',
-      label,
+      label = null,
       name,
       inputOnChangeHandler,
       value,
@@ -27,24 +27,26 @@ class FileUpload extends Component {
     } = this.props;
     return (
       <div className={containerStyles}>
-        <div
-          className={cx({
-            inputLabel: !bigLabel,
-            formFieldLabel: bigLabel,
-            marginBottom8: bigLabel,
-            errorLabel: errors
-          })}>
-          {label}
-          {infoText !== null ? (
-            <Fragment>
-              {' '}
-              <span className={styles.infoText}>{infoText}</span>
-            </Fragment>
-          ) : null}
-          {errors ? (
-            <span className={styles.errorMessage}> - {errors}</span>
-          ) : null}
-        </div>
+        {label !== null ? (
+          <div
+            className={cx({
+              inputLabel: !bigLabel,
+              formFieldLabel: bigLabel,
+              marginBottom8: bigLabel || description === '',
+              errorLabel: errors
+            })}>
+            {label}
+            {infoText !== null ? (
+              <Fragment>
+                {' '}
+                <span className={styles.infoText}>{infoText}</span>
+              </Fragment>
+            ) : null}
+            {errors ? (
+              <span className={styles.errorMessage}> - {errors}</span>
+            ) : null}
+          </div>
+        ) : null}
         {description !== '' ? (
           <Description containerStyles={descriptionStyles}>
             {description}
@@ -59,11 +61,11 @@ class FileUpload extends Component {
           value={value}
           type={type}
           disabled={disabled}
-          /* className={cx({
-            inputField: true,
-            formInputError: errors,
-            disabled: disabled
-          })} */
+          className={cx({
+            fileUpload: true
+            /* formInputError: errors,
+            disabled: disabled */
+          })}
         />
       </div>
     );

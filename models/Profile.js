@@ -34,7 +34,7 @@ const ProfileSchema = new Schema(
     },
     leaveAllocation: {
       type: Schema.Types.ObjectId,
-      ref: 'leaveAllocation',
+      ref: 'leaveallocations',
       require: true
     },
     leaveAvailed: {
@@ -43,8 +43,7 @@ const ProfileSchema = new Schema(
           leaveType: {
             type: String,
             enum: Object.values(leaveTypes),
-            required: true,
-            unique: true
+            required: true
           },
           noOfDays: {
             type: Number,

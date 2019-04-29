@@ -69,6 +69,7 @@ class ResetPasswordContainer extends Component {
             footerAltColors={true}
             showButton={true}
             buttonContent="Home"
+            showIllustration="not-found"
             buttonLocation="/">
             Invalid Link
           </Error>

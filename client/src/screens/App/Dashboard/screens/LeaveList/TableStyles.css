@@ -1,3 +1,7 @@
+.ReactTable {
+  border: none;
+}
+
 .ReactTable .rt-tr {
   cursor: pointer;
 }

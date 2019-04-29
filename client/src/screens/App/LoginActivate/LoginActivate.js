@@ -92,6 +92,7 @@ class LoginActivate extends Component {
             buttonPrimary: true,
             buttonContent: 'Okay'
           });
+          this.props.history.push('/login');
         }
       );
     });

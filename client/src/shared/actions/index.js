@@ -35,3 +35,12 @@ export { default as getAllLeaveTypes } from './getAllLeaveTypes';
 export { default as updateLeaveType } from './updateLeaveType';
 export { default as updateLeaveAllocation } from './updateLeaveAllocation';
 export { default as getAllLeaveAllocations } from './getAllLeaveAllocations';
+export { default as getAllHolidays } from './getAllHolidays';
+export { default as addHoliday } from './addHoliday';
+export { default as updateHolidays } from './updateHolidays';
+export { default as getAllClassGroups } from './getAllClassGroups';
+export { default as updateClassGroup } from './updateClassGroup';
+export { default as addClassGroup } from './addClassGroup';
+export {
+  default as getTimetableSlotsToAlternate
+} from './getTimetableSlotsToAlternate';

@@ -23,3 +23,4 @@ export { ReactComponent as MdCube } from './md-cube.svg';
 export { ReactComponent as MdList } from './md-list.svg';
 export { ReactComponent as MdPartlySunny } from './md-partly-sunny.svg';
 export { ReactComponent as MdCalendar } from './md-calendar.svg';
+export { ReactComponent as MdBusiness } from './md-business.svg';

@@ -14,7 +14,8 @@ import {
   MdCube,
   MdList,
   MdPartlySunny,
-  MdCalendar
+  MdCalendar,
+  MdBusiness
 } from 'assets/icons';
 import { SettingsMenuSideNav as SettingsMenu } from '../../common/SettingsMenu';
 import ClickOutside from 'react-click-outside';
@@ -68,7 +69,7 @@ class SideNav extends Component {
   };
 
   render = () => {
-    const { isSideNavVisible } = this.props;
+    const { isSideNavVisible, sideNavHide } = this.props;
     let settingsMenuStyles = [];
     let settingsIconSelector = [];
     settingsMenuStyles.push(styles.settingsMenu);
@@ -83,6 +84,7 @@ class SideNav extends Component {
       <NavLink
         exact
         to="/dashboard"
+        onClick={() => sideNavHide()}
         className={styles.menuItem}
         activeClassName={styles.menuItemActive}>
         <MdEasel className={styles.customIconTest} />{' '}
@@ -96,6 +98,7 @@ class SideNav extends Component {
         <NavLink
           exact
           to="/dashboard/leave/list"
+          onClick={() => sideNavHide()}
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
           <MdList className={styles.customIconTest} />{' '}
@@ -106,6 +109,7 @@ class SideNav extends Component {
         <NavLink
           exact
           to="/dashboard/leave-allocation"
+          onClick={() => sideNavHide()}
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
           <MdPersonAdd className={styles.customIconTest} />{' '}
@@ -116,6 +120,7 @@ class SideNav extends Component {
         <NavLink
           exact
           to="/dashboard/leave-type"
+          onClick={() => sideNavHide()}
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
           <MdPersonAdd className={styles.customIconTest} />{' '}
@@ -125,21 +130,12 @@ class SideNav extends Component {
       links.push(
         <NavLink
           exact
-          to="/dashboard/leave/list"
+          to="/dashboard/holiday"
+          onClick={() => sideNavHide()}
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
           <MdPartlySunny className={styles.customIconTest} />{' '}
-          <div className={styles.menuText}>Public Holidays</div>
-        </NavLink>
-      );
-      links.push(
-        <NavLink
-          exact
-          to="/dashboard/leave/list"
-          className={styles.menuItem}
-          activeClassName={styles.menuItemActive}>
-          <MdCalendar className={styles.customIconTest} />{' '}
-          <div className={styles.menuText}>Restricted Holidays</div>
+          <div className={styles.menuText}>Holiday Settings</div>
         </NavLink>
       );
       links.push(<div className={styles.seperator} />);
@@ -148,6 +144,7 @@ class SideNav extends Component {
         <NavLink
           exact
           to="/dashboard/staff/add"
+          onClick={() => sideNavHide()}
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
           <MdPersonAdd className={styles.customIconTest} />{' '}
@@ -158,6 +155,7 @@ class SideNav extends Component {
         <NavLink
           exact
           to="/dashboard/staff/edit"
+          onClick={() => sideNavHide()}
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
           <MdCreate className={styles.customIconTest} />{' '}
@@ -168,6 +166,7 @@ class SideNav extends Component {
         <NavLink
           exact
           to="/dashboard/priv-account/add"
+          onClick={() => sideNavHide()}
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
           <MdKey className={styles.customIconTest} />{' '}
@@ -178,6 +177,7 @@ class SideNav extends Component {
         <NavLink
           exact
           to="/dashboard/priv-account/edit"
+          onClick={() => sideNavHide()}
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
           <MdCreate className={styles.customIconTest} />{' '}
@@ -190,9 +190,10 @@ class SideNav extends Component {
         <NavLink
           exact
           to="/dashboard/timetable"
+          onClick={() => sideNavHide()}
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <MdList className={styles.customIconTest} />{' '}
+          <MdCalendar className={styles.customIconTest} />{' '}
           <div className={styles.menuText}>Timetable</div>
         </NavLink>
       );
@@ -201,6 +202,7 @@ class SideNav extends Component {
           exact
           to="/dashboard/class"
           className={styles.menuItem}
+          onClick={() => sideNavHide()}
           activeClassName={styles.menuItemActive}>
           <MdCube className={styles.customIconTest} />{' '}
           <div className={styles.menuText}>Class Settings</div>
@@ -209,8 +211,20 @@ class SideNav extends Component {
       links.push(
         <NavLink
           exact
+          to="/dashboard/class-group"
+          className={styles.menuItem}
+          onClick={() => sideNavHide()}
+          activeClassName={styles.menuItemActive}>
+          <MdBusiness className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Class group Settings</div>
+        </NavLink>
+      );
+      links.push(
+        <NavLink
+          exact
           to="/dashboard/course"
           className={styles.menuItem}
+          onClick={() => sideNavHide()}
           activeClassName={styles.menuItemActive}>
           <MdSchool className={styles.customIconTest} />{' '}
           <div className={styles.menuText}>Course Settings</div>
@@ -224,6 +238,7 @@ class SideNav extends Component {
         <NavLink
           exact
           to="/dashboard/leave/apply"
+          onClick={() => sideNavHide()}
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
           <MdList className={styles.customIconTest} />{' '}
@@ -234,10 +249,33 @@ class SideNav extends Component {
         <NavLink
           exact
           to="/dashboard/leave/list"
+          onClick={() => sideNavHide()}
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
           <MdList className={styles.customIconTest} />{' '}
           <div className={styles.menuText}>Leave List</div>
+        </NavLink>
+      );
+      links.push(
+        <NavLink
+          exact
+          to="/dashboard/holiday/public"
+          onClick={() => sideNavHide()}
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdPartlySunny className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Public Holidays</div>
+        </NavLink>
+      );
+      links.push(
+        <NavLink
+          exact
+          to="/dashboard/holiday/restricted"
+          onClick={() => sideNavHide()}
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdCalendar className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Restricted Holidays</div>
         </NavLink>
       );
     }

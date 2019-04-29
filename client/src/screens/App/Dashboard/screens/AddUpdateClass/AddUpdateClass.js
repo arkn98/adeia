@@ -16,9 +16,11 @@ class AddUpdateClass extends Component {
     errors: {},
     classCode: '',
     nameOfClass: '',
+    classGroupCode: '',
     classCodeSelect: '',
     classCodeUpdate: '',
-    nameOfClassUpdate: ''
+    nameOfClassUpdate: '',
+    classGroupCodeUpdate: ''
   };
 
   componentWillReceiveProps = nextProps => {
@@ -35,6 +37,7 @@ class AddUpdateClass extends Component {
   componentDidMount = () => {
     this.props.updateCurrentRouteTitle(this.props.pageTitle);
     this.props.getAllClasses();
+    this.props.getAllClassGroups();
   };
 
   inputOnChangeHandler = event => {
@@ -47,9 +50,11 @@ class AddUpdateClass extends Component {
       if (typeof classObj !== 'undefined') {
         temp['nameOfClassUpdate'] = classObj.nameOfClass;
         temp['classCodeUpdate'] = classObj.classCode;
+        temp['classGroupCodeUpdate'] = classObj.classGroup.classGroupCode;
       } else {
         temp['nameOfClassUpdate'] = '';
         temp['classCodeUpdate'] = '';
+        temp['classGroupCodeUpdate'] = '';
       }
     }
     this.setState({ [event.target.name]: event.target.value, ...temp });
@@ -69,11 +74,15 @@ class AddUpdateClass extends Component {
     const data = {
       classCodeSelect: this.state.classCodeSelect,
       nameOfClassUpdate: this.state.nameOfClassUpdate,
-      classCodeUpdate: this.state.classCodeUpdate
+      classCodeUpdate: this.state.classCodeUpdate,
+      classGroupCodeUpdate: this.state.classGroupCodeUpdate
     };
 
     this.props.updateClass(data).then(res => {
-      this.props.getAllClasses().then(response => {
+      Promise.all([
+        this.props.getAllClasses(),
+        this.props.getAllClassGroups()
+      ]).then(response => {
         this.setState(
           {
             ...this.state,
@@ -81,7 +90,8 @@ class AddUpdateClass extends Component {
             errors: {},
             classCodeSelect: '',
             classCodeUpdate: '',
-            nameOfClassUpdate: ''
+            nameOfClassUpdate: '',
+            classGroupCodeUpdate: ''
           },
           () => {
             this.props.showPopout({
@@ -103,18 +113,23 @@ class AddUpdateClass extends Component {
 
     const data = {
       nameOfClass: this.state.nameOfClass,
-      classCode: this.state.classCode
+      classCode: this.state.classCode,
+      classGroupCode: this.state.classGroupCode
     };
 
     this.props.addClass(data).then(res => {
-      this.props.getAllClasses().then(response => {
+      Promise.all([
+        this.props.getAllClasses(),
+        this.props.getAllClassGroups()
+      ]).then(response => {
         this.setState(
           {
             ...this.state,
             isSubmitting: false,
             errors: {},
             classCode: '',
-            nameOfClass: ''
+            nameOfClass: '',
+            classGroupCode: ''
           },
           () => {
             this.props.showPopout({
@@ -157,6 +172,23 @@ class AddUpdateClass extends Component {
             inputOnChangeHandler={this.inputOnChangeHandler}
             errors={errors.nameOfClass}
             containerStyles={styles.marginBottom20}
+          />
+          <SelectBox
+            name="classGroupCode"
+            label="Select Class Group"
+            value={this.state.classGroupCode}
+            inputOnChangeHandler={this.inputOnChangeHandler}
+            errors={errors.classGroupCode}
+            containerStyles={styles.marginBottom20}
+            makePlaceholderOptionDisabled={false}
+            optList={this.props.classGroups.classGroupList.map(
+              (item, index) => {
+                return {
+                  label: `${item.classGroupCode} - ${item.nameOfClassGroup}`,
+                  value: item.classGroupCode
+                };
+              }
+            )}
           />
           <ButtonSubmit
             sizeSmall={true}
@@ -205,6 +237,25 @@ class AddUpdateClass extends Component {
                 inputOnChangeHandler={this.inputOnChangeHandler}
                 errors={errors.nameOfClassUpdate}
                 containerStyles={styles.marginBottom20}
+              />
+              <SelectBox
+                name="classGroupCodeUpdate"
+                label="New Class Group"
+                value={this.state.classGroupCodeUpdate}
+                inputOnChangeHandler={this.inputOnChangeHandler}
+                errors={errors.classGroupCodeUpdate}
+                containerStyles={styles.marginBottom20}
+                makePlaceholderOptionDisabled={false}
+                optList={this.props.classGroups.classGroupList.map(
+                  (item, index) => {
+                    return {
+                      label: `${item.classGroupCode} - ${
+                        item.nameOfClassGroup
+                      }`,
+                      value: item.classGroupCode
+                    };
+                  }
+                )}
               />
               <ButtonSubmit
                 sizeSmall={true}

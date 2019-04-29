@@ -100,11 +100,13 @@ class Timetable extends Component {
         return newHour;
       });
     });
+    let tempClass = this.props.classes.classList.find(
+      x => x.classCode === this.state.classCode
+    );
     let temp = {
       timetable: newTimetable,
-      classId: this.props.classes.classList.find(
-        x => x.classCode === this.state.classCode
-      )._id
+      classId: tempClass._id,
+      classGroupId: tempClass.classGroup._id
     };
     this.props
       .addUpdateTimetable(temp)

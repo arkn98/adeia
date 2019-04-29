@@ -27,26 +27,23 @@ const LeaveSchema = new Schema({
     type: String,
     required: true
   },
-  staffId: {
-    type: String,
+  staff: {
+    type: Schema.Types.ObjectId,
+    ref: 'users',
     required: true
   },
-  /* alternatingStaff: [
-    {
-      staffId: { type: Number, required: true }
-    }
-  ], */
   applyDate: {
     type: Date,
     required: true
   },
-  from: {
-    type: Date,
-    required: true
-  },
-  to: {
-    type: Date,
-    required: true
+  dayRange: [
+    {
+      type: Date
+    }
+  ],
+  halfDaySession: {
+    type: String,
+    default: ''
   },
   leaveType: {
     type: String,
@@ -77,7 +74,13 @@ const LeaveSchema = new Schema({
     // path to uploaded document
     type: String,
     default: ''
-  }
+  },
+  alterations: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'alterations'
+    }
+  ]
 });
 
 Object.assign(LeaveSchema.statics, { leaveTypes, leaveStatuses });

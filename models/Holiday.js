@@ -7,7 +7,7 @@ const { holidayTypes } = require('../data');
 const HolidaySchema = new Schema(
   {
     date: {
-      type: String,
+      type: Date,
       required: true
     },
     format: {
@@ -27,5 +27,7 @@ const HolidaySchema = new Schema(
   },
   { minimize: false }
 );
+
+Object.assign(HolidaySchema.statics, { holidayTypes });
 
 module.exports = Holiday = mongoose.model('holidays', HolidaySchema);

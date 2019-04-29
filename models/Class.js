@@ -13,6 +13,11 @@ const ClassSchema = new Schema({
     required: true,
     trim: true,
     unique: true
+  },
+  classGroup: {
+    type: Schema.Types.ObjectId,
+    ref: 'classgroups',
+    required: true
   }
 });
 
