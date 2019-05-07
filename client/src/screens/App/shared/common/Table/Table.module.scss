@@ -12,7 +12,6 @@
   font-weight: 300;
   line-height: 22px;
   min-width: 486px;
-  overflow-x: auto;
   width: 100%;
   word-break: break-all;
   table-layout: fixed;
@@ -234,7 +233,7 @@
 }
 
 .columnData {
-  color: hsla(0, 0%, 100%, 0.8);
+  color: #fff;
   flex: 0 0 auto;
   display: inline-block;
   font-variant-numeric: lining-nums tabular-nums;

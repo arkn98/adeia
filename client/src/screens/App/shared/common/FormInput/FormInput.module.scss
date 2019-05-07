@@ -437,12 +437,21 @@ select.inputField {
   cursor: default;
   flex: 1;
   box-sizing: border-box;
-  text-transform: uppercase;
   color: #f6f6f7;
+}
+
+.uppercase {
+  text-transform: uppercase;
 }
 
 :global(.lightTheme) .sectionLabel {
   color: #4f545c;
+}
+
+.smallSectionLabel {
+  font-size: 14px;
+  line-height: 1.14;
+  font-weight: 600;
 }
 
 .description {

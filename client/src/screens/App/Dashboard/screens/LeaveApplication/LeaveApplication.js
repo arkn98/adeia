@@ -283,6 +283,7 @@ class LeaveApplication extends Component {
     this.setState({ ...this.state, isSubmitting: true });
     const data = {
       staff: this.props.auth.user.id,
+      applierEmail: this.props.auth.user.email,
       staffId: this.props.auth.user.staffId,
       leaveType: this.state.leaveType,
       isVacation: this.state.isVacation,
@@ -401,6 +402,7 @@ class LeaveApplication extends Component {
                     name="alternateSameClass"
                     errors={
                       errors.slotsToAlternate &&
+                      errors.slotsToAlternate[index] &&
                       errors.slotsToAlternate[index].modification &&
                       errors.slotsToAlternate[index].modification
                         .alternateSameClass
@@ -437,6 +439,7 @@ class LeaveApplication extends Component {
                     name="alternateOthers"
                     errors={
                       errors.slotsToAlternate &&
+                      errors.slotsToAlternate[index] &&
                       errors.slotsToAlternate[index].modification &&
                       errors.slotsToAlternate[index].modification
                         .alternateOthers
@@ -511,6 +514,7 @@ class LeaveApplication extends Component {
                   inputOnChangeHandler={this.postponeHourChangeHandler}
                   errors={
                     errors.slotsToAlternate &&
+                    errors.slotsToAlternate[index] &&
                     errors.slotsToAlternate[index].modification &&
                     errors.slotsToAlternate[index].modification.postponeHour
                   }
@@ -801,7 +805,7 @@ class LeaveApplication extends Component {
                   <TextArea
                     name="address"
                     label="Address for communication"
-                    infoText="(if permission is required to go out-of-station)"
+                    description="(if permission is required to go out-of-station)"
                     type="text"
                     value={this.state.address}
                     inputOnChangeHandler={this.inputOnChangeHandler}

@@ -12,6 +12,7 @@ import leaveTypeReducer from './leaveTypeReducer';
 import leaveAllocationReducer from './leaveAllocationReducer';
 import holidayReducer from './holidayReducer';
 import classGroupReducer from './classGroupReducer';
+import alterationReducer from './alterationReducer';
 
 export default combineReducers({
   auth: authReducer,
@@ -26,5 +27,6 @@ export default combineReducers({
   leaveTypes: leaveTypeReducer,
   leaveAllocations: leaveAllocationReducer,
   holidays: holidayReducer,
-  classGroups: classGroupReducer
+  classGroups: classGroupReducer,
+  alterations: alterationReducer
 });

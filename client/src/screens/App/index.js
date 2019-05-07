@@ -1,19 +1,25 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense, lazy } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styles from './App.module.scss';
-
 import { checkDB as checkDBAction } from './shared/utils';
-import { setCurrentTheme, changeTheme, logoutUser } from '../../shared/actions';
-
-import Home from './Home';
-import Error from './shared/components/Error';
-import LoginActivate from './LoginActivate';
-import ResetPassword from './ResetPassword';
-import Dashboard from './Dashboard';
+import {
+  setCurrentTheme,
+  changeTheme,
+  logoutUser,
+  markAllAsRead,
+  markIndexAsRead
+} from '../../shared/actions';
 import { ModalSingleButton, ModalDoubleButton } from './shared/common/Modal';
+import { FullPageSpinner } from './shared/common/Spinner';
 import { Notifications } from './shared/components/Notifications';
 import { PrivateRoute } from './shared/common/PrivateRoute';
+
+const Home = lazy(() => import('./Home'));
+const Error = lazy(() => import('./shared/components/Error'));
+const LoginActivate = lazy(() => import('./LoginActivate'));
+const ResetPassword = lazy(() => import('./ResetPassword'));
+const Dashboard = lazy(() => import('./Dashboard'));
 
 class App extends Component {
   state = {
@@ -34,6 +40,15 @@ class App extends Component {
     if (element) {
       element.outerHTML = '';
     }
+  };
+
+  markIndexAsRead = (index, notificationId) => {
+    this.props.markIndexAsRead(index, notificationId);
+  };
+
+  markAllAsReadHandler = event => {
+    event.preventDefault();
+    this.props.markAllAsRead();
   };
 
   componentWillUnmount() {
@@ -58,6 +73,7 @@ class App extends Component {
 
   render = () => {
     const { isDarkTheme = false } = this.props;
+
     if (this.state.isDBUp) {
       let modals = null;
       if (this.state.popouts && this.state.popouts.type !== null) {
@@ -71,9 +87,25 @@ class App extends Component {
             </div>
           );
         } else if (this.state.popouts.type === 'notifications') {
+          let notifications = [];
+          let notificationsNew = [];
+          this.props.profile.profile.notifications
+            .slice(0)
+            .reverse()
+            .forEach(item => {
+              if (item.isNew) {
+                notificationsNew.push(item);
+              } else {
+                notifications.push(item);
+              }
+            });
           modals = (
             <Notifications
+              markAllAsReadHandler={this.markAllAsReadHandler}
+              notificationsNew={notificationsNew}
+              notifications={notifications}
               hidePopout={this.hidePopout}
+              markIndexAsRead={this.markIndexAsRead}
               {...this.state.popouts}
             />
           );
@@ -98,33 +130,52 @@ class App extends Component {
           id="theme"
           className={!isDarkTheme ? 'lightTheme' : null}>
           {modals}
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route
-              exact
-              path="/login"
-              key="login"
-              render={() => <LoginActivate showPopout={this.showPopout} />}
-            />
-            <Route
-              exact
-              path="/activate"
-              key="activate"
-              render={() => <LoginActivate showPopout={this.showPopout} />}
-            />
-            <Route
-              exact
-              path="/reset-password"
-              render={() => <ResetPassword showPopout={this.showPopout} />}
-            />
+          <Suspense fallback={<FullPageSpinner />}>
             <Switch>
-              {/* <Route path="/dashboard2" component={Dashboard2} /> */}
-              <PrivateRoute
-                location={this.props.location}
-                path="/dashboard"
-                component={Dashboard}
-                showPopout={this.showPopout}
+              <Route
+                exact
+                path="/"
+                key="home"
+                render={() => <Home showPopout={this.showPopout} />}
               />
+              <Route
+                exact
+                path="/login"
+                key="login"
+                render={() => <LoginActivate showPopout={this.showPopout} />}
+              />
+              <Route
+                exact
+                path="/activate"
+                key="activate"
+                render={() => <LoginActivate showPopout={this.showPopout} />}
+              />
+              <Route
+                exact
+                path="/reset-password"
+                render={() => <ResetPassword showPopout={this.showPopout} />}
+              />
+              <Switch>
+                <PrivateRoute
+                  location={this.props.location}
+                  path="/dashboard"
+                  component={Dashboard}
+                  showPopout={this.showPopout}
+                />
+                <Route
+                  render={() => (
+                    <Error
+                      message="We can't find the page that you're looking for :("
+                      footerAltColors={true}
+                      showButton={true}
+                      showIllustration="not-found"
+                      buttonLocation="back"
+                      buttonContent="Go back">
+                      404
+                    </Error>
+                  )}
+                />
+              </Switch>
               <Route
                 render={() => (
                   <Error
@@ -139,20 +190,7 @@ class App extends Component {
                 )}
               />
             </Switch>
-            <Route
-              render={() => (
-                <Error
-                  message="We can't find the page that you're looking for :("
-                  footerAltColors={true}
-                  showButton={true}
-                  showIllustration="not-found"
-                  buttonLocation="back"
-                  buttonContent="Go back">
-                  404
-                </Error>
-              )}
-            />
-          </Switch>
+          </Suspense>
         </div>
       );
     } else {
@@ -165,7 +203,7 @@ class App extends Component {
             footerAltColors={true}
             showIllustration="server-down"
             showButton={false}>
-            DB Down
+            Backend Server is down
           </Error>
         </div>
       );
@@ -174,12 +212,14 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  isDarkTheme: state.utils.isDarkTheme
+  isDarkTheme: state.utils.isDarkTheme,
+  auth: state.auth,
+  profile: state.profile
 });
 
 export default connect(
   mapStateToProps,
-  { setCurrentTheme, changeTheme, logoutUser },
+  { setCurrentTheme, changeTheme, logoutUser, markAllAsRead, markIndexAsRead },
   null,
   { pure: false }
 )(App);

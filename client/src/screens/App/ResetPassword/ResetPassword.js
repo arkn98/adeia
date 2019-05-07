@@ -14,14 +14,13 @@ class ResetPassword extends Component {
     password2: '',
     user: {},
     transitionEnd: false,
-    errors: {},
-    shouldDisplay: false
+    errors: {}
   };
 
   componentDidMount = () => {
-    if (this.state.shouldDisplay) {
+    if (typeof this.newPasswordInput !== 'undefined') {
       setTimeout(() => {
-        this.newPasswordInput.focus();
+        this.newPasswordInput.setFocus();
       }, 250);
     }
 
@@ -44,7 +43,7 @@ class ResetPassword extends Component {
   };
 
   inputOnChangeHandler = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ ...this.state, [event.target.name]: event.target.value });
   };
 
   resetPasswordHandler = event => {
@@ -100,7 +99,11 @@ class ResetPassword extends Component {
                     name="password"
                     label="New Password"
                     type="password"
+                    description="Must be atleast 8 characters long."
                     value={this.state.password}
+                    ref={input => {
+                      this.newPasswordInput = input;
+                    }}
                     inputOnChangeHandler={this.inputOnChangeHandler}
                     errors={errors.password}
                     containerStyles={styles.marginBottom20}

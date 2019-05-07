@@ -1,5 +1,5 @@
 const { validationResult } = require('express-validator/check');
-
+const crypto = require('crypto');
 const User = require('../../../models/User');
 
 const getPasswordResetTime = (req, res) => {

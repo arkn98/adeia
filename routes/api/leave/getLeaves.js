@@ -6,11 +6,39 @@ const getLeaves = (req, res) => {
     [accountTypes.ADMIN, accountTypes.OFFICE].includes(req.user.accountType)
   ) {
     Leave.find({})
+      /* .select('-document') */
+      .populate({
+        path: 'alterations',
+        populate: { path: 'class' }
+      })
+      .populate({
+        path: 'alterations',
+        populate: { path: 'originalStaff' }
+      })
+      .populate({
+        path: 'alterations',
+        populate: { path: 'alternatingStaff' }
+      })
       .then(result => res.status(200).json(result))
       .catch(err => res.status(404).json(err));
   } else {
-    Leave.find({ staffId: req.user.staffId })
-      .then(result => res.status(200).json(result))
+    Leave.find({ staff: req.user._id })
+      /* .select('-document') */
+      .populate({
+        path: 'alterations',
+        populate: { path: 'class' }
+      })
+      .populate({
+        path: 'alterations',
+        populate: { path: 'originalStaff' }
+      })
+      .populate({
+        path: 'alterations',
+        populate: { path: 'alternatingStaff' }
+      })
+      .then(result => {
+        res.status(200).json(result);
+      })
       .catch(err => res.status(404).json(err));
   }
 };

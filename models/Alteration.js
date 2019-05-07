@@ -4,6 +4,11 @@ const Schema = mongoose.Schema;
 
 //create schema
 const AlterationSchema = new Schema({
+  alterationId: {
+    type: String,
+    required: true,
+    unique: true
+  },
   leaveId: {
     type: String,
     required: true
@@ -44,9 +49,10 @@ const AlterationSchema = new Schema({
     ref: 'classes',
     required: true
   },
-  accepted: {
-    type: Boolean,
-    default: false
+  status: {
+    type: String,
+    enum: ['WAITING', 'ACCEPTED', 'REJECTED', 'EXPIRED', 'VIEWED'],
+    default: 'WAITING'
   }
 });
 

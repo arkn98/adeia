@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from 'react';
-import { Form, SectionLabel } from 'screens/App/shared/common/FormInput';
+import { WidthLimiter } from 'screens/App/shared/common/FormInput';
 import { AltTable } from 'screens/App/shared/common/Table';
 import styles from './ViewHolidays.module.scss';
 import dayjs from 'dayjs';
@@ -25,11 +25,11 @@ class ViewHolidays extends Component {
   render = () => {
     return (
       <Fragment>
-        <Form onSubmit={null} showBottomSpace={true}>
-          <SectionLabel
+        <WidthLimiter onSubmit={null} showBottomSpace={true}>
+          {/* <SectionLabel
             containerStyles={styles.marginBottom20}
             label={this.props.holidayTypeLabel}
-          />
+          /> */}
           <AltTable
             thead={[
               {
@@ -42,10 +42,10 @@ class ViewHolidays extends Component {
               }
             ]}
             containerStyles={styles.marginBottom20}
-            tbody={this.state.holidays.map((item, index) => {
+            tbody={this.state.holidays.map(item => {
               return [
                 {
-                  value: dayjs(item.date).format(item.format),
+                  value: dayjs(item.date).format('DD-MMM-YYYY - ddd'),
                   style: {}
                 },
                 {
@@ -55,7 +55,7 @@ class ViewHolidays extends Component {
               ];
             })}
           />
-        </Form>
+        </WidthLimiter>
       </Fragment>
     );
   };

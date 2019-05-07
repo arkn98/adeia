@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator/check');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 const User = require('../../../models/User');
 const keys = require('../../../config/keys');
@@ -35,10 +36,8 @@ const login = (req, res) => {
         const payload = {
           id: user.id,
           name: user.name,
-          designation: user.designation,
           staffId: user.staffId,
-          accountType: user.accountType,
-          staffType: user.staffType
+          accountType: user.accountType
         };
 
         if (user.resetPasswordToken && user.resetPasswordToken !== '') {

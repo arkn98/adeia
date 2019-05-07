@@ -24,6 +24,8 @@ const leaveAllocationRoutes = require('./routes/api/leaveallocation');
 const helperRoutes = require('./routes/api/helpers');
 const holidayRoutes = require('./routes/api/holiday');
 const classGroupRoutes = require('./routes/api/classgroup');
+const alterationRoutes = require('./routes/api/alteration');
+const { fileDownloadHandler } = require('./routes/utils');
 
 const app = express();
 
@@ -57,6 +59,7 @@ require('./config/passport.js')(passport);
 
 //use routes
 app.use('/api/class', classRoutes);
+app.use('/api/alteration', alterationRoutes);
 app.use('/api/class-group', classGroupRoutes);
 app.use('/api/course', courseRoutes);
 app.use('/api/account', accountRoutes);
@@ -68,6 +71,7 @@ app.use('/api/staff', staffRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/helpers', helperRoutes);
 app.use('/api/holiday', holidayRoutes);
+app.get('/uploads', fileDownloadHandler);
 
 const port = process.env.PORT || 5000;
 
@@ -77,9 +81,23 @@ app.get('*', (req, res) => {
 });
 //}
 
-app.listen(port, () => {
+let server = app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
+let io = require('./routes/sockets').init(server);
+
+io.sockets.on('connection', socket => {
+  socket.on('subscribeToNotifications', data => {
+    require('./routes/sockets/notificationHandler')(io, socket, data);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
+
+require('./routes/utils/sendNotification');
 
 /* https
   .createServer(

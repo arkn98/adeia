@@ -6,7 +6,7 @@ const addLeave = data => dispatch => {
   return new Promise((resolve, reject) => {
     const form = new FormData();
     Object.keys(data).forEach(key => {
-      if (key === 'slotsToAlternate') {
+      if (key === 'slotsToAlternate' || key === 'dayRange') {
         form.append(key, JSON.stringify(data[key]));
       } else {
         form.append(key, data[key]);

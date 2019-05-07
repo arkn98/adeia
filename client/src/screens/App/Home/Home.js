@@ -1,12 +1,23 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
-
+import { Link, withRouter } from 'react-router-dom';
+import dayjs from 'dayjs';
 import styles from '../shared/styles/FullPageLanding.module.scss';
 import { ButtonPrimary, ButtonWhite } from '../shared/common/Button';
 import { Footer } from '../shared/components/Footer';
+import changelog from 'data/changelog';
 
 const Home = props => {
   const { isAuthenticated, username, history, logoutUser } = props;
+  /* console.log(
+    dayjs()
+      .add(7, 'day')
+      .toISOString()
+  ); */
+  /* console.log(
+    dayjs()
+      .toISOString()
+  ); */
+
   return (
     <div className={styles.app}>
       <div className={styles.banner}>
@@ -17,7 +28,7 @@ const Home = props => {
         </div>
         <div className={styles.text}>
           An all-in-one application to apply for leaves, manage and keep track
-          of them, for the Department of Information Science & Technology.
+          of them.
         </div>
         <div className={styles.buttons}>
           {isAuthenticated ? (
@@ -47,9 +58,26 @@ const Home = props => {
           )}
         </div>
       </div>
+      {dayjs().isBefore(dayjs(changelog.changelog[0].showTill), 'day') ? (
+        <div className={styles.changelogButtonHolder}>
+          <div
+            onClick={() => {
+              props.showPopout({
+                type: 'modalSingleButton',
+                title: 'Change log',
+                message: changelog.changelog[0].content,
+                buttonPrimary: true,
+                buttonContent: 'Close'
+              });
+            }}
+            className={styles.changelogButton}>
+            {changelog.changelog[0].cta}
+          </div>
+        </div>
+      ) : null}
       <Footer altColors={true} />
     </div>
   );
 };
 
-export default Home;
+export default withRouter(Home);

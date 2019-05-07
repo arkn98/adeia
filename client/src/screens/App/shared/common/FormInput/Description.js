@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './FormInput.module.scss';
 
 const Description = props => {
-  const { containerStyles = {} } = props;
+  const { containerStyles = {}, style = null } = props;
   const isContainerStylesProvided = !(
     Object.keys(containerStyles).length === 0 &&
     containerStyles.constructor === Object
@@ -11,7 +11,8 @@ const Description = props => {
     <div
       className={`${styles.description} ${
         isContainerStylesProvided ? containerStyles : styles.marginBottom8
-      }`}>
+      }`}
+      style={{ ...style }}>
       {props.children}
     </div>
   );

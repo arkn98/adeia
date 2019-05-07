@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Suspense, lazy } from 'react';
 import styles from './Dashboard.module.scss';
 import { Switch, Route, Link } from 'react-router-dom';
 import {
@@ -8,24 +8,32 @@ import {
 } from '../../../assets/icons';
 import SideNav from '../shared/components/SideNav';
 import Main from './screens/Main';
-import LeaveApplication from './screens/LeaveApplication';
-import LeaveList from './screens/LeaveList';
-import LeaveSingle from './screens/LeaveSingle';
-import Timetable from './screens/Timetable';
-import AddStaff from './screens/AddStaff';
-import EditStaff from './screens/EditStaff';
-import AddAdmin from './screens/AddAdmin';
-import AddUpdateCourse from './screens/AddUpdateCourse';
-import AddUpdateClass from './screens/AddUpdateClass';
-import AddUpdateClassGroup from './screens/AddUpdateClassGroup';
-import AddUpdateLeaveType from './screens/AddUpdateLeaveType';
-import AddUpdateLeaveAllocation from './screens/AddUpdateLeaveAllocation';
-import AddUpdateHoliday from './screens/AddUpdateHoliday';
-import ViewHolidays from './screens/ViewHolidays';
-import Settings from './screens/Settings';
-import Error from '../shared/components/Error';
 import { FullPageSpinner } from 'screens/App/shared/common/Spinner';
 import { accountTypes, holidayTypes } from 'data';
+import { IconBadge } from 'screens/App/shared/common/Badge';
+import io from 'socket.io-client';
+
+const LeaveApplication = lazy(() => import('./screens/LeaveApplication'));
+const Error = lazy(() => import('../shared/components/Error'));
+const LeaveList = lazy(() => import('./screens/LeaveList'));
+const LeaveSingle = lazy(() => import('./screens/LeaveSingle'));
+const AlterationSingle = lazy(() => import('./screens/AlterationSingle'));
+const Timetable = lazy(() => import('./screens/Timetable'));
+const AddStaff = lazy(() => import('./screens/AddStaff'));
+const EditStaff = lazy(() => import('./screens/EditStaff'));
+const AddAdmin = lazy(() => import('./screens/AddAdmin'));
+const AddUpdateCourse = lazy(() => import('./screens/AddUpdateCourse'));
+const AddUpdateClass = lazy(() => import('./screens/AddUpdateClass'));
+const AddUpdateClassGroup = lazy(() => import('./screens/AddUpdateClassGroup'));
+const AddUpdateLeaveType = lazy(() => import('./screens/AddUpdateLeaveType'));
+const AddUpdateLeaveAllocation = lazy(() =>
+  import('./screens/AddUpdateLeaveAllocation')
+);
+const AddUpdateHoliday = lazy(() => import('./screens/AddUpdateHoliday'));
+const ViewHolidays = lazy(() => import('./screens/ViewHolidays'));
+const Settings = lazy(() => import('./screens/Settings'));
+const AlterationList = lazy(() => import('./screens/AlterationList'));
+const MiscSettings = lazy(() => import('./screens/MiscSettings'));
 
 class Dashboard extends Component {
   state = {
@@ -38,8 +46,28 @@ class Dashboard extends Component {
     if (!this.props.auth.isLoaded) {
       this.props.getCurrentUser(this.props.auth.user.id).then(res => {
         this.setState({ ...this.state, isLoading: false });
+
+        const socket = io.connect('', {
+          query: { token: this.props.auth.user.OTToken }
+        });
+
+        socket.on('connect', () => {
+          console.log('connected to socket io server');
+          socket.emit('subscribeToNotifications', {
+            user: this.props.auth.user.id
+          });
+        });
+
+        socket.on('newNotification', data => {
+          this.props.getNotificationFromSocket(data);
+        });
+
+        socket.on('error', err => {
+          console.log('err', err);
+        });
       });
     }
+
     if (!this.props.profile.isLoaded) {
       this.props.getCurrentProfile();
     }
@@ -92,15 +120,75 @@ class Dashboard extends Component {
 
   render = () => {
     const props = this.props;
+    let newNotifCount = 0;
+    if (
+      props.profile &&
+      props.profile.profile &&
+      props.profile.profile.notifications
+    ) {
+      newNotifCount = props.profile.profile.notifications
+        .slice(0)
+        .filter(x => x.isNew === true).length;
+    }
     let pages = [];
     if (props.auth.user.accountType === accountTypes.ADMIN) {
       pages.push(
         <Route
-          path="/dashboard/leave/list"
+          path="/dashboard/leave"
           exact
           render={() => (
             <LeaveList
               pageTitle="All Leaves"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
+      pages.push(
+        <Route
+          path="/dashboard/leave/:leaveId"
+          exact
+          render={() => (
+            <LeaveSingle
+              parentPageTitle="All Leaves"
+              pageTitle="Leave"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
+      pages.push(
+        <Route
+          path="/dashboard/alteration"
+          exact
+          render={() => (
+            <AlterationList
+              pageTitle="All Alterations"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
+      pages.push(
+        <Route
+          path="/dashboard/alteration/:alterationId"
+          exact
+          render={() => (
+            <AlterationSingle
+              parentPageTitle="All Alterations"
+              pageTitle="Alteration"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
+      pages.push(
+        <Route
+          path="/dashboard/misc"
+          exact
+          render={() => (
+            <MiscSettings
+              pageTitle="Miscellaneous Settings"
               showPopout={this.props.showPopout}
             />
           )}
@@ -229,7 +317,7 @@ class Dashboard extends Component {
     } else {
       pages.push(
         <Route
-          path="/dashboard/leave/apply"
+          path="/dashboard/leave-apply"
           exact
           render={() => (
             <LeaveApplication
@@ -271,7 +359,32 @@ class Dashboard extends Component {
       );
       pages.push(
         <Route
-          path="/dashboard/leave/list"
+          path="/dashboard/alteration"
+          exact
+          render={() => (
+            <AlterationList
+              pageTitle="Alterations for me"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
+      pages.push(
+        <Route
+          path="/dashboard/alteration/:alterationId"
+          exact
+          render={() => (
+            <AlterationSingle
+              parentPageTitle="Alterations for me"
+              pageTitle="Alteration"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
+      pages.push(
+        <Route
+          path="/dashboard/leave"
           exact
           render={() => (
             <LeaveList
@@ -281,16 +394,20 @@ class Dashboard extends Component {
           )}
         />
       );
+      pages.push(
+        <Route
+          path="/dashboard/leave/:leaveId"
+          exact
+          render={() => (
+            <LeaveSingle
+              parentPageTitle="My Leaves"
+              pageTitle="Leave"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
     }
-    pages.push(
-      <Route
-        path="/dashboard/leave/view/:leaveId"
-        exact
-        render={() => (
-          <LeaveSingle pageTitle="Leave" showPopout={this.props.showPopout} />
-        )}
-      />
-    );
     pages.push(
       <Route
         path="/dashboard/settings"
@@ -322,98 +439,101 @@ class Dashboard extends Component {
         )}
       />
     );
-    if (this.state.isLoading) {
-      return (
-        <Fragment>
-          <FullPageSpinner />
-        </Fragment>
-      );
-    } else {
-      return (
-        <div className={styles.dashMount}>
-          <div
-            className={`${styles.sideNavWrapper} ${
-              this.state.isSideNavVisible ? styles.sideNavVisible : null
-            }`}>
-            {this.state.isSideNavVisible ? (
-              <div
-                onClick={event => this.sideNavHide()}
-                className={styles.backdrop}
-              />
-            ) : null}
-            <SideNav
-              auth={this.props.auth}
-              showPopout={this.props.showPopout}
-              isSideNavVisible={this.state.isSideNavVisible}
-              isSettingsMenuVisible={this.state.isSettingsMenuVisible}
-              sideNavHide={this.sideNavHide}
-              settingsMenuShow={this.settingsMenuShow}
-              settingsMenuHide={this.settingsMenuHide}
-              settingsMenuToggle={this.settingsMenuToggle}
+
+    /* if (this.state.isLoading) {
+      return <FullPageSpinner />;
+    } else { */
+    return (
+      <div className={styles.dashMount}>
+        <div
+          className={`${styles.sideNavWrapper} ${
+            this.state.isSideNavVisible ? styles.sideNavVisible : null
+          }`}>
+          {this.state.isSideNavVisible ? (
+            <div
+              onClick={event => this.sideNavHide()}
+              className={styles.backdrop}
             />
-          </div>
-          <div className={styles.mainWrapper}>
-            <div className={styles.main}>
-              <div className={styles.topBarWrapper}>
-                <div className={styles.topBar}>
-                  <div className={styles.topBarLeftTitleFlex}>
-                    <div
-                      className={`${styles.topBarHamburgerWrapper} ${
-                        styles.mobileVisible
-                      }`}>
-                      <MdMenu
-                        onClick={this.sideNavToggle}
-                        className={styles.topBarIcon}
-                      />
-                    </div>
-                    <div className={styles.pageTitle}>
-                      {props.utils.currentPageTitle}
-                    </div>
+          ) : null}
+          <SideNav
+            auth={this.props.auth}
+            showPopout={this.props.showPopout}
+            isSideNavVisible={this.state.isSideNavVisible}
+            isSettingsMenuVisible={this.state.isSettingsMenuVisible}
+            sideNavHide={this.sideNavHide}
+            settingsMenuShow={this.settingsMenuShow}
+            settingsMenuHide={this.settingsMenuHide}
+            settingsMenuToggle={this.settingsMenuToggle}
+          />
+        </div>
+        <div className={styles.mainWrapper}>
+          <div className={styles.main}>
+            <div className={styles.topBarWrapper}>
+              <div className={styles.topBar}>
+                <div className={styles.topBarLeftTitleFlex}>
+                  <div
+                    className={`${styles.topBarHamburgerWrapper} ${
+                      styles.mobileVisible
+                    }`}>
+                    <MdMenu
+                      onClick={this.sideNavToggle}
+                      className={styles.topBarIcon}
+                    />
                   </div>
-                  <div className={styles.topBarRightIconFlex}>
-                    {/* <div className={styles.searchBarWrapper}>
+                  <div className={styles.pageTitle}>
+                    {props.utils.currentPageTitle}
+                  </div>
+                </div>
+                <div className={styles.topBarRightIconFlex}>
+                  {/* <div className={styles.searchBarWrapper}>
                   <div className={styles.search}>
                     <div className={styles.searchBar}>Search</div>
                   </div>
                 </div> 
                 <div>search</div>
                 <div className={styles.seperator} /> */}
-                    <div className={styles.topBarIconWrapper}>
-                      <MdNotifications
-                        onClick={() => {
-                          this.props.showPopout({
-                            type: 'notifications'
-                          });
-                        }}
+                  <div className={styles.topBarIconWrapper}>
+                    <MdNotifications
+                      onClick={() => {
+                        this.props.showPopout({
+                          type: 'notifications'
+                        });
+                      }}
+                      className={`${styles.topBarIcon} ${
+                        styles.topBarIconMedium
+                      }`}
+                    />
+                    {newNotifCount !== 0 ? (
+                      <IconBadge notifCount={newNotifCount} />
+                    ) : null}
+                  </div>
+                  <div className={styles.topBarIconWrapper}>
+                    <Link to="/dashboard/info">
+                      <MdInformationCircle
                         className={`${styles.topBarIcon} ${
                           styles.topBarIconMedium
                         }`}
                       />
-                    </div>
-                    <div className={styles.topBarIconWrapper}>
-                      <Link to="/dashboard/info">
-                        <MdInformationCircle
-                          className={`${styles.topBarIcon} ${
-                            styles.topBarIconMedium
-                          }`}
-                        />
-                      </Link>
-                    </div>
+                    </Link>
                   </div>
                 </div>
               </div>
-              <div className={styles.scrollWrapper}>
-                <div className={styles.contentWrapper}>
-                  <div className={styles.body}>
+            </div>
+            <div className={styles.scrollWrapper}>
+              <div className={styles.contentWrapper}>
+                <div className={styles.body}>
+                  <Suspense
+                    fallback={<FullPageSpinner loadingPrimary={true} />}>
                     <Switch>{pages}</Switch>
-                  </div>
+                  </Suspense>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      );
-    }
+      </div>
+    );
+    /* } */
   };
 }
 

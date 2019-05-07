@@ -1,0 +1,37 @@
+.breadcrumbWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.breadcrumb {
+  margin-right: 2px;
+  cursor: pointer;
+  flex: 0 0 auto;
+  min-width: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #72767d;
+}
+
+.breadcrumb:hover {
+  color: #fff;
+}
+
+:global(.lightTheme) .breadcrumb {
+  color: #9099a4;
+}
+
+:global(.lightTheme) .breadcrumb:hover {
+  color: #747f8d;
+}
+
+.breadcrumbArrow {
+  width: 18px;
+  margin-right: 2px;
+  fill: #72767d;
+}
+
+:global(.lightTheme) .breadcrumbArrow {
+  fill: #9099a4;
+}

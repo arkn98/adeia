@@ -5,7 +5,11 @@ export {
   leaveTypeSelectOptions,
   leaveTypesLabels
 } from './leaveTypes';
-export { leaveStatuses, leaveStatusSelectOptions } from './leaveStatuses';
+export {
+  leaveStatuses,
+  leaveStatusLabels,
+  leaveStatusSelectOptions
+} from './leaveStatuses';
 export {
   holidayTypes,
   holidayTypeSelectOptions,

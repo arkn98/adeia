@@ -5,7 +5,10 @@ const Spinner = props => {
   const { loadingPrimary = false } = props;
   return (
     <Fragment>
-      <span className={styles.spinnerAbsolute}>
+      <span
+        className={`${styles.spinnerAbsolute} ${
+          loadingPrimary ? styles.loadingPrimary : null
+        }`}>
         <span
           className={`${styles.spinnerInner} ${
             loadingPrimary ? styles.loadingPrimary : null

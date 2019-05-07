@@ -23,6 +23,10 @@
   background-color: #2f3136;
 }
 
+.spinnerAbsolute.loadingPrimary {
+  background-color: transparent !important;
+}
+
 :global(.lightTheme) .spinnerAbsolute {
   background-color: $color-white;
 }

@@ -2,6 +2,9 @@ export { ReactComponent as MdMenu } from './md-menu.svg';
 export {
   ReactComponent as MdInformationCircle
 } from './md-information-circle.svg';
+export {
+  ReactComponent as MdInformationCircleOutline
+} from './md-information-circle.svg';
 export { ReactComponent as MdNotifications } from './md-notifications.svg';
 export { ReactComponent as MdSettings } from './md-settings.svg';
 export { ReactComponent as LogoGithub } from './logo-github.svg';
@@ -24,3 +27,8 @@ export { ReactComponent as MdList } from './md-list.svg';
 export { ReactComponent as MdPartlySunny } from './md-partly-sunny.svg';
 export { ReactComponent as MdCalendar } from './md-calendar.svg';
 export { ReactComponent as MdBusiness } from './md-business.svg';
+export { ReactComponent as MdLink } from './md-link.svg';
+export { ReactComponent as MdSwap } from './md-swap.svg';
+export { ReactComponent as MdSend } from './md-send.svg';
+export { ReactComponent as MdGitNetwork } from './md-git-network.svg';
+export { ReactComponent as MdArrowDropright } from './md-arrow-dropright.svg';

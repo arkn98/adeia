@@ -57,7 +57,7 @@ const getFreeSlots = (req, res) => {
             Alteration.find({
               alternatingStaff: data.staff,
               alterationDate: data.date,
-              accepted: true
+              status: 'ACCEPTED'
             }).then(alterations => {
               let occupiedSlotsDueToAlterations = [];
               alterations.forEach(item => {

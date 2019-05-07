@@ -21,7 +21,8 @@
   margin-right: 40px;
 }
 
-.button:hover {
+.button:hover,
+.button:focus {
   box-shadow: none;
   box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.4);
   transform: translateY(-1px);
@@ -57,7 +58,7 @@
 }
 
 .buttonTransparent:hover,
-.buttonTransparent:active {
+.buttonTransparent:active .buttonTransparent:focus {
   background-color: $color-primary;
   border-color: $color-primary;
   color: $color-white;
@@ -69,7 +70,8 @@
 }
 
 :global(.lightTheme) .buttonTransparent:hover,
-:global(.lightTheme) .buttonTransparent:active {
+:global(.lightTheme) .buttonTransparent:active,
+:global(.lightTheme) .buttonTransparent:focus {
   background-color: $color-primary;
   border-color: $color-primary;
   color: $color-white;
@@ -124,7 +126,8 @@
   background-color: #677bc4;
 }
 
-.submitting .submitButton:hover {
+.submitting .submitButton:hover,
+.submitting .submitButton:focus {
   background-color: $color-primary;
 }
 
@@ -183,10 +186,7 @@
 }
 
 @media screen and (min-width: 487px) {
-  .buttonLink:hover::after {
-    opacity: 1;
-  }
-
+  .buttonLink:hover::after,
   .buttonLink:focus::after {
     opacity: 1;
   }
@@ -219,8 +219,9 @@
   background-color: #f04747;
 }
 
-.buttonDanger:hover {
-  background-color: #d84040;
+.buttonDanger:hover,
+.buttonDanger:focus {
+  background-color: #d84040 !important;
 }
 
 .buttonModal.lookFilled.buttonModalDanger {
@@ -228,7 +229,8 @@
   color: #fff !important;
 }
 
-.buttonModal.lookFilled.buttonModalDanger:hover {
+.buttonModal.lookFilled.buttonModalDanger:hover,
+.buttonModal.lookFilled.buttonModalDanger:focus {
   background-color: #d84040;
 }
 
@@ -237,12 +239,20 @@
   color: #fff !important;
 }
 
-.buttonModal.lookFilled.buttonModalPrimary:hover {
+.buttonModal.lookFilled.buttonModalPrimary:hover,
+.buttonModal.lookFilled.buttonModalPrimary:focus {
   background-color: #677bc4;
 }
 
 .disabled.submitButton {
   background-color: #677bc4 !important;
+  cursor: not-allowed;
+  opacity: 1 !important;
+  transition: none;
+}
+
+.disabled.submitButton.buttonDanger {
+  background-color: #f04747 !important;
   cursor: not-allowed;
   opacity: 1 !important;
   transition: none;
@@ -276,7 +286,8 @@
   background: hsla(0, 0%, 0%, 0.15);
 }
 
-:global(.lightTheme) .iconHoverWrapper:hover {
+:global(.lightTheme) .iconHoverWrapper:hover,
+:global(.lightTheme) .iconHoverWrapper:focus {
   background: rgba(79, 84, 92, 0.1);
 }
 
@@ -292,7 +303,8 @@
   fill: #fff;
 }
 
-.iconHoverWrapper.danger:hover {
+.iconHoverWrapper.danger:hover,
+.iconHoverWrapper.danger:focus {
   background-color: rgba(240, 71, 71, 0.1);
 }
 
@@ -300,7 +312,8 @@
   background-color: rgba(240, 71, 71, 1);
 }
 
-.iconHoverWrapper.danger:hover .customIconTest {
+.iconHoverWrapper.danger:hover .customIconTest,
+.iconHoverWrapper.danger:focus .customIconTest {
   fill: rgb(240, 71, 71);
 }
 

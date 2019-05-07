@@ -1,4 +1,5 @@
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import {
   clearCurrentProfile,
   logoutUser,
@@ -7,11 +8,11 @@ import {
   getAllStaff,
   changeTheme,
   updateCurrentRouteTitle,
+  getNotificationFromSocket,
   getCurrentUser,
   getCurrentProfile
 } from '../../../shared/actions';
 import Dashboard from './Dashboard';
-import { connect } from 'react-redux';
 
 const mapStateToProps = (state, ownProps) => ({
   auth: state.auth,
@@ -36,7 +37,8 @@ const Container = connect(
     getAllCourses,
     getAllStaff,
     updateCurrentRouteTitle,
-    getCurrentProfile
+    getCurrentProfile,
+    getNotificationFromSocket
   }
 )(withRouter(Dashboard));
 

@@ -127,7 +127,14 @@
   flex: 1;
   height: 100%;
   display: flex;
-  padding-bottom: 20px;
+  box-sizing: border-box;
+  max-height: 340px;
+}
+
+@media screen and (max-height: 600px) and (max-width: 400px) {
+  .body {
+    max-height: 128px;
+  }
 }
 
 .bodyInner {
@@ -209,7 +216,8 @@
   color: #fff !important;
 }
 
-.button.lookFilled.buttonRed:hover {
+.button.lookFilled.buttonRed:hover,
+.button.lookFilled.buttonRed:focus {
   background-color: #d84040;
 }
 
@@ -220,7 +228,8 @@
   white-space: nowrap;
 }
 
-.button.lookLink:hover .contents {
+.button.lookLink:hover .contents,
+.button.lookLink:focus .contents {
   background-image: linear-gradient(
     0deg,
     transparent,
@@ -231,7 +240,8 @@
   );
 }
 
-:global(.lightTheme) .button.button.lookLink:hover .contents {
+:global(.lightTheme) .button.button.lookLink:hover .contents,
+:global(.lightTheme) .button.button.lookLink:focus .contents {
   background-image: linear-gradient(
     0deg,
     transparent,
@@ -256,7 +266,7 @@
 }
 
 .buttonTransparent:hover,
-.buttonTransparent:active {
+.buttonTransparent:active .buttonTransparent:focus {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -266,6 +276,7 @@
 }
 
 :global(.lightTheme) .buttonTransparent:hover,
-:global(.lightTheme) .buttonTransparent:active {
+:global(.lightTheme) .buttonTransparent:active,
+:global(.lightTheme) .buttonTransparent:focus {
   background-color: #f6f6f7;
 }

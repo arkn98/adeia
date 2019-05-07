@@ -13,3 +13,7 @@
 .ReactTable .rt-tr .rt-td {
   font-variant: tabular-nums;
 }
+
+.ReactTable .rt-body {
+  overflow-x: visible !important;
+}

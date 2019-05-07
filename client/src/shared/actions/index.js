@@ -44,3 +44,11 @@ export { default as addClassGroup } from './addClassGroup';
 export {
   default as getTimetableSlotsToAlternate
 } from './getTimetableSlotsToAlternate';
+export { default as markAllAsRead } from './markAllAsRead';
+export {
+  default as getNotificationFromSocket
+} from './getNotificationFromSocket';
+export { default as getAlterations } from './getAlterations';
+export { default as markIndexAsRead } from './markIndexAsRead';
+export { default as setAlterationAsViewed } from './setAlterationAsViewed';
+export { default as setAlterationStatus } from './setAlterationStatus';

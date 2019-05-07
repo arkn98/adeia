@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ReactTable, { ReactTableDefaults } from 'react-table';
 import styles from './LeaveList.module.scss';
 import 'react-table/react-table.css';
@@ -28,7 +28,6 @@ const MyTheadComponent = props => {
 
 const MyThComponent = props => {
   const { toggleSort, sorted, className, children, style, ...rest } = props;
-  console.log(sorted);
   return (
     <div
       className={styles.columnTitle}
@@ -41,10 +40,18 @@ const MyThComponent = props => {
 };
 
 const MyTdComponent = props => {
-  const { children, className, style, ...rest } = props;
+  const { children, className, style, onClick, ...rest } = props;
   return (
     <div className={styles.columnData} style={style} {...rest}>
       {children}
+    </div>
+  );
+};
+
+const MyTBodyComponent = props => {
+  return (
+    <div {...props} style={{ ...props.style, overflowX: 'visible' }}>
+      {props.children}
     </div>
   );
 };
@@ -65,11 +72,6 @@ const MyTrGroupComponent = props => {
       {children}
     </div>
   );
-};
-
-const MyFilterComponent = props => {
-  const { className, ...rest } = props;
-  return <input className={styles.columnFilter} {...rest} />;
 };
 
 const defaultButton = props => (
@@ -120,7 +122,6 @@ class MyPaginationComponent extends Component {
           onChange={e => onPageSizeChange(Number(e.target.value))}
           value={pageSize}>
           {pageSizeOptions.map((option, i) => (
-            // eslint-disable-next-line react/no-array-index-key
             <option key={i} value={option}>
               {`${option} ${rowsText}`}
             </option>
@@ -195,9 +196,7 @@ class MyPaginationComponent extends Component {
 
   render() {
     const {
-      // Computed
       pages,
-      // Props
       page,
       showPageSizeOptions,
       pageSizeOptions,
@@ -261,6 +260,16 @@ class MyPaginationComponent extends Component {
   }
 }
 
+const MyFilterComponent = ({ filter, onChange }) => {
+  return (
+    <input
+      onChange={event => onChange(event.target.value)}
+      value={filter ? filter.value : ''}
+      className={styles.columnFilter}
+    />
+  );
+};
+
 class LeaveList extends Component {
   state = {
     isLoading: true
@@ -273,13 +282,6 @@ class LeaveList extends Component {
     });
   };
 
-  filterMethod = (filter, row, column) => {
-    const id = filter.pivotId || filter.id;
-    return row[id] !== undefined
-      ? String(row[id].toLowerCase()).includes(filter.value.toLowerCase())
-      : true;
-  };
-
   render = () => {
     const columns = [
       {
@@ -287,7 +289,9 @@ class LeaveList extends Component {
         accessor: 'leaveId',
         id: 'leaveId',
         Cell: ({ row }) => (
-          <Link to={`/dashboard/leave/view/${row.leaveId}`}>{row.leaveId}</Link>
+          <Link to={{ pathname: `/dashboard/leave/${row.leaveId}` }}>
+            <div className={styles.linkBlue}>{row.leaveId}</div>
+          </Link>
         ),
         width: 128
       },
@@ -303,13 +307,15 @@ class LeaveList extends Component {
         Header: () => <div style={{ textAlign: 'left' }}>From</div>,
         id: 'from',
         accessor: 'from',
-        Cell: ({ row }) => dayjs(row.from).format('DD-MMM-YYYY')
+        Cell: ({ row }) => dayjs(row.from).format('DD-MMM-YYYY'),
+        width: 108
       },
       {
         Header: () => <div style={{ textAlign: 'left' }}>To</div>,
         id: 'to',
         accessor: 'to',
-        Cell: ({ row }) => dayjs(row.to).format('DD-MMM-YYYY')
+        Cell: ({ row }) => dayjs(row.to).format('DD-MMM-YYYY'),
+        width: 108
       },
       {
         Header: () => <div style={{ textAlign: 'left' }}>Leave type</div>,
@@ -317,7 +323,7 @@ class LeaveList extends Component {
         id: 'leaveType',
         Cell: ({ row }) =>
           leaveTypeSelectOptions.find(x => x.value === row.leaveType).label,
-        width: 208
+        width: 180
       },
       {
         Header: () => <div style={{ textAlign: 'right' }}>No. of Days</div>,
@@ -325,13 +331,15 @@ class LeaveList extends Component {
         id: 'noOfDays',
         Cell: ({ row }) => (
           <div style={{ textAlign: 'right' }}>{row.noOfDays}</div>
-        )
+        ),
+        width: 72
       },
       {
         Header: () => <div style={{ textAlign: 'left' }}>Status</div>,
         accessor: 'status',
         id: 'status',
-        Cell: ({ row }) => leaveStatuses[row.status]
+        Cell: ({ row }) => leaveStatuses[row.status],
+        width: 108
       }
     ];
 
@@ -342,9 +350,10 @@ class LeaveList extends Component {
           TableComponent={MyTableComponent}
           TheadComponent={MyTheadComponent}
           ThComponent={MyThComponent}
+          FilterComponent={MyFilterComponent}
           TdComponent={MyTdComponent}
           TrGroupComponent={MyTrGroupComponent}
-          FilterComponent={MyFilterComponent}
+          TbodyComponent={MyTBodyComponent}
           TrComponent={MyTrComponent}
           PaginationComponent={MyPaginationComponent}
           columns={columns}
@@ -354,7 +363,6 @@ class LeaveList extends Component {
           resizable={false}
           minRows={2}
           filterable={true}
-          /* defaultFilterMethod={this.filterMethod} */
           defaultSorted={[{ id: 'applyDate', desc: true }]}
           defaultSortDesc={true}
           NextComponent={ButtonSubmitTable}
@@ -366,4 +374,4 @@ class LeaveList extends Component {
   };
 }
 
-export default withRouter(LeaveList);
+export default LeaveList;

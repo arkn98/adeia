@@ -27,6 +27,33 @@
   min-height: 400px;
 }
 
+.changelogButtonHolder {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.changelogButton {
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.changelogButton:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+:global(.lightTheme) .changelogButton:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 486px) {
+  .changelogButtonHolder {
+    margin-bottom: 8px;
+  }
+}
+
 .title {
   font-size: 36px;
   color: $color-white;
@@ -40,7 +67,15 @@
 .titleBig {
   font-weight: 800;
   font-size: 60px;
+  line-height: 54px;
   padding-bottom: 12px;
+}
+
+@media screen and (max-width: 486px) {
+  .titleBig {
+    font-size: 28px;
+    line-height: 28px;
+  }
 }
 
 :global(.lightTheme) .title {
@@ -111,8 +146,8 @@
 
 @media screen and (max-height: 600px) and (max-width: 400px) {
   .buttons button {
-    width: 50%;
-    min-width: 150px;
+    width: 85%;
+    min-width: 200px;
   }
 }
 

@@ -273,7 +273,7 @@ class AddUpdateHoliday extends Component {
               { value: 'Description', style: { width: '300px' } },
               {
                 value: '',
-                style: { textAlign: 'right', flexGrow: '1' }
+                style: { textAlign: 'right' }
               }
             ]}
             containerStyles={styles.marginBottom20}
@@ -331,7 +331,7 @@ class AddUpdateHoliday extends Component {
               { value: 'Description', style: { width: '300px' } },
               {
                 value: '',
-                style: { textAlign: 'right', flexGrow: '1' }
+                style: { textAlign: 'right' }
               }
             ]}
             containerStyles={styles.marginBottom20}

@@ -15,11 +15,29 @@ import {
   MdList,
   MdPartlySunny,
   MdCalendar,
-  MdBusiness
+  MdBusiness,
+  MdSwap,
+  MdSend,
+  MdGitNetwork,
+  MdCodeWorking
 } from 'assets/icons';
 import { SettingsMenuSideNav as SettingsMenu } from '../../common/SettingsMenu';
 import ClickOutside from 'react-click-outside';
 import { accountTypes } from 'data';
+
+export const LooseNavLink = props => (
+  <NavLink
+    {...props}
+    isActive={(match, location) => {
+      let index = location.pathname.indexOf(props.to);
+      return location.pathname.startsWith(props.to)
+        ? location.pathname.length > props.to.length
+          ? location.pathname.indexOf('/', index + props.to.length) > -1
+          : true
+        : false;
+    }}
+  />
+);
 
 const SettingsMenuWithIcon = props => {
   return (
@@ -95,15 +113,24 @@ class SideNav extends Component {
       links.push(<div className={styles.seperator} />);
       links.push(<div className={styles.menuHeader}>Leave Settings</div>);
       links.push(
-        <NavLink
-          exact
-          to="/dashboard/leave/list"
+        <LooseNavLink
+          to="/dashboard/leave"
           onClick={() => sideNavHide()}
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
           <MdList className={styles.customIconTest} />{' '}
           <div className={styles.menuText}>Leave List</div>
-        </NavLink>
+        </LooseNavLink>
+      );
+      links.push(
+        <LooseNavLink
+          to="/dashboard/alteration"
+          onClick={() => sideNavHide()}
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdSwap className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Alteration List</div>
+        </LooseNavLink>
       );
       links.push(
         <NavLink
@@ -112,7 +139,7 @@ class SideNav extends Component {
           onClick={() => sideNavHide()}
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <MdPersonAdd className={styles.customIconTest} />{' '}
+          <MdGitNetwork className={styles.customIconTest} />{' '}
           <div className={styles.menuText}>Leave Allocation</div>
         </NavLink>
       );
@@ -230,6 +257,19 @@ class SideNav extends Component {
           <div className={styles.menuText}>Course Settings</div>
         </NavLink>
       );
+      links.push(<div className={styles.seperator} />);
+      links.push(<div className={styles.menuHeader}>Misc. Settings</div>);
+      /* links.push(
+        <NavLink
+          exact
+          to="/dashboard/course"
+          className={styles.menuItem}
+          onClick={() => sideNavHide()}
+          activeClassName={styles.menuItemActive}>
+          <MdSchool className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Course Settings</div>
+        </NavLink>
+      ); */
     } else if (this.props.auth.user.accountType === accountTypes.OFFICE) {
     } else {
       links.push(<div className={styles.seperator} />);
@@ -237,24 +277,34 @@ class SideNav extends Component {
       links.push(
         <NavLink
           exact
-          to="/dashboard/leave/apply"
+          to="/dashboard/leave-apply"
           onClick={() => sideNavHide()}
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
-          <MdList className={styles.customIconTest} />{' '}
+          <MdSend className={styles.customIconTest} />{' '}
           <div className={styles.menuText}>Leave Application</div>
         </NavLink>
       );
       links.push(
-        <NavLink
+        <LooseNavLink
           exact
-          to="/dashboard/leave/list"
+          to="/dashboard/leave"
           onClick={() => sideNavHide()}
           className={styles.menuItem}
           activeClassName={styles.menuItemActive}>
           <MdList className={styles.customIconTest} />{' '}
           <div className={styles.menuText}>Leave List</div>
-        </NavLink>
+        </LooseNavLink>
+      );
+      links.push(
+        <LooseNavLink
+          to="/dashboard/alteration"
+          onClick={() => sideNavHide()}
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdSwap className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Alterations for me</div>
+        </LooseNavLink>
       );
       links.push(
         <NavLink
@@ -307,7 +357,7 @@ class SideNav extends Component {
                 <div className={styles.topBarIconWrapper}>
                   <a
                     title="GitHub repo"
-                    href="https://github.com/arkn98/lms"
+                    href="https://github.com/arkn98/leave-management-system"
                     target="_blank"
                     rel="noopener noreferrer">
                     <LogoGithub className={styles.topBarIcon} />

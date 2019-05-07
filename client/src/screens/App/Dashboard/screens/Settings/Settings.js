@@ -118,6 +118,7 @@ class Settings extends Component {
             name="email"
             label="Email"
             type="email"
+            description="This will be your future sign-ins."
             value={this.state.email}
             inputOnChangeHandler={this.inputOnChangeHandler}
             errors={errors.email}
@@ -148,6 +149,7 @@ class Settings extends Component {
             name="newpassword"
             label="New Password"
             type="password"
+            description="Must be atleast 8 characters long."
             value={this.state.newpassword}
             inputOnChangeHandler={this.inputOnChangeHandler}
             errors={errors.newpassword}

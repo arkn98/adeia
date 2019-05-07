@@ -46,7 +46,7 @@ const getStaffsAvailable = (classId, applyingStaff, date, hour) => {
                 Alteration.find({
                   alterationDate: date,
                   alterationHour: hour,
-                  accepted: true
+                  status: 'ACCEPTED'
                 })
                   .populate({
                     path: 'alternatingStaff',
@@ -113,7 +113,7 @@ const getAllStaffsAvailable = (applyingStaff, date, hour) => {
               Alteration.find({
                 alterationDate: date,
                 alterationHour: hour,
-                accepted: true
+                status: 'ACCEPTED'
               })
                 .populate({ path: 'alternatingStaff', select: 'staffId name' })
                 .then(alterations => {
@@ -168,7 +168,7 @@ const getSlotsToAlternate = (req, res) => {
         }
         tempDayRange = dayRange.map(day => day.day());
         Timetable.find({
-          staff: req.user.id,
+          staff: req.user._id,
           day: {
             $in: tempDayRange
           },
@@ -213,13 +213,13 @@ const getSlotsToAlternate = (req, res) => {
                       new Promise(resolve => {
                         Promise.all([
                           getAllStaffsAvailable(
-                            req.user.id,
+                            req.user._id,
                             item.date,
                             slotItem.hour
                           ),
                           getStaffsAvailable(
                             slotItem.class._id,
-                            req.user.id,
+                            req.user._id,
                             item.date,
                             slotItem.hour
                           )
@@ -252,13 +252,13 @@ const getSlotsToAlternate = (req, res) => {
                         new Promise(resolve => {
                           Promise.all([
                             getAllStaffsAvailable(
-                              req.user.id,
+                              req.user._id,
                               item.date,
                               slotItem.hour + i - 1
                             ),
                             getStaffsAvailable(
                               slotItem.class._id,
-                              req.user.id,
+                              req.user._id,
                               item.date,
                               slotItem.hour + i - 1
                             )

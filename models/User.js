@@ -65,6 +65,10 @@ const UserSchema = new Schema(
       type: String,
       enum: Object.values(staffTypes)
     },
+    OTToken: {
+      type: String,
+      default: ''
+    },
     resetPasswordToken: {
       type: String,
       default: ''

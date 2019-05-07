@@ -1,0 +1,55 @@
+.infoBoxContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.top {
+  display: flex;
+  flex-direction: row;
+}
+
+.topLeft {
+  flex: 1;
+}
+
+.label {
+  color: #b9bbbe;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: default;
+  font-weight: 600;
+  line-height: 16px;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.row {
+  display: flex;
+  margin: 6px 0;
+  font-size: 16px;
+  line-height: 20px;
+  color: #f6f6f7;
+}
+
+:global(.lightTheme) .row {
+  color: #72767d;
+}
+
+.rowTitle {
+  margin-right: 8px;
+  font-weight: 600;
+}
+
+:global(.lightTheme) .label {
+  color: #72767d;
+}
+
+.topRight {
+  flex: 1;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+}

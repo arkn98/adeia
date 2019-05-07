@@ -11,7 +11,7 @@ export const leaveTypes = Object.freeze({
   CL6: 'CL6'
 });
 
-export const leaveTypesLabels = {
+export const leaveTypesLabels = Object.freeze({
   CL: 'Casual Leave',
   CPL: 'Compensation Leave',
   EL: 'Earn Leave',
@@ -22,7 +22,7 @@ export const leaveTypesLabels = {
   CL30: 'Casual Leave - 30 days',
   CL20: 'Casual Leave - 20 days',
   CL6: 'Casual Leave - 6 days'
-};
+});
 
 export const leaveTypeSelectOptions = Object.keys(leaveTypes).map(
   (key, item) => {

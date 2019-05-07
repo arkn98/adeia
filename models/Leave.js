@@ -25,7 +25,8 @@ const { leaveTypes, leaveStatuses } = require('../data');
 const LeaveSchema = new Schema({
   leaveId: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   staff: {
     type: Schema.Types.ObjectId,
@@ -75,6 +76,7 @@ const LeaveSchema = new Schema({
     type: String,
     default: ''
   },
+  isDocumentProvided: { type: Boolean, default: false },
   alterations: [
     {
       type: Schema.Types.ObjectId,

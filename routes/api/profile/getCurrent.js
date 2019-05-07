@@ -3,7 +3,7 @@ const Profile = require('../../../models/Profile');
 const getCurrent = (req, res) => {
   const errors = {};
   Profile.findOne({
-    user: req.user.id
+    user: req.user._id
   })
     .populate({
       path: 'leaveAllocation',
@@ -14,7 +14,11 @@ const getCurrent = (req, res) => {
         errors.noprofile = 'No profile found';
         return res.status(404).json(errors);
       } else {
-        return res.json(profile);
+        return res.status(200).json(profile);
+        /* return res.json({
+          ...profile,
+          notifications: profile.notifications.slice(0, 20)
+        }); */
       }
     })
     .catch(err => {

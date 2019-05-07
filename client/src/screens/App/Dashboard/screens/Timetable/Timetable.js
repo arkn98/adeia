@@ -8,7 +8,8 @@ import {
   SelectSearch,
   Form,
   FileUpload,
-  Divider
+  Divider,
+  Description
 } from 'screens/App/shared/common/FormInput';
 import { MdTrash, MdClose } from 'assets/icons';
 import { Slot } from 'screens/App/shared/common/Slot';
@@ -674,12 +675,7 @@ class Timetable extends Component {
 
     let thead = ['Day', 1, 2, 3, 4, 5, 6, 7, 8];
 
-    if (this.state.isLoading)
-      return (
-        <Fragment>
-          <FullPageSpinner loadingPrimary={true} />
-        </Fragment>
-      );
+    if (this.state.isLoading) return <FullPageSpinner loadingPrimary={true} />;
     else
       return (
         <Fragment>
@@ -694,7 +690,7 @@ class Timetable extends Component {
             <SelectBox
               name="classCode"
               label="Class"
-              bigLabel={true}
+              bigLabel={false}
               value={this.state.classCode}
               inputOnChangeHandler={this.inputOnChangeHandler}
               errors={errors.classCode}
@@ -708,9 +704,11 @@ class Timetable extends Component {
             />
             {!isTableLoaded ? null : (
               <Fragment>
-                <div className={styles.infoBox}>
-                  Upload CSV/Excel sheet to load data
-                </div>
+                <Description>
+                  Upload CSV/Excel sheet to load data (loaded data won't be
+                  saved to the database unless you click Update timetable at the
+                  bottom)
+                </Description>
                 <FormRow containerStyles={styles.marginBottom8}>
                   <FileUpload
                     name="timetableCSV"
@@ -978,9 +976,12 @@ class Timetable extends Component {
             ) : null}
             {!isTableLoaded ? null : (
               <Fragment>
-                <div className={`${styles.infoBox} ${styles.marginBottom8}`}>
-                  or click on the cells to add/update slots manually.
-                </div>
+                <Description>
+                  or click on the cells to add/update slots manually (you can
+                  also edit slots after loading data from a CSV file; but please
+                  remember to click Update timetable at the bottom to save your
+                  changes).
+                </Description>
                 <Table
                   striped={true}
                   containerStyles={styles.marginBottom20}

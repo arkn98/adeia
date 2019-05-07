@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import ResetPassword from './ResetPassword';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { clearResetToken, resetPassword } from '../../../shared/actions';
-import Error from '../shared/components/Error';
 import axios from 'axios';
 import queryString from 'query-string';
+import Error from '../shared/components/Error';
+import { clearResetToken, resetPassword } from '../../../shared/actions';
 
 class ResetPasswordContainer extends Component {
   state = {
@@ -34,13 +34,13 @@ class ResetPasswordContainer extends Component {
         });
       })
       .catch(err => {
+        console.log(err);
         this.setState({
           ...this.state,
           isLoading: false,
           shouldDisplay: false,
           token: ''
         });
-        console.log(err);
       });
   };
 
@@ -80,8 +80,6 @@ class ResetPasswordContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth,
-  utils: state.utils,
   errors: state.errors
 });
 

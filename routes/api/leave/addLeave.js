@@ -2,14 +2,18 @@ const { validationResult } = require('express-validator/check');
 const shortid = require('shortid');
 const mongoose = require('mongoose');
 const dayjs = require('dayjs');
+const advancedFormat = require('dayjs/plugin/advancedFormat');
 
 const Leave = require('../../../models/Leave');
+const Timetable = require('../../../models/Timetable');
 const User = require('../../../models/User');
 const Alteration = require('../../../models/Alteration');
 const Profile = require('../../../models/Profile');
 const { accountTypes } = require('../../../models/User');
 const { leaveTypes } = require('../../../models/Leave');
-const { sendEmail, sendNotification } = require('../../utils');
+const { sendEmail, sendNotification, getOrdinal } = require('../../utils');
+
+dayjs.extend(advancedFormat);
 
 const addLeave = (req, res) => {
   const errors = validationResult(req).formatWith(({ msg }) => msg);
@@ -31,11 +35,13 @@ const addLeave = (req, res) => {
     slotsToAlternate
   } = req.body;
 
+  dayRange = JSON.parse(dayRange);
   slotsToAlternate = JSON.parse(slotsToAlternate);
 
   let documentUploadPath = '';
   if (typeof req.file !== 'undefined') {
-    documentUploadPath = `${req.file.destination}${req.file.filename}`;
+    documentUploadPath = `${req.file.filename}`;
+    /*${req.file.destination}*/
   }
 
   if (
@@ -56,7 +62,7 @@ const addLeave = (req, res) => {
     return res.status(400).json(errors);
   }
 
-  Profile.find({ user: req.user.id })
+  Profile.findOne({ user: req.user._id })
     .populate({
       path: 'leaveAllocation',
       populate: { path: 'leaveTypesAllowed' }
@@ -84,6 +90,13 @@ const addLeave = (req, res) => {
         mongoose.startSession().then(_session => {
           session = _session;
           session.startTransaction();
+          let status = 'WAITING';
+          if (
+            slotsToAlternate.length === 0 ||
+            slotsToAlternate.every(x => x.alternationOption === 'POSTPONE')
+          ) {
+            status = 'WAITINGHODAPPROVAL';
+          }
           Leave.create(
             [
               {
@@ -98,7 +111,9 @@ const addLeave = (req, res) => {
                 reason,
                 isVacation,
                 address,
-                document: documentUploadPath
+                document: documentUploadPath,
+                isDocumentProvided: documentUploadPath !== '',
+                status
               }
             ],
             { session }
@@ -111,6 +126,7 @@ const addLeave = (req, res) => {
                   toAddAlterations = [];
                   slotsToAlternate.forEach((item, index) => {
                     toAddAlterations.push({
+                      alterationId: shortid.generate(),
                       leaveId: leave.leaveId,
                       originalDate: item.date,
                       originalHour: item.hour,
@@ -123,10 +139,10 @@ const addLeave = (req, res) => {
                           ? item.modification.postponeHour
                           : item.hour,
                       alternationOption: item.alternationOption,
-                      originalStaff: req.user.id,
+                      originalStaff: req.user._id,
                       alternatingStaff:
                         item.alternationOption === 'POSTPONE'
-                          ? req.user.id
+                          ? req.user._id
                           : item.modification.alternateSameClass !== ''
                           ? staffList.find(
                               x =>
@@ -138,11 +154,43 @@ const addLeave = (req, res) => {
                                 x.staffId === item.modification.alternateOthers
                             )._id,
                       class: item.classId,
-                      accepted:
-                        item.alternationOption === 'POSTPONE' ? true : false
+                      status:
+                        item.alternationOption === 'POSTPONE'
+                          ? 'ACCEPTED'
+                          : 'WAITING'
                     });
                   });
 
+                  const promises = [];
+                  promises.push(
+                    sendNotification({
+                      user: req.user._id,
+                      data: {
+                        notificationId: shortid.generate(),
+                        isNew: true,
+                        link: `/dashboard/leave/${leave.leaveId}`,
+                        title: 'Leave Application',
+                        message: `Your leave application ${
+                          leave.leaveId
+                        } has been successfully submitted and is under processing. Click here to view status`,
+                        type: 'info',
+                        time: dayjs()
+                          .format('DD-MMM-YYYY hh:mm A')
+                          .toString()
+                      }
+                    })
+                  );
+                  promises.push(
+                    sendEmail({
+                      to: req.user.email,
+                      subject: `LMS - Leave application submitted`,
+                      body: `Your leave application ${
+                        leave.leaveId
+                      } has been successfully submitted and is under processing. <br>To view the status of your application, follow the below link:<br> http://localhost:3000//dashboard/leave/${
+                        leave.leaveId
+                      }`
+                    })
+                  );
                   if (
                     Array.isArray(toAddAlterations) &&
                     toAddAlterations.length !== 0
@@ -153,74 +201,110 @@ const addLeave = (req, res) => {
                         alterations.forEach(item => {
                           objIds.push(item._id);
                         });
-                        Alteration.find({ _id: { $in: objIds } })
-                          .session(session)
-                          .populate({
-                            path: 'originalStaff',
-                            select: 'staffId name email'
-                          })
-                          .populate({
-                            path: 'alternatingStaff',
-                            select: 'staffId name email'
-                          })
-                          .then(staffsToSendNotif => {
-                            const promises = [];
-                            staffsToSendNotif.forEach(item => {
-                              promises.push(
-                                sendEmail({
-                                  to: item.alternatingStaff.email,
-                                  subject: `LMS - ${
-                                    item.originalStaff.name
-                                  } has requested your approval for an alteration`,
-                                  body: `<h3>Alteration request</h3><br>Requested by: <b>${
-                                    item.originalStaff.name
-                                  } (${
-                                    item.originalStaff.staffId
-                                  })</b><br>Original Date: <b>${dayjs(
-                                    item.originalDate
-                                  )
-                                    .format('DD-MMM-YYYY')
-                                    .toString()}</b><br>Original Hour: <b>${
-                                    item.originalHour
-                                  }</b><br>Alteration Date: <b>${dayjs(
-                                    item.alterationDate
-                                  )
-                                    .format('DD-MMM-YYYY')
-                                    .toString()}</b><br>Alteration Hour: <b>${
-                                    item.alterationHour
-                                  }</b><br><br>To accept/reject please follow the below link: http://localhost:3000/dashboard/alteration/${
-                                    item.leaveId
-                                  }`
-                                })
-                              );
-                              promises.push(
-                                sendNotification({
-                                  user: item.alternatingStaff
-                                })
-                              );
-                            });
-                            Promise.all(promises).then(() => {
-                              leave.set({ alterations: objIds });
-                              leave
-                                .save()
-                                .then(leaveObj => {
-                                  session.commitTransaction();
-                                  return res
-                                    .status(200)
-                                    .json({ leaveId: leaveObj.leaveId });
-                                })
-                                .catch(err => {
-                                  console.log(err);
-                                  session.abortTransaction();
-                                  return res.status(400);
+                        leave.set({ alterations: objIds });
+                        leave
+                          .save()
+                          .then(leaveObj => {
+                            res.status(200).json({ leaveId: leaveObj.leaveId });
+                            session.commitTransaction();
+                            Alteration.find({
+                              _id: { $in: objIds },
+                              alternationOption: 'ALTERNATE'
+                            })
+                              /* .session(session) */
+                              .populate({
+                                path: 'originalStaff',
+                                select: 'staffId name email'
+                              })
+                              .populate({
+                                path: 'alternatingStaff',
+                                select: 'staffId name email'
+                              })
+                              .then(staffsToSendNotif => {
+                                const promises = [];
+                                staffsToSendNotif.forEach(item => {
+                                  promises.push(
+                                    sendEmail({
+                                      to: item.alternatingStaff.email,
+                                      subject: `LMS - ${
+                                        item.originalStaff.name
+                                      } has requested your approval for an alteration`,
+                                      body: `<h3>Alteration request</h3><br>Requested by: <b>${
+                                        item.originalStaff.name
+                                      } (${
+                                        item.originalStaff.staffId
+                                      })</b><br>Original Date: <b>${dayjs(
+                                        item.originalDate
+                                      )
+                                        .format('DD-MMM-YYYY')
+                                        .toString()}</b><br>Original Hour: <b>${
+                                        item.originalHour
+                                      }</b><br>Alteration Date: <b>${dayjs(
+                                        item.alterationDate
+                                      )
+                                        .format('DD-MMM-YYYY')
+                                        .toString()}</b><br>Alteration Hour: <b>${
+                                        item.alterationHour
+                                      }</b><br><br>To accept/reject please follow the below link: http://localhost:3000/dashboard/alteration/${
+                                        item.alterationId
+                                      }`
+                                    })
+                                  );
+                                  promises.push(
+                                    sendNotification({
+                                      user: item.alternatingStaff,
+                                      data: {
+                                        notificationId: shortid.generate(),
+                                        isNew: true,
+                                        link: `/dashboard/alteration/${
+                                          item.alterationId
+                                        }`,
+                                        title: 'Alteration Request',
+                                        message: `${
+                                          item.originalStaff.name
+                                        } has requested alteration for ${dayjs(
+                                          item.alterationDate
+                                        )
+                                          .format('Do of MMM, YY')
+                                          .toString()} - ${getOrdinal(
+                                          parseInt(item.alterationHour)
+                                        )} hour.`,
+                                        type: 'info',
+                                        time: dayjs()
+                                          .format('DD-MMM-YYYY hh:mm A')
+                                          .toString()
+                                      }
+                                    })
+                                  );
                                 });
-                            });
+                              });
+                          })
+                          .catch(err => {
+                            console.log(err);
+                            session.abortTransaction();
+                            return res.status(400);
                           });
                       }
                     );
+                    Promise.all(promises)
+                      .then(() => {
+                        return;
+                      })
+                      .catch(err => {
+                        console.log(err);
+                        return;
+                      });
                   } else {
+                    res.status(200).json({ leaveId: leave.leaveId });
                     session.commitTransaction();
-                    return res.status(200).json({ leaveId: leave.leaveId });
+                    Promise.all(promises)
+                      .then(() => {
+                        return;
+                      })
+                      .catch(err => {
+                        console.log(err);
+                        return;
+                      });
                   }
                 });
             })

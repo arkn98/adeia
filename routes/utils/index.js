@@ -4,6 +4,9 @@ const csvTextToRecords = require('./csvTextToRecords');
 const sendEmail = require('./sendEmail');
 const sendNotification = require('./sendNotification');
 const { getTimetableEntries } = require('./getTimetableEntries');
+const getOrdinal = require('./getOrdinal');
+const setLeaveStatusBasedOnAlt = require('./setLeaveStatusBasedOnAlt');
+const fileDownloadHandler = require('./fileDownloadHandler');
 
 module.exports = {
   checkRole,
@@ -11,5 +14,8 @@ module.exports = {
   csvTextToRecords,
   getTimetableEntries,
   sendEmail,
-  sendNotification
+  sendNotification,
+  getOrdinal,
+  setLeaveStatusBasedOnAlt,
+  fileDownloadHandler
 };

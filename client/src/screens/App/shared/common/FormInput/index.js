@@ -12,3 +12,4 @@ export { default as Form } from './Form';
 export { default as Divider } from './Divider';
 export { default as SectionLabel } from './SectionLabel';
 export { default as Description } from './Description';
+export { default as WidthLimiter } from './WidthLimiter';

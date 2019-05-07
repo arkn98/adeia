@@ -43,7 +43,7 @@ router.post(
 router.get(
   '/get',
   passport.authenticate('jwt', { session: false }),
-  permit(accountTypes.ADMIN),
+  permit(accountTypes.ADMIN, accountTypes.STAFF),
   [
     query('classId')
       .exists()

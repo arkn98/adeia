@@ -6,18 +6,20 @@
 
 .notificationsContainer {
   top: 54px;
+  top: 36px;
   right: 30px;
-  max-height: 578px;
+  max-height: 200px;
   width: 420px;
   min-height: 384px;
   border-radius: 5px;
-  /* background-color: #2f3136;
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.82), 0 1px 4px rgba(0, 0, 0, 0.1); */
   background-color: #2f3136;
   border: 1px solid rgba(28, 36, 43, 0.6);
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
   transition: background-color 0.17s ease, border 0.17s ease,
     box-shadow 0.17s ease;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
 :global(.lightTheme) .notificationsContainer {
@@ -26,9 +28,344 @@
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 486px) {
   .notificationsContainer {
     width: 280px;
     right: 12px;
   }
+}
+
+.header {
+  padding-bottom: 0;
+  background-color: #35393e;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 5px 5px 0 0;
+  z-index: 2;
+  padding: 12px 20px;
+}
+
+:global(.lightTheme) .header {
+  background-color: #fff;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+:global(.lightTheme) .title {
+  color: #737f8d;
+}
+
+.headerTabWrapper {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.scrollWrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.viewAll {
+  cursor: pointer;
+  z-index: 2;
+  flex: 0 0 auto;
+  padding: 8px 13px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  background-color: #35393e;
+  color: #fff;
+  box-shadow: 0 -2px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+:global(.lightTheme) .viewAll {
+  border-top: 1px solid hsla(0, 0%, 74.9%, 0.3);
+  box-shadow: 0 -2px 3px 0 rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  color: #72767d;
+}
+
+.scroller {
+  z-index: 0;
+  overflow-y: auto;
+  border-radius: 0 0 5px 5px;
+  box-sizing: border-box;
+  flex: 1;
+  padding: 13px;
+}
+
+.scroller > div:last-child {
+  margin-bottom: 39px;
+}
+
+.messageWrapper {
+  background-color: #36393f;
+  border-color: rgba(28, 36, 43, 0.6);
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 2px;
+  margin: 0 0 6px;
+  overflow: hidden;
+  padding: 12px;
+  position: relative;
+  transition: border-color 0.1s ease-in-out;
+  cursor: pointer;
+}
+
+:global(.lightTheme) .messageWrapper {
+  border-color: rgba(28, 36, 43, 0.06);
+  background: transparent;
+}
+
+.messageWrapper:hover {
+  border-color: rgba(28, 36, 43, 0.8);
+}
+
+:global(.lightTheme) .messageWrapper:hover {
+  border-color: rgba(28, 36, 43, 0.12);
+}
+
+.messageDivider {
+  margin-bottom: 10px;
+  margin-top: 10px;
+  margin-left: 4px;
+}
+
+.messageDivider:first-of-type {
+  margin-top: 0;
+}
+
+.messageDivider span {
+  color: #72767d;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+}
+
+:global(.lightTheme) .messageDivider span {
+  color: #b9bbbe;
+}
+
+.message {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.messageIconWrapper {
+  margin-right: 8px;
+  flex: 0 0 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.messageIcon {
+  width: 24px;
+  height: auto;
+  fill: #b9bbbe;
+}
+
+:global(.lightTheme) .messageIcon {
+  fill: #72767d;
+}
+
+.messageRight {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.actionButtons {
+  transition: box-shadow 0.1s ease-in-out, background-color 0.1s ease-in-out;
+  float: right;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  display: flex;
+  background-color: transparent;
+}
+
+.actionButtons:hover {
+  background-color: #36393f;
+}
+
+:global(.lightTheme) .actionButtons {
+  box-shadow: 0 0 6px 4px transparent;
+  background-color: transparent;
+}
+
+.markAllAsRead {
+  display: flex;
+  user-select: none;
+  position: relative;
+  text-align: center;
+  padding: 4px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  height: 14px;
+  line-height: 14px;
+  margin-left: 6px;
+  margin-right: 4px;
+  background-color: #535559;
+  color: hsla(0, 0%, 100%, 0.6);
+  transition: opacity 0.1s ease-in-out, color 0.1s ease-in-out,
+    background-color 0.1s ease-in-out;
+}
+
+:global(.lightTheme) .markAllAsRead {
+  background-color: #ebebeb;
+  color: rgba(115, 127, 141, 0.6);
+}
+
+.markAllAsRead:hover {
+  background-color: #7289da !important;
+  color: #fff !important;
+}
+
+.actionButtons .jumpButton {
+  display: flex;
+  user-select: none;
+  position: relative;
+  text-align: center;
+  padding: 2px 8px;
+  opacity: 0;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 500;
+  height: 14px;
+  line-height: 14px;
+  margin-left: 6px;
+  margin-right: 4px;
+  background-color: #535559;
+  color: hsla(0, 0%, 100%, 0.6);
+  transition: opacity 0.1s ease-in-out, color 0.1s ease-in-out,
+    background-color 0.1s ease-in-out;
+}
+
+.messageWrapper:hover .actionButtons .jumpButton {
+  opacity: 1;
+}
+
+.jumpButton:hover {
+  background-color: #7289da !important;
+  color: #fff !important;
+}
+
+:global(.lightTheme) .actionButtons .jumpButton {
+  background-color: #ebebeb;
+  color: rgba(115, 127, 141, 0.6);
+}
+
+.messageTitleRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.messageTitle {
+  color: #b9bbbe;
+  text-transform: uppercase;
+  cursor: default;
+  font-weight: 600;
+  line-height: 16px;
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+
+:global(.lightTheme) .messageTitle {
+  color: #72767d;
+}
+
+.messageContent {
+  color: #f6f6f7;
+  line-height: 18px;
+}
+
+@media screen and (max-width: 486px) {
+  .messageContent {
+    margin-bottom: 8px;
+  }
+
+  .messageTime {
+    display: none;
+  }
+
+  .messageTimeMobile {
+    display: block !important;
+  }
+}
+
+.messageTimeMobile {
+  display: none;
+  color: #b9bbbe;
+  letter-spacing: 0.5px;
+  cursor: default;
+  font-weight: 500;
+  line-height: 16px;
+  font-size: 12px;
+  margin-right: 0;
+  transition: margin-right 0.1s ease-in-out;
+}
+
+:global(.lightTheme) .messageTimeMobile {
+  color: #72767d;
+}
+
+:global(.lightTheme) .messageContent {
+  color: #4f545c;
+}
+
+.messageTime {
+  color: #b9bbbe;
+  letter-spacing: 0.5px;
+  cursor: default;
+  font-weight: 500;
+  line-height: 16px;
+  font-size: 12px;
+  margin-right: 0;
+  transition: margin-right 0.1s ease-in-out;
+}
+
+:global(.lightTheme) .messageTime {
+  color: #72767d;
+}
+
+.messageWrapper:hover .messageTime {
+  margin-right: 66px;
+}
+
+.emptyState {
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+:global(.lightTheme) .emptyState {
+  color: #72767d;
 }

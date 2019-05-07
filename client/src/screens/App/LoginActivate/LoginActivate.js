@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import styles from '../shared/styles/LandingForm.module.scss';
 import PropTypes from 'prop-types';
+import styles from '../shared/styles/LandingForm.module.scss';
 import { ButtonSubmit, ButtonLink } from '../shared/common/Button';
 import { Footer } from '../shared/components/Footer';
 import { TextBox } from '../shared/common/FormInput';
 
-const initialState = {
-  isSubmitting: false,
-  email: '',
-  password: '',
-  password2: '',
-  staffId: '',
-  transitionEnd: false,
-  errors: {}
-};
-
 class LoginActivate extends Component {
-  state = initialState;
+  state = {
+    isSubmitting: false,
+    email: '',
+    password: '',
+    password2: '',
+    staffId: '',
+    transitionEnd: false,
+    errors: {}
+  };
 
   componentDidMount = () => {
     if (!this.props.auth.isAuthenticated) {
@@ -51,8 +49,12 @@ class LoginActivate extends Component {
 
   inputOnChangeHandler = event => {
     if (event.target.name === 'email')
-      this.setState({ [event.target.name]: event.target.value.toLowerCase() });
-    else this.setState({ [event.target.name]: event.target.value });
+      this.setState({
+        ...this.state,
+        [event.target.name]: event.target.value.toLowerCase()
+      });
+    else
+      this.setState({ ...this.state, [event.target.name]: event.target.value });
   };
 
   activateSubmitHandler = event => {
@@ -155,14 +157,14 @@ class LoginActivate extends Component {
             <Link to="/">LMS</Link>
           </div>
           <div className={styles.title}>Welcome back!</div>
-          <div className={styles.subTitle}>
+          {/* <div className={styles.subTitle}>
             We're so excited to see you again!
-          </div>
+          </div> */}
           <form onSubmit={this.loginSubmitHandler} className={styles.block}>
             <TextBox
               name="email"
               label="Email"
-              type="text"
+              type="email"
               value={this.state.email}
               inputOnChangeHandler={this.inputOnChangeHandler}
               errors={errors.email}
@@ -232,6 +234,7 @@ class LoginActivate extends Component {
               name="staffId"
               label="Staff ID"
               type="text"
+              description="Enter Staff ID provided by the administrator."
               inputOnChangeHandler={this.inputOnChangeHandler}
               errors={errors.staffId}
               ref={input => {
@@ -244,6 +247,7 @@ class LoginActivate extends Component {
               name="email"
               label="Email"
               type="text"
+              description="Use your primary email as it will be used for signing in and also for email communication."
               value={this.state.email}
               inputOnChangeHandler={this.inputOnChangeHandler}
               errors={errors.email}
@@ -253,6 +257,7 @@ class LoginActivate extends Component {
               name="password"
               label="Password"
               type="password"
+              description="Must be atleast 8 characters long."
               value={this.state.password}
               inputOnChangeHandler={this.inputOnChangeHandler}
               errors={errors.password}

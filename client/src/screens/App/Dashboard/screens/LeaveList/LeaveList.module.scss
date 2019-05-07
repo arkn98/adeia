@@ -19,6 +19,7 @@
 
 .columnTitle {
   color: hsla(0, 0%, 100%, 0.3);
+  cursor: pointer;
   flex-shrink: 0;
   font-size: 12px;
   font-weight: 600;
@@ -172,4 +173,16 @@
 
 :global(.lightTheme) .centerPageInfo {
   color: #4f545c;
+}
+
+.linkBlue {
+  color: #00b0f4;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.5s, color 0.5s;
+}
+
+.linkBlue:hover {
+  text-decoration: underline;
 }

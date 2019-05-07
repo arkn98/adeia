@@ -1,3 +1,15 @@
 .marginBottom20 {
   margin-bottom: 20px;
 }
+
+.linkBlue {
+  font-weight: 500;
+  color: #00b0f4 !important;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.5s, color 0.5s;
+}
+
+.linkBlue:hover {
+  text-decoration: underline;
+}
