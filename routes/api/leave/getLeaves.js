@@ -6,7 +6,7 @@ const getLeaves = (req, res) => {
     [accountTypes.ADMIN, accountTypes.OFFICE].includes(req.user.accountType)
   ) {
     Leave.find({})
-      /* .select('-document') */
+      .populate({ path: 'staff', select: 'name staffId staffType' })
       .populate({
         path: 'alterations',
         populate: { path: 'class' }
@@ -23,7 +23,7 @@ const getLeaves = (req, res) => {
       .catch(err => res.status(404).json(err));
   } else {
     Leave.find({ staff: req.user._id })
-      /* .select('-document') */
+      .populate({ path: 'staff', select: 'name staffId staffType' })
       .populate({
         path: 'alterations',
         populate: { path: 'class' }

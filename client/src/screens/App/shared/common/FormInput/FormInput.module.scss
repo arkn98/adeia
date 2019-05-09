@@ -131,12 +131,13 @@ select.inputField {
   text-rendering: optimizeLegibility;
   color: hsla(0, 0%, 100%, 1);
   appearance: none;
-  background: url('assets/misc/arrow-down.svg') 99% / 24px no-repeat
-    rgba(0, 0, 0, 0.1);
+  background: url('../../../../../assets/misc/arrow-down.svg') 99% / 24px
+    no-repeat rgba(0, 0, 0, 0.1);
 }
 
 :global(.lightTheme) select.inputField {
-  background: url('assets/misc/arrow-down-dark.svg') 99% / 24px no-repeat #fff;
+  background: url('../../../../../assets/misc/arrow-down-dark.svg') 99% / 24px
+    no-repeat #fff;
 }
 
 .formSelect {

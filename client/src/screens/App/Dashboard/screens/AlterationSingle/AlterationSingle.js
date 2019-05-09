@@ -1,9 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { WidthLimiter, Description } from 'screens/App/shared/common/FormInput';
 import { ButtonSubmit } from 'screens/App/shared/common/Button';
 import { Breadcrumbs } from 'screens/App/shared/common/Breadcrumbs';
-import 'react-table/react-table.css';
 import styles from './AlterationSingle.module.scss';
 import { FullPageSpinner } from 'screens/App/shared/common/Spinner';
 import { InfoBox } from 'screens/App/shared/common/InfoBox';

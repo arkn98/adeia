@@ -3,7 +3,6 @@ import { withRouter, Link } from 'react-router-dom';
 import { WidthLimiter, Description } from 'screens/App/shared/common/FormInput';
 import { InfoBox } from 'screens/App/shared/common/InfoBox';
 import { ButtonSubmit } from 'screens/App/shared/common/Button';
-import 'react-table/react-table.css';
 import styles from './LeaveSingle.module.scss';
 import { FullPageSpinner } from 'screens/App/shared/common/Spinner';
 import { Breadcrumbs } from 'screens/App/shared/common/Breadcrumbs';

@@ -1,0 +1,40 @@
+.marginBottom20 {
+  margin-bottom: 20px;
+}
+
+.linkBlue {
+  color: #00b0f4;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.5s, color 0.5s;
+}
+
+.linkBlue:hover {
+  text-decoration: underline;
+}
+
+.topBarDivider {
+  width: 1px;
+  height: 22px;
+  margin: 0 8px;
+  flex: 0 0 auto;
+  background: #40444b;
+  box-sizing: border-box;
+}
+
+:global(.lightTheme) .topBarDivider {
+  background: #d2d6da;
+}
+
+@media screen and (min-width: 769px) {
+  .mobileVisible {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mobileInvisible {
+    display: none !important;
+  }
+}

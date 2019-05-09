@@ -9,7 +9,7 @@ import {
 import SideNav from '../shared/components/SideNav';
 import Main from './screens/Main';
 import { FullPageSpinner } from 'screens/App/shared/common/Spinner';
-import { accountTypes, holidayTypes } from 'data';
+import { accountTypes, holidayTypes, staffTypes } from 'data';
 import { IconBadge } from 'screens/App/shared/common/Badge';
 import io from 'socket.io-client';
 
@@ -26,6 +26,7 @@ const AddUpdateCourse = lazy(() => import('./screens/AddUpdateCourse'));
 const AddUpdateClass = lazy(() => import('./screens/AddUpdateClass'));
 const AddUpdateClassGroup = lazy(() => import('./screens/AddUpdateClassGroup'));
 const AddUpdateLeaveType = lazy(() => import('./screens/AddUpdateLeaveType'));
+const LeaveAcceptReject = lazy(() => import('./screens/LeaveAcceptReject'));
 const AddUpdateLeaveAllocation = lazy(() =>
   import('./screens/AddUpdateLeaveAllocation')
 );
@@ -39,7 +40,8 @@ class Dashboard extends Component {
   state = {
     isSideNavVisible: false,
     isSettingsMenuVisible: false,
-    isLoading: !this.props.auth.isLoaded
+    isLoading: !this.props.auth.isLoaded,
+    acceptRejectFilter: Object.values(staffTypes)
   };
 
   componentDidMount = () => {
@@ -87,6 +89,10 @@ class Dashboard extends Component {
       isSideNavVisible: true,
       isSettingsMenuVisible: false
     });
+  };
+
+  acceptRejectFilterHandler = val => {
+    this.setState({ ...this.state, acceptRejectFilter: val });
   };
 
   sideNavHide = () => {
@@ -152,6 +158,20 @@ class Dashboard extends Component {
             <LeaveSingle
               parentPageTitle="All Leaves"
               pageTitle="Leave"
+              showPopout={this.props.showPopout}
+            />
+          )}
+        />
+      );
+      pages.push(
+        <Route
+          path="/dashboard/leave-action"
+          exact
+          render={() => (
+            <LeaveAcceptReject
+              acceptRejectFilterHandler={this.acceptRejectFilterHandler}
+              acceptRejectFilter={this.state.acceptRejectFilter}
+              pageTitle="Leaves requiring action"
               showPopout={this.props.showPopout}
             />
           )}

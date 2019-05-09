@@ -1,0 +1,73 @@
+.filterWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.filterItem {
+  cursor: pointer;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+  line-height: 20px;
+  font-size: 16px;
+  padding: 2px 8px;
+  margin: 0 8px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 40px;
+  text-align: center;
+  color: #b9bbbe;
+}
+
+@media screen and (max-width: 486px) {
+  .filterWrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filterItem {
+    margin: 0;
+    margin-bottom: 4px;
+  }
+}
+
+.filterItem:hover {
+  background-color: #292b2f;
+  color: #dcddde;
+}
+
+:global(.lightTheme) .filterItem {
+  color: #4f5660;
+}
+
+:global(.lightTheme) .filterItem:hover {
+  background-color: #ebedef;
+  color: #2e3338;
+}
+
+.selected {
+  background-color: #40444b;
+  color: #fff;
+}
+
+:global(.lightTheme) .selected {
+  background-color: #d2d6da;
+  color: #23262a;
+}
+
+.filterLabel {
+  font-weight: 500;
+  line-height: 20px;
+  font-size: 16px;
+  color: #fff;
+}
+
+:global(.lightTheme) .filterLabel {
+  color: #23262a;
+}

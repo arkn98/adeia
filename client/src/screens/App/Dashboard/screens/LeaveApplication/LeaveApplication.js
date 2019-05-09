@@ -422,7 +422,6 @@ class LeaveApplication extends Component {
                     value={item.modification.alternateSameClass}
                     disabled={item.alternationOption === 'POSTPONE'}
                     inputOnChangeHandler={this.alternationSelectHandler}
-                    errors={errors.alternateSameClass}
                     optList={item.modification.staffsAvailable.map(item => {
                       return {
                         label: `${item} - ${
@@ -450,7 +449,6 @@ class LeaveApplication extends Component {
                     value={item.modification.alternateOthers}
                     disabled={item.alternationOption === 'POSTPONE'}
                     inputOnChangeHandler={this.alternationSelectHandler}
-                    errors={errors.alternateOthers}
                     optList={item.modification.allStaffsAvailable.map(item => {
                       return {
                         label: `${item} - ${
