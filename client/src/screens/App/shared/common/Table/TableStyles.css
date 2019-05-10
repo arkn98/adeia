@@ -17,3 +17,15 @@
 .ReactTable .rt-body {
   overflow-x: visible !important;
 }
+
+.ReactTable .-cursor-pointer {
+  cursor: pointer;
+}
+
+.ReactTable .-sort-desc {
+  box-shadow: inset 0 -3px 0 0 #7289da !important;
+}
+
+.ReactTable .-sort-asc {
+  box-shadow: inset 0 3px 0 0 #7289da !important;
+}

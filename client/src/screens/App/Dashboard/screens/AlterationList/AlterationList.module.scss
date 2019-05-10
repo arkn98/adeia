@@ -13,3 +13,8 @@
 .linkBlue:hover {
   text-decoration: underline;
 }
+
+.linkBlue:focus-within {
+  text-decoration: underline;
+  outline: thin dotted;
+}

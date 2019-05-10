@@ -11,6 +11,7 @@ const cors = require('cors');
 
 mongoose.set('useCreateIndex', true);
 mongoose.set('useNewUrlParser', true);
+mongoose.set('debug', true);
 
 const accountRoutes = require('./routes/api/account');
 const classRoutes = require('./routes/api/class');

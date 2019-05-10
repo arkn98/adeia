@@ -1,7 +1,11 @@
 import React from 'react';
 import LeaveAcceptReject from './LeaveAcceptReject';
 import { connect } from 'react-redux';
-import { updateCurrentRouteTitle, getLeaves } from 'shared/actions';
+import {
+  updateCurrentRouteTitle,
+  leaveAcceptRejectHOD,
+  getLeaves
+} from 'shared/actions';
 
 const Container = props => {
   return <LeaveAcceptReject {...props} />;
@@ -17,5 +21,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { updateCurrentRouteTitle, getLeaves }
+  { updateCurrentRouteTitle, getLeaves, leaveAcceptRejectHOD }
 )(Container);

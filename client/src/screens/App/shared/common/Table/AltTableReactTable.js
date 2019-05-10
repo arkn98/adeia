@@ -25,9 +25,10 @@ const MyTheadComponent = props => {
 
 const MyThComponent = props => {
   const { toggleSort, sorted, className, children, style, ...rest } = props;
+  console.log(props);
   return (
     <div
-      className={styles.columnTitle}
+      className={`${styles.columnTitle} ${className}`}
       onClick={e => toggleSort && toggleSort(e)}
       style={style}
       {...rest}>
@@ -63,9 +64,11 @@ const MyTrComponent = props => {
 };
 
 const MyTrGroupComponent = props => {
-  const { children, style, ...rest } = props;
+  const { children, hoverable, style, ...rest } = props;
   return (
-    <div className={styles.trGroup} {...rest}>
+    <div
+      className={`${styles.trGroup} ${hoverable ? styles.hoverable : null}`}
+      {...rest}>
       {children}
     </div>
   );
@@ -270,30 +273,48 @@ class AltTableReactTable extends Component {
   state = {};
 
   render = () => {
+    const {
+      data,
+      columns,
+      isLoading,
+      setRef,
+      defaultSorted,
+      onPageChange,
+      onPageSizeChange,
+      filterable = true,
+      containerStyles = null,
+      hoverable = true
+    } = this.props;
     return (
       <ReactTable
-        data={this.props.data}
+        data={data}
+        className={containerStyles}
         TableComponent={MyTableComponent}
         TheadComponent={MyTheadComponent}
         ThComponent={MyThComponent}
         FilterComponent={MyFilterComponent}
         TdComponent={MyTdComponent}
-        TrGroupComponent={MyTrGroupComponent}
+        TrGroupComponent={props => (
+          <MyTrGroupComponent hoverable={hoverable} {...props} />
+        )}
         TbodyComponent={MyTBodyComponent}
         TrComponent={MyTrComponent}
         PaginationComponent={MyPaginationComponent}
-        columns={this.props.columns}
-        loading={this.props.isLoading}
+        columns={columns}
+        loading={isLoading}
         showPageSizeOptions={true}
         pageSizeOptions={[20, 50, 100]}
         resizable={false}
         minRows={2}
-        filterable={true}
-        defaultSorted={this.props.defaultSorted}
+        ref={setRef}
+        filterable={filterable}
+        defaultSorted={defaultSorted}
         defaultSortDesc={true}
         NextComponent={ButtonSubmitTable}
         PreviousComponent={ButtonSubmitTable}
+        onPageChange={onPageChange}
         PadRowComponent={<span />}
+        onPageSizeChange={onPageSizeChange}
       />
     );
   };

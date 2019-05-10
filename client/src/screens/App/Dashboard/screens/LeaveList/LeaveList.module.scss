@@ -4,12 +4,17 @@
 
 .linkBlue {
   color: #00b0f4;
-  font-weight: 500;
   text-decoration: none;
   cursor: pointer;
   transition: opacity 0.5s, color 0.5s;
+  font-weight: 500;
 }
 
 .linkBlue:hover {
   text-decoration: underline;
+}
+
+.linkBlue:focus-within {
+  text-decoration: underline;
+  outline: thin dotted;
 }

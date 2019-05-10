@@ -24,9 +24,12 @@ class AlterationList extends Component {
         accessor: 'alterationId',
         id: 'alterationId',
         Cell: ({ row }) => (
-          <Link to={{ pathname: `/dashboard/alteration/${row.alterationId}` }}>
-            <div className={styles.linkBlue}>{row.alterationId}</div>
-          </Link>
+          <div className={styles.linkBlue}>
+            <Link
+              to={{ pathname: `/dashboard/alteration/${row.alterationId}` }}>
+              {row.alterationId}
+            </Link>
+          </div>
         ),
         width: 128
       },
@@ -40,9 +43,11 @@ class AlterationList extends Component {
             this.props.auth.user.accountType === accountTypes.OFFICE
           ) {
             return (
-              <Link to={{ pathname: `/dashboard/leave/${row.leaveId}` }}>
-                <div className={styles.linkBlue}>{row.leaveId}</div>
-              </Link>
+              <div className={styles.linkBlue}>
+                <Link to={{ pathname: `/dashboard/leave/${row.leaveId}` }}>
+                  {row.leaveId}
+                </Link>
+              </div>
             );
           } else {
             return row.leaveId;

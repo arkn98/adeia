@@ -52,3 +52,4 @@ export { default as getAlterations } from './getAlterations';
 export { default as markIndexAsRead } from './markIndexAsRead';
 export { default as setAlterationAsViewed } from './setAlterationAsViewed';
 export { default as setAlterationStatus } from './setAlterationStatus';
+export { default as leaveAcceptRejectHOD } from './leaveAcceptRejectHOD';

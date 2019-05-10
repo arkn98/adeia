@@ -302,6 +302,7 @@ class AddUpdateHoliday extends Component {
                     <ButtonIcon
                       isLoading={this.state.isUpdateSubmittingPublic}
                       index={index}
+                      type="delete"
                       onClick={this.publicHolidayDeleteHandler}
                     />
                   ),

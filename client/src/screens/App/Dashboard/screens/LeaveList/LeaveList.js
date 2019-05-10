@@ -24,9 +24,11 @@ class LeaveList extends Component {
         accessor: 'leaveId',
         id: 'leaveId',
         Cell: ({ row }) => (
-          <Link to={{ pathname: `/dashboard/leave/${row.leaveId}` }}>
-            <div className={styles.linkBlue}>{row.leaveId}</div>
-          </Link>
+          <div className={styles.linkBlue}>
+            <Link to={{ pathname: `/dashboard/leave/${row.leaveId}` }}>
+              {row.leaveId}
+            </Link>
+          </div>
         ),
         width: 128
       }
@@ -36,7 +38,7 @@ class LeaveList extends Component {
       this.props.auth.user.accountType === accountTypes.OFFICE
     ) {
       columns.push({
-        Header: () => <div style={{ textAlign: 'left' }}>Applied Date</div>,
+        Header: () => <div style={{ textAlign: 'left' }}>Applied by</div>,
         id: 'staff',
         sortable: true,
         Cell: props => props.original.staff.name,

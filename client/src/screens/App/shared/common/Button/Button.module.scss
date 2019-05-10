@@ -121,6 +121,11 @@
   line-height: 16px;
 }
 
+.fitText {
+  min-width: 72px !important;
+  padding: 2px;
+}
+
 .submitButton:hover,
 .submitButton:focus {
   background-color: #677bc4;
@@ -295,6 +300,19 @@
   background: hsla(0, 0%, 0%, 0.3);
 }
 
+.customIconTest {
+  width: 16px;
+  fill-opacity: 0.75;
+  fill: #f6f6f7;
+  top: 1px;
+  position: relative;
+}
+
+:global(.lightTheme) .customIconTest {
+  fill-opacity: 1;
+  fill: #4f545c;
+}
+
 :global(.lightTheme) .iconHoverWrapper:active {
   background: rgba(79, 84, 92, 0.3);
 }
@@ -319,20 +337,26 @@
 
 .iconHoverWrapper.danger:active .customIconTest {
   fill: #fff;
-}
-
-.customIconTest {
-  width: 16px;
-  fill-opacity: 0.75;
-  fill: #f6f6f7;
-  /* fill-opacity: 1; */
-  top: 1px;
-  position: relative;
-}
-
-:global(.lightTheme) .customIconTest {
   fill-opacity: 1;
-  fill: #4f545c;
+}
+
+.iconHoverWrapper.green:hover,
+.iconHoverWrapper.green:focus {
+  background-color: rgba(67, 181, 129, 0.1);
+}
+
+.iconHoverWrapper.green:active {
+  background-color: rgba(67, 181, 129, 1);
+}
+
+.iconHoverWrapper.green:hover .customIconTest,
+.iconHoverWrapper.green:focus .customIconTest {
+  fill: rgb(67, 181, 129);
+}
+
+.iconHoverWrapper.green:active .customIconTest {
+  fill: #fff;
+  fill-opacity: 1;
 }
 
 .disabled.iconHoverWrapper .customIconTest {

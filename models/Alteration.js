@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-//const { leaveTypes, leaveStatuses } = require('../data');
 
 //create schema
 const AlterationSchema = new Schema({
@@ -53,9 +52,12 @@ const AlterationSchema = new Schema({
     type: String,
     enum: ['WAITING', 'ACCEPTED', 'REJECTED', 'EXPIRED', 'VIEWED'],
     default: 'WAITING'
+  },
+  leaveApproved: {
+    type: String,
+    enum: ['WAITING', 'ACCEPTED', 'REJECTED'],
+    default: 'WAITING'
   }
 });
-
-//Object.assign(AlterationSchema.statics, { leaveTypes, leaveStatuses });
 
 module.exports = Alteration = mongoose.model('alterations', AlterationSchema);
