@@ -277,7 +277,9 @@ class AltTableReactTable extends Component {
       data,
       columns,
       isLoading,
+      minRows = 2,
       setRef,
+      showPagination = true,
       defaultSorted,
       onPageChange,
       onPageSizeChange,
@@ -304,8 +306,9 @@ class AltTableReactTable extends Component {
         loading={isLoading}
         showPageSizeOptions={true}
         pageSizeOptions={[20, 50, 100]}
+        showPagination={showPagination}
         resizable={false}
-        minRows={2}
+        minRows={minRows}
         ref={setRef}
         filterable={filterable}
         defaultSorted={defaultSorted}

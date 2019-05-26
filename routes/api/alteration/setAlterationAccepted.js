@@ -2,7 +2,12 @@ const dayjs = require('dayjs');
 const shortid = require('shortid');
 const Alteration = require('../../../models/Alteration');
 const Leave = require('../../../models/Leave');
-const { sendEmail, sendNotification, getOrdinal } = require('../../utils');
+const {
+  sendEmail,
+  sendNotification,
+  getOrdinal,
+  setLeaveStatusBasedOnAlt
+} = require('../../utils');
 const { leaveStatuses } = require('../../../data');
 
 const setAlterationAccepted = (req, res) => {
@@ -104,6 +109,7 @@ const setAlterationAccepted = (req, res) => {
                   }`
                 })
               );
+              Promise.all(promises);
             })
             .catch(err => {
               console.log(err);

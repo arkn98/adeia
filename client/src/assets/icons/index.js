@@ -34,3 +34,4 @@ export { ReactComponent as MdGitNetwork } from './md-git-network.svg';
 export { ReactComponent as MdArrowDropright } from './md-arrow-dropright.svg';
 export { ReactComponent as MdCheckMark } from './md-checkmark.svg';
 export { ReactComponent as MdCheckMarkCircle } from './md-checkmark-circle.svg';
+export { ReactComponent as MdCheckboxOutline } from './md-checkbox-outline.svg';

@@ -19,7 +19,8 @@ import {
   MdSwap,
   MdSend,
   MdGitNetwork,
-  MdCodeWorking
+  MdCodeWorking,
+  MdCheckboxOutline
 } from 'assets/icons';
 import { SettingsMenuSideNav as SettingsMenu } from '../../common/SettingsMenu';
 import ClickOutside from 'react-click-outside';
@@ -120,6 +121,16 @@ class SideNav extends Component {
           activeClassName={styles.menuItemActive}>
           <MdList className={styles.customIconTest} />{' '}
           <div className={styles.menuText}>Leave List</div>
+        </LooseNavLink>
+      );
+      links.push(
+        <LooseNavLink
+          to="/dashboard/leave-action"
+          onClick={() => sideNavHide()}
+          className={styles.menuItem}
+          activeClassName={styles.menuItemActive}>
+          <MdCheckboxOutline className={styles.customIconTest} />{' '}
+          <div className={styles.menuText}>Leaves requiring action</div>
         </LooseNavLink>
       );
       links.push(

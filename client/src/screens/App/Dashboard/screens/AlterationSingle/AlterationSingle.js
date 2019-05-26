@@ -119,9 +119,11 @@ class AlterationSingle extends Component {
           isLoading: false,
           currentAlteration,
           isIntendedStaff:
-            currentAlteration.alternatingStaff === this.props.auth.user.id,
+            currentAlteration.alternatingStaff.staffId ===
+            this.props.auth.user.staffId,
           shouldShowActionButtons:
-            currentAlteration.alternatingStaff === this.props.auth.user.id &&
+            currentAlteration.alternatingStaff.staffId ===
+              this.props.auth.user.staffId &&
             currentAlteration.status !== 'ACCEPTED' &&
             currentAlteration.status !== 'REJECTED'
         });
@@ -179,18 +181,22 @@ class AlterationSingle extends Component {
                   }`
                 },
                 {
-                  title: 'Alteration Date:',
+                  title: 'Alteration date:',
                   content: dayjs(currentAlteration.alterationDate)
                     .format('DD-MMM-YYYY - dddd')
                     .toString()
                 },
                 {
-                  title: 'Alteration Hour:',
+                  title: 'Alteration hour:',
                   content: currentAlteration.alterationHour
                 },
                 {
-                  title: 'Status:',
+                  title: 'Alteration status:',
                   content: currentAlteration.status
+                },
+                {
+                  title: 'Leave approval status:',
+                  content: currentAlteration.leaveApproved
                 }
               ]}
             />
