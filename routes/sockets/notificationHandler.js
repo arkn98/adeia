@@ -1,4 +1,3 @@
-const dayjs = require('dayjs');
 const Profile = require('../../models/Profile');
 
 const notificationHandler = (io, socket, data) => {
@@ -8,7 +7,7 @@ const notificationHandler = (io, socket, data) => {
       if (profile) {
         const roomId = `notifications:${data.user}`;
         socket.join(roomId, () => {
-          console.log('user joined room');
+          console.log('user joined room', roomId);
         });
       }
     });

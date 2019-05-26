@@ -423,13 +423,12 @@ class LeaveApplication extends Component {
                     disabled={item.alternationOption === 'POSTPONE'}
                     inputOnChangeHandler={this.alternationSelectHandler}
                     optList={item.modification.staffsAvailable.map(item => {
+                      let staff = this.props.staff.staffList.find(
+                        x => x._id === item
+                      );
                       return {
-                        label: `${item} - ${
-                          this.props.staff.staffList.find(
-                            x => x.staffId === item
-                          ).name
-                        }`,
-                        value: item
+                        label: `${staff.staffId} - ${staff.name}`,
+                        value: staff.staffId
                       };
                     })}
                   />

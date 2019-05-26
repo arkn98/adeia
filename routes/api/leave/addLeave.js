@@ -220,9 +220,9 @@ const addLeave = (req, res) => {
                                 path: 'alternatingStaff',
                                 select: 'staffId name email'
                               })
-                              .then(staffsToSendNotif => {
+                              .then(staffToSendNotif => {
                                 const promises = [];
-                                staffsToSendNotif.forEach(item => {
+                                staffToSendNotif.forEach(item => {
                                   promises.push(
                                     sendEmail({
                                       to: item.alternatingStaff.email,

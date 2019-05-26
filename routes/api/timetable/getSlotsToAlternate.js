@@ -18,28 +18,27 @@ const getStaffsAvailable = (classId, applyingStaff, date, hour) => {
       staff: { $ne: applyingStaff }
     }).then(results => {
       User.find({ _id: { $in: results } }).then(staffs => {
-        let sameClassStaffs = staffs.map(item => item.staffId);
+        let sameClassStaffs = staffs.map(item => item._id);
         Timetable.find({ staff: { $in: results }, day, hour })
-          .populate({ path: 'staff', select: 'staffId name' })
+          .populate({ path: 'staff', select: 'staffId name _id' })
           .then(tempresults => {
             let staffsHavingClassesOnThatHour = tempresults.map(
-              item => item.staff.staffId
+              item => item.staff._id
             );
             let temp = _.difference(
               sameClassStaffs,
               staffsHavingClassesOnThatHour
             ).map(item => item);
-
             Leave.find({
-              staffId: { $in: temp },
+              staff: { $in: temp },
               dayRange: { $elemMatch: { $eq: date } },
               status: leaveStatuses.ACCEPTED
             })
-              .populate({ path: 'staff', select: 'staffId name' })
+              .populate({ path: 'staff', select: 'staffId name _id' })
               .then(leaves => {
                 let staffHavingLeaves = [];
                 leaves.forEach(item => {
-                  staffHavingLeaves.push(item.staffId);
+                  staffHavingLeaves.push(item._id);
                 });
                 temp = _.difference(temp, staffHavingLeaves).map(item => item);
 
@@ -50,11 +49,11 @@ const getStaffsAvailable = (classId, applyingStaff, date, hour) => {
                 })
                   .populate({
                     path: 'alternatingStaff',
-                    select: 'staffId name'
+                    select: 'staffId name _id'
                   })
                   .then(alterations => {
                     alterations = alterations
-                      .map(item => item.alternatingStaff.staffId)
+                      .map(item => item.alternatingStaff._id)
                       .filter(item => temp.includes(item));
                     let newtemp = _.difference(temp, alterations).map(
                       item => item
@@ -140,127 +139,110 @@ const getSlotsToAlternate = (req, res) => {
   if (noOfDays === '0') {
     return res.status(200).json({ slots: [], to: from });
   }
-  Holiday.find({})
+
+  // add days between from and to excluding public holidays
+  Holiday.find({ holidayType: holidayTypes.PUBLIC_HOLIDAY })
     .sort({ date: 1 })
     .lean()
     .then(holidays => {
       if (holidays) {
         let start = dayjs(from);
+        let iterator = dayjs(from);
         let noOfDaysAdded = 0;
         let dayRange = [];
-        if (halfDayOption === '') {
-          while (noOfDaysAdded < parseInt(noOfDays)) {
-            const isInHoliday = holidays
-              .filter(x => x.holidayType === holidayTypes.PUBLIC_HOLIDAY)
-              .some(x => start.isSame(x.date, 'day'));
-            const isWeekend = start.day() === 0 || start.day() === 6;
-            // plug user's accepted leaves here
-            if (!isInHoliday && !isWeekend) {
-              dayRange.push(start);
-              noOfDaysAdded++;
+
+        Leave.find({
+          staff: req.user.id,
+          status: leaveStatuses.ACCEPTED
+        }).then(leaves => {
+          let leavesAlreadyTaken = leaves.map(x => x.dayRange);
+          if (halfDayOption === '') {
+            // for every day between from and to, check if it is
+            // holiday/weekend and add it to dayrange
+            while (noOfDaysAdded < parseInt(noOfDays)) {
+              const isInHoliday = holidays.some(x =>
+                iterator.isSame(x.date, 'day')
+              );
+              // TODO: check if saturday is a working day
+              const isWeekend = iterator.day() === 0 || iterator.day() === 6;
+              if (
+                !isInHoliday &&
+                !isWeekend &&
+                leavesAlreadyTaken.every(
+                  x => !x.some(y => iterator.isSame(dayjs(y), 'day'))
+                )
+              ) {
+                dayRange.push(iterator);
+                noOfDaysAdded++;
+              }
+              iterator = iterator.add(1, 'day').clone();
             }
-            start = start.add(1, 'day').clone();
+            toDate = dayRange[dayRange.length - 1];
+          } else {
+            dayRange.push(start);
+            toDate = start.clone();
           }
-          toDate = dayRange[dayRange.length - 1];
-        } else {
-          dayRange.push(start);
-          toDate = start.clone();
-        }
-        tempDayRange = dayRange.map(day => day.day());
-        Timetable.find({
-          staff: req.user._id,
-          day: {
-            $in: tempDayRange
-          },
-          hour: {
-            $gte:
-              halfDayOption !== ''
-                ? halfDayOption === 'FIRST_HALF'
-                  ? 0
-                  : halfDayOption === 'SECOND_HALF'
-                  ? 5
-                  : 0
-                : 0,
-            $lte:
-              halfDayOption !== ''
-                ? halfDayOption === 'FIRST_HALF'
-                  ? 4
-                  : halfDayOption === 'SECOND_HALF'
-                  ? 8
+
+          tempDayRange = dayRange.map(day => day.day());
+          Timetable.find({
+            staff: req.user._id,
+            day: {
+              $in: tempDayRange
+            },
+            hour: {
+              $gte:
+                halfDayOption !== ''
+                  ? halfDayOption === 'FIRST_HALF'
+                    ? 0
+                    : halfDayOption === 'SECOND_HALF'
+                    ? 5
+                    : 0
+                  : 0,
+              $lte:
+                halfDayOption !== ''
+                  ? halfDayOption === 'FIRST_HALF'
+                    ? 4
+                    : halfDayOption === 'SECOND_HALF'
+                    ? 8
+                    : 8
                   : 8
-                : 8
-          }
-        })
-          .sort({ day: 1, hour: 1 })
-          .populate({ path: 'class', populate: { path: 'classGroup' } })
-          .populate({ path: 'course', select: 'courseCode' })
-          .populate({ path: 'staff', select: 'staffId name' })
-          .then(slots => {
-            result = dayRange.map(item => {
-              let slot = slots.filter(x => x.day === item.day());
-              return {
-                date: item.toDate(),
-                slots: slot !== undefined ? slot : []
-              };
-            });
-            let resultSlots = [];
-            let promises = [];
-            result.forEach((item, index) => {
-              if (item.slots.length !== 0) {
-                item.slots.forEach((slotItem, slotIndex) => {
-                  if (slotItem.duration === 1) {
-                    promises.push(
-                      new Promise(resolve => {
-                        Promise.all([
-                          getAllStaffsAvailable(
-                            req.user._id,
-                            item.date,
-                            slotItem.hour
-                          ),
-                          getStaffsAvailable(
-                            slotItem.class._id,
-                            req.user._id,
-                            item.date,
-                            slotItem.hour
-                          )
-                        ]).then(result => {
-                          resultSlots.push({
-                            date: item.date,
-                            classCode: slotItem.class.classCode,
-                            classId: slotItem.class._id,
-                            classGroupId: slotItem.class.classGroup._id,
-                            hour: slotItem.hour,
-                            duration: 1,
-                            alternationOption: 'ALTERNATE',
-                            modification: {
-                              alternateSameClass: '',
-                              alternateOthers: '',
-                              postponeDate: undefined,
-                              postponeHour: '',
-                              allStaffsAvailable: result[0],
-                              staffsAvailable: result[1],
-                              availableSlots: []
-                            }
-                          });
-                          resolve();
-                        });
-                      })
-                    );
-                  } else {
-                    for (let i = 1; i <= slotItem.duration; i++) {
+            }
+          })
+            .sort({ day: 1, hour: 1 })
+            .populate({ path: 'class', populate: { path: 'classGroup' } })
+            .populate({ path: 'course', select: 'courseCode' })
+            .populate({ path: 'staff', select: 'staffId name' })
+            .then(slots => {
+              // get all slots that need alteration in dayrange
+              result = dayRange.map(item => {
+                let slot = slots.filter(x => x.day === item.day());
+                return {
+                  date: item.toDate(),
+                  slots: slot !== undefined ? slot : []
+                };
+              });
+              let resultSlots = [];
+              let promises = [];
+              // for every slot that needs alteration, find all staffs and
+              // staffs from same class
+              result.forEach((item, index) => {
+                if (item.slots.length !== 0) {
+                  item.slots.forEach((slotItem, slotIndex) => {
+                    if (slotItem.duration === 1) {
                       promises.push(
                         new Promise(resolve => {
                           Promise.all([
                             getAllStaffsAvailable(
                               req.user._id,
                               item.date,
-                              slotItem.hour + i - 1
+                              slotItem.hour
                             ),
+                            // get free staff from same class
                             getStaffsAvailable(
                               slotItem.class._id,
                               req.user._id,
                               item.date,
-                              slotItem.hour + i - 1
+                              slotItem.hour
                             )
                           ]).then(result => {
                             resultSlots.push({
@@ -268,7 +250,7 @@ const getSlotsToAlternate = (req, res) => {
                               classCode: slotItem.class.classCode,
                               classId: slotItem.class._id,
                               classGroupId: slotItem.class.classGroup._id,
-                              hour: slotItem.hour + i - 1,
+                              hour: slotItem.hour,
                               duration: 1,
                               alternationOption: 'ALTERNATE',
                               modification: {
@@ -285,23 +267,63 @@ const getSlotsToAlternate = (req, res) => {
                           });
                         })
                       );
+                    } else {
+                      for (let i = 1; i <= slotItem.duration; i++) {
+                        promises.push(
+                          new Promise(resolve => {
+                            Promise.all([
+                              getAllStaffsAvailable(
+                                req.user._id,
+                                item.date,
+                                slotItem.hour + i - 1
+                              ),
+                              getStaffsAvailable(
+                                slotItem.class._id,
+                                req.user._id,
+                                item.date,
+                                slotItem.hour + i - 1
+                              )
+                            ]).then(result => {
+                              resultSlots.push({
+                                date: item.date,
+                                classCode: slotItem.class.classCode,
+                                classId: slotItem.class._id,
+                                classGroupId: slotItem.class.classGroup._id,
+                                hour: slotItem.hour + i - 1,
+                                duration: 1,
+                                alternationOption: 'ALTERNATE',
+                                modification: {
+                                  alternateSameClass: '',
+                                  alternateOthers: '',
+                                  postponeDate: undefined,
+                                  postponeHour: '',
+                                  allStaffsAvailable: result[0],
+                                  staffsAvailable: result[1],
+                                  availableSlots: []
+                                }
+                              });
+                              resolve();
+                            });
+                          })
+                        );
+                      }
                     }
-                  }
+                  });
+                }
+              });
+              Promise.all(promises).then(() => {
+                return res.status(200).json({
+                  slots: resultSlots.sort((a, b) => {
+                    if (dayjs(a.date).isBefore(dayjs(b.date), 'day')) return -1;
+                    if (dayjs(a.date).isAfter(dayjs(b.date), 'day')) return 1;
+                    return 0;
+                  }),
+                  to: toDate,
+                  dayRange
                 });
-              }
-            });
-            Promise.all(promises).then(() => {
-              return res.status(200).json({
-                slots: resultSlots.sort((a, b) => {
-                  if (dayjs(a.date).isBefore(dayjs(b.date), 'day')) return -1;
-                  if (dayjs(a.date).isAfter(dayjs(b.date), 'day')) return 1;
-                  return 0;
-                }),
-                to: toDate,
-                dayRange
               });
             });
-          });
+        });
       }
     });
 };

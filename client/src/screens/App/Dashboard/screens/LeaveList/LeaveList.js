@@ -69,14 +69,14 @@ class LeaveList extends Component {
       {
         Header: () => <div style={{ textAlign: 'left' }}>From</div>,
         id: 'from',
-        accessor: 'from',
+        accessor: d => d.dayRange[0],
         Cell: ({ row }) => dayjs(row.from).format('DD-MMM-YYYY'),
         width: 108
       },
       {
         Header: () => <div style={{ textAlign: 'left' }}>To</div>,
         id: 'to',
-        accessor: 'to',
+        accessor: d => d.dayRange[d.dayRange.length - 1],
         Cell: ({ row }) => dayjs(row.to).format('DD-MMM-YYYY'),
         width: 108
       },
