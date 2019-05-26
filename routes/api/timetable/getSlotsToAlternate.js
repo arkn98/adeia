@@ -18,12 +18,12 @@ const getStaffsAvailable = (classId, applyingStaff, date, hour) => {
       staff: { $ne: applyingStaff }
     }).then(results => {
       User.find({ _id: { $in: results } }).then(staffs => {
-        let sameClassStaffs = staffs.map(item => item._id);
+        let sameClassStaffs = staffs.map(item => item._id.toString());
         Timetable.find({ staff: { $in: results }, day, hour })
           .populate({ path: 'staff', select: 'staffId name _id' })
           .then(tempresults => {
-            let staffsHavingClassesOnThatHour = tempresults.map(
-              item => item.staff._id
+            let staffsHavingClassesOnThatHour = tempresults.map(item =>
+              item.staff._id.toString()
             );
             let temp = _.difference(
               sameClassStaffs,
@@ -38,10 +38,9 @@ const getStaffsAvailable = (classId, applyingStaff, date, hour) => {
               .then(leaves => {
                 let staffHavingLeaves = [];
                 leaves.forEach(item => {
-                  staffHavingLeaves.push(item._id);
+                  staffHavingLeaves.push(item.staff._id.toString());
                 });
                 temp = _.difference(temp, staffHavingLeaves).map(item => item);
-
                 Alteration.find({
                   alterationDate: date,
                   alterationHour: hour,
@@ -53,8 +52,10 @@ const getStaffsAvailable = (classId, applyingStaff, date, hour) => {
                   })
                   .then(alterations => {
                     alterations = alterations
-                      .map(item => item.alternatingStaff._id)
-                      .filter(item => temp.includes(item));
+                      .map(item => item.alternatingStaff._id.toString())
+                      .filter(item =>
+                        temp.includes(item.alternatingStaff._id.toString())
+                      );
                     let newtemp = _.difference(temp, alterations).map(
                       item => item
                     );
@@ -83,13 +84,12 @@ const getAllStaffsAvailable = (applyingStaff, date, hour) => {
         ]
       }
     }).then(staffs => {
-      let staffObjIds = staffs.map(item => item._id);
-      let sameClassStaffs = staffs.map(item => item.staffId);
-      Timetable.find({ staff: { $in: staffObjIds }, day, hour })
-        .populate({ path: 'staff', select: 'staffId name' })
+      let sameClassStaffs = staffs.map(item => item._id.toString());
+      Timetable.find({ staff: { $in: sameClassStaffs }, day, hour })
+        .populate({ path: 'staff', select: 'staffId name _id' })
         .then(tempresults => {
-          let staffsHavingClassesOnThatHour = tempresults.map(
-            item => item.staff.staffId
+          let staffsHavingClassesOnThatHour = tempresults.map(item =>
+            item.staff._id.toString()
           );
           let temp = _.difference(
             sameClassStaffs,
@@ -97,15 +97,15 @@ const getAllStaffsAvailable = (applyingStaff, date, hour) => {
           ).map(item => item);
 
           Leave.find({
-            staffId: { $in: temp },
+            staff: { $in: temp },
             dayRange: { $elemMatch: { $eq: date } },
             status: leaveStatuses.ACCEPTED
           })
-            .populate({ path: 'staff', select: 'staffId name' })
+            .populate({ path: 'staff', select: 'staffId name _id' })
             .then(leaves => {
               let staffHavingLeaves = [];
               leaves.forEach(item => {
-                staffHavingLeaves.push(item.staffId);
+                staffHavingLeaves.push(item.staff._id.toString());
               });
               temp = _.difference(temp, staffHavingLeaves).map(item => item);
 
@@ -114,11 +114,16 @@ const getAllStaffsAvailable = (applyingStaff, date, hour) => {
                 alterationHour: hour,
                 status: 'ACCEPTED'
               })
-                .populate({ path: 'alternatingStaff', select: 'staffId name' })
+                .populate({
+                  path: 'alternatingStaff',
+                  select: 'staffId name _id'
+                })
                 .then(alterations => {
                   alterations = alterations
-                    .map(item => item.alternatingStaff.staffId)
-                    .filter(item => temp.includes(item));
+                    .map(item => item.alternatingStaff._id.toString())
+                    .filter(item =>
+                      temp.includes(item.alternatingStaff._id.toString())
+                    );
                   let newtemp = _.difference(temp, alterations).map(
                     item => item
                   );
