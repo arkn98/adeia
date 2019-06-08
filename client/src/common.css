@@ -1,0 +1,35 @@
+.paddingBottom80 {
+  padding-bottom: 80px;
+}
+
+.marginBottom8 {
+  margin-bottom: 8px;
+}
+
+.marginBottom4 {
+  margin-bottom: 4px;
+}
+
+.marginBottom20 {
+  margin-bottom: 20px;
+}
+
+.tippy-popper[x-placement^='bottom'] .tippy-arrow {
+  border-bottom-color: #000 !important;
+  top: -5px !important;
+}
+
+.tippy-popper[x-placement^='left'] .tippy-arrow {
+  border-left-color: #000 !important;
+  right: -5px !important;
+}
+
+.tippy-popper[x-placement^='right'] .tippy-arrow {
+  border-right-color: #000 !important;
+  left: -5px !important;
+}
+
+.tippy-popper[x-placement^='top'] .tippy-arrow {
+  border-top-color: #000 !important;
+  bottom: -5px !important;
+}

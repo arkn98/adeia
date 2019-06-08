@@ -6,15 +6,13 @@ const SectionLabel = props => {
     label,
     uppercase = true,
     containerStyles = null,
-    bigLabel = true
+    bigLabel = false
   } = props;
   return (
     <div
-      className={`${styles.sectionLabel} ${
-        styles.marginBottom20
-      } ${containerStyles} ${uppercase ? styles.uppercase : null} ${
-        !bigLabel ? styles.smallSectionLabel : null
-      }`}>
+      className={`${styles.sectionLabel} marginBottom8 ${containerStyles} ${
+        uppercase ? styles.uppercase : null
+      } ${!bigLabel ? styles.smallSectionLabel : null}`}>
       {label}
     </div>
   );

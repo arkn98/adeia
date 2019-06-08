@@ -1,6 +1,7 @@
 import React, { Component, Suspense, lazy } from 'react';
-import styles from './Dashboard.module.scss';
+import io from 'socket.io-client';
 import { Switch, Route, Link } from 'react-router-dom';
+import styles from './Dashboard.module.scss';
 import {
   MdMenu,
   MdInformationCircle,
@@ -9,9 +10,9 @@ import {
 import SideNav from '../shared/components/SideNav';
 import Main from './screens/Main';
 import { FullPageSpinner } from 'screens/App/shared/common/Spinner';
-import { accountTypes, holidayTypes, staffTypes } from 'data';
+import { Tooltip } from 'screens/App/shared/common/Tooltip';
 import { IconBadge } from 'screens/App/shared/common/Badge';
-import io from 'socket.io-client';
+import { accountTypes, holidayTypes, staffTypes } from 'data';
 
 const LeaveApplication = lazy(() => import('./screens/LeaveApplication'));
 const Error = lazy(() => import('../shared/components/Error'));
@@ -512,30 +513,34 @@ class Dashboard extends Component {
                 </div> 
                 <div>search</div>
                 <div className={styles.seperator} /> */}
-                  <div className={styles.topBarIconWrapper}>
-                    <MdNotifications
-                      onClick={() => {
-                        this.props.showPopout({
-                          type: 'notifications'
-                        });
-                      }}
-                      className={`${styles.topBarIcon} ${
-                        styles.topBarIconMedium
-                      }`}
-                    />
-                    {newNotifCount !== 0 ? (
-                      <IconBadge notifCount={newNotifCount} />
-                    ) : null}
-                  </div>
-                  <div className={styles.topBarIconWrapper}>
-                    <Link to="/dashboard/info">
-                      <MdInformationCircle
+                  <Tooltip content="Notifications" placement="bottom">
+                    <div className={styles.topBarIconWrapper}>
+                      <MdNotifications
+                        onClick={() => {
+                          this.props.showPopout({
+                            type: 'notifications'
+                          });
+                        }}
                         className={`${styles.topBarIcon} ${
                           styles.topBarIconMedium
                         }`}
                       />
-                    </Link>
-                  </div>
+                      {newNotifCount !== 0 ? (
+                        <IconBadge notifCount={newNotifCount} />
+                      ) : null}
+                    </div>
+                  </Tooltip>
+                  <Tooltip content="About" placement="bottom">
+                    <div className={styles.topBarIconWrapper}>
+                      <Link to="/dashboard/info">
+                        <MdInformationCircle
+                          className={`${styles.topBarIcon} ${
+                            styles.topBarIconMedium
+                          }`}
+                        />
+                      </Link>
+                    </div>
+                  </Tooltip>
                 </div>
               </div>
             </div>

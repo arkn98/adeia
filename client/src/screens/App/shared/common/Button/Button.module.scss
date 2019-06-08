@@ -1,4 +1,4 @@
-@import '../../../variables';
+@import "../../../../../variables";
 
 .button {
   border-radius: 3px;
@@ -165,7 +165,7 @@
 }
 
 .buttonLink::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 1px;
   height: 1px;

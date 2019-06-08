@@ -36,12 +36,13 @@ class RadioButtonGroup extends Component {
       <div className={containerStyles}>
         {label !== null ? (
           <div
-            className={cx({
+            className={`${cx({
               inputLabel: !bigLabel,
               formFieldLabel: bigLabel,
-              marginBottom8: bigLabel || description === '',
               errorLabel: errors
-            })}>
+            })} ${classNames({
+              marginBottom8: bigLabel || description === ''
+            })}`}>
             {label}
             {infoText !== null ? (
               <Fragment>

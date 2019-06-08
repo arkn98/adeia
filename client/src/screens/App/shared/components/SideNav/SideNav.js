@@ -23,6 +23,7 @@ import {
   MdCheckboxOutline
 } from 'assets/icons';
 import { SettingsMenuSideNav as SettingsMenu } from '../../common/SettingsMenu';
+import { Tooltip } from '../../common/Tooltip';
 import ClickOutside from 'react-click-outside';
 import { accountTypes } from 'data';
 
@@ -45,13 +46,15 @@ const SettingsMenuWithIcon = props => {
     <ClickOutside onClickOutside={() => props.settingsMenuHide()}>
       <div className={styles.userSettings}>
         <SettingsMenu {...props} />
-        <div
-          className={`${styles.iconSelector} ${
-            props.isSettingsMenuVisible ? styles.iconSelectorHovered : null
-          }`}
-          onClick={() => props.settingsMenuToggle()}>
-          <MdSettings className={styles.customIconTest} />
-        </div>
+        <Tooltip content="User Settings" placement="top">
+          <div
+            className={`${styles.iconSelector} ${
+              props.isSettingsMenuVisible ? styles.iconSelectorHovered : null
+            }`}
+            onClick={() => props.settingsMenuToggle()}>
+            <MdSettings className={styles.customIconTest} />
+          </div>
+        </Tooltip>
       </div>
     </ClickOutside>
   );
@@ -88,7 +91,7 @@ class SideNav extends Component {
   };
 
   render = () => {
-    const { isSideNavVisible, sideNavHide } = this.props;
+    const { isSideNavVisible, sideNavHide, profile } = this.props;
     let settingsMenuStyles = [];
     let settingsIconSelector = [];
     settingsMenuStyles.push(styles.settingsMenu);
@@ -121,6 +124,12 @@ class SideNav extends Component {
           activeClassName={styles.menuItemActive}>
           <MdList className={styles.customIconTest} />{' '}
           <div className={styles.menuText}>Leave List</div>
+          <div
+            className={`${styles.menuNotification} ${
+              styles.menuNotificationRed
+            }`}>
+            NEW
+          </div>
         </LooseNavLink>
       );
       links.push(
@@ -131,6 +140,12 @@ class SideNav extends Component {
           activeClassName={styles.menuItemActive}>
           <MdCheckboxOutline className={styles.customIconTest} />{' '}
           <div className={styles.menuText}>Leaves requiring action</div>
+          <div
+            className={`${styles.menuNotification} ${
+              styles.menuNotificationOrange
+            }`}>
+            UPDATE
+          </div>
         </LooseNavLink>
       );
       links.push(
@@ -349,11 +364,11 @@ class SideNav extends Component {
         <div className={styles.sideNav}>
           <div className={styles.topContainer}>
             <div className={styles.topBar}>
-              <div className={styles.logo}>
-                <Link title="Leave Management System" to="/">
-                  LMS
-                </Link>
-              </div>
+              <Tooltip content="Home" placement="bottom">
+                <div className={styles.logo}>
+                  <Link to="/">LMS</Link>
+                </div>
+              </Tooltip>
               <div className={styles.version}>
                 {`v${process.env.REACT_APP_VERSION}`}
               </div>
@@ -366,13 +381,14 @@ class SideNav extends Component {
                   <MdBack className={styles.topBarIcon} />
                 </div>
                 <div className={styles.topBarIconWrapper}>
-                  <a
-                    title="GitHub repo"
-                    href="https://github.com/arkn98/leave-management-system"
-                    target="_blank"
-                    rel="noopener noreferrer">
-                    <LogoGithub className={styles.topBarIcon} />
-                  </a>
+                  <Tooltip content="GitHub repo" placement="bottom">
+                    <a
+                      href="https://github.com/arkn98/leave-management-system"
+                      target="_blank"
+                      rel="noopener noreferrer">
+                      <LogoGithub className={styles.topBarIcon} />
+                    </a>
+                  </Tooltip>
                 </div>
               </div>
             </div>

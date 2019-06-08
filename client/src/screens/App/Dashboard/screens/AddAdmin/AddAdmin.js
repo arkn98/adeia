@@ -1,11 +1,10 @@
 import React, { Fragment, Component } from 'react';
-import styles from './AddAdmin.module.scss';
+// import styles from './AddAdmin.module.scss';
 import {
   TextBox,
   SelectBox,
   RadioButtonGroup,
   Form,
-  Divider,
   SectionLabel,
   Description
 } from 'screens/App/shared/common/FormInput';
@@ -107,14 +106,12 @@ class AddAdmin extends Component {
     return (
       <Fragment>
         <Form onSubmit={this.formSubmitHandler} showBottomSpace={true}>
-          <SectionLabel
-            containerStyles={styles.marginBottom20}
-            label="Account Details"
-          />
+          <SectionLabel label="Account Details" />
           <RadioButtonGroup
             name="accountType"
             label="Account Type"
-            containerStyles={styles.marginBottom20}
+            description="Access permissions depend on account type. This cannot be changed afterwards."
+            containerStyles="marginBottom20"
             radioClickHandler={this.radioClickHandler}
             optlist={accountTypeSelectOptions
               .filter(item => item.value !== accountTypes.STAFF)
@@ -130,11 +127,11 @@ class AddAdmin extends Component {
             name="staffId"
             label="Staff ID"
             type="text"
-            description="Primary identifier used throughout the system. Make sure this stays constant."
+            description="Primary account identifier used throughout the system. Please make sure this stays constant."
             value={this.state.staffId}
             inputOnChangeHandler={this.inputOnChangeHandler}
             errors={errors.staffId}
-            containerStyles={styles.marginBottom20}
+            containerStyles="marginBottom20"
           />
           <TextBox
             name="name"
@@ -143,7 +140,7 @@ class AddAdmin extends Component {
             value={this.state.name}
             inputOnChangeHandler={this.inputOnChangeHandler}
             errors={errors.name}
-            containerStyles={styles.marginBottom20}
+            containerStyles="marginBottom20"
           />
           <TextBox
             name="designation"
@@ -152,7 +149,7 @@ class AddAdmin extends Component {
             value={this.state.designation}
             inputOnChangeHandler={this.inputOnChangeHandler}
             errors={errors.designation}
-            containerStyles={styles.marginBottom20}
+            containerStyles="marginBottom20"
           />
           <SelectBox
             name="category"
@@ -160,15 +157,11 @@ class AddAdmin extends Component {
             value={this.state.category}
             inputOnChangeHandler={this.inputOnChangeHandler}
             errors={errors.category}
-            containerStyles={styles.marginBottom20}
+            containerStyles="marginBottom20"
             optList={staffTypeSelectOptions}
           />
-          <Divider />
-          <SectionLabel
-            containerStyles={styles.marginBottom8}
-            label="Credentials"
-          />
-          <Description containerStyles={styles.marginBottom20}>
+          <SectionLabel containerStyles="marginBottom4" label="Credentials" />
+          <Description>
             These are the actual credentials used to login to the account.
           </Description>
           <TextBox
@@ -178,7 +171,7 @@ class AddAdmin extends Component {
             value={this.state.email}
             inputOnChangeHandler={this.inputOnChangeHandler}
             errors={errors.email}
-            containerStyles={styles.marginBottom20}
+            containerStyles="marginBottom20"
           />
           <TextBox
             name="password"
@@ -187,7 +180,7 @@ class AddAdmin extends Component {
             value={this.state.password}
             inputOnChangeHandler={this.inputOnChangeHandler}
             errors={errors.password}
-            containerStyles={styles.marginBottom20}
+            containerStyles="marginBottom20"
           />
           <TextBox
             name="password2"
@@ -196,11 +189,11 @@ class AddAdmin extends Component {
             value={this.state.password2}
             inputOnChangeHandler={this.inputOnChangeHandler}
             errors={errors.password2}
-            containerStyles={styles.marginBottom20}
+            containerStyles="marginBottom20"
           />
           <ButtonSubmit
             sizeSmall={true}
-            className={styles.marginBottom20}
+            className="marginBottom20"
             isLoading={this.state.isSubmitting}>
             Add Privileged Account
           </ButtonSubmit>

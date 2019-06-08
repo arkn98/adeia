@@ -7,7 +7,7 @@ const Form = props => {
     <form
       onSubmit={onSubmit}
       className={`${styles.form} ${fullWidth ? styles.formFullWidth : null} ${
-        showBottomSpace ? styles.paddingBottom80 : null
+        showBottomSpace ? 'paddingBottom80' : null
       }`}>
       {props.children}
     </form>
