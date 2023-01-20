@@ -11,7 +11,7 @@
     "form-data": "^2.3.3",
     "http-proxy-middleware": "^0.19.1",
     "jwt-decode": "^2.2.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^8.0.0",
     "query-string": "^6.4.0",
     "react": "^16.8.6",
     "react-click-outside": "github:tj/react-click-outside",
