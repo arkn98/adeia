@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@tippy.js/react": "^2.2.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.2",
     "classnames": "^2.2.6",
     "dayjs": "^1.8.10",
     "dotenv": "^7.0.0",
