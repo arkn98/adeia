@@ -1,4 +1,4 @@
-@import '../../../variables';
+@import "../../../../variables";
 
 .app {
   overflow: auto;
@@ -226,7 +226,7 @@
   display: inline-block;
   vertical-align: bottom;
   animation: loadingEllipsis steps(4, end) 900ms infinite;
-  content: '\2026';
+  content: "\2026";
   width: 0px;
 }
 

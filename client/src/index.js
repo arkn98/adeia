@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import './reset.css';
 import './fonts.css';
 import './index.css';
+import './common.css';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './shared/store';
