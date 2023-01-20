@@ -1,5 +1,4 @@
 /node_modules
-config/keys.js
 .env
 config/server.key
 config/server.crt

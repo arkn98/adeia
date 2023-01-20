@@ -20,9 +20,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-/src/assets/fonts/*.otf
-/src/assets/fonts/*.ttf
-/src/assets/fonts/*.woff
-/src/assets/fonts/*.woff2
-/src/assets/*.jpg
