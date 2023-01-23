@@ -1,6 +1,6 @@
-const { validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator');
 const fs = require('fs');
-const parse = require('csv-parse/lib/sync');
+const { parse } = require('csv-parse/sync');
 const xlsx = require('node-xlsx').default;
 
 const { csvToTimetable } = require('../../utils');

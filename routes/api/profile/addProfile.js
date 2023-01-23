@@ -1,4 +1,4 @@
-const { validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator');
 const User = require('../../../models/User');
 const Profile = require('../../../models/Profile');
 const LeaveAllocation = require('../../../models/LeaveAllocation');

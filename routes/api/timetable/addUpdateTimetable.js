@@ -1,4 +1,4 @@
-const { validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator');
 const mongoose = require('mongoose');
 
 const Timetable = require('../../../models/Timetable');

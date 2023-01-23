@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const { body, query } = require('express-validator/check');
+const { body, query } = require('express-validator');
 
 const { accountTypes } = require('../../../models/User');
 const uploadTimetable = require('./uploadTimetable');

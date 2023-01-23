@@ -1,5 +1,5 @@
 const dayjs = require('dayjs');
-const shortid = require('shortid');
+const { nanoid } = require('nanoid');
 const Alteration = require('../../../models/Alteration');
 const {
   setLeaveStatusBasedOnAlt,
@@ -29,7 +29,7 @@ const setAlterationRejected = (req, res) => {
                 sendNotification({
                   user: req.user._id,
                   data: {
-                    notificationId: shortid.generate(),
+                    notificationId: nanoid(7),
                     isNew: true,
                     link: `/dashboard/alteration/${alteration.alterationId}`,
                     title: 'Alteration rejected',
@@ -66,7 +66,7 @@ const setAlterationRejected = (req, res) => {
                 sendNotification({
                   user: alteration.originalStaff._id,
                   data: {
-                    notificationId: shortid.generate(),
+                    notificationId: nanoid(7),
                     isNew: true,
                     link: `/dashboard/leave/${alteration.leaveId}`,
                     title: 'Alteration rejected',

@@ -1,4 +1,4 @@
-const { validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator');
 const LeaveType = require('../../../models/LeaveType');
 
 const addLeaveType = (req, res) => {

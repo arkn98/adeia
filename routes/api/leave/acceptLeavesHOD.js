@@ -3,7 +3,7 @@ const Leave = require('../../../models/Leave');
 const { leaveStatuses } = require('../../../models/Leave');
 const Profile = require('../../../models/Profile');
 const dayjs = require('dayjs');
-const shortid = require('shortid');
+const { nanoid } = require('nanoid');
 const Alteration = require('../../../models/Alteration');
 const { sendEmail, sendNotification } = require('../../utils');
 
@@ -62,7 +62,7 @@ const acceptLeavesHOD = (req, res) => {
                 notificationsToSend.push({
                   user: item.staff._id,
                   data: {
-                    notificationId: shortid.generate(),
+                    notificationId: nanoid(7),
                     isNew: true,
                     link: `/dashboard/leave/${item.leaveId}`,
                     title: 'Leave approved',
@@ -94,7 +94,7 @@ const acceptLeavesHOD = (req, res) => {
                   notificationsToSend.push({
                     user: altitem.alternatingStaff._id,
                     data: {
-                      notificationId: shortid.generate(),
+                      notificationId: nanoid(7),
                       isNew: true,
                       link: `/dashboard/alteration/${altitem.alterationId}`,
                       title: 'Alteration approved',

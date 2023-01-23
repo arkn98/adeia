@@ -1,4 +1,4 @@
-const { validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator');
 const ClassGroup = require('../../../models/ClassGroup');
 
 const editClassGroup = (req, res) => {

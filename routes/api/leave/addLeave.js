@@ -1,5 +1,5 @@
-const { validationResult } = require('express-validator/check');
-const shortid = require('shortid');
+const { validationResult } = require('express-validator');
+const { nanoid } = require('nanoid');
 const mongoose = require('mongoose');
 const dayjs = require('dayjs');
 const advancedFormat = require('dayjs/plugin/advancedFormat');
@@ -100,7 +100,7 @@ const addLeave = (req, res) => {
           Leave.create(
             [
               {
-                leaveId: shortid.generate(),
+                leaveId: nanoid(7),
                 staff,
                 staffId,
                 applyDate: new Date(),
@@ -126,7 +126,7 @@ const addLeave = (req, res) => {
                   toAddAlterations = [];
                   slotsToAlternate.forEach((item, index) => {
                     toAddAlterations.push({
-                      alterationId: shortid.generate(),
+                      alterationId: nanoid(7),
                       leaveId: leave.leaveId,
                       originalDate: item.date,
                       originalHour: item.hour,
@@ -166,7 +166,7 @@ const addLeave = (req, res) => {
                     sendNotification({
                       user: req.user._id,
                       data: {
-                        notificationId: shortid.generate(),
+                        notificationId: nanoid(7),
                         isNew: true,
                         link: `/dashboard/leave/${leave.leaveId}`,
                         title: 'Leave Application',
@@ -254,7 +254,7 @@ const addLeave = (req, res) => {
                                     sendNotification({
                                       user: item.alternatingStaff,
                                       data: {
-                                        notificationId: shortid.generate(),
+                                        notificationId: nanoid(7),
                                         isNew: true,
                                         link: `/dashboard/alteration/${
                                           item.alterationId

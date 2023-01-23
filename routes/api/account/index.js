@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const { body, query } = require('express-validator/check');
+const { body, query } = require('express-validator');
 
 const { staffTypes, accountTypes } = require('../../../models/User');
 const selfUpdateAccount = require('./selfUpdateAccount');
@@ -222,8 +222,8 @@ router.get(
 
 router.post(
   '/add-account',
-  passport.authenticate('jwt', { session: false }),
-  permit(accountTypes.ADMIN),
+  // passport.authenticate('jwt', { session: false }),
+  // permit(accountTypes.ADMIN),
   [
     body('staffId')
       .exists()

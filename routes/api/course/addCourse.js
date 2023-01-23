@@ -1,4 +1,4 @@
-const { validationResult } = require('express-validator/check');
+const { validationResult } = require('express-validator');
 const Course = require('../../../models/Course');
 
 const addCourse = (req, res) => {

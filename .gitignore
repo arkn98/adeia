@@ -5,3 +5,4 @@ config/server.crt
 /uploads/*.*
 !/uploads/.gitkeep
 /docs-back
+.idea

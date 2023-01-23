@@ -7,8 +7,6 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
 
-const cors = require('cors');
-
 mongoose.set('useCreateIndex', true);
 mongoose.set('useNewUrlParser', true);
 mongoose.set('debug', true);
@@ -44,9 +42,7 @@ const db = require('./config/keys').mongoURI;
 //connect to mongodb
 mongoose
   .connect(db, {
-    autoReconnect: true,
-    reconnectTries: 100,
-    reconnectInterval: 5000
+    useUnifiedTopology: true
   })
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
