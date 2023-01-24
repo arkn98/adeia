@@ -34,7 +34,7 @@
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "socket.io": "^2.2.0",
-    "ua-parser-js": "^1.0.32",
+    "ua-parser-js": "^1.0.33",
     "underscore": "^1.13.6"
   },
   "devDependencies": {
