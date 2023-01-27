@@ -7,8 +7,6 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
 
-mongoose.set('useCreateIndex', true);
-mongoose.set('useNewUrlParser', true);
 mongoose.set('debug', true);
 
 const accountRoutes = require('./routes/api/account');
@@ -40,12 +38,8 @@ app.use(express.static(path.join(__dirname, 'client', 'build')));
 const db = require('./config/keys').mongoURI;
 
 //connect to mongodb
-mongoose
-  .connect(db, {
-    useUnifiedTopology: true
-  })
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+mongoose.set('strictQuery', false);
+mongoose.connect(db);
 
 //passport middleware
 app.use(passport.initialize());
